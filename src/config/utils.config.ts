@@ -8,7 +8,7 @@ export class Utils {
     '/operasyon/operasyon-setting',
     '/passport/login'
   ];
-  static isDevelop: boolean =true;
+  static isDevelop: boolean =false;
   constructor() {
   }
   
