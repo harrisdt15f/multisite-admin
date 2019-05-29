@@ -1,0 +1,92 @@
+<page-header></page-header>
+<nz-layout>
+  <nz-content style='background-color: white'>
+    <nz-skeleton *ngIf='lotteries_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
+    <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
+      <nz-tab *ngFor="let tab of lotteries_tabs" [nzTitle]="tab.label">
+        <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+          [nzFrontPagination]='true' [nzData]="list_of_aply_data" [nzPageSize]='9'>
+          <thead>
+            <tr>
+              <th>彩种ID</th>
+              <th>彩种名称</th>
+              <th> 英文名</th>
+              <th>玩法系列</th>
+              <th>是否低频彩</th>
+              <th>累加模式</th>
+              <th>是否自开彩</th>
+              <th>最大追号期数</th>
+              <th>每日最大开奖次数</th>
+              <th>期号格式</th>
+              <th>期号位数</th>
+              <th>最低奖金组</th>
+              <th>最高奖金组</th>
+              <th>投注单位</th>
+              <th>奖期规则</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-data [ngForOf]="nzTable.data">
+              <tr>
+                <td>{{ data.id}}</td>
+                <td>{{ data.cn_name}}</td>
+                <td>{{ data.en_name}}</td>
+                <td>{{ data.series_id}}</td>
+                <td>{{ data.is_fast==1?'是':'否'}}</td>
+                <td>{{ data.issue_type|issueType:data.issue_type}}</td>
+                <td>{{ data.auto_open==1?'是':'否'}}</td>
+                <td>{{ data.max_trace_number}}</td>
+                <td>{{ data.day_issue}}</td>
+                <td>{{ data.issue_format}}</td>
+                <td>{{ data.code_length}}</td>
+                <td>{{ data.min_prize_group}}</td>
+                <td>{{ data.max_prize_group}}</td>
+                <td>{{ data.valid_modes | validModes:data.valid_modes}}</td>
+                <td>
+                  <a (click)='data.show_rule=!data.show_rule'>
+                    {{data.show_rule?'点击关闭':'点击展开'}}
+                    <i nz-icon nzType="{{data.show_rule?'up':'down'}}" nzTheme="outline"></i>
+                  </a>
+                </td>
+
+              </tr>
+              <tr [nzExpand]="data.show_rule">
+                <td></td>
+                <td colspan="24">
+                    <nz-table #innerTable [nzData]="[data.issue_rule]" nzSize="middle" [nzShowPagination]="false">
+                        <thead>
+                          <tr>
+                            <th>开始时间</th>
+                            <th>结束时间</th>
+                            <th>周期（秒）</th>
+                            <th>调整截止时间（秒）</th>
+                            <th>奖期期数</th>
+                            <th>是否有效</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+
+                          <tr *ngFor="let item of innerTable.data">
+                            <td>{{ item.begin_time }}</td>
+                            <td>{{ item.end_time }}</td>
+                            <td>{{ item.issue_seconds }}</td>
+                     
+                            <td>{{ item.adjust_time }}</td>
+                            <td>{{ item.issue_count }}</td>
+                            <td>{{ item.status===1?'是':'否' }}</td>
+                           
+                          </tr>
+                        </tbody>
+                      </nz-table>
+                </td>
+              </tr>
+            </ng-template>
+
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+
+
+  </nz-content>
+</nz-layout>

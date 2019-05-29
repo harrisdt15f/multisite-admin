@@ -1,0 +1,93 @@
+<page-header  [action]="action"  >
+        <ng-template #action>
+            <button (click)='download_report()' style='width:150px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+            class="ant-btn__block mb-sm">
+            <i *ngIf='!is_down_load' nz-icon nzType="cloud-download" nzTheme="outline"></i>
+            <i *ngIf='is_down_load'  nz-icon nzType="loading" nzTheme="outline"></i>
+            <span>导出表格</span>
+          </button>
+            <button (click)='search()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+            class="ant-btn__block mb-sm">
+            <i nz-icon nzType="redo" nzTheme="outline"></i>
+            <span>刷新</span>
+          </button>
+        </ng-template>
+      </page-header>
+<nz-layout>
+  <nz-content>
+ 
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzCustomFilter>
+            用户名称
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                <i nz-icon nzType="search" class="ant-table-filter-icon"
+                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+  
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                  <button nz-button nzSize="small" (click)="reset()">取消</button>
+                </div>
+              </nz-dropdown>
+          </th>
+          <th nzCustomFilter> 
+              平台订单号
+              <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
+                    <i nz-icon nzType="search" class="ant-table-filter-icon"
+                      [class.ant-table-filter-open]="dropdown2.nzVisible" nz-dropdown></i>
+      
+                    <div class="search-box">
+                      <input type="text" nz-input placeholder="搜索订单号" [(ngModel)]="search_company_order_num" />
+                      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                        搜索
+                      </button>
+                      <button nz-button nzSize="small" (click)="reset_num()">取消</button>
+                    </div>
+                  </nz-dropdown>
+          </th>
+          <th>金额(元)</th>
+          <th nzShowFilter [nzFilters]="deposit_mode" 
+          [nzFilterMultiple]='false' (nzFilterChange)="filter_deposit_mode_change($event)">充值类型</th>
+          <th nzShowFilter [nzFilters]="status" 
+          [nzFilterMultiple]='false' (nzFilterChange)="filter_status_change($event)">充值状态</th>
+          <th>是否测试账号</th>
+          <th>创建时间</th>
+          <th>更新时间</th>
+    
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
+        <tr *ngFor="let data of list_of_aply_data" >
+          <td>{{ data.user_name}}</td>
+          <td>{{ data.company_order_num }}</td>
+          <td>{{ data.amount }}</td>
+          <td>{{ data.deposit_mode==1?'人工充值':'自动充值' }}</td>
+          <td>{{ data.status|rechargeStatus }}</td>
+          <td>{{data.is_tester==1?'是':'否'}}</td>
+          <td>{{data.created_at}}</td>
+          <td>{{data.updated_at}}</td>
+
+   
+
+
+
+
+
+
+        </tr>
+
+        <!-- </ng-template> -->
+
+      </tbody>
+    </nz-table>
+
+  </nz-content>
+</nz-layout>

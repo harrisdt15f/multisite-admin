@@ -1,0 +1,166 @@
+<page-header></page-header>
+
+<nz-layout>
+  <nz-content>
+    <button (click)='create_setting("parent")' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock
+      [nzType]="'dashed'" class="ant-btn__block mb-sm">
+      <i class="anticon anticon-plus"></i><span>创建父级系统设置</span>
+    </button>
+    <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+      [nzFrontPagination]='true' [nzData]="list_of_data" [nzPageSize]='8'>
+      <thead>
+        <tr>
+          <th nzShowExpand></th>
+          <th>ID</th>
+          <th>名称</th>
+          <th  colspan="5">描述</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr>
+            <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
+            <td>{{ data.id}}</td>
+            <td>{{ data.name}}</td>
+            <td colspan="5">
+                <div class='ellipsis' style='max-width:600px;display: inline-block;'>
+                    {{ data.description}}
+                </div>
+               </td>
+            <td>
+              <a (click)='create_setting("child",data.id)'>创建子设置</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a (click)='edit_setting(data,"parent")'>修改</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a nz-popconfirm nzTitle="确认删除这个配置吗?" nzOkText="删除" nzCancelText="取消"
+                (nzOnConfirm)="delete_setting(data)">删除</a>
+            </td>
+          </tr>
+          <tr [nzExpand]="mapOfExpandData[data.id]">
+            <td></td>
+            <td colspan="24">
+              <nz-table *ngIf='data.sub' [nzLoading]='is_load_list_child' nzSize="middle" [nzShowPagination]="true"
+                #nzTable2 [nzData]="data.sub">
+                <thead>
+                  <tr>
+
+                    <th>名称</th>
+                    <th>ID</th>
+                    <th>键值</th>
+                    <th>描述</th>
+                    <th>值</th>
+                    <th>启用状态</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <ng-template ngFor let-data [ngForOf]="nzTable2.data">
+                    <tr>
+                      <td>
+                          <div class='ellipsis' style='max-width:300px'>
+                              {{ data.name}}
+                          </div>
+                      </td>
+                      <td>{{ data.id}}</td>
+                      <td>
+                          <div class='ellipsis' style='max-width:300px'>
+                              {{ data.sign}}
+                          </div>
+                 
+                      <td>
+                          <div class='ellipsis' style='maxwidth:300px'>
+                              {{ data.description}}
+                          </div>
+                      </td>
+                      <td>
+                          <div class='ellipsis' style='max-width:300px'>
+                              {{ data.value}}
+                          </div>
+                      </td>
+                      <td>
+                        <nz-switch (ngModelChange)='change_status(data)' [ngModel]="data.status===1" nzCheckedChildren="开"
+                          nzUnCheckedChildren="关"></nz-switch>
+                      </td>
+
+                      <td>
+
+                        <a (click)='edit_setting(data,"child")'>修改</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzTitle="确认删除这个配置吗?" nzOkText="删除" nzCancelText="取消"
+                          (nzOnConfirm)="delete_setting(data)">删除</a>
+                      </td>
+                    </tr>
+                  </ng-template>
+
+                </tbody>
+    </nz-table>
+    </td>
+    </tr>
+    </ng-template>
+
+    </tbody>
+    </nz-table>
+    <!-- 创建设置弹框 -->
+    <nz-drawer nzWidth='400px' [nzVisible]="if_create_setting" nzPlacement="right"
+      [nzTitle]="modal_type==='create'?'创建系统设置':'修改设置'" (nzOnClose)="if_create_setting = false">
+      <form nz-form [formGroup]="create_form" (ngSubmit)="submit_settings()">
+        <div *ngIf='modal_lodding' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+        </div>
+        <nz-form-item>
+          <nz-form-label  nzFor="name" nzRequired [nzSm]="6" [nzXs]="24">名称</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="name" maxlength='16' type='text' formControlName="name" nz-input
+              placeholder="名称可由6-16位大小写字母、数字、汉字组成" [(ngModel)]="setting_obj['name']" />
+            <nz-form-explain *ngIf="create_form.get('name')?.dirty && create_form.get('name')?.errors">
+              请输入要创建的设置名称!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="sign" nzRequired [nzSm]="6" [nzXs]="24">键值</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="sign" type='text' formControlName="sign" nz-input placeholder="键值"
+              [(ngModel)]="setting_obj['sign']" />
+            <nz-form-explain *ngIf="create_form.get('sign')?.dirty && create_form.get('sign')?.errors">
+              <ng-container *ngIf="create_form.get('sign')?.hasError('required')">
+                键值不能为空!
+              </ng-container>
+              <ng-container *ngIf="create_form.get('sign')?.hasError('sign')">
+                请输入6-16位英文字符加下划线组合
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="description" nzRequired [nzSm]="6" [nzXs]="24">描述</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <textarea id="description" formControlName="description" rows="4" nz-input
+              [(ngModel)]="setting_obj['description']"></textarea>
+            <nz-form-explain *ngIf="create_form.get('description')?.dirty && create_form.get('description')?.errors">
+              描述不能为空!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf='!is_parent'>
+          <nz-form-label nzFor="value" nzRequired [nzSm]="6" [nzXs]="24">值</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="value" type='text' formControlName="value" nz-input placeholder="值"
+              [(ngModel)]="setting_obj['value']" />
+            <nz-form-explain *ngIf="create_form.get('value')?.dirty && create_form.get('value')?.errors">
+              值不能为空!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row style="margin-bottom:8px;">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button *ngIf='modal_type==="create"' [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认创建</button>
+            <button *ngIf='modal_type==="edit"' [disabled]="!create_form.valid" nz-button nzType="primary">确认修改</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+
+    </nz-drawer>
+  </nz-content>
+</nz-layout>

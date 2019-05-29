@@ -1,0 +1,229 @@
+<page-header></page-header>
+
+<nz-layout>
+  <nz-content>
+    <button (click)='add_bank()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i class="anticon anticon-plus"></i><span>添加银行</span>
+    </button>
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzCustomFilter>
+            名称
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                <i nz-icon nzType="search" class="ant-table-filter-icon"
+                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+  
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                  <button nz-button nzSize="small" (click)="reset()">取消</button>
+                </div>
+              </nz-dropdown>
+
+          </th>
+          <th> 编码</th>
+          <th nzShowFilter [nzFilters]="pay_type" 
+          [nzFilterMultiple]='false' (nzFilterChange)="filter_pay_type_change($event)">支付类型</th>
+          <th>最小充值金额(元)</th>
+          <th>最大充值金额(元)</th>
+          <th>最小提现金额(元)</th>
+          <th>最大提现金额(元) </th>
+          <th>用户层级 </th>
+          <th nzShowFilter [nzFilters]="status" 
+          [nzFilterMultiple]='false' (nzFilterChange)="filter_status_change($event)">开启状态 </th>
+          <th>备注 </th>
+          <th>操作 </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
+        <tr *ngFor="let data of list_of_aply_data" >
+          <td>{{ data.title}}</td>
+          <td>{{ data.code }}</td>
+          <td>{{ data.pay_type|payType }}</td>
+          <td>{{ data.min_recharge }}</td>
+          <td>{{ data.max_recharge }}</td>
+          <td>{{ data.min_withdraw }}</td>
+          <td>{{ data.max_withdraw }}</td>
+          <td>{{ data.allow_user_level }}</td>
+          <td>
+            <nz-switch (ngModelChange)='edit_status($event,data)' nzSize="small" [ngModel]="data.status==1"
+              nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+          </td>
+          <td>{{ data.remarks }}</td>
+          <td>
+            <a (click)='edit_bank(data)'>编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <a nz-popconfirm nzTitle="确认删除这个银行信息吗?" nzOkText="删除" nzCancelText="取消"
+              (nzOnConfirm)="delete_bank(data)">删除</a>
+          </td>
+
+
+
+
+
+
+        </tr>
+
+        <!-- </ng-template> -->
+
+      </tbody>
+    </nz-table>
+    <!-- 操作历史弹框 -->
+    <nz-drawer nzWidth='600px' [nzVisible]="if_show_modal" nzPlacement="right"
+      [nzTitle]="modal_type=='create'?'创建银行':'编辑银行'" (nzOnClose)="close_modal()">
+      <!-- <div [innerHTML]='show_text'></div> -->
+      <!-- <pre [innerHTML]='show_text'>
+
+      </pre> -->
+      <form nz-form [formGroup]="create_form">
+        <div *ngIf='modal_lodding' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+        </div>
+        <nz-form-item>
+          <nz-form-label nzFor="title" nzRequired [nzSm]="8" [nzXs]="24">名称</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="16" [nzXs]="23">
+            <input maxlength='20' id="title" type="text" formControlName="title" nz-input placeholder="标题"
+              [(ngModel)]="edit_bank_obj['title']" />
+            <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+              请输入银行名称!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="code" nzRequired [nzSm]="8" [nzXs]="24">编码</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="16" [nzXs]="23">
+            <input maxlength='16' id="code" type="text" formControlName="code" nz-input placeholder="请输入英文编码"
+              [(ngModel)]="edit_bank_obj['code']" />
+              <nz-form-explain *ngIf="create_form.get('code')?.dirty && create_form.get('code')?.errors">
+                  <ng-container *ngIf="create_form.get('code')?.hasError('required')">
+                      请输入银行编码!
+                  </ng-container>
+                  <ng-container *ngIf="create_form.get('code')?.hasError('code')">
+                    请输入合法编码！编码不能带有中文
+                  </ng-container>
+                </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFor="pay_type" nzRequired [nzSm]="8" [nzXs]="24">支付类型</nz-form-label>
+            <nz-form-control  [nzSm]="16" [nzXs]="23">
+                <nz-radio-group id="pay_type" formControlName="pay_type" [(ngModel)]="edit_bank_obj['pay_type']">
+                    <label nz-radio nzValue='1'>银行</label>
+                    <label nz-radio nzValue="2">微信</label>
+                    <label nz-radio nzValue="3">支付宝</label>
+
+                  </nz-radio-group>
+              <nz-form-explain *ngIf="create_form.get('pay_type')?.dirty && create_form.get('pay_type')?.errors">
+                请选择支付类型!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="min_recharge" nzRequired [nzSm]="8" [nzXs]="24">最小充值金额（元）</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="16" [nzXs]="23">
+            <input id="min_recharge" type="number" formControlName="min_recharge" nz-input placeholder="最小充值金额"
+              [(ngModel)]="edit_bank_obj['min_recharge']" />
+            <nz-form-explain *ngIf="create_form.get('min_recharge')?.dirty && create_form.get('min_recharge')?.errors">
+              请输入最小充值金额!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="max_recharge" nzRequired [nzSm]="8" [nzXs]="24">最大充值金额（元）</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="16" [nzXs]="23">
+            <input id="max_recharge" type="number" formControlName="max_recharge" nz-input placeholder="最大充值金额"
+              [(ngModel)]="edit_bank_obj['max_recharge']" />
+
+              <nz-form-explain *ngIf="create_form.get('max_recharge')?.dirty && create_form.get('max_recharge')?.errors">
+                  <ng-container *ngIf="create_form.get('max_recharge')?.hasError('required')">
+                      请输入最大充值金额!
+                  </ng-container>
+                  <ng-container *ngIf="create_form.get('max_recharge')?.hasError('not_pass1')">
+                    请先输入最小充值金额！
+                  </ng-container>
+                  <ng-container *ngIf="create_form.get('max_recharge')?.hasError('not_pass2')">
+                      最大充值金额必须大于最小充值金额
+                    </ng-container>
+                </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="min_withdraw" nzRequired [nzSm]="8" [nzXs]="24">最小提现金额（元）</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="16" [nzXs]="23">
+            <input id="min_withdraw" type="number" formControlName="min_withdraw" nz-input placeholder="最小提现金额"
+              [(ngModel)]="edit_bank_obj['min_withdraw']" />
+            <nz-form-explain *ngIf="create_form.get('min_withdraw')?.dirty && create_form.get('min_withdraw')?.errors">
+              请输入最小提现金额!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="max_withdraw" nzRequired [nzSm]="8" [nzXs]="24">最大提现金额（元）</nz-form-label>
+          <nz-form-control  [nzSm]="16" [nzXs]="23">
+            <input id="max_withdraw" type="number" formControlName="max_withdraw" nz-input placeholder="最大提现金额"
+              [(ngModel)]="edit_bank_obj['max_withdraw']" />
+      
+              <nz-form-explain *ngIf="create_form.get('max_withdraw')?.dirty && create_form.get('max_recharge')?.errors">
+                  <ng-container *ngIf="create_form.get('max_withdraw')?.hasError('required')">
+                      请输入最大提现金额!
+                  </ng-container>
+                  <ng-container *ngIf="create_form.get('max_withdraw')?.hasError('not_pass1')">
+                    请先输入最小提现金额！
+                  </ng-container>
+                  <ng-container *ngIf="create_form.get('max_withdraw')?.hasError('not_pass2')">
+                      最大提现金额必须大于最小提现金额
+                    </ng-container>
+                </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-label nzFor="allow_user_level" nzRequired [nzSm]="8" [nzXs]="24">用户层级(最低)</nz-form-label>
+            <nz-form-control  [nzSm]="16" [nzXs]="23">
+                
+                <nz-row>
+                    <nz-col nzSpan="20">
+                        <nz-slider [nzMin]=1 [nzMax]=10 [nzTipFormatter]="formatter" id="allow_user_level" formControlName="allow_user_level" [(ngModel)]="edit_bank_obj['allow_user_level']" ></nz-slider>
+                    </nz-col>
+                    <div nz-col nzSpan="2">
+                        {{10-edit_bank_obj['allow_user_level']+1}}
+                    </div>
+                  </nz-row>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+              <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">活动开关</nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="23">
+                <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_bank_obj['status']">
+                  <label nz-radio nzValue="1">开</label>
+                  <label nz-radio nzValue="0">关</label>
+                </nz-radio-group>
+                <nz-form-explain *ngIf="create_form.get('status')?.dirty && create_form.get('status')?.errors">
+                  请选择!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="remarks" nzRequired [nzSm]="8" [nzXs]="24">备注</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="16" [nzXs]="23">
+            <input id="remarks" type="text" formControlName="remarks" nz-input placeholder="备注"
+              [(ngModel)]="edit_bank_obj['remarks']" />
+            <nz-form-explain *ngIf="create_form.get('remarks')?.dirty && create_form.get('remarks')?.errors">
+              请输入备注!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item nz-row style="margin-bottom:8px;">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button *ngIf='modal_type==="create"' (click)="submit_bank()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认创建</button>
+            <button *ngIf='modal_type==="edit"' (click)="submit_bank()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认修改</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+    </nz-drawer>
+  </nz-content>
+</nz-layout>

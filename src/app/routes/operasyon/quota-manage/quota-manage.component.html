@@ -1,0 +1,108 @@
+<page-header [title]="'每日可操作自资金限额：'+data_prize_string+'元'" [action]="action" [logo]="logo">
+  <ng-template #logo>
+    <img src="https://gw.alipayobjects.com/zos/rmsportal/nxkuOJlFJuAUhzlMTCEe.png">
+  </ng-template>
+  <ng-template #action>
+    <button (click)='edit_data_prize()' nz-button [nzType]="'primary'">修改</button>
+  </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content>
+
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzCustomFilter>
+            名称
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+
+              <div class="search-box">
+                <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  搜索
+                </button>
+                <button nz-button nzSize="small" (click)="reset()">取消</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th> 邮箱</th>
+          <th>所属分组</th>
+          <th>是否测试用户</th>
+          <th>启用状态</th>
+          <th>人工充值额度</th>
+          <th>操作</th>
+
+
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let data of list_of_aply_data">
+          <td>{{ data.name}}</td>
+          <td>{{ data.email }}</td>
+          <td>{{ data.group_id }}</td>
+          <td>{{ data.is_test==1?'是':'否' }}</td>
+          <td>{{ data.status==1?'启用':'关闭' }}</td>
+          <td>{{ data.operate_amount?data.operate_amount.fund:''}}</td>
+          <td>
+            <span class='list_btn'><button (click)='person_amount(data)' nz-button [nzSize]='"small"'
+                nzType="primary">人工充值额度添加</button></span>
+            <span class='list_btn'><button (click)='check_history(data)' nz-button [nzSize]='"small"'
+                nzType="primary">额度修改历史</button></span>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </nz-table>
+    <!-- 摩态框 -->
+    <!-- 每日额度 -->
+    <nz-modal [nzOkLoading]="isOkLoading" [nzMaskClosable]='true' [(nzVisible)]="is_show_data_prize" nzTitle="修改每日资金限额"
+      (nzOnCancel)="cancel_data_prize()" (nzOnOk)="ok_data_prize()">
+      <nz-input-group nzAddOnAfter="元">
+        <input (keyup)="account_check()"  type="text" placeholder="最大限额90000元" nz-input [(ngModel)]="data_prize" />
+      </nz-input-group>
+    </nz-modal>
+    <!-- 人工额度 -->
+    <nz-modal [nzOkLoading]="isOkLoading" [nzMaskClosable]='true' [(nzVisible)]="is_show_person_prize"
+      nzTitle="添加人工充值资金限额" (nzOnCancel)="cancel_data_prize()" (nzOnOk)="ok_person_prize()">
+      <nz-input-group nzAddOnAfter="元">
+        <input (keyup)="person_prize_check()" type="text" placeholder="请输入要添加的额度" nz-input [(ngModel)]="person_prize" />
+      </nz-input-group>
+    </nz-modal>
+    <!-- 历史显示 -->
+    <nz-drawer nzWidth='400px' [nzVisible]="look_history" nzPlacement="right" nzTitle="人工充值历史"
+      (nzOnClose)="look_history = false">
+
+      <div style='margin-top: 30px'>
+        <nz-range-picker nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" [ngModel]='now_date'
+          (ngModelChange)="on_change_time($event)">
+        </nz-range-picker>
+        <div style='margin-top:30px;margin-bottom:30px'>
+          <nz-spin nzSimple style="text-align: center;" *ngIf='spin_show'></nz-spin>
+          <nz-empty *ngIf='history_list.length==0&&!spin_show'></nz-empty>
+        </div>
+
+        <div class='history-list' nz-row [nzType]="'flex'" *ngFor='let item of history_list'>
+          <div nz-col [nzSpan]="2">
+            <div class='history-point'></div>
+            <div class='history-line'></div>
+          </div>
+          <div nz-col [nzSpan]="22">
+            <div>{{item.comment}}</div>
+            <div>{{item.created_at}}</div>
+          </div>
+
+        </div>
+      </div>
+
+
+    </nz-drawer>
+
+  </nz-content>
+</nz-layout>

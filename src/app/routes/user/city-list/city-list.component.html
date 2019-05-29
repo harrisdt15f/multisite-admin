@@ -1,0 +1,112 @@
+<page-header></page-header>
+<div nz-row class='city-box'>
+  <div nz-col nzSpan="5">
+    <div class='content-title'>省/直辖市</div>
+    <div class='city-content'>
+      <div *ngIf='first_level.length==0' class='content-list'>
+        <nz-skeleton [nzTitle]='false' [nzParagraph]="{ rows: 15 }" [nzActive]="true">
+        </nz-skeleton>
+      </div>
+      <div nz-row [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }" (click)='show_child_city(item,1)'
+        *ngFor="let item of first_level ; let i=index" class="scene-obj">
+        <div nz-col nzSpan="18">
+          <div>{{item.region_name}}</div>
+          <div style='color:rgba(0, 0, 0, 0.45)'>id:{{item.region_id}}</div>
+        </div>
+        <div nz-col nzSpan="6" class="process-data-button">
+          <a (click)="edit_city(item,1,$event)">编辑 </a>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div [ngStyle]="{'opacity':parent_id_lv1?'1':'0' }" nz-col nzSpan="1" class='icon-right'>
+
+  </div>
+  <div *ngIf='parent_id_lv1' nz-col nzSpan="5">
+    <div class='content-title'>市</div>
+    <div class='city-content'>
+      <div nz-row class='content-list'
+        [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white','display':item.region_parent_id==parent_id_lv1?'block':'none' }"
+        (click)='show_child_city(item,2)' *ngFor="let item of second_level ; let i=index" class="scene-obj">
+        <div nz-col nzSpan="18">
+
+          <div>{{item.region_name}}</div>
+          <div style='color:rgba(0, 0, 0, 0.45)'>id:{{item.region_id}}</div>
+        </div>
+        <div nz-col nzSpan="6" class="process-data-button">
+          <a (click)="edit_city(item,2,$event)">编辑 </a>
+        </div>
+
+      </div>
+    </div>
+
+
+  </div>
+  <div [ngStyle]="{'opacity':parent_id_lv2?'1':'0' }" nz-col nzSpan="1" class='icon-right'>
+
+  </div>
+  <div *ngIf='parent_id_lv2' nz-col nzSpan="6" >
+    <div class='content-title'>区/县</div>
+    <div class='city-content'>
+      <div nz-row class='content-list'
+        [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white','display':item.region_parent_id==parent_id_lv2?'block':'none'  }"
+        (click)='show_child_city(item,3)' *ngFor="let item of thirst_level ; let i=index" class="scene-obj">
+        <div nz-col nzSpan="18">
+          <div>{{item.region_name}}</div>
+          <div style='color:rgba(0, 0, 0, 0.45)'>id:{{item.region_id}}</div>
+        </div>
+        <div nz-col nzSpan="6" class="process-data-button">
+          <a (click)="edit_city(item,3,$event)">编辑 </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div [ngStyle]="{'opacity':parent_id_lv3?'1':'0' }" nz-col nzSpan="1" class='icon-right'>
+  </div>
+  <div *ngIf='parent_id_lv3' nz-col nzSpan="6" >
+    <div class='content-title'>镇/营业厅</div>
+    <div class='city-content'>
+      <div class='content-list'>
+        <nz-skeleton *ngIf='four_level.length==0' [nzTitle]='false' [nzParagraph]="{ rows: 15 }" [nzActive]="true">
+        </nz-skeleton>
+      </div>
+      <div nz-row class='content-list'
+        [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white','display':item.region_parent_id==parent_id_lv3?'block':'none'  }"
+        (click)='show_child_city(item,4)' *ngFor="let item of four_level ; let i=index" class="scene-obj">
+        <div nz-col nzSpan="18">
+          <div>{{item.region_name}}</div>
+          <div style='color:rgba(0, 0, 0, 0.45)'>id:{{item.region_id}}</div>
+        </div>
+        <div nz-col nzSpan="6" class="process-data-button">
+          <a (click)="edit_city(item,4,$event)">编辑 </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<nz-drawer nzWidth='400px' [nzVisible]="is_edit_city" nzPlacement="right" nzTitle="提交审核结果"
+(nzOnClose)="is_edit_city = false">
+
+<div>分类：{{edit_type_string}}</div>
+<div>id：{{is_edit_obj['id']||''}}</div>
+<nz-form-item style="margin-top:30px">
+  <nz-form-label  [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>名称</nz-form-label>
+  <nz-form-control [nzSpan]="18">
+    <input placeholder="城市名" [(ngModel)]="is_edit_obj['region_name']" nz-input>
+  </nz-form-control>
+</nz-form-item>
+<nz-form-item style="margin-top:30px">
+    <nz-form-label  [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>行政编码</nz-form-label>
+    <nz-form-control [nzSpan]="18">
+      <input placeholder="行政编码" [(ngModel)]="is_edit_obj['region_id']" nz-input>
+    </nz-form-control>
+  </nz-form-item>
+<button [nzLoading]="submit_passport_lodding" *ngIf="is_edit_obj['type']=='add'" (click)='submit_edit()'
+  nzType="primary" nz-button nzBlock>通过审核</button>
+<button [nzLoading]="submit_passport_lodding" *ngIf="is_edit_obj['type']=='edit'" (click)='submit_edit()'
+  nzType="primary" nz-button nzBlock>确认修改</button>
+</nz-drawer>

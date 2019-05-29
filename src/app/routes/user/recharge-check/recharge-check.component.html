@@ -1,0 +1,87 @@
+<page-header  [action]="action"  >
+    <ng-template #action>
+        <button (click)='search()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+        class="ant-btn__block mb-sm">
+        <i nz-icon nzType="redo" nzTheme="outline"></i>
+        <span>刷新</span>
+      </button>
+    </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content>
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzCustomFilter>
+            玩家用户名
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+
+              <div class="search-box">
+                <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  搜索
+                </button>
+                <button nz-button nzSize="small" (click)="reset()">取消</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th>操作管理员</th>
+          <th>操作管理员ID</th>
+          <th>金额</th>
+          <th nzShowFilter [nzFilters]="status_type" [nzFilterMultiple]='false'
+            (nzFilterChange)="is_status_change($event)">状态</th>
+          <th>描述</th>
+          <th>申请人备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr>
+            <td>{{ data.user_name }}</td>
+            <td>{{ data.admin_name }}</td>
+            <td>{{ data.admin_id }}</td>
+            <td>{{ data.amount}}</td>
+            <td>
+              <span *ngIf='data.status==0' class='ant-badge-status-dot ant-badge-status-processing padding-box'></span>
+              <span *ngIf='data.status==1' class='ant-badge-status-dot ant-badge-status-success padding-box'></span>
+              <span *ngIf='data.status==2' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
+              <span >{{ data.status | checkStatus:data.type}}</span>
+              
+            </td>
+            <td>{{ data.comment }}</td>
+            <td>{{ data.apply_note }}</td>
+            <td *ngIf='data.status!=0'></td>
+            <td *ngIf='data.status==0'>
+         
+                <a (click)='edit_check_passport(data,"pass")'>通过申请</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)='edit_check_passport(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
+            
+
+            </td>
+          </tr>
+          <tr>
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+    <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right" nzTitle="提交审核结果"
+      (nzOnClose)="is_edit_check = false">
+      <div>用户：{{edit_check_obj['user_name']||''}}</div>
+      <nz-form-item style="margin-top:30px">
+        <nz-form-control [nzSpan]="24">
+          <input placeholder="审核人已确认" [(ngModel)]="note_value" nz-input name="email" type="email" id="email">
+        </nz-form-control>
+      </nz-form-item>
+      <button [nzLoading]="submit_passport_lodding" *ngIf="edit_check_obj['type']=='pass'" (click)='submit_pass()'
+        nzType="primary" nz-button nzBlock>通过审核</button>
+      <button [nzLoading]="submit_passport_lodding" *ngIf="edit_check_obj['type']=='no_pass'" (click)='submit_pass()'
+        nzType="primary" nz-button nzBlock>拒绝通过审核</button>
+    </nz-drawer>
+  </nz-content>
+</nz-layout>

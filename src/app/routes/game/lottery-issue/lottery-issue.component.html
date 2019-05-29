@@ -1,0 +1,156 @@
+<page-header></page-header>
+<nz-layout>
+  <nz-content style='background-color: white'>
+
+    <nz-skeleton *ngIf='lotteries_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
+    <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
+      <nz-tab *ngFor="let tab of lotteries_tabs" [nzTitle]="tab.label">
+        <button (click)='show_create_lottery()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock
+          [nzType]="'dashed'" class="ant-btn__block mb-sm">
+          <i class="anticon anticon-plus"></i><span>生成奖期号</span>
+        </button>
+        <nz-table [nzScroll]='{x:"4200px", y: "450px" }' #nzTable [nzLoadingDelay]='500'
+          (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+          [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
+          <thead>
+            <tr>
+              <th nzWidth="200px">彩种ID</th>
+              <th nzWidth="200px">彩种名称</th>
+              <th nzWidth="200px"> 奖期</th>
+              <th nzWidth="200px">开始时间</th>
+              <th nzWidth="200px">结束时间</th>
+              <th nzWidth="200px">官方开奖时间</th>
+              <th nzWidth="200px">允许录号时间</th>
+              <th nzWidth="200px">中奖号码</th>
+              <th nzWidth="200px">已录号状态</th>
+              <th nzWidth="200px">计奖状态</th>
+              <th nzWidth="200px">派奖状态</th>
+              <th nzWidth="200px">返点状态</th>
+              <th nzWidth="200px">追号状态</th>
+              <th nzWidth="200px">录号时间</th>
+              <th nzWidth="200px">计奖时间</th>
+              <th nzWidth="200px">派奖时间</th>
+              <th nzWidth="200px">返点结算时间</th>
+              <th nzWidth="200px">追号时间</th>
+              <th nzWidth="200px">录号者</th>
+              <th nzWidth="200px">创建时间</th>
+              <th nzWidth="200px">更新时间</th>
+              <!-- <th nzCustomFilter>
+            申请人
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+
+              <div class="search-box">
+                <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  搜索
+                </button>
+                <button nz-button nzSize="small" (click)="reset()">取消</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th>提交申请人</th>
+          <th>审核人</th>
+          <th>申请人备注</th>
+          <th nzShowFilter [nzFilters]="status_type" [nzFilterMultiple]='false'
+            (nzFilterChange)="is_status_change($event)">状态</th>
+          <th>创建时间</th>
+          <th>最近操作时间</th>
+          <th>操作</th> -->
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-data [ngForOf]="nzTable.data">
+              <tr class='table_tr'>
+                <td>{{ data.lottery_id }}</td>
+                <td>{{ data.lottery_name }}</td>
+                <td>{{ data.issue }}</td>
+                <td>{{ data.begin_time | dateChange}}</td>
+                <td>{{ data.end_time| dateChange }}</td>
+                <td>{{ data.official_open_time| dateChange }}</td>
+                <td>{{ data.allow_encode_time| dateChange }}</td>
+                <td>{{ data.official_code }}</td>
+                <td>{{ data.status_encode }}</td>
+                <td>{{ data.status_calculated }}</td>
+                <td>{{ data.status_prize }}</td>
+                <td>{{ data.status_commission }}</td>
+                <td>{{ data.status_trace }}</td>
+                <td>{{ data.encode_time }}</td>
+                <td>{{ data.calculated_time }}</td>
+                <td>{{ data.prize_time }}</td>
+                <td>{{ data.commission_time }}</td>
+                <td>{{ data.trace_time }}</td>
+                <td>{{ data.encode_username }}</td>
+                <td>{{ data.created_at }}</td>
+                <td>{{ data.updated_at }}</td>
+
+                <!-- <td *ngIf='data.status==0'>
+
+                <a (click)='edit_check_passport(data,"pass")'>通过申请</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)='edit_check_passport(data,"no_pass")' style='color:blue'>驳回申请</a>
+                </td> -->
+              </tr>
+              <tr>
+              </tr>
+            </ng-template>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+
+    <nz-drawer nzWidth='600px' [nzVisible]="visible_modal" nzPlacement="right" nzTitle="奖期生成"
+      (nzOnClose)="visible_modal = false">
+      <form nz-form [formGroup]="create_form" >
+          <div *ngIf='modal_lodding' class='lodding-box'>
+            <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+          </div>
+
+            <nz-form-item>
+                <nz-form-label nzFor="lottery_id" nzRequired [nzSm]="6" [nzXs]="24">彩种选择</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
+                  <nz-select [(ngModel)]="create_lottery_obj['lottery_id']" id="lottery_id" formControlName="lottery_id" nzPlaceHolder="请选择彩种">
+                    <nz-option *ngFor='let item of lotteries_list' [nzLabel]="item.title" [nzValue]="item.id"></nz-option>
+                  </nz-select>
+                  <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+                    请选择彩种!</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                  <nz-form-label nzFor="start_time" nzRequired [nzSm]="6" [nzXs]="24">开始时间</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
+                    <!-- <input id="start_time" type="text" formControlName="start_time" nz-input placeholder="开始时间"
+                      [(ngModel)]="edit_activity_obj['start_time']" /> -->
+                    <nz-date-picker [nzStyle]='{width:"300px"}' [(ngModel)]="create_lottery_obj['start_time']" id="start_time"
+                      formControlName="start_time" nzPlaceHolder="选择开始日期"
+                      (ngModelChange)="on_change_start($event)" (nzOnOk)="on_ok_start($event)"></nz-date-picker>
+                    <nz-form-explain *ngIf="create_form.get('start_time')?.dirty && create_form.get('start_time')?.errors">
+                      请输入活动的开始时间!</nz-form-explain>
+                  </nz-form-control>
+        
+                </nz-form-item>
+        
+                <nz-form-item>
+                  <nz-form-label nzFor="end_time" nzRequired [nzSm]="6" [nzXs]="24">结束时间</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
+                    <nz-date-picker [nzStyle]='{width:"300px"}' [(ngModel)]="create_lottery_obj['end_time']" id="end_time"
+                      formControlName="end_time" nzPlaceHolder="选择结束日期"
+                      (ngModelChange)="on_change_end($event)" (nzOnOk)="on_ok_end($event)"></nz-date-picker>
+                    <nz-form-explain *ngIf="create_form.get('end_time')?.dirty && create_form.get('end_time')?.errors">
+                      请输入活动的结束时间!</nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+        
+          <nz-form-item nz-row style="margin-bottom:8px;">
+            <nz-form-control [nzSpan]="14" [nzOffset]="6">
+              <button (click)="create_issue()" [disabled]="!create_form.valid" nz-button
+                nzType="primary">确认创建</button>
+              
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+
+    </nz-drawer>
+  </nz-content>
+</nz-layout>

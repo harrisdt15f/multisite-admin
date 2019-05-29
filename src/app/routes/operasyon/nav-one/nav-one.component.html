@@ -1,0 +1,36 @@
+<page-header></page-header>
+<nz-content class='tab-content'>
+  <input style='display: none' (change)='updateFire($event)' type="file" id="pic_3" />
+  <nz-skeleton *ngIf='page_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
+  <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-tab *ngFor="let tab of page_tabs" [nzTitle]="tab.model_name">
+      <div class='tab-content-model' *ngIf='page_tabs[tab_index].key=="logo"'>
+        <div class='logo-img'>
+          <img #logo style='width: 50px;'
+            [src]='page_tabs[tab_index].value?(serviceHttpIri+page_tabs[tab_index].value):"./assets/img/null_head.png"'>
+        </div>
+        <div class='logo-up'>
+          <button (click)='click_update(tab)' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
+            <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽度：，最大高度：）</span>
+          </button>
+        </div>
+      </div>
+      <div  class='tab-content-model' nz-row *ngIf='page_tabs[tab_index].key=="customer.service"'>
+        <div class='tab-service-title' nz-col nzSpan="4" style='text-align: right'>联系客服地址：</div>
+        <div style='margin: 0 50px 0' nz-col nzSpan="12">
+          <nz-input-group style='width:100%' nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
+              <input  type="text" [disabled]='is_edit_service' [(ngModel)]="page_tabs[tab_index].value" nz-input  />
+            </nz-input-group>
+            <ng-template #suffixButton>
+              <button (click)='edit_service()' nz-button nzType="primary" nzSize="large" nzSearch>编辑</button>
+            </ng-template>
+        </div>
+         <div nz-col nzSpan="3">
+            <button nzSize="large" [nzLoading]="loadding_btn" [disabled]='is_edit_service' (click)='update_service(page_tabs[tab_index],page_tabs[tab_index].value)'  nz-button nzType="danger">提交修改</button>
+         </div>
+      </div>
+
+
+    </nz-tab>
+  </nz-tabset>
+</nz-content>

@@ -1,0 +1,48 @@
+<div class="main">
+  <div class="menu">
+    <ul nz-menu [nzMode]="mode">
+      <li *ngFor="let m of menus" nz-menu-item [nzSelected]="m.selected" (click)="change_menu(m)">{{m.title}}</li>
+    </ul>
+  </div>
+  <div class="content">
+    <div class="title">{{title}}</div>
+    <div *ngIf='type=="security"'>
+      <nz-list nzItemLayout="horizontal">
+        <nz-list-item [nzActions]="[passwordOp]">
+          <ng-template #passwordOp>
+            <a (click)='is_change_passport=!is_change_passport'>修改</a>
+          </ng-template>
+          <nz-list-item-meta nzTitle="账户密码" >
+          
+          </nz-list-item-meta>
+        </nz-list-item>
+      </nz-list>
+      <div *ngIf='is_change_passport' style='width:500px;margin-top: 40px'>
+          <div nz-row style="margin-bottom: 40px">
+              <div nz-col nzSpan="4">旧密码:</div>
+              <div nz-col nzSpan="20">
+
+                <input maxlength='15' minlength="6" [(ngModel)]="old_password" nz-input
+                  placeholder="请输入旧密码">
+              </div>
+            </div>
+            <div nz-row style="margin-bottom: 40px">
+              <div nz-col nzSpan="4">新密码:</div>
+              <div nz-col nzSpan="20">
+                <input maxlength='15' minlength="6" [(ngModel)]="new_password" nz-input
+                  placeholder="请输入密码">
+              </div>
+            </div>
+            <div class='create-btn'>
+                <button (click)='remove_change_passport()' nz-button nzType="default">取消</button>
+                <button *ngIf='!is_edit_manager' nz-button class='btn-color' (click)='change_passport()'
+                  nzType="primary">确认修改</button>
+              </div>
+      </div>
+
+
+
+    </div>
+
+  </div>
+</div>

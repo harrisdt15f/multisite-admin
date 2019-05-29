@@ -1,0 +1,41 @@
+<page-header [action]="action">
+    <ng-template #action>
+        <button (click)='get_system_setting_list()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+        class="ant-btn__block mb-sm">
+        <i nz-icon nzType="redo" nzTheme="outline"></i>
+        <span>刷新</span>
+      </button>
+    </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content>
+    <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+      [nzFrontPagination]='true' [nzData]="list_of_data" [nzPageSize]='8'>
+      <thead>
+        <tr>
+          <th>分类ID</th>
+          <th>标题</th>
+          <th>平台id</th>
+          <th>父级标题</th>
+          <th>分类组</th>
+          <!-- <th>创建时间</th>
+          <th>更新时间</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr>
+            <td>{{ data.id}}</td>
+            <td>{{ data.title}}</td>
+            <td>{{ data.platform_id}}</td>
+            <td>{{ data.parent_title}}</td>
+            <td>{{ data.template}}</td>
+            <!-- <td>{{ data.created_at}}</td>
+            <td>{{ data.updated_at}}</td> -->
+       
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+  </nz-content>
+</nz-layout>

@@ -1,0 +1,76 @@
+<page-header></page-header>
+<nz-layout>
+  <nz-content>
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzCustomFilter>
+            申请人
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+
+              <div class="search-box">
+                <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  搜索
+                </button>
+                <button nz-button nzSize="small" (click)="reset()">取消</button>
+              </div>
+            </nz-dropdown>
+          </th>
+          <th>提交申请人</th>
+          <th>审核人</th>
+          <th>申请人备注</th>
+          <th nzShowFilter [nzFilters]="status_type" [nzFilterMultiple]='false'
+            (nzFilterChange)="is_status_change($event)">状态</th>
+          <th>创建时间</th>
+          <th>最近操作时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr>
+            <td>{{ data.audit_flow.username }}</td>
+            <td>{{ data.audit_flow.admin_name }}</td>
+            <td>{{ data.audit_flow.auditor_name }}</td>
+            <td>{{ data.audit_flow.apply_note}}</td>
+            <td>{{ data.status | checkStatus:data.type}}</td>
+            <td>{{ data.created_at }}</td>
+            <td>{{ data.audit_flow.updated_at }}</td>
+            <td *ngIf='data.status!=0'></td>
+            <td *ngIf='data.status==0'>
+         
+                <a (click)='edit_check_passport(data,"pass")'>通过申请</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)='edit_check_passport(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
+            
+
+            </td>
+          </tr>
+          <tr>
+          </tr>
+        </ng-template>
+
+      </tbody>
+    </nz-table>
+    <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right" nzTitle="提交审核结果"
+      (nzOnClose)="is_edit_check = false">
+
+      <div *ngIf="edit_check_obj['audit_flow']">被审核人：{{edit_check_obj['audit_flow']['username']||''}}</div>
+      <nz-form-item style="margin-top:30px">
+        <nz-form-control [nzSpan]="24">
+          <input placeholder="审核人已确认" [(ngModel)]="note_value" nz-input name="email" type="email" id="email">
+        </nz-form-control>
+
+      </nz-form-item>
+      <button [nzLoading]="submit_passport_lodding" *ngIf="edit_check_obj['type']=='pass'" (click)='submit_pass()'
+        nzType="primary" nz-button nzBlock>通过审核</button>
+      <button [nzLoading]="submit_passport_lodding" *ngIf="edit_check_obj['type']=='no_pass'" (click)='submit_pass()'
+        nzType="primary" nz-button nzBlock>拒绝通过审核</button>
+    </nz-drawer>
+  </nz-content>
+</nz-layout>

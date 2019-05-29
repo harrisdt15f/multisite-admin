@@ -1,0 +1,102 @@
+<page-header  [action]="action"  >
+  <ng-template #action>
+      <button (click)='get_play_type()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i nz-icon nzType="redo" nzTheme="outline"></i>
+      <span>刷新</span>
+    </button>
+  </ng-template>
+</page-header>
+<div nz-row class='city-box'>
+  <div nz-col nzSpan="4">
+    <div class='content-title'>系列</div>
+    <div class='city-content'>
+      <div *ngIf='first_level.length==0' class='content-list'>
+        <nz-skeleton [nzTitle]='false' [nzParagraph]="{ rows: 15 }" [nzActive]="true">
+        </nz-skeleton>
+      </div>
+      <div nz-row [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }" (click)='show_child_city(item,1)'
+        *ngFor="let item of first_level ; let i=index" class="scene-obj">
+        <div nz-col nzSpan="18">
+          <div>{{item.key |gameType}}</div>
+        </div>
+    
+      </div>
+    </div>
+
+
+  </div>
+  <div [ngStyle]="{'opacity':second_level.length>0?'1':'0' }" nz-col nzSpan="1" class='icon-right'>
+
+  </div>
+  <div *ngIf='second_level.length>0' nz-col nzSpan="4">
+    <div class='content-title'>彩种</div>
+    <div class='city-content'>
+      <div nz-row class='content-list' [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white'}"
+        (click)='show_child_city(item,2)' *ngFor="let item of second_level ; let i=index" class="scene-obj">
+  
+
+          <div nz-col nzSpan="18">{{item.cn_name }}</div>
+          <div nz-col nzSpan="6">
+              <nz-switch (ngModelChange)='change_lottory_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
+              nzUnCheckedChildren="关"></nz-switch>
+          </div>
+
+      </div>
+    </div>
+  </div>
+  <div [ngStyle]="{'opacity':thirst_level.length>0?'1':'0' }" nz-col nzSpan="1" class='icon-right'>
+
+  </div>
+  <div *ngIf='thirst_level.length>0' nz-col nzSpan="4">
+    <div class='content-title'>玩法组</div>
+    <div class='city-content'>
+      <div nz-row class='content-list' [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }"
+        (click)='show_child_city(item,3)' *ngFor="let item of thirst_level ; let i=index" class="scene-obj">
+        <div nz-col nzSpan="18">{{item.method_group |gameType}}</div>
+        <div nz-col nzSpan="6">
+            <nz-switch [nzDisabled]='is_group_disabled' (ngModelChange)='change_play_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
+            nzUnCheckedChildren="关"></nz-switch>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div [ngStyle]="{'opacity':four_level.length>0?'1':'0' }" nz-col nzSpan="1" class='icon-right'>
+  </div>
+  <div *ngIf='four_level.length>0' nz-col nzSpan="4">
+    <div class='content-title'>玩法行</div>
+    <div class='city-content'>
+      <div nz-row class='content-list' [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }"
+        (click)='show_child_city(item,4)' *ngFor="let item of four_level ; let i=index" class="scene-obj">
+        <div nz-col nzSpan="18">{{item.method_row |gameType}}</div>
+        <div nz-col nzSpan="6">
+          <nz-switch [nzDisabled]='is_row_disabled||is_group_disabled' (ngModelChange)='change_row_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
+          nzUnCheckedChildren="关"></nz-switch>
+      </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div [ngStyle]="{'opacity':five_level.length>0?'1':'0' }" nz-col nzSpan="1" class='icon-right'>
+    </div>
+    <div *ngIf='five_level.length>0' nz-col nzSpan="4">
+      <div class='content-title'>玩法</div>
+      <div class='city-content'>
+        <div nz-row class='content-list' [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }"
+          (click)='show_child_city(item,5)' *ngFor="let item of five_level ; let i=index" class="scene-obj">
+          <div nz-col nzSpan="18">{{item.method_name}} </div>
+          <div nz-col nzSpan="6">
+            <nz-switch [nzDisabled]='is_method_disabled||is_row_disabled||is_group_disabled' (ngModelChange)='change_method_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
+            nzUnCheckedChildren="关"></nz-switch>
+        </div>
+  
+        </div>
+      </div>
+  
+    </div>
+</div>

@@ -1,0 +1,76 @@
+<page-header></page-header>
+<nz-layout>
+  <nz-content style='background-color: white;padding: 20px'>
+    <div style='width:100%' nz-row>
+      <div nz-col nzSpan="6">
+        <nz-form-item nz-row>
+          <nz-form-label nz-col nzSpan="6">玩家搜索</nz-form-label>
+          <nz-form-control nz-col nzSpan="12">
+            <input nz-input placeholder="请输入要搜索的用户">
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nzSpan="6">
+        <button nz-button nzType="primary">搜索</button>
+      </div>
+
+    </div>
+
+
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzCustomFilter>
+            名称
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                <i nz-icon nzType="search" class="ant-table-filter-icon"
+                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+  
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                  <button nz-button nzSize="small" (click)="reset()">取消</button>
+                </div>
+              </nz-dropdown>
+          </th>
+          <th>是否测试账户</th>
+          <th>是否启用</th>
+          <th>充值操作</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let data of list_of_aply_data">
+          <td>{{ data.username}}</td>
+          <td>{{ data.is_tester==1?'是':'否' }}</td>
+          <td>{{ data.status==1?'是':'否' }}</td>
+        
+          <td>
+            <span class='list_btn'><button (click)='person_amount(data)' nz-button [nzSize]='"small"'
+                nzType="primary">充值</button></span>
+          </td>
+
+        </tr>
+
+      </tbody>
+    </nz-table>
+
+    <!-- 摩态框 -->
+
+    <nz-modal  [nzOkLoading]="isOkLoading"  [nzMaskClosable]='true' [(nzVisible)]="is_show_recharge_num" nzTitle="人工充值"
+      (nzOnCancel)="cancel_recharge_num()" (nzOnOk)="ok_recharge()">
+      <nz-input-group nzAddOnAfter="元">
+        <input type="number" placeholder="请输入要充值的金额" nz-input [(ngModel)]="recharge_num" />
+      </nz-input-group>
+    </nz-modal>
+
+
+
+  </nz-content>
+</nz-layout>

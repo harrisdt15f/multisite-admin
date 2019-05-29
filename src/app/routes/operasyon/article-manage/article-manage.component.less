@@ -1,0 +1,28 @@
+.table_tr>td {
+  display: inline-block;
+  width: 200px;
+  overflow: hidden;
+  height: 100px;
+}
+
+.table_tr {
+  max-height: 100px;
+  overflow: hidden;
+}
+
+pre {
+  outline: 1px solid #ccc;
+  padding: 5px;
+  margin: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+::ng-deep .cdk-drag-preview {
+  display: table;
+}
+
+::ng-deep .cdk-drag-placeholder {
+  opacity: 0;
+}
+
+

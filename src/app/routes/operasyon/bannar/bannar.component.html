@@ -1,0 +1,216 @@
+<page-header [action]="action">
+  <ng-template #action>
+    <button (click)='get_bannar_list()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i nz-icon nzType="redo" nzTheme="outline"></i>
+      <span>刷新</span>
+    </button>
+  </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content style='min-height: 500px;position: relative;'>
+    <div *ngIf='is_load_list' class='lodding-box'>
+      <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
+    </div>
+    <input style='display: none' (change)='updateFire($event)' type="file" id="pic_2" />
+
+    <button (click)='add_bannar()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i class="anticon anticon-plus"></i><span>添加轮播图</span>
+    </button>
+    <nz-empty *ngIf='!list_of_aply_data||list_of_aply_data.length==0'></nz-empty>
+    <div  *ngIf='list_of_aply_data&&list_of_aply_data.length>0' style='margin-top: 50px;position: relative;'>
+  
+      <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+
+        <div class="example-box" *ngFor="let data of list_of_aply_data" cdkDrag>
+          <nz-card style="width:300px;margin-bottom:0" [nzCover]="coverTemplate" [nzActions]="[stutus,actionEdit,actionDelet]">
+            <nz-card-meta [nzTitle]="data.title" [nzDescription]="data.content"></nz-card-meta>
+          </nz-card>
+
+          <ng-template #coverTemplate>
+            <img alt="example" [src]='serviceHttpIri+data.pic_path' />
+          </ng-template>
+          <ng-template #stutus>
+              <nz-switch [ngModel]="data.status==1" (ngModelChange)='change_open_bannar($event,data)' nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+            </ng-template>
+          <ng-template #actionEdit>
+            <i nz-icon type="edit" (click)='edit_bannar(data)'></i>
+          </ng-template>
+          <ng-template #actionDelet>
+   
+             <i nz-popconfirm nzTitle="确认删除这个轮播吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close" (nzOnConfirm)='delete_bannar(data)' nzTheme="outline"></i>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+    <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
+      [nzTitle]="modal_type=='create'?'添加轮播':'修改轮播'" (nzOnClose)="is_show_box = false">
+      <form nz-form [formGroup]="create_form">
+        <div *ngIf='modal_lodding' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+        </div>
+
+        <nz-form-item>
+          <nz-form-label nzFor="title" nzRequired [nzSm]="6" [nzXs]="24">名称</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="title" type="text" formControlName="title" nz-input placeholder="标题"
+              [(ngModel)]="edit_bannar_obj['title']" />
+            <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+              请输入要创建的轮播标题!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="content" nzRequired [nzSm]="6" [nzXs]="24">内容</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="content" type="text" formControlName="content" nz-input placeholder="内容"
+              [(ngModel)]="edit_bannar_obj['content']" />
+
+            <nz-form-explain *ngIf="create_form.get('content')?.dirty && create_form.get('content')?.errors">
+              请输入要创建的轮播内容!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="pic" nzRequired [nzSm]="6" [nzXs]="24">图片</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <button (click)='click_update()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
+              <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽度：，最大高度：）</span>
+            </button>
+            <img (click)='show_modal_img(file_iri)' style='max-width:100px' id="cropedBigImg">
+          </nz-form-control>
+
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="type" nzRequired [nzSm]="9" [nzXs]="24">轮播图类型</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
+            <nz-radio-group id="type" formControlName="type" [(ngModel)]="edit_bannar_obj['type']">
+              <label nz-radio nzValue='1'>内部</label>
+              <label nz-radio nzValue='2'>活动</label>
+            </nz-radio-group>
+            <nz-form-explain *ngIf="create_form.get('type')?.dirty && create_form.get('type')?.errors">
+              请选择!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item *ngIf="edit_bannar_obj['type']=='1'">
+          <nz-form-label nzFor="redirect_url" nzRequired [nzSm]="6" [nzXs]="24">跳转地址</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="redirect_url" type="text" formControlName="redirect_url" nz-input placeholder="内容"
+              [(ngModel)]="edit_bannar_obj['redirect_url']" />
+            <nz-form-explain *ngIf="create_form.get('redirect_url')?.dirty && create_form.get('redirect_url')?.errors">
+              请输入轮播的跳转地址!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item *ngIf="edit_bannar_obj['type']=='2'">
+          <nz-form-label nzFor="activity_id" nzRequired [nzSm]="6" [nzXs]="24">选择跳转的活动</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <nz-select [(ngModel)]="edit_bannar_obj['activity_id']" id="activity_id" formControlName="activity_id"
+              nzPlaceHolder="请选择活动">
+              <nz-option *ngFor='let item of activity_list' [nzLabel]="item.title" [nzValue]="item.id"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="create_form.get('activity_id')?.dirty && create_form.get('activity_id')?.errors">
+              请选择轮播的跳转地址!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="start_time" nzRequired [nzSm]="6" [nzXs]="24">开始时间</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <!-- <input id="start_time" type="text" formControlName="start_time" nz-input placeholder="开始时间"
+            [(ngModel)]="edit_bannar_obj['start_time']" /> -->
+            <nz-date-picker [nzStyle]='{width:"300px"}' [(ngModel)]="edit_bannar_obj['start_time']" id="start_time"
+              formControlName="start_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择开始时间"
+              (ngModelChange)="on_change_start($event)" (nzOnOk)="on_ok_start($event)"></nz-date-picker>
+            <nz-form-explain *ngIf="create_form.get('start_time')?.dirty && create_form.get('start_time')?.errors">
+              请输入轮播的开始时间!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="end_time" nzRequired [nzSm]="6" [nzXs]="24">结束时间</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <nz-date-picker [nzStyle]='{width:"300px"}' [(ngModel)]="edit_bannar_obj['end_time']" id="end_time"
+              formControlName="end_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择结束时间"
+              (ngModelChange)="on_change_end($event)" (nzOnOk)="on_ok_end($event)"></nz-date-picker>
+            <nz-form-explain *ngIf="create_form.get('end_time')?.dirty && create_form.get('end_time')?.errors">
+              请输入轮播的结束时间!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">轮播开关</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
+            <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_bannar_obj['status']">
+              <label nz-radio nzValue="1">开</label>
+              <label nz-radio nzValue="0">关</label>
+            </nz-radio-group>
+            <nz-form-explain *ngIf="create_form.get('status')?.dirty && create_form.get('status')?.errors">
+              请选择!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row style="margin-bottom:8px;">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button *ngIf='modal_type==="create"' (click)="submit_bannar()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认创建</button>
+            <button *ngIf='modal_type==="edit"' (click)="submit_bannar()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认修改</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+    </nz-drawer>
+    <!-- 展示图片模态框 -->
+    <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="图片预览">
+      <img id='modal_img' style='max-width:100%'>
+    </nz-modal>
+
+    <!-- <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="添加账变类型">
+      <form nz-form [formGroup]="create_form">
+        <div *ngIf='modal_lodding' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+        </div>
+
+        <nz-form-item>
+          <nz-form-label nzFor="name" nzRequired [nzSm]="6" [nzXs]="24">名称</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="name" type="text" formControlName="name" nz-input placeholder="标题"
+              [(ngModel)]="edit_bannar_obj['name']" />
+            <nz-form-explain *ngIf="create_form.get('name')?.dirty && create_form.get('name')?.errors">
+              请输入要创建的账变类型标题!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="sign" nzRequired [nzSm]="6" [nzXs]="24">签名</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="sign" type="text" formControlName="sign" nz-input placeholder="签名"
+              [(ngModel)]="edit_bannar_obj['sign']" />
+            <nz-form-explain *ngIf="create_form.get('sign')?.dirty && create_form.get('sign')?.errors">
+              请输入签名信息（字母数字和下划线组成）!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="in_out" nzRequired [nzSm]="6" [nzXs]="24">出入账类型</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
+            <nz-radio-group id="in_out" formControlName="in_out" [(ngModel)]="edit_bannar_obj['in_out']">
+              <label nz-radio nzValue="1">增加金额</label>
+              <label nz-radio nzValue="0">减少金额</label>
+            </nz-radio-group>
+            <nz-form-explain *ngIf="create_form.get('in_out')?.dirty && create_form.get('in_out')?.errors">
+              请选择!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row style="margin-bottom:8px;">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button *ngIf='modal_type==="create"' (click)="submit_bannar()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认创建</button>
+            <button *ngIf='modal_type==="edit"' (click)="submit_bannar()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认修改</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </nz-modal> -->
+  </nz-content>
+</nz-layout>

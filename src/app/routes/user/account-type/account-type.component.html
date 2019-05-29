@@ -1,0 +1,123 @@
+<page-header  [action]="action"  >
+    <ng-template #action>
+        <button (click)='search()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+        class="ant-btn__block mb-sm">
+        <i nz-icon nzType="redo" nzTheme="outline"></i>
+        <span>刷新</span>
+      </button>
+    </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content>
+      <button (click)='add_account()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i class="anticon anticon-plus"></i><span>添加账变类型</span>
+    </button>
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+    [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+    [nzTotal]='list_total'>
+    <thead>
+      <tr>
+        <th >名称</th>
+        <th> 签名</th>
+        <th >出入账类型</th>
+        <th>类型</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
+      <tr *ngFor="let data of list_of_aply_data" >
+        <td>{{ data.name}}</td>
+        <td>{{ data.sign }}</td>
+        <td>
+            <span *ngIf='data.in_out==1' class='ant-badge-status-dot ant-badge-status-success padding-box'></span>
+            <span *ngIf='data.in_out==0' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
+            <span >{{ data.in_out===0?'减少':'增加'}}</span>
+        </td>
+        <td>{{ data.type }}</td>
+    
+        <td >
+         
+          <a (click)='edit_account(data)'>编辑</a>
+          <nz-divider nzType="vertical"></nz-divider>
+          <a nz-popconfirm nzTitle="确认删除这个账变类型吗?" nzOkText="删除" nzCancelText="取消"
+          (nzOnConfirm)="delete_account(data)">删除</a>
+
+      
+
+      </td>
+
+      </tr>
+
+      <!-- </ng-template> -->
+
+    </tbody>
+  </nz-table>
+
+
+        <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="添加账变类型">
+            <form nz-form [formGroup]="create_form">
+                <div *ngIf='modal_lodding' class='lodding-box'>
+                  <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+                </div>
+
+                <nz-form-item>
+                  <nz-form-label nzFor="name" nzRequired [nzSm]="6" [nzXs]="24">名称</nz-form-label>
+                  <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                    <input id="name" type="text" formControlName="name" nz-input placeholder="标题"
+                      [(ngModel)]="edit_account_obj['name']" />
+                    <nz-form-explain *ngIf="create_form.get('name')?.dirty && create_form.get('name')?.errors">
+                        <ng-container *ngIf="create_form.get('name')?.hasError('required')">
+                            请输入要创建的账变类型标题!
+                        </ng-container>
+                        <ng-container *ngIf="create_form.get('name')?.hasError('maxlength')">
+                            用户名最大十六个字符!
+                        </ng-container>
+                      </nz-form-explain>
+                  </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzFor="sign" nzRequired [nzSm]="6" [nzXs]="24">签名</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                      <input id="sign" type="text" formControlName="sign" nz-input placeholder="字母数字和下划线组成"
+                        [(ngModel)]="edit_account_obj['sign']" />
+                      <nz-form-explain *ngIf="create_form.get('sign')?.dirty && create_form.get('sign')?.errors">
+                      
+                        <ng-container *ngIf="create_form.get('sign')?.hasError('required')">
+                            请输入签名信息（字母数字和下划线组成）!
+                        </ng-container>
+                        <ng-container *ngIf="create_form.get('sign')?.hasError('maxlength')">
+                            用户名最大32个字符!
+                        </ng-container>
+                        <ng-container *ngIf="create_form.get('sign')?.hasError('sign')">
+                            签名格式不正确！（只能输入英文）!
+                        </ng-container>
+                      
+                      </nz-form-explain>
+                    </nz-form-control>
+                  </nz-form-item>
+                  <nz-form-item>
+                      <nz-form-label nzFor="in_out" nzRequired [nzSm]="6" [nzXs]="24">出入账类型</nz-form-label>
+                      <nz-form-control [nzSm]="15" [nzXs]="23">
+                        <nz-radio-group id="in_out" formControlName="in_out" [(ngModel)]="edit_account_obj['in_out']">
+                          <label nz-radio nzValue="1">增加金额</label>
+                          <label nz-radio nzValue="0">减少金额</label>
+                        </nz-radio-group>
+                        <nz-form-explain *ngIf="create_form.get('in_out')?.dirty && create_form.get('in_out')?.errors">
+                          请选择!</nz-form-explain>
+                      </nz-form-control>
+                    </nz-form-item>
+
+                <nz-form-item nz-row style="margin-bottom:8px;">
+                  <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                    <button *ngIf='modal_type==="create"' (click)="submit_activity()" [disabled]="!create_form.valid" nz-button
+                      nzType="primary">确认创建</button>
+                    <button *ngIf='modal_type==="edit"' (click)="submit_activity()" [disabled]="!create_form.valid" nz-button
+                      nzType="primary">确认修改</button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+          </nz-modal>
+  </nz-content>
+</nz-layout>

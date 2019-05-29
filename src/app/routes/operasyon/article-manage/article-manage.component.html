@@ -1,0 +1,168 @@
+<page-header [action]="action">
+    <ng-template #action>
+        <button (click)='get_article_list(1)' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+        class="ant-btn__block mb-sm">
+        <i nz-icon nzType="redo" nzTheme="outline"></i>
+        <span>刷新</span>
+      </button>
+    </ng-template>
+</page-header>
+
+<nz-layout>
+  <nz-content>
+      <button (click)='add_article()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock
+      [nzType]="'dashed'" class="ant-btn__block mb-sm">
+        <i class="anticon anticon-plus"></i><span>添加文章</span>
+     </button>
+    <nz-table   #nzTable [nzLoadingDelay]='500'
+      (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+      [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th >标题</th>
+          <th >分类ID</th>
+          <th >简介</th>
+          <th >内容</th>
+          <th >搜索关键字</th>
+          <th >是否代理专属</th>
+          <th >状态 </th>
+          <th >操作 </th>
+
+        </tr>
+      </thead>
+
+      <tbody cdkDropList (cdkDropListDropped)="drop_article($event)">
+        <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
+          <tr *ngFor="let data of list_of_aply_data" cdkDrag>
+            <td>
+                <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
+            </td>
+            <td>{{ data.category_id }}</td>
+            <td>{{ data.summary }}</td>
+            <td>
+              <div class='ellipsis' style='width:200px;' [innerHTML]='data.content'></div>
+            </td>
+            <td>{{ data.search_text }}</td>
+            <td>{{ data.is_for_agent==0?'否':'是' }}</td>
+            <td>{{ data.status }}</td>
+            <td>
+              <a (click)='edit_article(data)'>编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a nz-popconfirm nzTitle="确认删除这个文章吗?" nzOkText="删除" nzCancelText="取消"
+              (nzOnConfirm)="delete_article(data)">删除</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a nz-popconfirm nzTitle="确认置顶这个文章吗?" nzOkText="置顶" nzCancelText="取消"
+              (nzOnConfirm)="article_to_up(data)">置顶</a>
+            </td>
+       
+
+
+          </tr>
+        
+        <!-- </ng-template> -->
+
+      </tbody>
+    </nz-table>
+    <!-- 操作历史弹框 -->
+    <nz-drawer nzWidth='600px' [nzVisible]="if_show_modal" nzPlacement="right" [nzTitle]="modal_type=='create'?'创建文章':'编辑文章'"
+      (nzOnClose)="if_show_modal = false">
+      <!-- <div [innerHTML]='show_text'></div> -->
+      <!-- <pre [innerHTML]='show_text'>
+
+      </pre> -->
+      <form nz-form [formGroup]="create_form" >
+          <div *ngIf='modal_lodding' class='lodding-box'>
+            <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+          </div>
+          <nz-form-item>
+            <nz-form-label nzFor="title" nzRequired [nzSm]="4" [nzXs]="24">标题</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+              <input maxlength='16' id="title" type="text" formControlName="title" nz-input placeholder="标题"
+                [(ngModel)]="edit_article_obj['title']" />
+              <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+                请输入文章标题!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzFor="search_text" nzRequired [nzSm]="4" [nzXs]="24">关键字</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+              <input id="search_text" type="text" formControlName="search_text" nz-input placeholder="关键字"
+                [(ngModel)]="edit_article_obj['search_text']" />
+              <nz-form-explain *ngIf="create_form.get('search_text')?.dirty && create_form.get('search_text')?.errors">
+                请输入关键字!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+              <nz-form-label nzFor="summary" nzRequired [nzSm]="4" [nzXs]="24">简介</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+              
+                  <textarea id="summary"  formControlName="summary" nz-input placeholder="请输入简介" nzAutosize
+                  [(ngModel)]="edit_article_obj['summary']"></textarea>
+                <nz-form-explain *ngIf="create_form.get('summary')?.dirty && create_form.get('summary')?.errors">
+                  请输入文章简介!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="category_id" nzRequired [nzSm]="4" [nzXs]="24">文章分类</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+                  <nz-select [(ngModel)]="edit_article_obj['category_id']" id="category_id" formControlName="category_id" nzPlaceHolder="请选择活动类型">
+                    <nz-option *ngFor='let item of article_type_list' [nzLabel]="item.title" [nzValue]="item.id"></nz-option>
+                  </nz-select>
+                  <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+                    请选择文章分类!</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+        
+              <nz-form-item>
+                <nz-form-label nzFor="type" nzRequired [nzSm]="4" [nzXs]="24">内容</nz-form-label>
+                <nz-form-control   nzHasFeedback [nzSm]="20" [nzXs]="23">
+                    <ueditor #full  id="content" formControlName="content" [(ngModel)]="edit_article_obj['content']" 
+                    [config]="{ wordCount: true }"
+                    [loadingTip]="'加载中……'"
+          
+                    (onReady)="_ready($event)"
+                    (onDestroy)="_destroy()"
+                    (ngModelChange)="_change($event)"></ueditor>
+                  <nz-form-explain *ngIf="create_form.get('content')?.dirty && create_form.get('content')?.errors">
+                    请输入文章内容!</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item>
+                <nz-form-label nzFor="is_for_agent" nzRequired [nzSm]="6" [nzXs]="24">是否专属代理</nz-form-label>
+                <nz-form-control [nzSm]="18" [nzXs]="23">
+                  <nz-radio-group nzHasFeedback id="is_for_agent" formControlName="is_for_agent"
+                    [(ngModel)]="edit_article_obj['is_for_agent']">
+                    <label nz-radio nzValue="1">是</label>
+                    
+                    <label nz-radio nzValue="0">否</label>
+                  </nz-radio-group>
+       
+                  <nz-form-explain
+                    *ngIf="create_form.get('is_for_agent')?.dirty && create_form.get('is_for_agent')?.errors">
+                    请选择!</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+           
+              <nz-form-item>
+                <nz-form-label nzRequired nzFor="apply_note"  [nzSm]="5" [nzXs]="24">备注</nz-form-label>
+                <nz-form-control  [nzSm]="19" [nzXs]="23">
+                  <input id="apply_note" type="text" formControlName="apply_note" nz-input placeholder="备注"
+                    [(ngModel)]="edit_article_obj['apply_note']" />
+                 
+                </nz-form-control>
+              </nz-form-item>
+    
+      
+    
+          <nz-form-item nz-row style="margin-bottom:8px;">
+            <nz-form-control [nzSpan]="14" [nzOffset]="6">
+              <button *ngIf='modal_type==="create"' (click)="submit_activity()" [disabled]="!create_form.valid" nz-button
+                nzType="primary">确认创建</button>
+              <button *ngIf='modal_type==="edit"' (click)="submit_activity()" [disabled]="!create_form.valid" nz-button nzType="primary">确认修改</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+        
+    </nz-drawer>
+  </nz-content>
+</nz-layout>

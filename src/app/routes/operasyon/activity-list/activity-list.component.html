@@ -1,0 +1,202 @@
+<page-header></page-header>
+<input style='display: none' (change)='updateFire($event)' type="file" id="pic" />
+<nz-layout>
+  <nz-content>
+    <button (click)='add_activity()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i class="anticon anticon-plus"></i><span>添加活动</span>
+    </button>
+    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzCustomFilter>
+            标题
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+
+              <div class="search-box">
+                <input type="text" maxlength='16' nz-input placeholder="搜索用户名" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  搜索
+                </button>
+                <button nz-button nzSize="small" (click)="reset()">取消</button>
+              </div>
+            </nz-dropdown>
+          </th>
+      
+          <th>内容</th>
+          <th>活动图片</th>
+          <th nzShowFilter [nzFilters]="status_type" [nzFilterMultiple]='false'
+            (nzFilterChange)="is_status_change($event)">状态</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+          <th>跳转地址URL</th>
+          <th>是否永久</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody cdkDropList (cdkDropListDropped)="drop_activity($event)">
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr>
+            <td>{{ data.title}}</td>
+     
+            <td>
+                <div class='ellipsis' style='width:150px;display: inline-block;'>
+                    {{ data.content }}
+                  </div>
+            </td>
+            <td>
+              <div class='ellipsis' style='width:100px;display: inline-block;'>
+                <img (click)='show_modal_img(serviceHttpIri+data.pic_path)' style='max-width:100px;cursor:pointer' [src]='serviceHttpIri+data.thumbnail_path'>
+                <img>
+              </div>
+            </td>
+            <td>{{ data.status==1?'开启':'关闭'}}</td>
+            <td>
+                <div style='max-width:100px;display: inline-block;'>
+                    {{ data.start_time }}
+                  </div>
+              </td>
+            <td>
+                <div  style='max-width:100px;display: inline-block;'>
+                    {{ data.end_time }}
+                  </div>
+            </td>
+            <td>
+                <div class='ellipsis' style='max-width:150px;display: inline-block;'>
+                    {{data.redirect_url}}
+                  </div>
+            </td>
+            <td>{{data.is_time_interval==1?'有期':'永久'}}</td>
+            <td>
+              <a (click)='edit_activity(data)'>编辑</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a nz-popconfirm nzTitle="确认删除这个活动吗?" nzOkText="删除" nzCancelText="取消"
+                (nzOnConfirm)="delete_activity(data)">删除</a>
+            </td>
+          </tr>
+
+        </ng-template>
+      </tbody>
+    </nz-table>
+    <nz-drawer nzWidth='600px' [nzVisible]="is_edit_activity" nzPlacement="right"
+      [nzTitle]="modal_type=='create'?'添加活动':'修改活动'" (nzOnClose)="is_edit_activity = false">
+      <form nz-form [formGroup]="create_form">
+        <div *ngIf='modal_lodding' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+        </div>
+        <nz-form-item>
+          <nz-form-label nzFor="is_time_interval" nzRequired [nzSm]="9" [nzXs]="24">活动是否永久</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
+            <nz-radio-group id="is_time_interval" formControlName="is_time_interval"
+              [(ngModel)]="edit_activity_obj['is_time_interval']">
+              <label nz-radio nzValue='1'>是</label>
+              <label nz-radio nzValue='0'>否</label>
+            </nz-radio-group>
+            <nz-form-explain
+              *ngIf="create_form.get('is_time_interval')?.dirty && create_form.get('is_time_interval')?.errors">
+              请选择!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="title" nzRequired [nzSm]="6" [nzXs]="24">名称</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input maxlength='16' id="title" type="text" formControlName="title" nz-input placeholder="标题"
+              [(ngModel)]="edit_activity_obj['title']" />
+            <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+              请输入要创建的活动标题!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <!-- <nz-form-item>
+          <nz-form-label nzFor="type" nzRequired [nzSm]="6" [nzXs]="24">活动类型</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <nz-select [(ngModel)]="edit_activity_obj['type']" id="type" formControlName="type" nzPlaceHolder="请选择活动类型">
+              <nz-option *ngFor='let item of activity_type_list' [nzLabel]="item.name" [nzValue]="item.id"></nz-option>
+            </nz-select>
+            <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+              请选择活动类型!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item> -->
+        <nz-form-item>
+          <nz-form-label nzFor="content" nzRequired [nzSm]="6" [nzXs]="24">内容</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="content" type="text" formControlName="content" nz-input placeholder="内容"
+              [(ngModel)]="edit_activity_obj['content']" />
+
+            <nz-form-explain *ngIf="create_form.get('content')?.dirty && create_form.get('content')?.errors">
+              请输入要创建的活动内容!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="pic" nzRequired [nzSm]="6" [nzXs]="24">活动图片</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <button (click)='click_update()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
+              <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽度：，最大高度：）</span>
+            </button>
+            <img (click)='show_modal_img(file_iri)'  style='max-width:100px' id="cropedBigImg">
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="redirect_url" nzRequired [nzSm]="6" [nzXs]="24">跳转地址</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="redirect_url"  type="text" formControlName="redirect_url" nz-input placeholder="内容"
+              [(ngModel)]="edit_activity_obj['redirect_url']" />
+            <nz-form-explain *ngIf="create_form.get('redirect_url')?.dirty && create_form.get('redirect_url')?.errors">
+              请输入活动的跳转地址!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item [hidden]="edit_activity_obj['is_time_interval']!='1'" >
+          <nz-form-label nzFor="start_time" nzRequired [nzSm]="6" [nzXs]="24">开始时间</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <!-- <input id="start_time" type="text" formControlName="start_time" nz-input placeholder="开始时间"
+              [(ngModel)]="edit_activity_obj['start_time']" /> -->
+            <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_activity_obj['start_time']" id="start_time"
+              formControlName="start_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择开始时间"
+              (ngModelChange)="on_change_start($event)" (nzOnOk)="on_ok_start($event)"></nz-date-picker>
+            <nz-form-explain *ngIf="create_form.get('start_time')?.dirty && create_form.get('start_time')?.errors">
+              请输入活动的开始时间!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item [hidden]="edit_activity_obj['is_time_interval']!='1'">
+          <nz-form-label nzFor="end_time" nzRequired [nzSm]="6" [nzXs]="24">结束时间</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_activity_obj['end_time']" id="end_time"
+              formControlName="end_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择结束时间"
+              (ngModelChange)="on_change_end($event)" (nzOnOk)="on_ok_end($event)"></nz-date-picker>
+            <nz-form-explain *ngIf="create_form.get('end_time')?.dirty && create_form.get('end_time')?.errors">
+              请输入活动的结束时间!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">活动开关</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
+            <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_activity_obj['status']">
+              <label nz-radio nzValue="1">开</label>
+              <label nz-radio nzValue="0">关</label>
+            </nz-radio-group>
+            <nz-form-explain *ngIf="create_form.get('status')?.dirty && create_form.get('status')?.errors">
+              请选择!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item nz-row style="margin-bottom:8px;">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button *ngIf='modal_type==="create"' (click)="submit_activity()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认创建</button>
+            <button *ngIf='modal_type==="edit"' (click)="submit_activity()" [disabled]="!create_form.valid" nz-button
+              nzType="primary">确认修改</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+
+    </nz-drawer>
+    <!-- 展示图片模态框 -->
+    <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="图片预览">
+      <img id='modal_img'  style='max-width:100%' >
+    </nz-modal>
+  </nz-content>
+</nz-layout>

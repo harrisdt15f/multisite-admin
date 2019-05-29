@@ -1,0 +1,52 @@
+@import '~@delon/theme/styles/default';
+:host ::ng-deep .ant-tree {
+  overflow: hidden;
+  margin: 0 -24px;
+  padding: 0 24px;
+}
+
+:host ::ng-deep .ant-tree li {
+  padding: 4px 0 0 0;
+}
+
+.custom-node {
+  cursor: pointer;
+  line-height: 24px;
+  margin-left: 4px;
+  display: inline-block;
+  margin: 0 -1000px;
+  padding: 0 1000px;
+}
+
+.active {
+  background-color: rgb(255, 234, 230);
+  color:gray;
+}
+
+.file-name,
+.folder-name {
+  margin-left: 4px;
+}
+
+.file-desc,
+.folder-desc {
+  padding: 0 8px;
+  display: inline-block;
+
+  // color: #ffffff;
+  position: relative;
+  left: 12px;
+}
+
+.menu-box{
+  background-color: #fff;
+  min-height: 600px;
+}
+.menu-box>div{
+    padding: 10px 50px 10px
+}
+
+.menu-box>div:nth-child(1){
+  border-bottom: 1px solid rgba(0, 0, 0, 0.20);;
+  margin-bottom: 20px
+}

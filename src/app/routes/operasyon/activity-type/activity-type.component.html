@@ -1,0 +1,85 @@
+<page-header></page-header>
+<nz-layout>
+
+  <nz-content>
+    <div (click)='click_body()'>
+      <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+        [nzFrontPagination]='true' [nzData]="list_of_data" [nzPageSize]='8'>
+        <thead>
+          <tr>
+            <th>标题</th>
+            <th>上传文件类型</th>
+            <th>图片最大宽度（px）</th>
+            <th>图片最大高度（px）</th>
+            <th>图片大小限制（kb）</th>
+            <th>开启状态</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-template ngFor let-data [ngForOf]="nzTable.data">
+            <tr>
+              <td>{{ data.name}}</td>
+              <td>
+                <span *ngIf='data.ext_type=="1"'>图片</span>
+                <span *ngIf='data.ext_type=="2"'>视频</span>
+                <span *ngIf='data.ext_type=="3"'>其它</span>
+             
+              </td>
+              <td>
+                <div *ngIf='!data.is_edit_l_size'>
+                  <span>{{data.l_size}}&nbsp;&nbsp;</span>
+                  <a (click)='edit_activity_type($event,data,"l_size")'>编辑</a>
+                </div>
+                <div *ngIf='data.is_edit_l_size'>
+                  <nz-input-group nzSearch nzSize="smale" [nzAddOnAfter]="suffixButton">
+                    <input #myInput [(ngModel)]="l_size" type="number" nz-input />
+                  </nz-input-group>
+                  <ng-template #suffixButton>
+                    <button nz-button (click)='edit_l_size($event,data)' [nzLoading]="data.is_loading_l_size" nzType="primary" nzSize="smale" nzSearch>修改</button>
+                  </ng-template>
+                </div>
+              </td>
+              <td>
+                <div *ngIf='!data.is_edit_w_size'>
+                  <span>{{data.w_size}}&nbsp;&nbsp;</span>
+                  <a (click)='edit_activity_type($event,data,"w_size")'>编辑</a>
+                </div>
+                <div *ngIf='data.is_edit_w_size'>
+                  <nz-input-group nzSearch nzSize="smale" [nzAddOnAfter]="suffixButton">
+                    <input #myInput [(ngModel)]="w_size" type="number" nz-input />
+                  </nz-input-group>
+                  <ng-template #suffixButton>
+                    <button nz-button (click)='edit_w_size($event,data)' [nzLoading]="data.is_loading_w_size" nzType="primary" nzSize="smale" nzSearch>修改</button>
+                  </ng-template>
+                </div>
+              </td>
+
+              <td>
+                <div *ngIf='!data.is_edit_size'>
+                  <span>{{data.size}}&nbsp;&nbsp;</span>
+                  <a (click)='edit_activity_type($event,data,"size")'>编辑</a>
+                </div>
+                <div *ngIf='data.is_edit_size'>
+                  <nz-input-group nzSearch nzSize="smale" [nzAddOnAfter]="suffixButton">
+                    <input #myInput [(ngModel)]="size" type="number" nz-input />
+                  </nz-input-group>
+                  <ng-template #suffixButton>
+                    <button nz-button (click)='edit_size($event,data)' [nzLoading]="data.is_loading_size" nzType="primary" nzSize="smale" nzSearch>修改</button>
+                  </ng-template>
+                </div>
+              </td>
+              <td>
+                <nz-switch (ngModelChange)='edit_status($event,data)' nzSize="small" [ngModel]="data.status==1"
+                  nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+              </td>
+            </tr>
+          </ng-template>
+        </tbody>
+      </nz-table>
+    </div>
+
+
+
+
+  </nz-content>
+</nz-layout>
