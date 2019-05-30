@@ -188,8 +188,10 @@
             <!-- 充值历史 -->
             <div *ngIf='drawer_type=="recharge"' nz-col [nzSpan]="22">
         
+ 
               <div>充值金额：{{item.amount}}(元)</div>
               <div>{{item.created_at}}</div>
+              <div>状态：{{item.status|rechargeStatus}}</div>
             </div>
             <!-- 账变历史 -->
             <div *ngIf='drawer_type=="account"' nz-col [nzSpan]="22">

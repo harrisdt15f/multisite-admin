@@ -34,7 +34,11 @@
       <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
-            <td>{{ data.audit_flow.username }}</td>
+            <td>
+                <div class='ellipsis' style='max-width:300px;display: inline-block;'>
+                    {{ data.audit_flow.username }}
+                </div>
+            </td>
             <td>{{ data.audit_flow.admin_name }}</td>
             <td>{{ data.audit_flow.auditor_name }}</td>
             <td>{{ data.audit_flow.apply_note}}</td>
