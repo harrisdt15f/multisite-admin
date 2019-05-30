@@ -19,6 +19,27 @@ export class DeveloperService {
     ) {
     this.serviceHttpIri = Utils.GethttpIri();
   }
+    /**
+   *获得投注端路由管理列表
+   *
+   * @returns {Observable<any>}
+   * @memberof DeveloperService
+   */
+  get_betting_route_list(type): Observable<any> {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    let href='';
+    if(type==2){
+       href = this.serviceHttpIri + '/api/frontend-web-route/detail';
+    }else if(type==3){
+      href = this.serviceHttpIri + '/api/frontend-app-route/detail';
+    }
+ 
+    return this.commonService.post(href,{},{ headers: headers });
+  }
 
   /**
    *获得路由管理列表
@@ -122,7 +143,7 @@ get_route_api_list(page_index,data?) {
 * @returns
 * @memberof UserManageService
 */
-get_route_new_api_list() {
+get_route_new_api_list(type?) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
@@ -131,6 +152,27 @@ get_route_new_api_list() {
 
     const href = this.serviceHttpIri + '/api/menu';
     return this.commonService.get(href,  { headers: headers });
+}
+/**
+ * 获取投注端未绑定的路由
+*
+* @returns
+* @memberof UserManageService
+*/
+get_route_betting_api_list(type) {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  let href='';
+  if(type==2){
+     href = this.serviceHttpIri + '/api/frontend-web-route/detail';
+  }else if(type==3){
+    href = this.serviceHttpIri + '/api/frontend-app-route/detail';
+  }
+
+  return this.commonService.post(href,{},  { headers: headers });
 }
   /**
  *添加路由

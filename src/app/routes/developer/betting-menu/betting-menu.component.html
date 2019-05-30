@@ -1,137 +1,134 @@
 <page-header></page-header>
-<nz-content nz-row nzGutter="32">
-  <div nz-col nzSpan="12">
+<nz-content style="background-color: white" nz-row nzGutter="32">
+  <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
+    <nz-tab *ngFor="let tab of model_tabs" [nzTitle]="tab.label">
+      <div nz-col nzSpan="12">
+        <div class='menu-box'>
+          <div>
+            <h3 style='text-align: center'>编辑模块</h3>
+          </div>
+          <div class="menu_box_content">
+            <button (click)='add_parent_menu()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
+              <i class="anticon anticon-plus"></i><span>添加一级模块</span>
+            </button>
+            <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
+            <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
 
-    <div class='menu-box'>
-      <div>
-        <h3 style='text-align: center'>编辑菜单</h3>
-      </div>
-      <div class="menu_box_content">
-        <button (click)='add_parent_menu()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加一级菜单</span>
-        </button>
-        <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
-        <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
-
-        <nz-tree nzShowLine [nzData]="edit_menu_nodes" (nzContextMenu)="activeNode($event)">
-          <ng-template #contextTemplate>
-            <ul nz-menu nzInDropDown>
-              <li nz-menu-item (click)="create_menu()">添加下级菜单</li>
-              <li nz-menu-item (click)="edit_menu()">编辑菜单</li>
-              <li nz-menu-item nz-popconfirm nzTitle="确认删除这个菜单吗?" nzOkText="删除菜单" nzCancelText="取消"
-                (nzOnConfirm)="delete_menu()">删除菜单</li>
-
-            </ul>
-
-          </ng-template>
-          <ng-template #nzTreeTemplate let-node>
-            <span class="custom-node">
-              <span [class.active]="activedNode?.key === node.key" *ngIf="!node.isLeaf"
-                (contextmenu)="contextMenu($event, contextTemplate)">
-                <i (click)="openFolder(node)"></i>
-                <span class="folder-name">{{ node.title }}</span>
-                <span class="folder-desc">
-                    <nz-switch  [(ngModel)]="node.origin.display" (ngModelChange)='change_display_btn($event,node.origin)' nzSize="small" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
-                  </span>
-              </span>
-              <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf"
-                (contextmenu)="contextMenu($event, contextTemplate)">
-                <!-- <i nz-icon type="file"></i> -->
-                <span class="file-name">{{ node.title }}</span>
-                <span class="folder-desc">
-          
-                  <nz-switch  [(ngModel)]="node.origin.display" (ngModelChange)='change_display_btn($event,node.origin)' nzSize="small" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
-                </span>
-              </span>
-            </span>
-          </ng-template>
-        </nz-tree>
-      </div>
-
-    </div>
-
-  </div>
-
-  <div nz-col nzSpan="12">
-    <div class='menu-box'>
-      <div>
-        <h3 style='text-align: center'>路由设置</h3>
-      </div>
-      <div class="menu_box_content">
-        <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
-        <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
-        <nz-tree  [nzData]="edit_route_nodes" (nzContextMenu)="activeNode($event)">
-            <ng-template #contextTemplate>
-              <ul nz-menu nzInDropDown>
-                <li nz-menu-item (click)="create_menu()">添加下级菜单</li>
-                <li nz-menu-item (click)="edit_menu()">编辑菜单</li>
-                <li nz-menu-item nz-popconfirm nzTitle="确认删除这个菜单吗?" nzOkText="删除菜单" nzCancelText="取消"
-                  (nzOnConfirm)="delete_menu()">删除菜单</li>
-  
-              </ul>
-  
-            </ng-template>
-            <ng-template #nzTreeTemplate let-node>
-              <span class="custom-node">
-                <span [class.active]="activedNode?.key === node.key" *ngIf="!node.isLeaf"
-                  (contextmenu)="contextMenu($event, contextTemplate)">
-                  <i *ngIf='node.origin.is_route' nz-icon type='setting' ></i>
-                  <span class="folder-name">{{ node.title }}</span>
-                  <span *ngIf='!node.origin.is_route' class="folder-desc">
-                      
-                      <a  (click)='add_route(node.origin)'> 添加路由</a>
-                  </span>
-                  <span *ngIf='node.origin.is_route'  class="folder-desc">
-                      <a  (click)='edit_route(node.origin)'>编辑</a>
-                      <nz-divider nzType="vertical"></nz-divider>
-                      <a style='color:#1D90FF' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
-                      (nzOnConfirm)="delete_route(node.origin)">删除</a>
+            <nz-tree nzShowLine [nzData]="edit_menu_nodes" (nzContextMenu)="activeNode($event)">
+              <ng-template #contextTemplate>
+                <ul nz-menu nzInDropDown>
+                  <li nz-menu-item (click)="create_menu()">添加下级模块</li>
+                  <li nz-menu-item (click)="edit_menu()">编辑模块</li>
+                  <li nz-menu-item nz-popconfirm nzTitle="确认删除这个模块吗?" nzOkText="删除模块" nzCancelText="取消"
+                    (nzOnConfirm)="delete_menu()">删除模块</li>
+                </ul>
+              </ng-template>
+              <ng-template #nzTreeTemplate let-node>
+                <span class="custom-node">
+                  <span [class.active]="activedNode?.key === node.key" *ngIf="!node.isLeaf"
+                    (contextmenu)="contextMenu($event, contextTemplate)">
+                    <i (click)="openFolder(node)"></i>
+                    <span class="folder-name">{{ node.title }}</span>
+                    <span class="folder-desc">
+                      <nz-switch [(ngModel)]="node.origin.display"
+                        (ngModelChange)='change_display_btn($event,node.origin)' nzSize="small" nzCheckedChildren="开"
+                        nzUnCheckedChildren="关"></nz-switch>
                     </span>
-                </span>
-                <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf"
-                  (contextmenu)="contextMenu($event, contextTemplate)">
-                  <i *ngIf='node.origin.is_route' nz-icon type='setting' ></i>
-                  <span class="file-name">{{ node.title }}</span>
-                  <span *ngIf='!node.origin.is_route'  class="folder-desc">
-                      <a  (click)='add_route(node.origin)'> 添加路由</a>
                   </span>
-                  <span *ngIf='node.origin.is_route' class="folder-desc">
+                  <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf"
+                    (contextmenu)="contextMenu($event, contextTemplate)">
+                    <!-- <i nz-icon type="file"></i> -->
+                    <span class="file-name">{{ node.title }}</span>
+                    <span class="folder-desc">
+
+                      <nz-switch [(ngModel)]="node.origin.display"
+                        (ngModelChange)='change_display_btn($event,node.origin)' nzSize="small" nzCheckedChildren="开"
+                        nzUnCheckedChildren="关"></nz-switch>
+                    </span>
+                  </span>
+                </span>
+              </ng-template>
+            </nz-tree>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div nz-col nzSpan="12">
+        <div class='menu-box'>
+          <div>
+            <h3 style='text-align: center'>路由设置</h3>
+          </div>
+          <div class="menu_box_content">
+            <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
+            <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
+            <nz-tree [nzData]="edit_route_nodes" (nzContextMenu)="activeNode($event)">
+              <ng-template #contextTemplate>
+                <ul nz-menu nzInDropDown>
+                  <li nz-menu-item (click)="create_menu()">添加下级模块</li>
+                  <li nz-menu-item (click)="edit_menu()">编辑模块</li>
+                  <li nz-menu-item nz-popconfirm nzTitle="确认删除这个模块吗?" nzOkText="删除模块" nzCancelText="取消"
+                    (nzOnConfirm)="delete_menu()">删除模块</li>
+
+                </ul>
+              </ng-template>
+              <ng-template #nzTreeTemplate let-node>
+                <span class="custom-node">
+                  <span [class.active]="activedNode?.key === node.key" *ngIf="!node.isLeaf"
+                    (contextmenu)="contextMenu($event, contextTemplate)">
+                    <i *ngIf='node.origin.is_route' nz-icon type='setting'></i>
+                    <span class="folder-name">{{ node.title }}</span>
+                    <span *ngIf='!node.origin.is_route' class="folder-desc">
+
+                      <a (click)='add_route(node.origin)'> 添加路由</a>
+                    </span>
+                    <span *ngIf='node.origin.is_route' class="folder-desc">
                       <a (click)='edit_route(node.origin)'>编辑</a>
                       <nz-divider nzType="vertical"></nz-divider>
-                      <a style='color:blue'   nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
-                      (nzOnConfirm)="delete_route(node.origin)">删除</a>
+                      <a style='color:#1D90FF' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
+                        (nzOnConfirm)="delete_route(node.origin)">删除</a>
                     </span>
+                  </span>
+                  <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf"
+                    (contextmenu)="contextMenu($event, contextTemplate)">
+                    <i *ngIf='node.origin.is_route' nz-icon type='setting'></i>
+                    <span class="file-name">{{ node.title }}</span>
+                    <span *ngIf='!node.origin.is_route' class="folder-desc">
+                      <a (click)='add_route(node.origin)'> 添加路由</a>
+                    </span>
+                    <span *ngIf='node.origin.is_route' class="folder-desc">
+                      <a (click)='edit_route(node.origin)'>编辑</a>
+                      <nz-divider nzType="vertical"></nz-divider>
+                      <a style='color:blue' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
+                        (nzOnConfirm)="delete_route(node.origin)">删除</a>
+                    </span>
+                  </span>
                 </span>
-              </span>
-            </ng-template>
-          </nz-tree>
+              </ng-template>
+            </nz-tree>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </nz-tab>
+  </nz-tabset>
 
-  <!-- 添加菜单 -->
+
+  <!-- 添加模块 -->
   <nz-modal [nzFooter]="null" [nzMaskClosable]='true' (nzOnCancel)="cancel_data_prize()"
-    [(nzVisible)]="is_show_edit_menu" [nzTitle]="modal_type=='create'?'创建菜单':'编辑菜单'">
+    [(nzVisible)]="is_show_edit_menu" [nzTitle]="modal_type=='create'?'创建模块':'编辑模块'">
     <form nz-form [formGroup]="create_form">
       <div *ngIf='isOkLoading' class='lodding-box'>
         <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
       </div>
-      <nz-form-item *ngIf="edit_menu_obj['level']==1">
-        <nz-form-label nzFor="icon"  [nzSm]="6" [nzXs]="24">图标</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-          <input id="icon" type="icon" formControlName="icon" nz-input placeholder="图标"
-            [(ngModel)]="edit_menu_obj['icon']" />
-          <nz-form-explain *ngIf="create_form.get('icon')?.dirty && create_form.get('icon')?.errors">
-            请输入菜单图标!</nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
+
       <nz-form-item>
         <nz-form-label nzFor="label" nzRequired [nzSm]="6" [nzXs]="24">中文名称</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
           <input id="label" type="label" formControlName="label" nz-input placeholder="名称"
             [(ngModel)]="edit_menu_obj['label']" />
           <nz-form-explain *ngIf="create_form.get('label')?.dirty && create_form.get('label')?.errors">
-            请输入菜单中文名称!</nz-form-explain>
+            请输入模块中文名称!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
@@ -140,30 +137,11 @@
           <input id="en_name" type="en_name" formControlName="en_name" nz-input placeholder="英文名称"
             [(ngModel)]="edit_menu_obj['en_name']" />
           <nz-form-explain *ngIf="create_form.get('en_name')?.dirty && create_form.get('en_name')?.errors">
-            请输入菜单英文名称!</nz-form-explain>
+            请输入模块英文名称!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="route" nzRequired [nzSm]="6" [nzXs]="24">路由</nz-form-label>
-        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-          <input id="route" type="route" formControlName="route" nz-input placeholder="路由路径"
-            [(ngModel)]="edit_menu_obj['route']" />
-          <nz-form-explain *ngIf="create_form.get('route')?.dirty && create_form.get('route')?.errors">
-            请输入菜单的路由路径!</nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="isParent" nzRequired [nzSm]="9" [nzXs]="24">是否父级菜单</nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="23">
-          <nz-radio-group [nzDisabled]="true" id="isParent" formControlName="isParent"
-            [(ngModel)]="edit_menu_obj['isParent']">
-            <label nz-radio nzValue="1">是</label>
-            <label nz-radio nzValue="0">否</label>
-          </nz-radio-group>
-          <nz-form-explain *ngIf="create_form.get('isParent')?.dirty && create_form.get('isParent')?.errors">
-            是否父级菜单!</nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
+
+
       <nz-form-item>
         <nz-form-label nzFor="pid" nzRequired [nzSm]="6" [nzXs]="24">父级id</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
@@ -173,17 +151,7 @@
             父级id!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
-      <nz-form-item>
-        <nz-form-label nzFor="display" nzRequired [nzSm]="9" [nzXs]="24">是否显示</nz-form-label>
-        <nz-form-control [nzSm]="15" [nzXs]="23">
-          <nz-radio-group id="display" formControlName="display" [(ngModel)]="edit_menu_obj['display']">
-            <label nz-radio nzValue="1">是</label>
-            <label nz-radio nzValue="0">否</label>
-          </nz-radio-group>
-          <nz-form-explain *ngIf="create_form.get('display')?.dirty && create_form.get('display')?.errors">
-            是否显示!</nz-form-explain>
-        </nz-form-control>
-      </nz-form-item>
+
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
           <button *ngIf='modal_type==="create"' (click)="submit_menu()" [disabled]="!create_form.valid" nz-button
@@ -195,38 +163,34 @@
     </form>
   </nz-modal>
 
-    <!-- 添加路由 -->
-    <nz-modal [nzFooter]="null" [nzMaskClosable]='true' (nzOnCancel)="cancel_data_prize()"
+  <!-- 添加路由 -->
+  <nz-modal [nzFooter]="null" [nzMaskClosable]='true' (nzOnCancel)="cancel_data_prize()"
     [(nzVisible)]="is_show_edit_route" [nzTitle]="modal_type=='create'?'添加路由':'编辑路由'">
     <form nz-form [formGroup]="route_form">
       <div *ngIf='isOkLoading' class='lodding-box'>
         <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
       </div>
-      <nz-form-item >
-        <nz-form-label style="text-align: left;" nzFor="route" nzRequired  [nzSm]="24" [nzXs]="24">选择路由</nz-form-label>
+      <nz-form-item>
+        <nz-form-label style="text-align: left;" nzFor="route" nzRequired [nzSm]="24" [nzXs]="24">选择路由</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="24" [nzXs]="23">
-            <nz-select  id="route" type="route" formControlName="route"
-            style="width: 100%;"
-            [(ngModel)]="edit_route_obj['route']"
-            nzShowSearch
-            nzPlaceHolder="选择路由"
-          >
+          <nz-select id="route" type="route" formControlName="route" style="width: 100%;"
+            [(ngModel)]="edit_route_obj['route']" nzShowSearch nzPlaceHolder="选择路由">
             <nz-option *ngFor="let o of optionList" [nzValue]="o.r_name" [nzLabel]="o.value"></nz-option>
-   
+
           </nz-select>
           <nz-form-explain *ngIf="route_form.get('route')?.dirty && route_form.get('route')?.errors">
             请选择路由!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
-          <nz-form-label style="text-align: left;" nzFor="title" nzRequired [nzSm]="6" [nzXs]="24">标题</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="24" [nzXs]="23">
-            <input id="title" type="title" formControlName="title" nz-input placeholder="标题"
-              [(ngModel)]="edit_route_obj['title']" />
-            <nz-form-explain *ngIf="route_form.get('title')?.dirty && route_form.get('title')?.errors">
-              请输入标题名称！</nz-form-explain>
-          </nz-form-control>
-        </nz-form-item>
+        <nz-form-label style="text-align: left;" nzFor="title" nzRequired [nzSm]="6" [nzXs]="24">标题</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="24" [nzXs]="23">
+          <input id="title" type="title" formControlName="title" nz-input placeholder="标题"
+            [(ngModel)]="edit_route_obj['title']" />
+          <nz-form-explain *ngIf="route_form.get('title')?.dirty && route_form.get('title')?.errors">
+            请输入标题名称！</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSm]="24" [nzXs]="23">
           <button *ngIf='modal_type==="create"' (click)="submit_route()" [disabled]="!route_form.valid" nz-button

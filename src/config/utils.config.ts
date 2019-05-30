@@ -23,7 +23,7 @@ export class Utils {
       if (this.isDevelop) {
       this.httpIri = 'http://local.multisites.com';
     } else {
-      this.httpIri = 'http://176.32.80.45:8080';
+      this.httpIri = 'http://api.9170ttt.com';
     }
     return this.httpIri;
   }

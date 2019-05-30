@@ -12,9 +12,9 @@ import { config } from 'rxjs';
   styleUrls: ['./betting-menu.component.less']
 })
 export class DeveloperBettingMenuComponent implements OnInit {
-
+  public model_tabs = [];
   public dropdown: NzDropdownContextComponent;
-  // actived node
+  public page_type: number;
   public activedNode: NzTreeNode;
   public edit_menu_nodes = [];//菜单数组
   public edit_route_nodes = [];//路由数组
@@ -46,25 +46,46 @@ export class DeveloperBettingMenuComponent implements OnInit {
 
   }
   ngOnInit() {
-
+    this.page_type = 2;
     this.get_route_list();
     this.load_menu();
+
     // this.edit_menu_nodes = this.startupService.menu_list;
     console.log(this.edit_menu_nodes);
     this.create_form = this.fb.group({
       label: [null, [Validators.required]],
       pid: [null],
-      icon: [null],
-      route: [null, [Validators.required]],
       en_name: [null, [Validators.required]],
-      isParent: [null, [Validators.required]],
-      display: [null, [Validators.required]],
     });
     this.route_form = this.fb.group({
       route: [null, [Validators.required]],
       title: [null, [Validators.required]],
 
     });
+    this.model_tabs = [
+      {
+        label: "PC端",
+        type: 2
+      },
+      {
+        label: "app端",
+        type: 3
+      }
+    ];
+  }
+  /**
+   * 切换tab
+   * @param e 
+   */
+  change_index(e) {
+    switch (e) {
+      case 0:
+        this.page_type = 2
+        break;
+      case 1:
+        this.page_type = 3
+        break;
+    }
   }
   //-----------------------start 
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
@@ -101,7 +122,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   load_menu(): void {
     this.isLoading = true;
     this.optionList = [];
-    this.developerService.get_route_new_api_list().subscribe((res: any) => {
+    this.developerService.get_route_new_api_list(this.page_type).subscribe((res: any) => {
       if (res && res.success) {
         for (let x in res.data.route_info) {
           this.optionList.push({
@@ -126,14 +147,17 @@ export class DeveloperBettingMenuComponent implements OnInit {
   get_route_list() {
     this.edit_menu_obj = {};
     this.is_loading_tree = true;
-    this.developerService.get_route_list().subscribe((res: any) => {
+    this.developerService.get_betting_route_list(this.page_type).subscribe((res: any) => {
       if (res && res.success) {
-        res.data.forEach((item, index) => {
-          if (!this.edit_menu_obj[item.menu_group_id]) {
-            this.edit_menu_obj[item.menu_group_id] = [];
-          };
-          this.edit_menu_obj[item.menu_group_id].push(item);
-        });
+        if (res.data && res.data.length > 0) {
+          res.data.forEach((item, index) => {
+            if (!this.edit_menu_obj[item.menu_group_id]) {
+              this.edit_menu_obj[item.menu_group_id] = [];
+            };
+            this.edit_menu_obj[item.menu_group_id].push(item);
+          });
+        }
+
         this.get_all_menu();
 
         console.log(this.edit_menu_obj);
@@ -179,14 +203,9 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.edit_menu_obj = {
       label: this.activedNode.origin['title'],
       en_name: this.activedNode.origin['en_name'],
-      icon: this.activedNode.origin['icon'],
-      route: this.activedNode.origin['route'],
-      sort: this.activedNode.origin['sort'],
       id: this.activedNode.origin['key'],
       level: this.activedNode.origin['level'],
-      pid: this.activedNode.origin['pid'],
-      isParent: this.activedNode.origin['pid'] == 0 ? '1' : '0',
-      display: String(this.activedNode.origin['display']) ? String(this.activedNode.origin['display']) : '1',
+      pid: this.activedNode.origin['pid']
     };
     console.log(this.edit_menu_obj);
   }
@@ -284,13 +303,9 @@ export class DeveloperBettingMenuComponent implements OnInit {
   change_display_btn(e, obj) {
     let option = {
       menuId: obj['key'],
-      icon: obj['icon'],
-      route: obj['route'],
       label: obj['title'],
       parentId: obj['pid'],
-      isParent: obj['level'] == 1 ? 1 : 0,
       level: obj['level'],
-      display: obj['display'] ? 1 : 0,
       en_name: obj['en_name'],
     }
     obj['display'] = obj['display'] ? 1 : 0;
@@ -374,15 +389,11 @@ export class DeveloperBettingMenuComponent implements OnInit {
   submit_menu() {
 
     let option = {
-      menuId: this.edit_menu_obj['id'],
-      icon: this.edit_menu_obj['icon'],
-      route: this.edit_menu_obj['route'],
+      id: this.edit_menu_obj['id'],
       label: this.edit_menu_obj['label'],
-      sort: this.edit_menu_obj['sort'],
-      parentId: this.edit_menu_obj['pid'],
-      isParent: this.edit_menu_obj['isParent'],
+      type: this.page_type,
+      pid: this.edit_menu_obj['pid'],
       level: this.edit_menu_obj['level'],
-      display: this.edit_menu_obj['display'],
       en_name: this.edit_menu_obj['en_name'],
     }
     this.isOkLoading = true;
@@ -617,7 +628,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
       }
       menuList.push(obj);
       routeList.push(obj1);
- 
+
     }
     this.edit_menu_nodes = menuList;
     this.edit_route_nodes = routeList;
