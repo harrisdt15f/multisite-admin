@@ -19,6 +19,71 @@ export class DeveloperService {
     ) {
     this.serviceHttpIri = Utils.GethttpIri();
   }
+
+
+  /**
+   *获得游戏玩法管理列表
+   *
+   * @returns {Observable<any>}
+   * @memberof DeveloperService
+   */
+  get_game_level(): Observable<any> {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/method-level/detail';
+    return this.commonService.post(href,{},{ headers: headers });
+  }
+    /**
+   *添加游戏玩法管理列表
+   *
+   * @returns {Observable<any>}
+   * @memberof DeveloperService
+   */
+  add_game_level(data): Observable<any> {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/method-level/add';
+    return this.commonService.post(href,data,{ headers: headers });
+  }
+    /**
+   *编辑游戏玩法管理列表
+   *
+   * @returns {Observable<any>}
+   * @memberof DeveloperService
+   */
+  edit_game_level(data): Observable<any> {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/method-level/edit';
+    return this.commonService.post(href,data,{ headers: headers });
+  }
+    /**
+   *删除游戏玩法管理列表
+   *
+   * @returns {Observable<any>}
+   * @memberof DeveloperService
+   */
+  delete_game_level(data): Observable<any> {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/method-level/delete';
+    return this.commonService.post(href,data,{ headers: headers });
+  }
+
+
+
     /**
    *获得投注端路由管理列表
    *
@@ -37,8 +102,11 @@ export class DeveloperService {
     }else if(type==3){
       href = this.serviceHttpIri + '/api/frontend-app-route/detail';
     }
+    let data={
+      type:type
+    }
  
-    return this.commonService.post(href,{},{ headers: headers });
+    return this.commonService.post(href,data,{ headers: headers });
   }
 
   /**
@@ -143,7 +211,7 @@ get_route_api_list(page_index,data?) {
 * @returns
 * @memberof UserManageService
 */
-get_route_new_api_list(type?) {
+get_route_new_api_list(data) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
@@ -151,7 +219,7 @@ get_route_new_api_list(type?) {
     });
 
     const href = this.serviceHttpIri + '/api/menu';
-    return this.commonService.get(href,  { headers: headers });
+    return this.commonService.post(href,data,  { headers: headers });
 }
 /**
  * 获取投注端未绑定的路由
@@ -216,6 +284,55 @@ delete_route(data){
   const href = this.serviceHttpIri + '/api/route/delete';
   return this.commonService.post(href, data,{ headers: headers });
 }
+  /**
+ *添加投注端路由
+ *
+ * @memberof UserManageService
+ */
+add_betting_route(data){
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/frontend-web-route/add';
+  return this.commonService.post(href, data,{ headers: headers });
+}
+  /**
+ *是否开放路由
+ *
+ * @memberof UserManageService
+ */
+is_open_route(data,type){
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  let href;
+  if(type==2){
+     href = this.serviceHttpIri + '/api/frontend-web-route/is-open';
+  }else if(type==3){
+    href = this.serviceHttpIri + '/api/frontend-app-route/is-open';
+  }
+ 
+  return this.commonService.post(href, data,{ headers: headers });
+}
+
+/**
+ *删除投注端路由
+ *
+ * @memberof UserManageService
+ */
+delete_betting_route(data){
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/frontend-web-route/delete';
+  return this.commonService.post(href, data,{ headers: headers });
+}
 
 
 /**
@@ -224,15 +341,16 @@ delete_route(data){
    * @returns {Observable<any>}
    * @memberof DeveloperService
    */
-  get_all_model(): Observable<any> {
+  get_all_model(data): Observable<any> {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
+
     const href = this.serviceHttpIri + '/api/frontend-allocated-model/detail';
 
-    return this.commonService.post(href,{},{ headers: headers });
+    return this.commonService.post(href,data,{ headers: headers });
   }
   /**
  *添加模块

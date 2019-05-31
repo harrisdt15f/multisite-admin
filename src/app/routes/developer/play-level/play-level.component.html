@@ -1,0 +1,167 @@
+<page-header [action]="action">
+    <ng-template #action>
+        <button (click)='get_play_level_list()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock
+            [nzType]="'dashed'" class="ant-btn__block mb-sm">
+            <i nz-icon nzType="redo" nzTheme="outline"></i>
+            <span>刷新</span>
+        </button>
+    </ng-template>
+</page-header>
+<nz-layout>
+    <nz-content>
+        <button (click)='add_play_level()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+            class="ant-btn__block mb-sm">
+            <i class="anticon anticon-plus"></i><span>添加玩法中奖等级</span>
+        </button>
+        <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+            [nzFrontPagination]='true' [nzData]="listOfDisplayData" [nzPageSize]='8'>
+            <thead>
+                <tr>
+                    <th nzShowExpand></th>
+                    <th nzCustomFilter>
+                        method_id
+                        <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter
+                            #dropdown>
+                            <i nz-icon nzType="search" class="ant-table-filter-icon"
+                                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+                            <div class="search-box">
+                                <input type="text" nz-input placeholder="搜索id" [(ngModel)]="searchValue" />
+                                <button nz-button nzSize="small" nzType="primary" (click)="search()"
+                                    class="search-button">
+                                    搜索
+                                </button>
+                                <button nz-button nzSize="small" (click)="reset()">Reset</button>
+                            </div>
+                        </nz-dropdown>
+                    </th>
+                    <th>操作</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <ng-template ngFor let-data [ngForOf]="nzTable.data">
+                    <tr>
+                        <td nzShowExpand [(nzExpand)]="data.expand"></td>
+                        <td>{{ data.method_id}}</td>
+                        <td>
+                            <a (click)='add_play_level(data)'>添加玩法中奖等级</a>
+
+
+                        </td>
+                    </tr>
+                    <tr [nzExpand]="data.expand">
+                        <td></td>
+                        <td colspan="24">
+                            <nz-table *ngIf='data.child' [nzPageSize]='5' [nzLoading]='is_load_list_child'
+                                nzSize="middle" [nzShowPagination]="true" #nzTable2 [nzData]="data.child">
+                                <thead>
+                                    <tr>
+
+                                        <th>method_id</th>
+                                        <th>玩法中奖等级</th>
+                                        <th>position</th>
+                                        <th>count</th>
+                                        <th>单注奖金</th>
+
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+            <tbody>
+                <ng-template ngFor let-data [ngForOf]="nzTable2.data">
+                    <tr>
+                        <td>
+                            <div class='ellipsis' style='max-width:300px'>
+                                {{ data.method_id}}
+                            </div>
+                        </td>
+                        <td>{{data.level}}</td>
+                        <td>{{data.position}}</td>
+                        <td>{{data.count}}</td>
+                        <td>{{data.prize}}</td>
+
+                        <td>
+
+                            <a (click)='edit_paly(data)'>修改</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-popconfirm nzTitle="确认删除这个玩法中奖等级吗?" nzOkText="删除" nzCancelText="取消"
+                                (nzOnConfirm)="delete_paly_level(data)">删除</a>
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </tbody>
+        </nz-table>
+        </td>
+        </tr>
+        </ng-template>
+        </tbody>
+        </nz-table>
+        <!-- 弹框 -->
+        <nz-drawer nzWidth='600px' [nzVisible]="if_show_modal" nzPlacement="right"
+            [nzTitle]="modal_type=='create'?'创建公告':'编辑公告'" (nzOnClose)="close_modal()">
+
+            <form nz-form [formGroup]="create_form">
+                <div *ngIf='modal_lodding' class='lodding-box'>
+                    <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+                </div>
+                <nz-form-item *ngIf='modal_type!="edit"'>
+                    <nz-form-label nzFor="method_id" nzRequired [nzSm]="4" [nzXs]="24">ID</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+                        <input maxlength='16' id="method_id" type="text" formControlName="method_id" nz-input
+                            placeholder="ID" [(ngModel)]="edit_level_obj['method_id']" />
+                        <nz-form-explain
+                            *ngIf="create_form.get('method_id')?.dirty && create_form.get('method_id')?.errors">
+                            请输入玩法中奖等级ID!</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzFor="level" nzRequired [nzSm]="4" [nzXs]="24">玩法中奖等级</nz-form-label>
+                    <nz-form-control [nzSm]="20" [nzXs]="23">
+                        <nz-slider [(ngModel)]="edit_level_obj['level']" id="level" formControlName="level" [nzMin]="1"
+                            [nzMax]="10"></nz-slider>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzFor="position" nzRequired [nzSm]="4" [nzXs]="24">position</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+                        <input maxlength='16' id="position" type="text" formControlName="position" nz-input
+                            placeholder="position" [(ngModel)]="edit_level_obj['position']" />
+                        <nz-form-explain
+                            *ngIf="create_form.get('position')?.dirty && create_form.get('position')?.errors">
+                            请输position!</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzFor="count" nzRequired [nzSm]="4" [nzXs]="24">count</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+                        <input maxlength='16' id="count" type="text" formControlName="count" nz-input
+                            placeholder="count" [(ngModel)]="edit_level_obj['count']" />
+                        <nz-form-explain *ngIf="create_form.get('count')?.dirty && create_form.get('count')?.errors">
+                            count!</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item>
+                    <nz-form-label nzFor="prize" nzRequired [nzSm]="4" [nzXs]="24">prize</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+                        <input maxlength='16' id="prize" type="text" formControlName="prize" nz-input
+                            placeholder="prize" [(ngModel)]="edit_level_obj['prize']" />
+                        <nz-form-explain *ngIf="create_form.get('prize')?.dirty && create_form.get('prize')?.errors">
+                            prize!</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+
+
+                <nz-form-item nz-row style="margin-bottom:8px;">
+                    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                        <button *ngIf='modal_type==="create"' (click)="submit_paly_level()"
+                            [disabled]="!create_form.valid" nz-button nzType="primary">确认创建</button>
+                        <button *ngIf='modal_type==="edit"' (click)="submit_paly_level()"
+                            [disabled]="!create_form.valid" nz-button nzType="primary">确认修改</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+
+        </nz-drawer>
+    </nz-content>
+
+</nz-layout>

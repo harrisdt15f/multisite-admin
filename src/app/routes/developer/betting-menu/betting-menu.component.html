@@ -30,9 +30,7 @@
                     <i (click)="openFolder(node)"></i>
                     <span class="folder-name">{{ node.title }}</span>
                     <span class="folder-desc">
-                      <nz-switch [(ngModel)]="node.origin.display"
-                        (ngModelChange)='change_display_btn($event,node.origin)' nzSize="small" nzCheckedChildren="开"
-                        nzUnCheckedChildren="关"></nz-switch>
+               
                     </span>
                   </span>
                   <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf"
@@ -41,9 +39,7 @@
                     <span class="file-name">{{ node.title }}</span>
                     <span class="folder-desc">
 
-                      <nz-switch [(ngModel)]="node.origin.display"
-                        (ngModelChange)='change_display_btn($event,node.origin)' nzSize="small" nzCheckedChildren="开"
-                        nzUnCheckedChildren="关"></nz-switch>
+                    
                     </span>
                   </span>
                 </span>
@@ -64,19 +60,10 @@
             <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
             <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
             <nz-tree [nzData]="edit_route_nodes" (nzContextMenu)="activeNode($event)">
-              <ng-template #contextTemplate>
-                <ul nz-menu nzInDropDown>
-                  <li nz-menu-item (click)="create_menu()">添加下级模块</li>
-                  <li nz-menu-item (click)="edit_menu()">编辑模块</li>
-                  <li nz-menu-item nz-popconfirm nzTitle="确认删除这个模块吗?" nzOkText="删除模块" nzCancelText="取消"
-                    (nzOnConfirm)="delete_menu()">删除模块</li>
 
-                </ul>
-              </ng-template>
               <ng-template #nzTreeTemplate let-node>
                 <span class="custom-node">
-                  <span [class.active]="activedNode?.key === node.key" *ngIf="!node.isLeaf"
-                    (contextmenu)="contextMenu($event, contextTemplate)">
+                  <span [class.active]="activedNode?.key === node.key" *ngIf="!node.isLeaf">
                     <i *ngIf='node.origin.is_route' nz-icon type='setting'></i>
                     <span class="folder-name">{{ node.title }}</span>
                     <span *ngIf='!node.origin.is_route' class="folder-desc">
@@ -84,22 +71,24 @@
                       <a (click)='add_route(node.origin)'> 添加路由</a>
                     </span>
                     <span *ngIf='node.origin.is_route' class="folder-desc">
-                      <a (click)='edit_route(node.origin)'>编辑</a>
-                      <nz-divider nzType="vertical"></nz-divider>
+            
                       <a style='color:#1D90FF' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
                         (nzOnConfirm)="delete_route(node.origin)">删除</a>
                     </span>
                   </span>
-                  <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf"
-                    (contextmenu)="contextMenu($event, contextTemplate)">
+                  <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf">
                     <i *ngIf='node.origin.is_route' nz-icon type='setting'></i>
                     <span class="file-name">{{ node.title }}</span>
                     <span *ngIf='!node.origin.is_route' class="folder-desc">
                       <a (click)='add_route(node.origin)'> 添加路由</a>
                     </span>
+                    <span style='display: inline-block;margin-left: 20px;' *ngIf='node.origin.is_route'>
+                      <nz-switch [(ngModel)]="node.origin.is_open"
+                        (ngModelChange)='change_is_open_btn($event,node.origin)' nzSize="small" nzCheckedChildren="开"
+                        nzUnCheckedChildren="关"></nz-switch>
+                    </span>
                     <span *ngIf='node.origin.is_route' class="folder-desc">
-                      <a (click)='edit_route(node.origin)'>编辑</a>
-                      <nz-divider nzType="vertical"></nz-divider>
+        
                       <a style='color:blue' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
                         (nzOnConfirm)="delete_route(node.origin)">删除</a>
                     </span>
@@ -140,6 +129,23 @@
             请输入模块英文名称!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
+      <nz-form-item>
+        <nz-form-label nzFor="type" nzRequired [nzSm]="6" [nzXs]="24">模块类型</nz-form-label>
+        <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-select id="type" type="type" formControlName="type" style="width: 100%;"
+            [(ngModel)]="edit_menu_obj['type']" nzShowSearch nzPlaceHolder="选择类型">
+            <nz-option *ngIf="edit_menu_obj['ptype']==1" nzValue='1' nzLabel="通用"></nz-option>
+            <nz-option *ngIf="edit_menu_obj['ptype']==1||edit_menu_obj['ptype']==2" nzValue='2' nzLabel="web端">
+            </nz-option>
+            <nz-option *ngIf="edit_menu_obj['ptype']==1||edit_menu_obj['ptype']==3" nzValue='3' nzLabel="app端">
+            </nz-option>
+
+          </nz-select>
+          <nz-form-explain *ngIf="create_form.get('en_name')?.dirty && create_form.get('en_name')?.errors">
+            请选择模块类型!</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+
 
 
       <nz-form-item>

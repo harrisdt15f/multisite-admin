@@ -101,7 +101,10 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
   load_menu(): void {
     this.isLoading = true;
     this.optionList = [];
-    this.developerService.get_route_new_api_list().subscribe((res: any) => {
+    let option={
+      type:1
+    }
+    this.developerService.get_route_new_api_list(option).subscribe((res: any) => {
       if (res && res.success) {
         for (let x in res.data.route_info) {
           this.optionList.push({

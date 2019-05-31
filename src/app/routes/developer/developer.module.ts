@@ -5,11 +5,13 @@ import { DeveloperDeveloperMenuComponent } from './developer-menu/developer-menu
 import { DeveloperDragComponent } from './drag/drag.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DeveloperBettingMenuComponent } from './betting-menu/betting-menu.component';
+import { DeveloperPlayLevelComponent } from './play-level/play-level.component';
 
 const COMPONENTS = [
   DeveloperDeveloperMenuComponent,
   DeveloperDragComponent,
-  DeveloperBettingMenuComponent];
+  DeveloperBettingMenuComponent,
+  DeveloperPlayLevelComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({

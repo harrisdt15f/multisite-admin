@@ -16,7 +16,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   public dropdown: NzDropdownContextComponent;
   public page_type: number;
   public activedNode: NzTreeNode;
-  public edit_menu_nodes = [];//菜单数组
+  public edit_menu_nodes = [];//模块数组
   public edit_route_nodes = [];//路由数组
   public is_loading_tree: boolean;
   public route_obj: Object = {};
@@ -31,8 +31,9 @@ export class DeveloperBettingMenuComponent implements OnInit {
   public isOkLoading: boolean;
   public is_show_edit_menu: boolean;
   public is_show_edit_route: boolean;
-  public edit_menu_obj: object = {};  //菜单编辑对象
+  public edit_menu_obj: object = {};  //模块编辑对象
   public edit_route_obj: object = {}; //路由编辑对象
+  public edit_route_menu: object = {}; 
 
   constructor(
     private http: _HttpClient,
@@ -55,6 +56,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.create_form = this.fb.group({
       label: [null, [Validators.required]],
       pid: [null],
+      type: [null],
       en_name: [null, [Validators.required]],
     });
     this.route_form = this.fb.group({
@@ -85,7 +87,8 @@ export class DeveloperBettingMenuComponent implements OnInit {
       case 1:
         this.page_type = 3
         break;
-    }
+    };
+    this.get_route_list();
   }
   //-----------------------start 
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
@@ -122,7 +125,10 @@ export class DeveloperBettingMenuComponent implements OnInit {
   load_menu(): void {
     this.isLoading = true;
     this.optionList = [];
-    this.developerService.get_route_new_api_list(this.page_type).subscribe((res: any) => {
+    let data={
+      type:this.page_type
+    }
+    this.developerService.get_route_new_api_list(data).subscribe((res: any) => {
       if (res && res.success) {
         for (let x in res.data.route_info) {
           this.optionList.push({
@@ -145,22 +151,22 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * 获取路由树
    */
   get_route_list() {
-    this.edit_menu_obj = {};
+    this.edit_route_menu = {};
     this.is_loading_tree = true;
     this.developerService.get_betting_route_list(this.page_type).subscribe((res: any) => {
       if (res && res.success) {
         if (res.data && res.data.length > 0) {
           res.data.forEach((item, index) => {
-            if (!this.edit_menu_obj[item.menu_group_id]) {
-              this.edit_menu_obj[item.menu_group_id] = [];
+            if (!this.edit_route_menu[item.frontend_model_id]) {
+              this.edit_route_menu[item.frontend_model_id] = [];
             };
-            this.edit_menu_obj[item.menu_group_id].push(item);
+            this.edit_route_menu[item.frontend_model_id].push(item);
           });
         }
 
         this.get_all_menu();
 
-        console.log(this.edit_menu_obj);
+        console.log(this.edit_route_menu);
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -170,15 +176,22 @@ export class DeveloperBettingMenuComponent implements OnInit {
   }
 
   /**
-   *获取菜单树
+   *获取模块树
    *
    * @memberof DeveloperDeveloperMenuComponent
    */
   get_all_menu() {
-    this.developerService.get_all_model().subscribe((res: any) => {
+    let data = {
+      type: this.page_type
+    }
+    this.developerService.get_all_model(data).subscribe((res: any) => {
       this.is_loading_tree = false;
       if (res && res.success) {
-        this.getMenueTree(res.data);
+        this.edit_menu_nodes = [];
+        this.edit_route_nodes = [];
+        this.getMenueTree(JSON.parse(JSON.stringify(res.data)), this.edit_menu_nodes);
+        this.get_route_tree(JSON.parse(JSON.stringify(res.data)), this.edit_route_nodes);
+        console.log(this.edit_route_nodes)
       } else {
 
         this.message.error(res.message, {
@@ -193,7 +206,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   }
 
   /**
-   *点击编辑菜单
+   *点击编辑模块
    *
    * @memberof DeveloperDeveloperMenuComponent
    */
@@ -205,13 +218,15 @@ export class DeveloperBettingMenuComponent implements OnInit {
       en_name: this.activedNode.origin['en_name'],
       id: this.activedNode.origin['key'],
       level: this.activedNode.origin['level'],
+      ptype: this.activedNode.origin['ptype'],
+      type:String(this.activedNode.origin['type']),
       pid: this.activedNode.origin['pid']
     };
     console.log(this.edit_menu_obj);
   }
   /**
  *
- *点击创建子菜单按钮
+ *点击创建子模块按钮
  * @memberof DeveloperDeveloperMenuComponent
  */
   create_menu() {
@@ -220,14 +235,13 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.edit_menu_obj = {
       pid: this.activedNode.origin['key'],
       level: this.activedNode.origin['level'] + 1,
-      isParent: '0',
-      sort: this.activedNode['children'].length + 1,
-      display: '1',
+      ptype: this.activedNode.origin['type'],
+      type: String(this.activedNode.origin['type']),
     };
   }
   /**
    *
-   *点击创建一级菜单按钮
+   *点击创建一级模块按钮
    * @memberof DeveloperDeveloperMenuComponent
    */
   add_parent_menu() {
@@ -236,50 +250,29 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.edit_menu_obj = {
       isParent: '1',
       level: 1,
-      sort: this.edit_menu_nodes.length + 1,
-      display: '1',
+      type: '1',
+      ptype: 1,
+
     };
   }
-  /**
-   *便利得到左右的子节点key
-   *
-   * @param {*} array
-   * @param {*} item
-   * @memberof DeveloperDeveloperMenuComponent
-   */
-  get_child_id(array, item) {
-    array.push(item.key);
-    if (item.children && item.children.length > 0) {
-      item.children.forEach((data, item) => {
-        this.get_child_id(array, data);
-      });
-    }
-  }
+
 
   /**
-   *删除菜单
+   *删除模块
    *
    * @memberof DeveloperDeveloperMenuComponent
    */
   delete_menu() {
     let data = {
-      toDelete: []
+      id:this.activedNode.origin['key']
     };
-    // data.toDelete.push(this.activedNode.origin['key'])
-    this.get_child_id(data.toDelete, this.activedNode.origin);
-    this.developerService.delete_menu(data).subscribe((res: any) => {
-
+    this.developerService.delete_model(data).subscribe((res: any) => {
       if (res && res.success) {
         this.get_route_list();
-        this.message.success('删除菜单成功', {
+        this.message.success('删除模块成功', {
           nzDuration: 10000,
         });
-
-
-
-
       } else {
-
         this.message.error(res.message, {
           nzDuration: 10000,
         });
@@ -295,21 +288,36 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.update_form();
 
   }
-  /**
-   * 
-   * @param e 开关显示状态
-   * @param obj 
-   */
-  change_display_btn(e, obj) {
+
+  // change_display_btn(e, obj) {
+  //   let option = {
+  //     menuId: obj['key'],
+  //     label: obj['title'],
+  //     parentId: obj['pid'],
+  //     level: obj['level'],
+  //     en_name: obj['en_name'],
+  //   }
+  //   obj['display'] = obj['display'] ? 1 : 0;
+  //   this.edit_menu_submit(option);
+  // }
+  /**切换路由开放状态 */
+  change_is_open_btn(e, obj){
     let option = {
-      menuId: obj['key'],
-      label: obj['title'],
-      parentId: obj['pid'],
-      level: obj['level'],
-      en_name: obj['en_name'],
+      id: obj['key'],
+      is_open: obj['is_open'] ? 1 : 0
     }
-    obj['display'] = obj['display'] ? 1 : 0;
-    this.edit_menu_submit(option);
+    this.developerService.is_open_route(option,this.page_type).subscribe((res: any) => {
+      if (res && res.success) {
+        this.message.success('修改路由开放状态成功', {
+          nzDuration: 10000,
+        });
+      } else {
+
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
   }
   /**
    * 点击提交路由
@@ -318,14 +326,14 @@ export class DeveloperBettingMenuComponent implements OnInit {
   submit_route() {
     let option = {
       route_name: this.edit_route_obj['route'],
-      menu_group_id: this.edit_menu_obj['key'],
+      frontend_model_id: this.edit_menu_obj['key'],
       title: this.edit_route_obj['title'],
     };
     this.isOkLoading = true;
     if (this.modal_type == 'create') {
       this.add_route_submit(option);
     } else if (this.modal_type == 'edit') {
-      this.edit_route_submit(option);
+      // this.edit_route_submit(option);
     }
   }
   /**
@@ -335,7 +343,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   * @memberof OperasyonArticleManageComponent
   */
   add_route_submit(data) {
-    this.developerService.add_route(data).subscribe((res: any) => {
+    this.developerService.add_betting_route(data).subscribe((res: any) => {
       this.isOkLoading = false;
       if (res && res.success) {
         this.get_route_list();
@@ -360,29 +368,29 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * @param {*} data
    * @memberof OperasyonArticleManageComponent
    */
-  edit_route_submit(data) {
-    this.developerService.edit_route(data).subscribe((res: any) => {
-      this.isOkLoading = false;
-      if (res && res.success) {
-        this.is_show_edit_route = false;
-        this.get_route_list();
+  // edit_route_submit(data) {
+  //   this.developerService.edit_route(data).subscribe((res: any) => {
+  //     this.isOkLoading = false;
+  //     if (res && res.success) {
+  //       this.is_show_edit_route = false;
+  //       this.get_route_list();
 
-        this.update_form();
-        this.message.success('修改菜单成功', {
-          nzDuration: 10000,
-        });
+  //       this.update_form();
+  //       this.message.success('修改模块成功', {
+  //         nzDuration: 10000,
+  //       });
 
-      } else {
+  //     } else {
 
-        this.message.error(res.message, {
-          nzDuration: 10000,
-        });
-      }
-    })
-  }
+  //       this.message.error(res.message, {
+  //         nzDuration: 10000,
+  //       });
+  //     }
+  //   })
+  // }
 
   /**
-   *提交菜单
+   *提交模块
    *
    * @memberof DeveloperDeveloperMenuComponent
    */
@@ -391,8 +399,8 @@ export class DeveloperBettingMenuComponent implements OnInit {
     let option = {
       id: this.edit_menu_obj['id'],
       label: this.edit_menu_obj['label'],
-      type: this.page_type,
-      pid: this.edit_menu_obj['pid'],
+      type:Number(this.edit_menu_obj['type']),
+      pid: this.edit_menu_obj['pid'] ? this.edit_menu_obj['pid'] : 0,
       level: this.edit_menu_obj['level'],
       en_name: this.edit_menu_obj['en_name'],
     }
@@ -412,17 +420,15 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * @memberof OperasyonArticleManageComponent
    */
   add_menu_submit(data) {
-    this.developerService.add_menu(data).subscribe((res: any) => {
+    this.developerService.add_model(data).subscribe((res: any) => {
       this.isOkLoading = false;
       if (res && res.success) {
         this.get_route_list();
-        this.message.success('添加菜单成功', {
+        this.message.success('添加模块成功', {
           nzDuration: 10000,
         });
         this.update_form();
-
         this.is_show_edit_menu = false;
-
       } else {
 
         this.message.error(res.message, {
@@ -438,14 +444,14 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * @memberof OperasyonArticleManageComponent
    */
   edit_menu_submit(data) {
-    this.developerService.edit_menu(data).subscribe((res: any) => {
+    this.developerService.edit_model(data).subscribe((res: any) => {
       this.isOkLoading = false;
       if (res && res.success) {
         this.is_show_edit_menu = false;
         this.get_route_list();
 
         this.update_form();
-        this.message.success('修改菜单成功', {
+        this.message.success('修改模块成功', {
           nzDuration: 10000,
         });
 
@@ -472,7 +478,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
     let option = {
       id: data.key
     }
-    this.developerService.delete_route(option).subscribe((res: any) => {
+    this.developerService.delete_betting_route(option).subscribe((res: any) => {
       this.isOkLoading = false;
       if (res && res.success) {
         this.get_route_list();
@@ -515,124 +521,66 @@ export class DeveloperBettingMenuComponent implements OnInit {
   }
 
   /**
-* 得到创建组中的菜单树
+* 得到创建组中的模块树
 */
-  getMenueTree(item) {
-
-    let menuList = [];
-    let routeList = [];
-    for (let key in item) {
+  getMenueTree(item, array) {
+    item.forEach((data) => {
       let obj = {
-        key: Number(key),
-        value: Number(key),
-        title: item[key].label,
-        en_name: item[key].en_name,
-        icon: item[key].icon,
+        key: Number(data.id),
+        value: Number(data.id),
+        title: data.label,
+        type: data.type,
+        en_name: data.en_name,
         expanded: true,
-        route: item[key].route,
-        display: item[key].display,
-        level: item[key].level,
-        pid: item[key].pid,
-        children: [],
+        level: data.level,
+        pid: data.pid,
       };
-      let obj1 = JSON.parse(JSON.stringify(obj));
-      if (this.edit_menu_obj[obj1.key]) {
-        this.edit_menu_obj[obj1.key].forEach((item, index) => {
-          obj1.children.push({
-            key: item.id,
-            is_route: true,
-            value: item.id,
-            isLeaf: true,
-            route_name: item.route_name,
-            title: item.title,
-            description: item.description
-          })
-        });
+      if (data.childs && data.childs.length > 0) {
+        obj['children'] = []
+        this.getMenueTree(data.childs, obj['children'])
       }
-      if (item[key].child) {
-        for (let x in item[key].child) {
-          let second_obj = {
-            key: Number(x),
-            value: Number(x),
-            route: item[key].child[x].route,
-            title: item[key].child[x].label,
-            en_name: item[key].child[x].en_name,
-            display: item[key].child[x].display,
-            level: item[key].child[x].level,
-            pid: item[key].child[x].pid,
-          };
-          if (item[key].child[x].child) {
-            second_obj['children'] = [];
-            second_obj['expanded'] = true;
-            for (let y in item[key].child[x].child) {
-              // if(item[key].child[x].child[y].display===1){
-              second_obj['children'].push({
-                key: Number(y),
-                value: Number(y),
-                isLeaf: true,
-                route: item[key].child[x].child[y].route,
-                pid: item[key].child[x].child[y].pid,
-                title: item[key].child[x].child[y].label,
-                level: item[key].child[x].child[y].level,
-                en_name: item[key].child[x].child[y].en_name,
-                display: item[key].child[x].child[y].display,
-              })
-              // }
-
-            }
-          } else {
-            second_obj['isLeaf'] = true;
-          }
-          let second_obj1 = JSON.parse(JSON.stringify(second_obj));
-          if (this.edit_menu_obj[second_obj1.key] || second_obj1['children']) {
-            second_obj1.isLeaf = false;
-            if (!second_obj1['children']) {
-              second_obj1['children'] = [];
-            } else if (second_obj1['children'] && second_obj1['children'].length > 0) {
-              second_obj1['children'].forEach((item) => {
-
-                if (this.edit_menu_obj[item.key]) {
-                  item.isLeaf = false;
-                  item['children'] = [];
-                  this.edit_menu_obj[item.key].forEach((data) => {
-                    item['children'].push({
-                      key: data.id,
-                      value: data.id,
-                      is_route: true,
-                      isLeaf: true,
-                      route_name: data.route_name,
-                      title: data.title,
-                      description: data.description
-                    })
-                  });
-                }
-              });
-            }
-            if (this.edit_menu_obj[second_obj1.key]) {
-              this.edit_menu_obj[second_obj1.key].forEach((item, index) => {
-                second_obj1['children'].push({
-                  key: item.id,
-                  value: item.id,
-                  is_route: true,
-                  isLeaf: true,
-                  route_name: item.route_name,
-                  title: item.title,
-                  description: item.description
-                })
-              });
-            }
-          }
-          obj.children.push(second_obj);
-          obj1.children.push(second_obj1);
-        }
-      }
-      menuList.push(obj);
-      routeList.push(obj1);
-
-    }
-    this.edit_menu_nodes = menuList;
-    this.edit_route_nodes = routeList;
+      array.push(obj);
+    });
   }
+    /**
+* 得到创建组中的模块-路由树
+*/
+get_route_tree(item, array) {
+  item.forEach((data) => {
+    let obj = {
+      key: Number(data.id),
+      value: Number(data.id),
+      title: data.label,
+      type: data.type,
+      en_name: data.en_name,
+      expanded: true,
+      level: data.level,
+      pid: data.pid,
+      children: []
+    };
+    if(this.edit_route_menu[Number(data.id)]){
+      this.edit_route_menu[Number(data.id)].forEach((d)=>{
+        let o={
+          key: Number(d.id),
+          value: Number(d.id),
+          title: d.title,
+          is_route: true,
+          isLeaf: true,
+          is_open: d.is_open===1?true:false,
+    
+          level: data.level,
+          route_name: data.route_name,
+          children: []
+        }
+        obj['children'].push(o)
+      })
+    }
+    if (data.childs && data.childs.length > 0) {
+      this.get_route_tree(data.childs, obj['children'])
+    }
+    array.push(obj);
+  });
+}
 
 
 }
