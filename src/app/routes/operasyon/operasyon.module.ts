@@ -18,6 +18,7 @@ import { OperasyonPageModelComponent } from './page-model/page-model.component';
 import { OperasyonNavOneComponent } from './nav-one/nav-one.component';
 import { OperasyonNavTwoComponent } from './nav-two/nav-two.component';
 import { OperasyonAnnouncementManageComponent } from './announcement-manage/announcement-manage.component';
+import { OperasyonFrontendListComponent } from './frontend-list/frontend-list.component';
 
 const COMPONENTS = [
   ManagerManagerCharacterComponent,
@@ -33,7 +34,8 @@ const COMPONENTS = [
   OperasyonPageModelComponent,
   OperasyonNavOneComponent,
   OperasyonNavTwoComponent,
-  OperasyonAnnouncementManageComponent];
+  OperasyonAnnouncementManageComponent,
+  OperasyonFrontendListComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({

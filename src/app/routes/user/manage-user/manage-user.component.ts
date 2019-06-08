@@ -232,9 +232,8 @@ export class UserManageUserComponent implements OnInit {
       let option = {
         id: this.now_edit_manage['id'],
         amount: this.recharge_num,
-        apply_note: this.apply_note
+        apply_note: this.apply_note?this.apply_note:'确认人工充值'
       };
-      option.apply_note=this.apply_note
       this.submit_add(option);
 
     }else if(this.amount_type=="reduce"){

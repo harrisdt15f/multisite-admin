@@ -180,8 +180,9 @@
         <nz-form-label style="text-align: left;" nzFor="route" nzRequired [nzSm]="24" [nzXs]="24">选择路由</nz-form-label>
         <nz-form-control nzHasFeedback [nzSm]="24" [nzXs]="23">
           <nz-select id="route" type="route" formControlName="route" style="width: 100%;"
-            [(ngModel)]="edit_route_obj['route']" nzShowSearch nzPlaceHolder="选择路由">
-            <nz-option *ngFor="let o of optionList" [nzValue]="o.r_name" [nzLabel]="o.value"></nz-option>
+          (ngModelChange)='change_route_obj($event)'  
+          [(ngModel)]="edit_route_obj['route']" nzShowSearch nzPlaceHolder="选择路由">
+            <nz-option *ngFor="let o of optionList" [nzValue]="o.route_name" [nzLabel]="o.value"></nz-option>
 
           </nz-select>
           <nz-form-explain *ngIf="route_form.get('route')?.dirty && route_form.get('route')?.errors">

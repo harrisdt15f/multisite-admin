@@ -263,7 +263,7 @@
           <input type="text" (keyup)="account_check()" placeholder="请输入金额" nz-input [(ngModel)]="recharge_num" />
         </nz-input-group>
         <div *ngIf='amount_type=="add"' style='margin-top: 30px'>
-          <input type="text" placeholder="确认人工充值" nz-input [(ngModel)]="apply_note" />
+          <input type="text" placeholder="备注：确认人工充值" nz-input [(ngModel)]="apply_note" />
         </div>
 
       </nz-modal>

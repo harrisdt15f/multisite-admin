@@ -58,7 +58,7 @@
           <td>{{ data.amount }}</td>
           <td>
             <span *ngIf='data.in_out==1' class='ant-badge-status-dot ant-badge-status-success padding-box'></span>
-            <span *ngIf='data.in_out==0' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
+            <span *ngIf='data.in_out==2' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
             <span>{{ data.in_out===1?'增加金额':'减少金额' }}</span>
           </td>
           <td>{{ data.type_name }}</td>

@@ -20,6 +20,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   public edit_route_nodes = [];//路由数组
   public is_loading_tree: boolean;
   public route_obj: Object = {};
+  public route_choise_obj: Object = {};
   //---------------路由下拉加载框参数
   public optionList: any[] = [];
   public isLoading = false;
@@ -130,13 +131,11 @@ export class DeveloperBettingMenuComponent implements OnInit {
     }
     this.developerService.get_route_new_api_list(data).subscribe((res: any) => {
       if (res && res.success) {
-        for (let x in res.data.route_info) {
-          this.optionList.push({
-            r_name: x,
-            value: x + '(' + res.data.route_info[x] + ')'
-
-          });
-        }
+        res.data.route_info.forEach((item, index) => {
+          let d = item;
+          d.value = d['route_name'] + '(' + d['url'] + ')';
+          this.optionList.push(d);
+        });
 
       } else {
         this.message.error(res.message, {
@@ -145,7 +144,18 @@ export class DeveloperBettingMenuComponent implements OnInit {
       }
     })
   }
+  /**
+   * route选择改变
+   * @param e 
+   */
+  change_route_obj(e){
+    this.route_choise_obj={};
+    this.optionList.forEach((item,index)=>{
+      if(item.route_name===e)
+      this.route_choise_obj=item;
 
+    })
+  }
 
   /**
    * 获取路由树
@@ -325,7 +335,9 @@ export class DeveloperBettingMenuComponent implements OnInit {
 
   submit_route() {
     let option = {
-      route_name: this.edit_route_obj['route'],
+      route_name: this.route_choise_obj['route_name'],
+      controller: this.route_choise_obj['controller'].split('@')[0],
+      method: this.route_choise_obj['controller'].split('@')[1],
       frontend_model_id: this.edit_menu_obj['key'],
       title: this.edit_route_obj['title'],
     };

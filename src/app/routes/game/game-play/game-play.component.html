@@ -18,7 +18,7 @@
       <div nz-row [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }" (click)='show_child_city(item,1)'
         *ngFor="let item of first_level ; let i=index" class="scene-obj">
         <div nz-col nzSpan="18">
-          <div>{{item.key |gameType}}</div>
+          <div>{{item.key |gameType}}({{item.key}})</div>
         </div>
     
       </div>
@@ -36,7 +36,7 @@
         (click)='show_child_city(item,2)' *ngFor="let item of second_level ; let i=index" class="scene-obj">
   
 
-          <div nz-col nzSpan="18">{{item.cn_name }}</div>
+          <div nz-col nzSpan="18">{{item.cn_name }}({{item.key}})</div>
           <div nz-col nzSpan="6">
               <nz-switch (ngModelChange)='change_lottory_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
               nzUnCheckedChildren="关"></nz-switch>
@@ -53,7 +53,7 @@
     <div class='city-content'>
       <div nz-row class='content-list' [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }"
         (click)='show_child_city(item,3)' *ngFor="let item of thirst_level ; let i=index" class="scene-obj">
-        <div nz-col nzSpan="18">{{item.method_group |gameType}}</div>
+        <div nz-col nzSpan="18">{{item.method_group |gameType}}({{item.method_group}})</div>
         <div nz-col nzSpan="6">
             <nz-switch [nzDisabled]='is_group_disabled' (ngModelChange)='change_play_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
             nzUnCheckedChildren="关"></nz-switch>
@@ -70,7 +70,7 @@
     <div class='city-content'>
       <div nz-row class='content-list' [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }"
         (click)='show_child_city(item,4)' *ngFor="let item of four_level ; let i=index" class="scene-obj">
-        <div nz-col nzSpan="18">{{item.method_row |gameType}}</div>
+        <div nz-col nzSpan="18">{{item.method_row |gameType}}({{item.method_row}})</div>
         <div nz-col nzSpan="6">
           <nz-switch [nzDisabled]='is_row_disabled||is_group_disabled' (ngModelChange)='change_row_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
           nzUnCheckedChildren="关"></nz-switch>

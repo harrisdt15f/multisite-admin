@@ -293,6 +293,19 @@ get_page_model_list(): Observable<any> {
     const href = this.serviceHttpIri + '/api/homepage/upload-pic';
     return this.commonService.post(href, data, { headers: headers });
   }
+    /**
+* 上传ico
+* @memberof ManagerService
+*/
+upload_ico(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/homepage/upload-ico';
+  return this.commonService.post(href, data, { headers: headers });
+}
   /**
 * 修改客服链接
 * 
@@ -319,7 +332,7 @@ get_hot_lotteries_one(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/detail-one';
+  const href = this.serviceHttpIri + '/api/popular-lotteries/detail';
   return this.commonService.get(href, { headers: headers });
 }
     /**
@@ -333,12 +346,12 @@ get_hot_lotteries_two(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/detail-two';
+  const href = this.serviceHttpIri + '/api/popular-methods/detail';
   return this.commonService.get(href, { headers: headers });
 }
 
     /**
-* 添加热门彩种列表
+* 添加热门彩票列表
 * 
 * @memberof ManagerService
 */
@@ -350,6 +363,34 @@ add_hot_lotteries(data): Observable<any> {
   });
   const href = this.serviceHttpIri + '/api/popular-lotteries/add';
   return this.commonService.post(href, data, { headers: headers });
+}
+    /**
+* 添加热门玩法列表
+* 
+* @memberof ManagerService
+*/
+add_popular_methods(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/popular-methods/methods-list';
+  return this.commonService.post(href, data, { headers: headers });
+}
+    /**
+* 添加热门玩法时的玩法列表
+* 
+* @memberof ManagerService
+*/
+get_methods_list(): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/popular-methods/methods-list';
+  return this.commonService.get(href, { headers: headers });
 }
 
     /**
@@ -381,6 +422,20 @@ edit_hot_lotteries_list(data): Observable<any> {
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
+* 编辑热门玩法
+* 
+* @memberof ManagerService
+*/
+edit_popular_methods_list(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/popular-methods/edit';
+  return this.commonService.post(href,data, { headers: headers });
+}
+/**
 * 删除热门彩票
 * 
 * @memberof ManagerService
@@ -395,7 +450,21 @@ delete_hot_lotteries_list(data): Observable<any> {
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
-* 上下拉排序
+* 删除热门玩法
+* 
+* @memberof ManagerService
+*/
+delete_hot_methods_list(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/popular-methods/delete';
+  return this.commonService.post(href,data, { headers: headers });
+}
+/**
+* 热门彩上下拉排序
 * 
 * @memberof ManagerService
 */
@@ -405,7 +474,21 @@ sort_hot_lotteries_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/lotteries-sort';
+  const href = this.serviceHttpIri + '/api/popular-lotteries/sort';
+  return this.commonService.post(href,data, { headers: headers });
+}
+/**
+* 热门玩法上下拉排序
+* 
+* @memberof ManagerService
+*/
+sort_hot_method_list(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/popular-methods/sort';
   return this.commonService.post(href,data, { headers: headers });
 }
 

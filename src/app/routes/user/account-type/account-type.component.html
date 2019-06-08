@@ -32,8 +32,8 @@
         <td>{{ data.sign }}</td>
         <td>
             <span *ngIf='data.in_out==1' class='ant-badge-status-dot ant-badge-status-success padding-box'></span>
-            <span *ngIf='data.in_out==0' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
-            <span >{{ data.in_out===0?'减少':'增加'}}</span>
+            <span *ngIf='data.in_out==2' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
+            <span >{{ data.in_out===2?'减少':'增加'}}</span>
         </td>
         <td>{{ data.type }}</td>
     

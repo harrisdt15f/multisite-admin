@@ -93,8 +93,8 @@
           <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="is_time_interval" formControlName="is_time_interval"
               [(ngModel)]="edit_activity_obj['is_time_interval']">
-              <label nz-radio nzValue='1'>是</label>
-              <label nz-radio nzValue='0'>否</label>
+              <label nz-radio nzValue='0'>是</label>
+              <label nz-radio nzValue='1'>否</label>
             </nz-radio-group>
             <nz-form-explain
               *ngIf="create_form.get('is_time_interval')?.dirty && create_form.get('is_time_interval')?.errors">

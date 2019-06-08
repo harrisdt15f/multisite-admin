@@ -1,6 +1,7 @@
 <page-header></page-header>
 <nz-content class='tab-content'>
   <input style='display: none' (change)='updateFire($event)' type="file" id="pic_3" />
+  <input style='display: none' (change)='update_ico_fire($event)' type="file" id="pic_6" />
   <nz-skeleton *ngIf='page_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
   <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
     <nz-tab *ngFor="let tab of page_tabs" [nzTitle]="tab.model_name">
@@ -12,6 +13,17 @@
         <div class='logo-up'>
           <button (click)='click_update(tab)' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
             <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽度：，最大高度：）</span>
+          </button>
+        </div>
+      </div>
+      <div class='tab-content-model' *ngIf='page_tabs[tab_index].key=="frontend.ico"'>
+        <div class='logo-img'>
+          <img #logo style='width: 50px;'
+            [src]='page_tabs[tab_index].value?(serviceHttpIri+page_tabs[tab_index].value):"./assets/img/null_head.png"'>
+        </div>
+        <div class='logo-up'>
+          <button (click)='click_ico_update(tab)' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
+            <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（请上传尺寸 16px*16px，ico格式图片）</span>
           </button>
         </div>
       </div>

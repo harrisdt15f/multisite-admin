@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { settings } from 'cluster';
 import { AdService } from 'app/service/ad.service';
+import { Utils } from 'config/utils.config';
 
 @Component({
   selector: 'app-ad-ad-type',
@@ -16,9 +17,9 @@ export class AdAdTypeComponent implements OnInit {
   public list_total: number;
   public is_load_list: boolean;
   //弹框
-  public l_size: string;
-  public w_size: string;
-  public size: string;
+  public l_size: number;
+  public w_size: number;
+  public size: number;
   @ViewChild('myInput') input;
 
 
@@ -42,6 +43,13 @@ export class AdAdTypeComponent implements OnInit {
   submit_ad() {
 
   }
+    /**
+ * 金额输入框验证
+ */
+account_check(type) {
+
+  this[type] = Utils.account_check(this[type]);
+}
 
   /**
   *改变页数
@@ -119,7 +127,7 @@ export class AdAdTypeComponent implements OnInit {
     };
     this.update_ad_type(option, data,()=>{
       data.l_size=this.l_size;
-      this.l_size='';
+      this.l_size=null;
     });
   }
   /**
@@ -135,7 +143,7 @@ export class AdAdTypeComponent implements OnInit {
     };
     this.update_ad_type(option, data,()=>{
       data.w_size=this.w_size;
-      this.w_size='';
+      this.w_size=null;
     });
   }
   /**
@@ -152,7 +160,7 @@ export class AdAdTypeComponent implements OnInit {
 
     this.update_ad_type(option, data,()=>{
       data.size=this.size;
-      this.size='';
+      this.size=null;
     });
   }
   /**

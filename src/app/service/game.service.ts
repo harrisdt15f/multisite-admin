@@ -19,7 +19,35 @@ export class GameService {
     ) {
     this.serviceHttpIri = Utils.GethttpIri();
   }
+  /**
+   *获取某个系统配置的值
+   *
+   * @memberof PersonalService
+   */
+  sys_configure_value(data){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/partner-sys-configures/sys-configure-value';
+    return this.commonService.post(href ,data,{ headers: headers });
+  }
     /**
+   *自动生成奖期时间
+   *
+   * @memberof PersonalService
+   */
+  generate_issue_time(data){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/partner-sys-configures/generate-issue-time';
+    return this.commonService.post(href ,data,{ headers: headers });
+  }
+/**
    *生成奖期
    *
    * @memberof PersonalService
@@ -33,7 +61,6 @@ export class GameService {
     const href = this.serviceHttpIri + '/api/lotteries/lotteries-issue-generate';
     return this.commonService.post(href ,data,{ headers: headers });
   }
-
 
   /**
    *获取采种系列

@@ -1,0 +1,88 @@
+<page-header  [action]="action"  >
+    <ng-template #action>
+        <button (click)='search()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+        class="ant-btn__block mb-sm">
+        <i nz-icon nzType="redo" nzTheme="outline"></i>
+        <span>刷新</span>
+      </button>
+    </ng-template>
+  </page-header>
+<nz-layout>
+  <nz-content>
+      <div nz-row style="margin:20px">
+          <div nz-col nzSpan="9">
+            <span>注册时间：</span>
+            <nz-range-picker nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" ngModel (ngModelChange)="on_change_time($event)">
+            </nz-range-picker>
+          </div>
+        </div>
+    <nz-table [nzScroll]='{x:"3400px", y: "500px" }' #nzTable [nzLoadingDelay]='500'
+      (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+      [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzWidth="200px">访问域名</th>
+          <th nzWidth="200px"> 访问Ip</th>
+          <th nzWidth="200px">Ip层级</th>
+          <th nzWidth="200px">管理员</th>
+          <th nzWidth="200px">系统语言</th>
+          <th nzWidth="200px">浏览器内核</th>
+          <th nzWidth="200px">操作系统</th>
+          <th nzWidth="200px">操作系统版本</th>
+          <th nzWidth="200px">浏览器</th>
+          <th nzWidth="200px">浏览器版本</th>
+          <th nzWidth="200px">设备类型</th>
+          <th nzWidth="200px">浏览器详细信息</th>
+          <th nzWidth="200px">请求参数</th>
+          <th nzWidth="200px">路由访问详情</th>
+          <th nzWidth="200px">生成时间</th>
+          <th nzWidth="200px">菜单</th>
+          <th nzWidth="200px">菜单地址</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr class='table_tr'>
+            <td>{{ data.origin|| '无'}}</td>
+            <td>{{ data.ip|| '无' }}</td>
+            <td (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
+            <td>{{ data.username || '无'}}</td>
+            <td>{{ data.lang|| '无'}}</td>
+            <td>{{ data.device|| '无' }}</td>
+            <td>{{ data.os|| '无' }}</td>
+            <td>{{ data.os_version || '无'}}</td>
+            <td>{{ data.browser|| '无' }}</td>
+            <td>{{ data.bs_version || '无'}}</td>
+            <td>{{ data.device_type|equipmentType}}</td>
+            <td class='ellipsis' (click)='show_content(data.user_agent,"string")'>{{ data.user_agent || '无'}}</td>
+            <td class='ellipsis' (click)='show_content(data.inputs,"object")'>{{ data.inputs || '无'}}</td>
+            <td class='ellipsis' (click)='show_content(data.route,"object")'>{{ data.route|| '无' }}</td>
+            <td>{{ data.created_at|| '无' }}</td>
+            <td>{{ data.menu_label|| '无' }}</td>
+            <td>{{ data.menu_path|| '无' }}</td>
+
+
+          </tr>
+          <tr>
+
+
+
+
+          </tr>
+        </ng-template>
+
+      </tbody>
+    </nz-table>
+
+    <!-- 操作历史弹框 -->
+    <nz-drawer nzWidth='600px' [nzVisible]="if_show_text" nzPlacement="right" nzTitle="数据详情"
+      (nzOnClose)="if_show_text = false">
+      <!-- <div [innerHTML]='show_text'></div> -->
+      <pre [innerHTML]='show_text'>
+
+      </pre>
+        
+    </nz-drawer>
+  </nz-content>
+</nz-layout>

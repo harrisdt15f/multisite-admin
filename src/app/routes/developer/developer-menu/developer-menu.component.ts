@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent, NzDropdownService, NzMessageService } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent, NzDropdownService, NzMessageService, isTemplateRef } from 'ng-zorro-antd';
 import { DeveloperService } from 'app/service/developer.service';
 import { StartupService } from '@core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -33,6 +33,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
   public is_show_edit_route: boolean;
   public edit_menu_obj: object = {};  //菜单编辑对象
   public edit_route_obj: object = {}; //路由编辑对象
+  public route_choise_obj: object = {}; //路由编辑对象
 
   constructor(
     private http: _HttpClient,
@@ -101,19 +102,16 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
   load_menu(): void {
     this.isLoading = true;
     this.optionList = [];
-    let option={
-      type:1
+    let option = {
+      type: 0
     }
     this.developerService.get_route_new_api_list(option).subscribe((res: any) => {
       if (res && res.success) {
-        for (let x in res.data.route_info) {
-          this.optionList.push({
-            r_name: x,
-            value: x + '(' + res.data.route_info[x] + ')'
-
-          });
-        }
-
+        res.data.route_info.forEach((item, index) => {
+          let d = item;
+          d.value = d['route_name'] + '(' + d['url'] + ')';
+          this.optionList.push(d);
+        });
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -300,19 +298,35 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
     this.edit_menu_submit(option);
   }
   /**
+   * route选择改变
+   * @param e 
+   */
+  change_route_obj(e){
+    this.route_choise_obj={};
+    this.optionList.forEach((item,index)=>{
+      if(item.route_name===e)
+      this.route_choise_obj=item;
+
+    })
+  }
+  /**
    * 点击提交路由
    */
 
   submit_route() {
     let option = {
-      route_name: this.edit_route_obj['route'],
-      menu_group_id: this.edit_menu_obj['key'],
+      id: this.edit_route_obj['id'],
+      route_name: this.route_choise_obj['route_name'],
+      controller: this.route_choise_obj['controller'].split('@')[0],
+      method: this.route_choise_obj['controller'].split('@')[1],
       title: this.edit_route_obj['title'],
     };
     this.isOkLoading = true;
     if (this.modal_type == 'create') {
+      option['menu_group_id']=this.edit_menu_obj['key'];
       this.add_route_submit(option);
     } else if (this.modal_type == 'edit') {
+      option['menu_group_id']=this.edit_route_obj['menu_group_id'];
       this.edit_route_submit(option);
     }
   }
@@ -454,6 +468,15 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
    * @param data 
    */
   edit_route(data) {
+    this.is_show_edit_route=true;
+    this.modal_type='edit';
+ 
+    this.edit_route_obj={
+      id:data.key,
+      title:data.title,
+      menu_group_id:data.menu_group_id,
+      route:data.route_name
+    }
 
   }
   /**
@@ -494,6 +517,10 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
  */
   update_form() {
     this.edit_menu_obj = {};
+    this.edit_route_obj = {
+      route:'',
+      title:''
+    };
     this.create_form.reset();
     this.route_form.reset();
     for (const key in this.create_form.controls) {
@@ -536,6 +563,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
             value: item.id,
             isLeaf: true,
             route_name: item.route_name,
+            menu_group_id: item.menu_group_id,
             title: item.title,
             description: item.description
           })
@@ -594,6 +622,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
                       is_route: true,
                       isLeaf: true,
                       route_name: data.route_name,
+                      menu_group_id: data.menu_group_id,
                       title: data.title,
                       description: data.description
                     })
@@ -609,6 +638,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
                   is_route: true,
                   isLeaf: true,
                   route_name: item.route_name,
+                  menu_group_id: item.menu_group_id,
                   title: item.title,
                   description: item.description
                 })
@@ -621,7 +651,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
       }
       menuList.push(obj);
       routeList.push(obj1);
- 
+
     }
     this.edit_menu_nodes = menuList;
     this.edit_route_nodes = routeList;

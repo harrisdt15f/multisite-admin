@@ -70,6 +70,17 @@ export class GameTypePipe implements PipeTransform {
       case '5mabudingwei': data = '五码不定位'; break;
       case 'caihezhi': data = '猜和值'; break;
       case 'longhudou': data = '龙虎斗'; break;
+
+      //玩法组
+      case 'BDW': data = '不定位'; break;
+      case 'DWD': data = '定位胆'; break;
+      case 'EX': data = '二星'; break;
+      case 'H3': data = '后三'; break;
+      case 'LH': data = '龙虎'; break;
+      case 'QW': data = '趣味'; break;
+      case 'SX': data = '四星'; break;
+      case 'Z3': data = '中三'; break;
+      case 'Z3': data = '中三'; break;
       default: 
       data=value;
       break;

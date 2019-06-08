@@ -33,7 +33,7 @@ export class OperasyonNavOneComponent implements OnInit {
     this.serviceHttpIri = Utils.GethttpIri();
    }
    /**
-* 点击上传文件
+* 点击上传logo文件
 */
 
 click_update(tab) {
@@ -60,7 +60,33 @@ updateFire(item) {
     }
   })
 }
+   /**
+* 点击上传ico文件
+*/
 
+click_ico_update(tab) {
+  // this.edit
+  document.getElementById('pic_6').click();
+}
+update_ico_fire(item) {
+  this.file_obj = item.target['files'][0];
+  this.file_iri = window.URL.createObjectURL(this.file_obj);
+  var op: FormData = new FormData();
+  op.append('ico',  this.file_obj);
+  this.managerService.upload_ico(op).subscribe((res: any) => {
+    if (res && res.success) {
+      this.get_home_page_list();
+      this.message.success('上传ico成功', {
+        nzDuration: 10000,
+      });
+    } else {
+
+      this.message.error(res.message, {
+        nzDuration: 10000,
+      });
+    }
+  })
+}
 /**
  *切换tab
  *
@@ -68,6 +94,7 @@ updateFire(item) {
  */
   change_index(index: number) {
     this.tab_index = index;
+    console.log(this.page_tabs[this.tab_index].key);
   }
 
   /**

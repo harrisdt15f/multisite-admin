@@ -45,6 +45,21 @@
               </ng-template>
             </nz-list-item-meta>
           </nz-list-item>
+          <nz-list-item [nzActions]="[QRcode]">
+            <ng-template #QRcode>
+                <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['qr.code'].status==1"
+                (ngModelChange)="change_open_base($event,home_page_type['qr.code'])" nzCheckedChildren="开"
+                nzUnCheckedChildren="关"></nz-switch>
+              <nz-spin *ngIf='is_upload' nzSimple></nz-spin>
+              <a *ngIf='!is_upload' (click)='click_update()'>上传</a>
+            </ng-template>
+            <nz-list-item-meta nzTitle="下载二维码" [nzDescription]="QRcodeDesc">
+              <ng-template #QRcodeDesc>
+                <img style='width:150px' *ngIf="home_page_type['qr.code']&&home_page_type['qr.code'].value"
+                  [src]="serviceHttpIri+home_page_type['qr.code'].value">
+              </ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
           <nz-list-item [nzActions]="[notice]">
             <ng-template #notice>
                 <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['notice'].status==1"
@@ -77,7 +92,7 @@
 
 
       </div>
-      <!-- 热门彩种一 -->
+      <!-- 热门彩票一 -->
       <div *ngIf='type=="popularLotteries.one"' style='min-height: 500px;position: relative;' >
           <div *ngIf='is_load_list' class='lodding-box'>
               <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
@@ -86,7 +101,7 @@
         
             <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
               class="ant-btn__block mb-sm">
-              <i class="anticon anticon-plus"></i><span>添加热门彩种</span>
+              <i class="anticon anticon-plus"></i><span>添加热门彩票</span>
             </button>
             <nz-empty *ngIf='!list_of_aply_data||list_of_aply_data.length==0'></nz-empty>
             <div  *ngIf='list_of_aply_data&&list_of_aply_data.length>0' style='margin-top: 50px;position: relative;'>
@@ -95,7 +110,7 @@
         
                 <div class="example-box" *ngFor="let data of list_of_aply_data" cdkDrag>
                   <nz-card style="width:300px;margin-bottom:0" [nzCover]="coverTemplate" [nzActions]="[actionEdit,actionDelet]">
-                    <nz-card-meta [nzTitle]="data.lotteries.cn_name" ></nz-card-meta>
+                    <nz-card-meta [nzTitle]="data.cn_name" ></nz-card-meta>
                   </nz-card>
         
                   <ng-template #coverTemplate>
@@ -107,14 +122,14 @@
                   </ng-template>
                   <ng-template #actionDelet>
            
-                     <i nz-popconfirm nzTitle="确认删除这个热门彩种吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close" (nzOnConfirm)='delete_lotteries(data,1)' nzTheme="outline"></i>
+                     <i nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close" (nzOnConfirm)='delete_lotteries(data,1)' nzTheme="outline"></i>
                   </ng-template>
         
                 </div>
               </div>
             </div>
             <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
-              [nzTitle]="modal_type=='create'?'添加热门彩种':'修改热门彩种'" (nzOnClose)="is_show_box = false">
+              [nzTitle]="modal_type=='create'?'添加热门彩票':'修改热门彩票'" (nzOnClose)="is_show_box = false">
               <form nz-form [formGroup]="create_form">
                 <div *ngIf='modal_lodding' class='lodding-box'>
                   <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
@@ -129,7 +144,7 @@
                   </nz-form-control>
                 </nz-form-item>       
                 <nz-form-item>
-                  <nz-form-label nzFor="lotteries_id" nzRequired [nzSm]="6" [nzXs]="24">热门彩种开关</nz-form-label>
+                  <nz-form-label nzFor="lotteries_id" nzRequired [nzSm]="6" [nzXs]="24">热门彩票开关</nz-form-label>
                   <nz-form-control [nzSm]="15" [nzXs]="23">
                       <nz-select  id="lotteries_id" type="lotteries_id" formControlName="lotteries_id"
                       style="width: 100%;"
@@ -163,7 +178,7 @@
             </nz-modal>
 
       </div>
-      <!-- 热门彩种二 -->
+      <!-- 热门彩票二 -->
       <div *ngIf='type=="popularLotteries.two"' style='min-height: 500px;position: relative;' >
           <div *ngIf='is_load_list' class='lodding-box'>
               <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
@@ -172,7 +187,7 @@
         
             <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
               class="ant-btn__block mb-sm">
-              <i class="anticon anticon-plus"></i><span>添加热门彩种二</span>
+              <i class="anticon anticon-plus"></i><span>添加热门玩法</span>
             </button>
             <nz-empty *ngIf='!list_of_aply_data_two||list_of_aply_data_two.length==0'></nz-empty>
             <div  *ngIf='list_of_aply_data_two&&list_of_aply_data_two.length>0' style='margin-top: 50px;position: relative;'>
@@ -181,7 +196,7 @@
         
                 <div class="example-box" *ngFor="let data of list_of_aply_data_two" cdkDrag>
                   <nz-card style="width:300px;margin-bottom:0" [nzCover]="coverTemplate" [nzActions]="[actionEdit,actionDelet]">
-                    <nz-card-meta [nzTitle]="data.lotteries.cn_name" ></nz-card-meta>
+                    <nz-card-meta [nzTitle]="data.method_name+'('+data.lottery_name+')'" ></nz-card-meta>
                   </nz-card>
         
                   <ng-template #coverTemplate>
@@ -193,23 +208,23 @@
                   </ng-template>
                   <ng-template #actionDelet>
            
-                     <i nz-popconfirm nzTitle="确认删除这个热门彩种吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close" (nzOnConfirm)='delete_lotteries(data,2)' nzTheme="outline"></i>
+                     <i nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close" (nzOnConfirm)='delete_lotteries(data,2)' nzTheme="outline"></i>
                   </ng-template>
         
                 </div>
               </div>
             </div>
             <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
-              [nzTitle]="modal_type=='create'?'添加热门彩种':'修改热门彩种'" (nzOnClose)="is_show_box = false">
+              [nzTitle]="modal_type=='create'?'添加热门彩票':'修改热门彩票'" (nzOnClose)="is_show_box = false">
               <form nz-form [formGroup]="create_form_two">
                 <div *ngIf='modal_lodding' class='lodding-box'>
                   <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
                 </div>
-       
                 <nz-form-item>
-                  <nz-form-label nzFor="lotteries_id" nzRequired [nzSm]="6" [nzXs]="24">选择彩种</nz-form-label>
+                  <nz-form-label nzFor="method_id" nzRequired [nzSm]="6" [nzXs]="24">选择玩法</nz-form-label>
                   <nz-form-control [nzSm]="15" [nzXs]="23">
-                      <nz-select  id="lotteries_id" type="lotteries_id" formControlName="lotteries_id"
+                      <nz-cascader id="method_id" type="method_id" formControlName="method_id" [nzOptions]="method_option" [(ngModel)]="method_value" (ngModelChange)="onChanges($event)"> </nz-cascader>
+                      <!-- <nz-select  id="lotteries_id" type="lotteries_id" formControlName="lotteries_id"
                       style="width: 100%;"
                       [(ngModel)]="edit_lotteries_obj['lotteries_id']"
                       nzShowSearch
@@ -218,7 +233,7 @@
 
                       <nz-option *ngFor="let o of lotteries_list" [nzValue]="o.id" [nzLabel]="o.cn_name"></nz-option>
              
-                    </nz-select>
+                    </nz-select> -->
                     <nz-form-explain *ngIf="create_form_two.get('lotteries_id')?.dirty && create_form_two.get('lotteries_id')?.errors">
                       请选择!</nz-form-explain>
                   </nz-form-control>

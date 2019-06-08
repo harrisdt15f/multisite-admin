@@ -40,7 +40,7 @@
                 </div>
                 <div *ngIf='data.is_edit_l_size'>
                   <nz-input-group nzSearch nzSize="smale" [nzAddOnAfter]="suffixButton">
-                    <input #myInput [(ngModel)]="l_size" type="number" nz-input />
+                    <input (keyup)="account_check('l_size')" #myInput [(ngModel)]="l_size" type="text" nz-input />
                   </nz-input-group>
                   <ng-template #suffixButton>
                     <button nz-button (click)='edit_l_size($event,data)'  [nzLoading]="data.is_loading_l_size" nzType="primary" nzSize="smale" nzSearch>修改</button>
@@ -54,7 +54,7 @@
                 </div>
                 <div *ngIf='data.is_edit_w_size'>
                   <nz-input-group nzSearch nzSize="smale" [nzAddOnAfter]="suffixButton">
-                    <input #myInput [(ngModel)]="w_size" type="number" nz-input />
+                    <input (keyup)="account_check('w_size')" #myInput [(ngModel)]="w_size" type="text" nz-input />
                   </nz-input-group>
                   <ng-template #suffixButton>
                     <button nz-button (click)='edit_w_size($event,data)' [nzLoading]="data.is_loading_w_size" nzType="primary" nzSize="smale" nzSearch>修改</button>
@@ -69,7 +69,7 @@
                 </div>
                 <div *ngIf='data.is_edit_size'>
                   <nz-input-group nzSearch nzSize="smale" [nzAddOnAfter]="suffixButton">
-                    <input #myInput [(ngModel)]="size" type="number" nz-input />
+                    <input (keyup)="account_check('size')" #myInput [(ngModel)]="size" type="text" nz-input />
                   </nz-input-group>
                   <ng-template #suffixButton>
                     <button nz-button (click)='edit_size($event,data)' [nzLoading]="data.is_loading_size" nzType="primary" nzSize="smale" nzSearch>修改</button>

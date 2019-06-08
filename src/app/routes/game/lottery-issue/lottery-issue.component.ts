@@ -20,6 +20,7 @@ export class GameLotteryIssueComponent implements OnInit {
   public list_of_search_status: string;
   public is_load_list: boolean;
   public searchValue = '';
+  public choise_lottery = '0';
   public note_value: string;
   public sortName: string | null = null;
   public sortValue: string | null = null;
@@ -36,18 +37,18 @@ export class GameLotteryIssueComponent implements OnInit {
 
 
   public tab_index: number = 0;
+  public search_number: string;
 
   //-------------弹框参数
   public visible_modal = false;
   public create_form: FormGroup;//表单对象
   public modal_lodding: boolean;//显示加载图标
   public create_lottery_obj: object = {};//显示加载图标
-  public lotteries_list: Array<any> = [
-    {
-      title: '重庆时时彩',
-      id: 'cqssc'
-    }
-  ];
+  public lotteries_list: Array<any> = [];
+  public time:Date;
+  public every_day_time:string;
+  public is_visible_edit_time:boolean;
+  public is_loading_edit_time:boolean;
   constructor(
     private http: _HttpClient,
     private gameService: GameService,
@@ -56,13 +57,98 @@ export class GameLotteryIssueComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.time = new Date();
     this.search();
     this.get_lotteries_type();
+    this.get_time_setting();
     this.create_form = this.fb.group({
       lottery_id: [null, [Validators.required]],
       start_time: [null, [Validators.required]],
       end_time: [null, [Validators.required]],
+    
     });
+  }
+  /**
+   * 关闭弹窗
+   */
+  close_drawer(){
+    this.visible_modal = false;
+    this.modal_lodding = false;
+    this.update_form();
+  }
+
+    /**
+ *d刷新表单
+ *
+ * @memberof OperasyonActivityListComponent
+ */
+update_form() {
+  this.create_lottery_obj = {};
+  this.create_form.reset();
+  
+
+  for (const key in this.create_form.controls) {
+    this.create_form.controls[key].markAsPristine();
+    this.create_form.controls[key].updateValueAndValidity();
+  }
+
+}
+/**
+ * 获取奖期生成时间 
+ */
+  get_time_setting(){
+    let option={
+      key:'generate_issue_time'
+    }
+    this.gameService.sys_configure_value(option).subscribe((res: any) => {
+      if (res && res.success) {
+
+        this.every_day_time=res.data;
+   
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
+  /**
+   * 点击编辑奖期生成时间
+   */
+  edit_lot_time(){
+
+    this.is_visible_edit_time=true;
+  }
+    /**
+   * 修改时间弹框点击取消
+   */
+  handleCancel(){
+    this.is_visible_edit_time=false;
+  }
+  /**
+   * 修改时间弹框点击确定
+   */
+  handleOk(){
+    let option={
+      value:this.time.getHours()+':'+(this.time.getMinutes()<10?'0'+this.time.getMinutes():this.time.getMinutes())
+    }
+    this.is_loading_edit_time=true;
+
+    this.gameService.generate_issue_time(option).subscribe((res: any) => {
+      this.is_visible_edit_time = false;
+      this.is_loading_edit_time=false;
+      if (res && res.success) {
+        this.message.success('修改生成奖期时间成功', {
+          nzDuration: 10000,
+        });
+        this.every_day_time=option.value;
+        this.time=new Date();
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
   }
   /**
    *生成奖期间
@@ -128,7 +214,13 @@ export class GameLotteryIssueComponent implements OnInit {
  */
   change_index(index: number) {
     this.tab_index = index;
-    this.search()
+    this.choise_lottery = '0';
+    this.search_number=null;
+    this.search();
+    if(this.lotteries_tabs[this.tab_index].value!=10086){
+        this.get_lotteries_list();
+    }
+  
 
   }
   /**
@@ -161,7 +253,7 @@ export class GameLotteryIssueComponent implements OnInit {
           }
           )
         }
-        // this.get_lotteries_list(this.lotteries_tabs[0].value,0)
+    
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -189,6 +281,9 @@ export class GameLotteryIssueComponent implements OnInit {
     this.list_of_search_status = value;
     this.search();
   }
+  search_lotteries(){
+    this.search();
+  }
   /**
 *点击提交，驳回申请
 *
@@ -202,6 +297,33 @@ export class GameLotteryIssueComponent implements OnInit {
   //   this.edit_check_obj = data;
   //   this.edit_check_obj['type'] = type;
   // }
+/**
+ * 获取当前系列的所有玩法
+ */
+  get_lotteries_list(){
+    let data={
+      series_id :this.lotteries_tabs[this.tab_index].value
+    }
+    this.gameService.get_lotteries_list(data).subscribe((res: any) => {
+      if (res && res.success) {
+        this.lotteries_list=[];
+        res.data.forEach((item) => {
+          this.lotteries_list.push({
+              title: item.cn_name,
+              id: item.en_name
+          })
+        });
+      
+     
+
+      } else {
+        this.is_load_list = false;
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
   /**
    *搜索数组
    *
@@ -212,10 +334,13 @@ export class GameLotteryIssueComponent implements OnInit {
     if (this.list_of_search_status && this.list_of_search_status != '1000') {
       option['status'] = this.list_of_search_status;
     }
-
     if (this.searchValue) {
       option['username'] = this.searchValue;
     }
+    if(this.search_number){
+      option['issue'] = this.search_number;
+    }
+
     this.get_issue_list(page ? page : 1, option);
   }
   /**
@@ -225,9 +350,7 @@ export class GameLotteryIssueComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   chang_page_index(item) {
-
     this.search(item);
-
   }
   /*
 *
@@ -239,7 +362,10 @@ export class GameLotteryIssueComponent implements OnInit {
     this.is_load_list = true;
     var option = {}
     if (this.tab_index != 0 && this.lotteries_tabs[this.tab_index].value) {
-      data.series_id = this.lotteries_tabs[this.tab_index].value
+      data.series_id = this.lotteries_tabs[this.tab_index].value;
+    }
+    if(this.choise_lottery&&this.choise_lottery!='0'){
+      data['lottery_id'] = this.choise_lottery;
     }
     this.gameService.get_issue_list(page_index, data).subscribe((res: any) => {
       if (res && res.success) {

@@ -159,6 +159,7 @@ export class GameGamePlayComponent implements OnInit {
       let item;
       if (obj[key].data) {
          o = obj[key].data
+         o.key = key
          item = obj[key].child;
       } else {
          o = {

@@ -14,6 +14,7 @@ import { OperasyonPageModelComponent } from './page-model/page-model.component';
 import { OperasyonNavOneComponent } from './nav-one/nav-one.component';
 import { OperasyonNavTwoComponent } from './nav-two/nav-two.component';
 import { OperasyonAnnouncementManageComponent } from './announcement-manage/announcement-manage.component';
+import { OperasyonFrontendListComponent } from './frontend-list/frontend-list.component';
 
 
 const routes: Routes = [
@@ -31,7 +32,8 @@ const routes: Routes = [
   { path: 'page-model', component: OperasyonPageModelComponent },
   { path: 'nav-one', component: OperasyonNavOneComponent },
   { path: 'nav-two', component: OperasyonNavTwoComponent },
-  { path: 'announcement-manage', component: OperasyonAnnouncementManageComponent }];
+  { path: 'announcement-manage', component: OperasyonAnnouncementManageComponent },
+  { path: 'frontend-list', component: OperasyonFrontendListComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

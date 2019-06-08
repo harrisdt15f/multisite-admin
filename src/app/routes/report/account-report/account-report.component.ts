@@ -16,7 +16,7 @@ export class ReportAccountReportComponent implements OnInit {
   public choise_deposit_mode: string;
   public choise_status: string;
   public in_out = [
-    { text: '减少金额', value: '0' },
+    { text: '减少金额', value: '2' },
     { text: '增加金额', value: '1' }
   ]
   public page_index = 1;

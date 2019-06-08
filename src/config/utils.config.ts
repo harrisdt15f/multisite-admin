@@ -8,7 +8,7 @@ export class Utils {
     '/operasyon/operasyon-setting',
     '/passport/login'
   ];
-  static isDevelop: boolean =false;
+  static isDevelop: boolean =true;
   constructor() {
   }
   
@@ -53,13 +53,14 @@ export class Utils {
 /**
  * 金额输入框验证
  */
-static account_check(value,max_num){
+static account_check(value,max_num?){
   //正整数，小于最大限额
   let prize=Number(value);
   prize=parseInt(String(prize));
-  if(prize>max_num){
+  if(max_num&&prize>max_num){
     prize=max_num;
-  }else if(prize<=0){
+  }
+  if(prize<=0){
     prize=null;
   }
   return prize?prize:null;
