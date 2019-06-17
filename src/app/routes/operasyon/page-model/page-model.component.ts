@@ -100,7 +100,8 @@ export class OperasyonPageModelComponent implements OnInit {
   }
   onChanges(values: any): void {
     console.log(values, this.method_value);
-    this.edit_lotteries_obj['method_id']=values[1];
+    this.edit_lotteries_obj['method_id']=values[1].split('&')[0];
+    this.edit_lotteries_obj['lotteries_id']=values[1].split('&')[1];
 
   }
   //----------------热门彩zhong
@@ -149,6 +150,7 @@ export class OperasyonPageModelComponent implements OnInit {
     };
 
   }
+
   /**
    * 添加热门玩法时的玩法列表
    */
@@ -164,8 +166,10 @@ export class OperasyonPageModelComponent implements OnInit {
           }
           res.data[key].forEach((data) => {
             lot.children.push({
-              value: data.method_id,
+              value: data.method_id+'&'+data.lottery_id,
               label: data.method_name,
+              lotteries_id: data.lottery_id,
+              disabled: data.status===1?false:true,
               isLeaf: true
             })
           });
@@ -583,7 +587,7 @@ export class OperasyonPageModelComponent implements OnInit {
     this.managerService.get_page_model_list().subscribe((res: any) => {
       if (res && res.success) {
         res.data.forEach((item) => {
-          this.home_page_type[item.key] = item;
+          this.home_page_type[item.en_name] = item;
         });
       } else {
         this.message.error(res.message, {

@@ -17,7 +17,19 @@ export class UserManageService {
   ) {
     this.serviceHttpIri = Utils.GethttpIri();
   }
-
+  /**
+   *根据ip获取城市信息
+   *
+   */
+  search_city_by_ip(ip) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/log/get-address?ip='+ip;
+    return this.commonService.get(href, { headers: headers });
+  }
 
   /**
    *创建总代

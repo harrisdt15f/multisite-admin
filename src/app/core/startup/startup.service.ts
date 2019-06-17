@@ -72,14 +72,14 @@ export class StartupService {
           this.settingService.setUser(user);
           // ACL：设置权限为全量
           this.aclService.setFull(true);
-          if (user && user.token&&this.menu) {
+          if (user && user.token && this.menu) {
             // 初始化菜单
             this.menuService.add(this.menu);
           }
           // 设置页面标题的后缀
           this.titleService.suffix = res.app.name;
         },
-        () => {},
+        () => { },
         () => {
           resolve(null);
         },
@@ -89,7 +89,7 @@ export class StartupService {
    * 获得菜单列表
    */
   private getMenulist(item) {
-    Utils.acl_route_list=[];
+    Utils.acl_route_list = [];
     let menuList = [
       {
         text: '菜单',
@@ -105,39 +105,42 @@ export class StartupService {
         icon: item[key].icon,
         children: [],
       };
-      this.menu_obj[key]=item[key];
+      this.menu_obj[key] = item[key];
 
       if (item[key].child) {
+        this.menu_obj[key].is_parent=true;
         for (let x in item[key].child) {
-          this.menu_obj[x]=item[key].child[x];
-          let second_obj={
+          this.menu_obj[x] = item[key].child[x];
+          let second_obj = {
             key: x,
             text: item[key].child[x].label,
             i18n: item[key].child[x].en_name,
             link: item[key].child[x].route,
             children: [],
           };
-         
-          if(item[key].child[x].child){
-            for (let y in item[key].child[x].child){
-              if(item[key].child[x].child[y].display===1){
+
+          if (item[key].child[x].child) {
+            this.menu_obj[x].is_parent=true;
+            for (let y in item[key].child[x].child) {
+              this.menu_obj[y] = item[key].child[x].child[y];
+              if (item[key].child[x].child[y].display === 1) {
                 second_obj.children.push({
-                key:  y,
-                text: item[key].child[x].child[y].label,
-                i18n: item[key].child[x].child[y].en_name,
-                link: item[key].child[x].child[y].route,
-              })
+                  key: y,
+                  text: item[key].child[x].child[y].label,
+                  i18n: item[key].child[x].child[y].en_name,
+                  link: item[key].child[x].child[y].route,
+                })
               }
               Utils.acl_route_list.push(item[key].child[x].child[y].route);
               Utils.acl_id_list.push(y);
             }
           }
-          if(item[key].child[x].display===1){
+          if (item[key].child[x].display === 1) {
             obj.children.push(second_obj);
             Utils.acl_route_list.push(item[key].child[x].route)
             Utils.acl_id_list.push(x)
           }
-        
+
         }
       }
       menuList[0].children.push(obj);
@@ -148,57 +151,24 @@ export class StartupService {
   /**
    * 得到创建组中的菜单树
    */
-  getMenueTree(item) {
-
-    let menuList = [];
+  getMenueTree(item, list) {
     for (let key in item) {
       let obj = {
         key: Number(key),
-        value:  Number(key),
+        value: Number(key),
         title: item[key].label,
         en_name: item[key].en_name,
         route: item[key].route,
         display: item[key].display,
-        pid: item[key].pid,
-        children: [],
+        pid: item[key].pid
       };
-
       if (item[key].child) {
-        for (let x in item[key].child) {
-          let second_obj={
-            key:  Number(x),
-            value: Number(x),
-            route: item[key].child[x].route,
-            title: item[key].child[x].label,
-            en_name: item[key].child[x].en_name,
-            display: item[key].child[x].display,
-            pid: item[key].child[x].pid,
-            children: [],
-          };
-         
-          if(item[key].child[x].child){
-            for (let y in item[key].child[x].child){
-              // if(item[key].child[x].child[y].display===1){
-                second_obj.children.push({
-                key:  Number(y),
-                value: Number(y),
-                isLeaf: true,
-                route: item[key].child[x].child[y].lroute,
-                pid: item[key].child[x].child[y].pid,
-                title: item[key].child[x].child[y].label,
-                en_name: item[key].child[x].child[y].en_name,
-                display: item[key].child[x].child[y].display,
-              })
-              // }
-            
-            }
-          }
-          obj.children.push(second_obj);
-        }
+        obj['is_parent']=true;
+        obj['children']=[];
+        this.getMenueTree(item[key].child,obj['children']);
       }
-      menuList.push(obj);
+      list.push(obj);
     }
-    this.menu_list = menuList;
   }
 
   load(): Promise<any> {
@@ -219,9 +189,10 @@ export class StartupService {
         this.get_all_menu().subscribe((r: any) => {
           if (r && r.success) {
             this.menu = this.getMenulist(r.data);
-            this.getMenueTree(r.data);//添加组用的菜单格式
+            this.menu_list = [];
+            this.getMenueTree(r.data, this.menu_list);//添加组用的菜单格式
             this.viaHttp(resolve, reject, headers);
-          }else{
+          } else {
             this.viaHttp(resolve, reject, headers);
           }
         });

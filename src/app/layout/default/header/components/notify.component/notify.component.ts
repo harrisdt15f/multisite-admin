@@ -2,23 +2,14 @@ import { Component, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/
 import * as distanceInWordsToNow from 'date-fns/distance_in_words_to_now';
 import { NzMessageService } from 'ng-zorro-antd';
 import { NoticeItem, NoticeIconList } from '@delon/abc';
+import { NotifyService } from 'app/service/notify.service';
 
 /**
  * 菜单通知
  */
 @Component({
   selector: 'header-notify',
-  template: `
-  <notice-icon
-    [data]="data"
-    [count]="count"
-    [loading]="loading"
-    btnClass="alain-default__nav-item"
-    btnIconClass="alain-default__nav-item-icon"
-    (select)="select($event)"
-    (clear)="clear($event)"
-    (popoverVisibleChange)="loadData()"></notice-icon>
-  `,
+  templateUrl: './notify.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderNotifyComponent {
@@ -51,7 +42,10 @@ export class HeaderNotifyComponent {
   count = 5;
   loading = false;
 
-  constructor(private msg: NzMessageService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private msg: NzMessageService, 
+    private notifyService: NotifyService, 
+    private cdr: ChangeDetectorRef) {}
 
   private updateNoticeData(notices: NoticeIconList[]): NoticeItem[] {
     const data = this.data.slice();
@@ -79,6 +73,12 @@ export class HeaderNotifyComponent {
   loadData() {
     if (this.loading) return;
     this.loading = true;
+    this.notifyService.get_notice_message().subscribe((res:any)=>{
+      if(res.success){
+
+      }
+
+    })
     setTimeout(() => {
       this.data = this.updateNoticeData([
         {

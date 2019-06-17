@@ -72,6 +72,7 @@ const DEFAULT_VARS = {
     type: 'color',
     default: '#ffffff',
   },
+
   'alain-default-aside-collapsed-wd': {
     label: '收缩宽度',
     type: 'px',

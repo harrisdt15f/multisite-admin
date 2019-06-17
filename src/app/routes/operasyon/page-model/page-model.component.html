@@ -223,7 +223,7 @@
                 <nz-form-item>
                   <nz-form-label nzFor="method_id" nzRequired [nzSm]="6" [nzXs]="24">选择玩法</nz-form-label>
                   <nz-form-control [nzSm]="15" [nzXs]="23">
-                      <nz-cascader id="method_id" type="method_id" formControlName="method_id" [nzOptions]="method_option" [(ngModel)]="method_value" (ngModelChange)="onChanges($event)"> </nz-cascader>
+                      <nz-cascader nzPlaceHolder="请选择玩法" id="method_id" type="method_id" formControlName="method_id" [nzOptions]="method_option" [(ngModel)]="method_value" (ngModelChange)="onChanges($event)"> </nz-cascader>
                       <!-- <nz-select  id="lotteries_id" type="lotteries_id" formControlName="lotteries_id"
                       style="width: 100%;"
                       [(ngModel)]="edit_lotteries_obj['lotteries_id']"

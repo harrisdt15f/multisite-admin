@@ -10,11 +10,12 @@ import { startOfMonth } from 'date-fns';
 })
 export class LogOperationLogComponent implements OnInit {
   //----------------筛选相关
-  public ranges1 = { 
-    "今日": [new Date(), new Date()], 
-    '本月': [startOfMonth(new Date()),new Date()] 
+  public ranges1 = {
+    "今日": [new Date(), new Date()],
+    '本月': [startOfMonth(new Date()), new Date()]
   };
   public modal_type: string;
+  public is_visible_city: boolean;
   public start_time: string;
   public end_time: string;
   // public searchValue = '';
@@ -28,6 +29,7 @@ export class LogOperationLogComponent implements OnInit {
   public is_load_list: boolean;
   public if_show_text: boolean;
   public show_text: string;
+  public city_obj: object={};
 
   // public sortName: string | null = null;
   // public sortValue: string | null = null;
@@ -40,6 +42,23 @@ export class LogOperationLogComponent implements OnInit {
   ngOnInit() {
     this.search();
   }
+
+  /**
+ * 查询ip所在地
+ */
+  search_ip(ip) {
+  this.is_visible_city=true;
+
+    this.userManageService.search_city_by_ip(ip).subscribe((res: any) => {
+      if (res && res.success) {
+        this.city_obj=res.data;
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
   /**
    *时间组件改变
    *
@@ -50,10 +69,10 @@ export class LogOperationLogComponent implements OnInit {
     if (result.length == 0) {
       this.start_time = '';
       this.end_time = '';
-    }else{
-    this.start_time = this.change_date(result[0], 'start');
-    this.end_time = this.change_date(result[1], 'end');
- 
+    } else {
+      this.start_time = this.change_date(result[0], 'start');
+      this.end_time = this.change_date(result[1], 'end');
+
     }
 
     this.search();
@@ -73,13 +92,13 @@ export class LogOperationLogComponent implements OnInit {
   /**
    * 点击列表项展示详情
    */
-  show_content(data,type){
-    this.if_show_text=true;
-    if(type == 'object'){
-      let value=JSON.parse(data);
-      this.show_text=JSON.stringify(value, undefined, 2);
-    }else{
-     this.show_text=data;
+  show_content(data, type) {
+    this.if_show_text = true;
+    if (type == 'object') {
+      let value = JSON.parse(data);
+      this.show_text = JSON.stringify(value, undefined, 2);
+    } else {
+      this.show_text = data;
     }
   }
 
@@ -132,9 +151,9 @@ export class LogOperationLogComponent implements OnInit {
 *
 * @memberof UserManageUserComponent
 */
-  get_log_list(page_index,option?) {
+  get_log_list(page_index, option?) {
     this.is_load_list = true;
-    this.userManageService.get_log_list(page_index,option).subscribe((res: any) => {
+    this.userManageService.get_log_list(page_index, option).subscribe((res: any) => {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;

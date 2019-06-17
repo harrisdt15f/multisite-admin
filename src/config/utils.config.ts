@@ -10,6 +10,7 @@ export class Utils {
   ];
   static isDevelop: boolean =false;
   constructor() {
+    
   }
   
   /**

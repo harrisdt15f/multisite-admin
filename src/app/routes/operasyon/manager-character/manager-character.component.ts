@@ -248,16 +248,18 @@ export class ManagerManagerCharacterComponent implements OnInit {
       data.is_edit = false;
     });
     item.is_edit = true;
-   
     this.is_edit_group = true;
-
     this.edit_group_obj = item;
-
-    
     this.get_member_list(item);
     if (item.role != '*') {
       this.is_super_manage = false;
-      this.menu_tree_value = JSON.parse(item.role);
+      this.menu_tree_value=[]
+      JSON.parse(item.role).forEach((item) => {
+       if(!this.startupService.menu_obj[item].is_parent){
+         this.menu_tree_value.push(item);
+       }
+      });
+
     } else {
       this.is_super_manage = true;
       this.menu_tree_value = []

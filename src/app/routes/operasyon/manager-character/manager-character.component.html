@@ -19,13 +19,13 @@
                   <div>{{item.group_name}}</div>
                   <div>{{item.created_at}}</div>
                 </div>
-                <div  nz-col nzSpan="6" class="process-data-button">
+                <div nz-col nzSpan="6" class="process-data-button">
                   <!-- <a (click)="edit_group(item)">查看 </a>
                   <a>|</a> -->
                   <a (click)="edit_group(item)">编辑 </a>
                   <a>|</a>
                   <a *ngIf='item.id!=1' (click)="delete_group(item,i)">删除</a>
-                  <a style='color: rgba(0, 0, 0, 0.45);' *ngIf='item.id==1' >删除</a>
+                  <a style='color: rgba(0, 0, 0, 0.45);' *ngIf='item.id==1'>删除</a>
                 </div>
 
               </div>
@@ -136,10 +136,10 @@
                 </nz-form-item>
               </form>
             </div>
-        
+
 
           </div>
-    
+
         </div>
 
       </div>
@@ -147,8 +147,8 @@
       <nz-drawer nzWidth='600px' [nzVisible]="is_edit_manage_modal" nzPlacement="right"
         [nzTitle]="is_edit_manager?'编辑管理员':'创建管理员'" (nzOnClose)="is_edit_manage_modal = false">
         <div *ngIf='modal_lodding' class='lodding-box'>
-            <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
-          </div>
+          <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+        </div>
         <!-- 编辑管理员表单 -->
         <div *ngIf='is_edit_manager' class='box-title'>
           <nz-tabset>
@@ -172,8 +172,9 @@
                   <nz-form-label [nzXs]="24" style="text-align: left" nzRequired>选择添加的分组</nz-form-label>
                   <nz-form-control nzHasFeedback>
 
-                    <nz-select  [nzDisabled]='is_edit_manager' (ngModelChange)="change_group_select($event)"  formControlName="group_id" style="width: 100%;"  [nzDropdownStyle]='select_style'
-                      nzShowSearch nzAllowClear nzPlaceHolder="选择分组" [(ngModel)]="create_manager_obj['group_id']">
+                    <nz-select [nzDisabled]='is_edit_manager' (ngModelChange)="change_group_select($event)"
+                      formControlName="group_id" style="width: 100%;" [nzDropdownStyle]='select_style' nzShowSearch
+                      nzAllowClear nzPlaceHolder="选择分组" [(ngModel)]="create_manager_obj['group_id']">
                       <nz-option *ngFor="let item of group_list_total ; let i=index" [nzLabel]="item.group_name"
                         [nzValue]="item.id"></nz-option>
                     </nz-select>
@@ -340,9 +341,10 @@
       </nz-drawer>
 
       <!-- 删除组警告提示 -->
-      <nz-modal   [nzOkLoading]="is_loading_delete" [(nzVisible)]="is_visible_delete_modal" nzTitle="重要提示！" (nzOnCancel)="delete_group_submit_cancel()" (nzOnOk)="delete_group_submit()">
+      <nz-modal [nzOkLoading]="is_loading_delete" [(nzVisible)]="is_visible_delete_modal" nzTitle="重要提示！"
+        (nzOnCancel)="delete_group_submit_cancel()" (nzOnOk)="delete_group_submit()">
         <p>删除组后，组下面所有成员也会被一起删除！确认要继续删除该组吗？</p>
-        </nz-modal>
+      </nz-modal>
     </nz-content>
   </nz-layout>
 </div>

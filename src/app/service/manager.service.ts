@@ -375,7 +375,7 @@ add_popular_methods(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-methods/methods-list';
+  const href = this.serviceHttpIri + '/api/popular-methods/add';
   return this.commonService.post(href, data, { headers: headers });
 }
     /**

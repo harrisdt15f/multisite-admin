@@ -36,10 +36,11 @@
         </tr>
       </thead>
       <tbody>
+
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr class='table_tr'>
             <td>{{ data.origin|| '无'}}</td>
-            <td>{{ data.ip|| '无' }}</td>
+            <td (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
             <td (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
             <td>{{ data.admin_name || '无'}}</td>
             <td>{{ data.lang|| '无'}}</td>
@@ -55,14 +56,8 @@
             <td>{{ data.created_at|| '无' }}</td>
             <td>{{ data.menu_label|| '无' }}</td>
             <td>{{ data.menu_path|| '无' }}</td>
-
-
           </tr>
           <tr>
-
-
-
-
           </tr>
         </ng-template>
 
@@ -74,9 +69,13 @@
       (nzOnClose)="if_show_text = false">
       <!-- <div [innerHTML]='show_text'></div> -->
       <pre [innerHTML]='show_text'>
-
       </pre>
-        
     </nz-drawer>
+    <!-- 查看ip对话框 -->
+    <nz-modal [(nzVisible)]="is_visible_city" (nzOnCancel)="is_visible_city=false" [nzFooter]='null' nzTitle="城市信息" >
+      <p>IP:{{city_obj['ip']}}</p>
+      <p>城市:{{city_obj['city']}}</p>
+      <p>地区:{{city_obj['county']}}</p>
+    </nz-modal>
   </nz-content>
 </nz-layout>
