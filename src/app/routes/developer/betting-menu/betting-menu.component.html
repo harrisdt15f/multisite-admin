@@ -14,7 +14,7 @@
             <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
             <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
 
-            <nz-tree nzShowLine [nzData]="edit_menu_nodes" (nzContextMenu)="activeNode($event)">
+            <nz-tree nzShowLine [nzData]="edit_menu_nodes" (nzClick)="activeNode($event)">
               <ng-template #contextTemplate>
                 <ul nz-menu nzInDropDown>
                   <li nz-menu-item (click)="create_menu()">添加下级模块</li>
@@ -59,7 +59,10 @@
           <div class="menu_box_content">
             <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
             <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
-            <nz-tree [nzData]="edit_route_nodes" (nzContextMenu)="activeNode($event)">
+            <nz-input-group [nzSuffix]="suffixIcon">
+              <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue" />
+            </nz-input-group>
+            <nz-tree  [nzSearchValue]="searchValue"   (nzSearchValueChange)="nzEvent($event)" [nzData]="edit_route_nodes" (nzClick)="activeNode($event)">
 
               <ng-template #nzTreeTemplate let-node>
                 <span class="custom-node">
@@ -211,3 +214,6 @@
 
 
 </nz-content>
+<ng-template #suffixIcon>
+  <i nz-icon type="search"></i>
+</ng-template>

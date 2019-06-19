@@ -19,6 +19,20 @@ export class GameService {
     ) {
     this.serviceHttpIri = Utils.GethttpIri();
   }
+    /**
+   *彩票合法长度接口
+   *
+   * @memberof PersonalService
+   */
+  get_input_num_rule(){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/lotteries/lotteries-code-length';
+    return this.commonService.get(href ,{ headers: headers });
+  }
   /**
    *获取某个系统配置的值
    *

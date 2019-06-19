@@ -19,6 +19,7 @@ export class GameLotteryIssueComponent implements OnInit {
   public list_total: number;
   public list_of_search_status: string;
   public is_load_list: boolean;
+  public is_visible_input: boolean;//显示手动录号弹框
   public searchValue = '';
   public choise_lottery = '0';
   public note_value: string;
@@ -45,10 +46,10 @@ export class GameLotteryIssueComponent implements OnInit {
   public modal_lodding: boolean;//显示加载图标
   public create_lottery_obj: object = {};//显示加载图标
   public lotteries_list: Array<any> = [];
-  public time:Date;
-  public every_day_time:string;
-  public is_visible_edit_time:boolean;
-  public is_loading_edit_time:boolean;
+  public time: Date;
+  public every_day_time: string;
+  public is_visible_edit_time: boolean;
+  public is_loading_edit_time: boolean;
   constructor(
     private http: _HttpClient,
     private gameService: GameService,
@@ -60,51 +61,81 @@ export class GameLotteryIssueComponent implements OnInit {
     this.time = new Date();
     this.search();
     this.get_lotteries_type();
+    // this.get_input_num_rule();
     this.get_time_setting();
     this.create_form = this.fb.group({
       lottery_id: [null, [Validators.required]],
       start_time: [null, [Validators.required]],
       end_time: [null, [Validators.required]],
-    
+
     });
+  }
+
+  /**
+   * 获取录号规则
+   */
+  get_input_num_rule(){
+    this.gameService.get_input_num_rule().subscribe((res: any) => {
+      if (res && res.success) {
+
+    
+
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
+  handle_ok() {
+
+  }
+  handle_cancel() {
+    this.is_visible_input = false;
+  }
+  /**
+   * 点击录号
+   */
+  input_number() {
+    this.is_visible_input = true;
   }
   /**
    * 关闭弹窗
    */
-  close_drawer(){
+  close_drawer() {
     this.visible_modal = false;
     this.modal_lodding = false;
     this.update_form();
   }
 
-    /**
- *d刷新表单
- *
- * @memberof OperasyonActivityListComponent
- */
-update_form() {
-  this.create_lottery_obj = {};
-  this.create_form.reset();
-  
+  /**
+*d刷新表单
+*
+* @memberof OperasyonActivityListComponent
+*/
+  update_form() {
+    this.create_lottery_obj = {};
+    this.create_form.reset();
 
-  for (const key in this.create_form.controls) {
-    this.create_form.controls[key].markAsPristine();
-    this.create_form.controls[key].updateValueAndValidity();
+
+    for (const key in this.create_form.controls) {
+      this.create_form.controls[key].markAsPristine();
+      this.create_form.controls[key].updateValueAndValidity();
+    }
+
   }
-
-}
-/**
- * 获取奖期生成时间 
- */
-  get_time_setting(){
-    let option={
-      key:'generate_issue_time'
+  /**
+   * 获取奖期生成时间 
+   */
+  get_time_setting() {
+    let option = {
+      key: 'generate_issue_time'
     }
     this.gameService.sys_configure_value(option).subscribe((res: any) => {
       if (res && res.success) {
 
-        this.every_day_time=res.data;
-   
+        this.every_day_time = res.data;
+
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -115,34 +146,34 @@ update_form() {
   /**
    * 点击编辑奖期生成时间
    */
-  edit_lot_time(){
+  edit_lot_time() {
 
-    this.is_visible_edit_time=true;
+    this.is_visible_edit_time = true;
   }
-    /**
-   * 修改时间弹框点击取消
-   */
-  handleCancel(){
-    this.is_visible_edit_time=false;
+  /**
+ * 修改时间弹框点击取消
+ */
+  handleCancel() {
+    this.is_visible_edit_time = false;
   }
   /**
    * 修改时间弹框点击确定
    */
-  handleOk(){
-    let option={
-      value:this.time.getHours()+':'+(this.time.getMinutes()<10?'0'+this.time.getMinutes():this.time.getMinutes())
+  handleOk() {
+    let option = {
+      value: this.time.getHours() + ':' + (this.time.getMinutes() < 10 ? '0' + this.time.getMinutes() : this.time.getMinutes())
     }
-    this.is_loading_edit_time=true;
+    this.is_loading_edit_time = true;
 
     this.gameService.generate_issue_time(option).subscribe((res: any) => {
       this.is_visible_edit_time = false;
-      this.is_loading_edit_time=false;
+      this.is_loading_edit_time = false;
       if (res && res.success) {
         this.message.success('修改生成奖期时间成功', {
           nzDuration: 10000,
         });
-        this.every_day_time=option.value;
-        this.time=new Date();
+        this.every_day_time = option.value;
+        this.time = new Date();
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -156,8 +187,8 @@ update_form() {
    * @memberof GameLotteryIssueComponent
    */
   create_issue() {
-    let start_time = Utils.change_date(this.create_lottery_obj['start_time'],'date');
-    let end_time = Utils.change_date(this.create_lottery_obj['end_time'],'date');
+    let start_time = Utils.change_date(this.create_lottery_obj['start_time'], 'date');
+    let end_time = Utils.change_date(this.create_lottery_obj['end_time'], 'date');
     var option = {
       "lottery_id": this.create_lottery_obj['lottery_id'],
       "start_time": start_time,
@@ -165,11 +196,11 @@ update_form() {
       "start_issue": ''
 
     };
-    this.modal_lodding=true;
- 
+    this.modal_lodding = true;
+
     this.gameService.create_issue(option).subscribe((res: any) => {
       this.visible_modal = false;
-      this.modal_lodding=false;
+      this.modal_lodding = false;
       if (res && res.success) {
         this.message.success('生成奖期成功', {
           nzDuration: 10000,
@@ -215,12 +246,12 @@ update_form() {
   change_index(index: number) {
     this.tab_index = index;
     this.choise_lottery = '0';
-    this.search_number=null;
+    this.search_number = null;
     this.search();
-    if(this.lotteries_tabs[this.tab_index].value!=10086){
-        this.get_lotteries_list();
+    if (this.lotteries_tabs[this.tab_index].value != 10086) {
+      this.get_lotteries_list();
     }
-  
+
 
   }
   /**
@@ -253,7 +284,7 @@ update_form() {
           }
           )
         }
-    
+
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -281,7 +312,7 @@ update_form() {
     this.list_of_search_status = value;
     this.search();
   }
-  search_lotteries(){
+  search_lotteries() {
     this.search();
   }
   /**
@@ -297,24 +328,24 @@ update_form() {
   //   this.edit_check_obj = data;
   //   this.edit_check_obj['type'] = type;
   // }
-/**
- * 获取当前系列的所有玩法
- */
-  get_lotteries_list(){
-    let data={
-      series_id :this.lotteries_tabs[this.tab_index].value
+  /**
+   * 获取当前系列的所有玩法
+   */
+  get_lotteries_list() {
+    let data = {
+      series_id: this.lotteries_tabs[this.tab_index].value
     }
     this.gameService.get_lotteries_list(data).subscribe((res: any) => {
       if (res && res.success) {
-        this.lotteries_list=[];
+        this.lotteries_list = [];
         res.data.forEach((item) => {
           this.lotteries_list.push({
-              title: item.cn_name,
-              id: item.en_name
+            title: item.cn_name,
+            id: item.en_name
           })
         });
-      
-     
+
+
 
       } else {
         this.is_load_list = false;
@@ -337,7 +368,7 @@ update_form() {
     if (this.searchValue) {
       option['username'] = this.searchValue;
     }
-    if(this.search_number){
+    if (this.search_number) {
       option['issue'] = this.search_number;
     }
 
@@ -364,7 +395,7 @@ update_form() {
     if (this.tab_index != 0 && this.lotteries_tabs[this.tab_index].value) {
       data.series_id = this.lotteries_tabs[this.tab_index].value;
     }
-    if(this.choise_lottery&&this.choise_lottery!='0'){
+    if (this.choise_lottery && this.choise_lottery != '0') {
       data['lottery_id'] = this.choise_lottery;
     }
     this.gameService.get_issue_list(page_index, data).subscribe((res: any) => {

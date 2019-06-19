@@ -1,40 +1,43 @@
 <page-header></page-header>
 <nz-layout>
   <nz-content class="content_background">
-      <div style='margin-top:40px'></div>
+    <div style='margin-top:40px'></div>
     <form nz-form [formGroup]="create_user_form" (ngSubmit)="create_user()">
+      <div *ngIf='is_Loading' class='lodding-box'>
+        <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+      </div>
       <!-- 用户名 -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="username" nzRequired>用户名</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-          <input  minLength='16' [(ngModel)]="create_user_obj['username']" nz-input type="text" id="username"
+          <input minLength='16' [(ngModel)]="create_user_obj['username']" nz-input type="text" id="username"
             formControlName="username" />
           <nz-form-explain *ngIf="create_user_form.get('username')?.dirty && create_user_form.get('username')?.errors">
 
-              <ng-container *ngIf="create_user_form.get('username')?.hasError('required')">
-                  请输入要创建的用户名!
-              </ng-container>
-              <ng-container *ngIf="create_user_form.get('username')?.hasError('maxlength')">
-                  用户名最大十六个字符!
-              </ng-container>
-           </nz-form-explain>
+            <ng-container *ngIf="create_user_form.get('username')?.hasError('required')">
+              请输入要创建的用户名!
+            </ng-container>
+            <ng-container *ngIf="create_user_form.get('username')?.hasError('maxlength')">
+              用户名最大十六个字符!
+            </ng-container>
+          </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <!-- 密码 -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-          <input [(ngModel)]="create_user_obj['password']"  nz-input type="password" id="password"
+          <input [(ngModel)]="create_user_obj['password']" nz-input type="password" id="password"
             formControlName="password" (ngModelChange)="update_confirm_check_password()" />
           <nz-form-explain *ngIf="create_user_form.get('password')?.dirty && create_user_form.get('password')?.errors">
             <ng-container *ngIf="create_user_form.get('password')?.hasError('required')">
-                请输入密码!
+              请输入密码!
             </ng-container>
             <ng-container *ngIf="create_user_form.get('password')?.hasError('maxlength')">
-                密码不能超过16位!
+              密码不能超过16位!
             </ng-container>
             <ng-container *ngIf="create_user_form.get('password')['errors']['minlength']">
-                请输入6位以上密码!
+              请输入6位以上密码!
             </ng-container>
           </nz-form-explain>
         </nz-form-control>
@@ -105,11 +108,11 @@
       <nz-form-item>
         <nz-form-label nzFor="is_tester" [nzSm]="6" [nzXs]="24" nzRequired>是否测试账号</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-          
-          <nz-radio-group  id="is_tester" [(ngModel)]="create_user_obj['is_tester']" formControlName="is_tester">
-                <label nz-radio nzValue='0'>否</label>
-                <label nz-radio nzValue='1'>是</label>
-              </nz-radio-group>
+
+          <nz-radio-group id="is_tester" [(ngModel)]="create_user_obj['is_tester']" formControlName="is_tester">
+            <label nz-radio nzValue='0'>否</label>
+            <label nz-radio nzValue='1'>是</label>
+          </nz-radio-group>
         </nz-form-control>
 
       </nz-form-item>

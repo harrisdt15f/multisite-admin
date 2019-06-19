@@ -1,4 +1,12 @@
-<page-header></page-header>
+<page-header [action]="action" >
+  <ng-template #action>
+    <button (click)='get_user_manage_list(1)' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+    class="ant-btn__block mb-sm">
+    <i nz-icon nzType="redo" nzTheme="outline"></i>
+    <span>刷新</span>
+  </button>
+</ng-template>
+</page-header>
 <nz-layout>
   <nz-content style='background-color: white'>
     <div nz-row style="margin:20px">

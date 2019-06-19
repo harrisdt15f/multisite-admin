@@ -15,6 +15,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   public model_tabs = [];
   public dropdown: NzDropdownContextComponent;
   public page_type: number;
+  public searchValue: string;
   public activedNode: NzTreeNode;
   public edit_menu_nodes = [];//模块数组
   public edit_route_nodes = [];//路由数组
@@ -76,6 +77,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
       }
     ];
   }
+
   /**
    * 切换tab
    * @param e 

@@ -6,6 +6,7 @@ import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms'
 import { until } from 'protractor';
 import { Utils } from 'config/utils.config';
 import { UserManageService } from 'app/service/user-manage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-create-general-agent',
@@ -22,10 +23,12 @@ export class UserCreateGeneralAgentComponent implements OnInit {
 public  create_user_form: FormGroup;
 public  create_user_obj: object=new create_user_obj();
 public  max_prize_group: number;
+public  is_Loading: boolean;
 public  min_prize_group: number;
   constructor(
     private http: _HttpClient,
     private fb: FormBuilder,
+    private router: Router,
     private userManageService: UserManageService,
     private message: NzMessageService
     ) { }
@@ -55,11 +58,16 @@ public  min_prize_group: number;
  */
 create_user(): void {
   let option=this.create_user_obj;
+  this.is_Loading=true;
   this.userManageService.crete_total_user(option).subscribe((res:any)=>{
+    this.is_Loading=false;
     if (res && res.success) {
       this.message.success('创建成功', {
         nzDuration: 10000,
       });
+
+      this.router.navigateByUrl('/manage/manage-user');
+      this.update_form();
 
 
       for (const i in this.create_user_form.controls) {
@@ -76,6 +84,20 @@ create_user(): void {
 
 
     }
+      /**
+*d刷新表单
+*
+* @memberof OperasyonActivityListComponent
+*/
+  update_form() {
+    this.create_user_obj = {};
+    this.create_user_form.reset();
+    for (const key in this.create_user_form.controls) {
+      this.create_user_form.controls[key].markAsPristine();
+      this.create_user_form.controls[key].updateValueAndValidity();
+    }
+
+  }
   /**
    * *校验密码
    *
