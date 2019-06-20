@@ -15,6 +15,7 @@ export class GameLotteryIssueComponent implements OnInit {
   public lotteries_tabs = [];
   public page_index = 1;
   public list_of_data: object = {};
+  public input_number_rule_obj: object = {};//彩种信息对象
   public list_of_aply_data: Array<any> = [];
   public list_total: number;
   public list_of_search_status: string;
@@ -25,18 +26,9 @@ export class GameLotteryIssueComponent implements OnInit {
   public note_value: string;
   public sortName: string | null = null;
   public sortValue: string | null = null;
-
   public submit_passport_lodding = false;//提交修改密码按钮加载状态
-  public edit_check_obj: object = {
-    type: 'pass'
-  };
-  public status_type = [
-    { text: '待审核', value: '0' },
-    { text: '审核通过', value: '1' },
-    { text: '审核拒绝', value: '1000' },
-  ];
-
-
+  public edit_check_obj: object = {};
+  public status_type: Array<any> = [];
   public tab_index: number = 0;
   public search_number: string;
 
@@ -50,18 +42,28 @@ export class GameLotteryIssueComponent implements OnInit {
   public every_day_time: string;
   public is_visible_edit_time: boolean;
   public is_loading_edit_time: boolean;
+  public input_number_obj: object = {};//录号弹框对象
   constructor(
     private http: _HttpClient,
     private gameService: GameService,
     private fb: FormBuilder,
     private message: NzMessageService
-  ) { }
+  ) {
+    this.status_type = [
+      { text: '待审核', value: '0' },
+      { text: '审核通过', value: '1' },
+      { text: '审核拒绝', value: '1000' },
+    ]
+    this.edit_check_obj = {
+      type: 'pass'
+    }
+  }
 
   ngOnInit() {
     this.time = new Date();
     this.search();
     this.get_lotteries_type();
-    // this.get_input_num_rule();
+    this.get_input_num_rule();
     this.get_time_setting();
     this.create_form = this.fb.group({
       lottery_id: [null, [Validators.required]],
@@ -74,11 +76,19 @@ export class GameLotteryIssueComponent implements OnInit {
   /**
    * 获取录号规则
    */
-  get_input_num_rule(){
+  get_input_num_rule() {
     this.gameService.get_input_num_rule().subscribe((res: any) => {
       if (res && res.success) {
+        this.input_number_rule_obj = {};
+        res.data.forEach((data) => {
+          this.input_number_rule_obj[data.en_name]={
+            code_length:data.code_length,
+            en_name:data.en_name,
+            valid_code:data.valid_code.split(',')
+          }
+        })
 
-    
+
 
       } else {
         this.message.error(res.message, {
