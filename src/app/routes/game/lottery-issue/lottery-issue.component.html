@@ -93,7 +93,7 @@
                 <td>{{ data.begin_time | dateChange}}</td>
                 <td>{{ data.end_time| dateChange }}</td>
                 <td>{{ data.official_code }}</td>
-                <td><button nzSize="small" (click)='input_number()' nz-button nzType="primary">录号</button></td>
+                <td><button nzSize="small" (click)='input_number(data)' nz-button nzType="primary">录号</button></td>
                 <td>{{ data.official_open_time| dateChange }}</td>
                 <td>{{ data.allow_encode_time| dateChange }}</td>
 
@@ -183,19 +183,13 @@
       </form>
     </nz-drawer>
     <!-- 手动录号弹框 -->
-    <nz-modal [(nzVisible)]="is_visible_input" nzTitle="The first Modal" (nzOnCancel)="handle_cancel()"
+    <nz-modal [nzOkLoading]='is_lodding_modal' nzWidth=1000 [(nzVisible)]="is_visible_input" nzTitle="手动录号" (nzOnCancel)="handle_cancel()"
       (nzOnOk)="handle_ok()">
       <div class='input-box'>
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
-        <input nz-input class="input-item"  >
+        <nz-select *ngFor='let rule of code_array' class="input-item" 
+        [(ngModel)]="rule['value']" nzShowSearch >
+          <nz-option *ngFor="let number of input_number_obj['valid_code']" [nzValue]="number" [nzLabel]="number"></nz-option>
+        </nz-select>
       </div>
     </nz-modal>
   </nz-content>

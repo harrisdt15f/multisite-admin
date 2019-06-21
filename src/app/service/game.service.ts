@@ -48,6 +48,20 @@ export class GameService {
     return this.commonService.post(href ,data,{ headers: headers });
   }
     /**
+   *奖期手动录号
+   *
+   * @memberof PersonalService
+   */
+  input_number_value(data){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/lotteries/input-code';
+    return this.commonService.post(href ,data,{ headers: headers });
+  }
+    /**
    *自动生成奖期时间
    *
    * @memberof PersonalService

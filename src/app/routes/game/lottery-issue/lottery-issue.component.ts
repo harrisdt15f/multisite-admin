@@ -38,9 +38,11 @@ export class GameLotteryIssueComponent implements OnInit {
   public modal_lodding: boolean;//显示加载图标
   public create_lottery_obj: object = {};//显示加载图标
   public lotteries_list: Array<any> = [];
+  public code_array: Array<any> = [];
   public time: Date;
   public every_day_time: string;
   public is_visible_edit_time: boolean;
+  public is_lodding_modal: boolean;
   public is_loading_edit_time: boolean;
   public input_number_obj: object = {};//录号弹框对象
   constructor(
@@ -81,10 +83,10 @@ export class GameLotteryIssueComponent implements OnInit {
       if (res && res.success) {
         this.input_number_rule_obj = {};
         res.data.forEach((data) => {
-          this.input_number_rule_obj[data.en_name]={
-            code_length:data.code_length,
-            en_name:data.en_name,
-            valid_code:data.valid_code.split(',')
+          this.input_number_rule_obj[data.en_name] = {
+            code_length: data.code_length,
+            en_name: data.en_name,
+            valid_code: data.valid_code.split(',')
           }
         })
 
@@ -98,16 +100,70 @@ export class GameLotteryIssueComponent implements OnInit {
     })
   }
   handle_ok() {
+    let option = {
+      lottery_id: this.input_number_obj['obj'].lottery_id,
+      issue: this.input_number_obj['obj'].issue,
+      code: this.get_input_code(this.input_number_obj['obj'].lottery.series_id, this.code_array)
+    }
+    this.is_lodding_modal=true;
+    this.gameService.input_number_value(option).subscribe((res: any) => {
+     this.is_lodding_modal=false;
+      if (res && res.success) {
+        this.handle_cancel();
+        this.message.success('手动录号成功', {
+          nzDuration: 10000,
+        });
+        this.search();
 
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
   }
   handle_cancel() {
     this.is_visible_input = false;
   }
+
+  get_input_code(type, list) {
+    let value = '';
+    let point = ''
+    switch (type) {
+      case 'ssc':
+        point = '';
+        break;
+      case 'pk10':
+        point = ',';
+        break;
+      case 'lhc':
+        point = ' ';
+        break;
+    }
+    list.forEach((item, index) => {
+      value += item.value;
+      if (index < (list.length - 10)) {
+        value += point;
+      }
+
+    });
+    return value
+  }
   /**
    * 点击录号
    */
-  input_number() {
+  input_number(data) {
     this.is_visible_input = true;
+    this.is_lodding_modal = false;
+    let code_length = this.input_number_rule_obj[data.lottery_id].code_length;
+    this.input_number_obj = this.input_number_rule_obj[data.lottery_id];
+    this.input_number_obj['obj'] = data;
+    this.code_array = [];
+    for (var i = 1; i <= code_length; i++) {
+      this.code_array.push({
+        velue: ''
+      })
+    }
   }
   /**
    * 关闭弹窗
