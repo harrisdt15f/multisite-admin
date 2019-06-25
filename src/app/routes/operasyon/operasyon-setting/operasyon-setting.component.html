@@ -118,17 +118,17 @@
           <nz-form-label nzFor="name" nzRequired [nzSm]="6" [nzXs]="24">名称</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
             <input id="name"  type='text' formControlName="name" nz-input
-              placeholder="6-16字母、数字、汉字" [(ngModel)]="setting_obj['name']" />
+              placeholder="2-32字母、数字、汉字" [(ngModel)]="setting_obj['name']" />
             <nz-form-explain *ngIf="create_form.get('name')?.dirty && create_form.get('name')?.errors">
 
               <ng-container *ngIf="create_form.get('name')?.hasError('required')">
                   请输入要创建的设置名称!
               </ng-container>
               <ng-container *ngIf="create_form.get('name')?.hasError('maxlength')">
-                  用户名最大16个字符!
+                  用户名最大32个字符!
               </ng-container>
               <ng-container *ngIf="create_form.get('name')?.hasError('minlength')">
-                  用户名最少6个字符!
+                  用户名最少2个字符!
               </ng-container>
             </nz-form-explain>
           </nz-form-control>
@@ -143,13 +143,13 @@
                 键值不能为空!
               </ng-container>
               <ng-container *ngIf="create_form.get('sign')?.hasError('sign')">
-                请输入6-16位英文字符加下划线组合
+                请输入2-32位英文字符加下划线组合
               </ng-container>
               <ng-container *ngIf="create_form.get('sign')?.hasError('maxlength')">
-                  键值最大16个字符!
+                  键值最大32个字符!
               </ng-container>
               <ng-container *ngIf="create_form.get('sign')?.hasError('minlength')">
-                  键值最少6个字符!
+                  键值最少2个字符!
               </ng-container>
             </nz-form-explain>
           </nz-form-control>

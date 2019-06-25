@@ -37,8 +37,8 @@ export class OperasyonOperasyonSettingComponent implements OnInit {
   ngOnInit() {
     this.get_system_setting_list();
     this.create_form = this.fb.group({
-      name: [null, [Validators.required,Validators.maxLength(16),Validators.minLength(6)]],
-      sign: [null,[this.confirmValidator,Validators.maxLength(16),Validators.minLength(6)]],
+      name: [null, [Validators.required,Validators.maxLength(32),Validators.minLength(2)]],
+      sign: [null,[this.confirmValidator,Validators.maxLength(32),Validators.minLength(2)]],
       description: [null, [Validators.required]],
       value: [null, [this.confirmationValidator]],
 
