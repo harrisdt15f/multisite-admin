@@ -12,6 +12,7 @@
   "app.login.login": "登录",
   "menu.lang": "语言",
   "home": "主页",
+  "user.bets": "注单报表",
   "app.register.register": "注册",
   "menu.clear.local.storage": "清理本地缓存",
   "app.register.get-verification-code": "获取验证码",

@@ -9,11 +9,15 @@ import { EquipmentTypePipe } from './equipment-type.pipe';
 import { DateChangePipe } from './date_change.pipe';
 import { PayTypePipe } from './pay-type.pipe';
 import { RechargeStatusPipe } from './recharge-status';
+import { UserBetPipe } from './user-bet.pipe';
+import { NnitPipe } from './unit.pipe';
 
 @NgModule({
     declarations:
         [
             LevelDeepPipe,
+            NnitPipe,
+            UserBetPipe,
             FrozenTypePipe,
             PayTypePipe,
             ValidModesPipe,
@@ -27,6 +31,8 @@ import { RechargeStatusPipe } from './recharge-status';
     imports: [],
     exports:
         [
+            NnitPipe,
+            UserBetPipe,
             LevelDeepPipe,
             FrozenTypePipe,
             RechargeStatusPipe,
