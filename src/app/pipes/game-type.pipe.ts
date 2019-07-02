@@ -15,6 +15,9 @@ export class GameTypePipe implements PipeTransform {
     let data: string;
     switch (value) {
       //系列
+      case 'sd': data = '3D'; break;
+      case 'ssl': data = '时时乐'; break;
+      case 'lotto': data = '乐透'; break;
       case 'ssc': data = '时时彩'; break;
       case 'letto': data = '乐透'; break;
       case 'k3': data = '快3'; break;
@@ -81,6 +84,9 @@ export class GameTypePipe implements PipeTransform {
       case 'SX': data = '四星'; break;
       case 'Z3': data = '中三'; break;
       case 'Z3': data = '中三'; break;
+      case 'WX': data = '五星'; break;
+      case 'DXDS': data = '大小单双'; break;
+      case 'Q3': data = '前三'; break;
       default: 
       data=value;
       break;

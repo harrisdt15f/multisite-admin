@@ -4,8 +4,8 @@
   <input style='display: none' (change)='update_ico_fire($event)' type="file" id="pic_6" />
   <nz-skeleton *ngIf='page_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
   <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
-    <nz-tab *ngFor="let tab of page_tabs" [nzTitle]="tab.model_name">
-      <div class='tab-content-model' *ngIf='page_tabs[tab_index].key=="logo"'>
+    <nz-tab *ngFor="let tab of page_tabs" [nzTitle]="tab.label">
+      <div class='tab-content-model' *ngIf='page_tabs[tab_index].en_name=="logo"'>
         <div class='logo-img'>
           <img #logo style='width: 50px;'
             [src]='page_tabs[tab_index].value?(serviceHttpIri+page_tabs[tab_index].value):"./assets/img/null_head.png"'>
@@ -16,7 +16,7 @@
           </button>
         </div>
       </div>
-      <div class='tab-content-model' *ngIf='page_tabs[tab_index].key=="frontend.ico"'>
+      <div class='tab-content-model' *ngIf='page_tabs[tab_index].en_name=="frontend.ico"'>
         <div class='logo-img'>
           <img #logo style='width: 50px;'
             [src]='page_tabs[tab_index].value?(serviceHttpIri+page_tabs[tab_index].value):"./assets/img/null_head.png"'>
@@ -27,7 +27,7 @@
           </button>
         </div>
       </div>
-      <div  class='tab-content-model' nz-row *ngIf='page_tabs[tab_index].key=="customer.service"'>
+      <div  class='tab-content-model' nz-row *ngIf='page_tabs[tab_index].en_name=="customer.service"'>
         <div class='tab-service-title' nz-col nzSpan="4" style='text-align: right'>联系客服地址：</div>
         <div style='margin: 0 50px 0' nz-col nzSpan="12">
           <nz-input-group style='width:100%' nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">

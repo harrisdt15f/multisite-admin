@@ -318,6 +318,20 @@ is_open_route(data,type){
  
   return this.commonService.post(href, data,{ headers: headers });
 }
+  /**
+ *是否开放路由
+ *
+ * @memberof UserManageService
+ */
+is_open_admin_route(data){
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  let href=this.serviceHttpIri + '/api/route/is-open';
+  return this.commonService.post(href, data,{ headers: headers });
+}
 
 /**
  *删除投注端路由

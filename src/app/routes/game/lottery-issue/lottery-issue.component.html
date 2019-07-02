@@ -26,8 +26,26 @@
             <input type="text" nz-input [(ngModel)]="search_number" placeholder="筛选奖期号" />
           </nz-input-group>
         </span>
+        <span *ngIf='choise_lottery&&choise_lottery!="0"'>
+          <span  style='display: inline-block;margin-left:20px'>筛选最近期数：</span>
+          <nz-select style='width:300px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="previous_number"
+          placeholder="选择查看的最近期数">
+          <nz-option nzLabel="不选择" nzValue="0"></nz-option>
+          <nz-option nzLabel="1" nzValue="1"></nz-option>
+          <nz-option nzLabel="2" nzValue="2"></nz-option>
+          <nz-option nzLabel="3" nzValue="3"></nz-option>
+          <nz-option nzLabel="4" nzValue="4"></nz-option>
+          <nz-option nzLabel="5" nzValue="5"></nz-option>
+          <nz-option nzLabel="6" nzValue="6"></nz-option>
+          <nz-option nzLabel="7" nzValue="7"></nz-option>
+          <nz-option nzLabel="8" nzValue="8"></nz-option>
+          <nz-option nzLabel="9" nzValue="9"></nz-option>
+          <nz-option nzLabel="10" nzValue="10"></nz-option>
+         
+        </nz-select>
+        </span>
         <button style='margin-left: 20px' (click)='search_lotteries()' nz-button nzType="primary">搜索</button>
-        <button (click)='show_create_lottery()' style='width:300px;margin: 8px 20px 0 50px;float:right' nz-button
+        <button *ngIf='tab.value!="10086"' (click)='show_create_lottery()' style='width:300px;margin: 8px 20px 0 50px;float:right' nz-button
           nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
           <i class="anticon anticon-plus"></i><span>生成奖期号</span>
         </button>

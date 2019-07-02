@@ -119,6 +119,28 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
       }
     })
   }
+  /**
+   * 更改路由开放状态
+   */
+  change_open_btn(event,item){
+    let option = {
+      id: item['key'],
+      is_open: item['is_open'] ? 1 : 0
+    }
+    this.developerService.is_open_admin_route(option,).subscribe((res: any) => {
+      if (res && res.success) {
+        this.message.success('修改路由开放状态成功', {
+          nzDuration: 10000,
+        });
+      } else {
+        item['is_open']=!item['is_open'];
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+
+  }
 
 
   /**
@@ -183,6 +205,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
       icon: this.activedNode.origin['icon'],
       route: this.activedNode.origin['route'],
       sort: this.activedNode.origin['sort'],
+      is_open: this.activedNode.origin['is_open'],
       id: this.activedNode.origin['key'],
       level: this.activedNode.origin['level'],
       pid: this.activedNode.origin['pid'],
@@ -561,6 +584,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
             key: item.id,
             is_route: true,
             value: item.id,
+            is_open: item.is_open===1?true:false,
             isLeaf: true,
             route_name: item.route_name,
             menu_group_id: item.menu_group_id,
@@ -619,6 +643,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
                     item['children'].push({
                       key: data.id,
                       value: data.id,
+                      is_open: data.is_open===1?true:false,
                       is_route: true,
                       isLeaf: true,
                       route_name: data.route_name,
@@ -636,6 +661,7 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
                   key: item.id,
                   value: item.id,
                   is_route: true,
+                  is_open: item.is_open===1?true:false,
                   isLeaf: true,
                   route_name: item.route_name,
                   menu_group_id: item.menu_group_id,

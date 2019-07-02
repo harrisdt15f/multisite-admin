@@ -23,6 +23,7 @@ export class GameLotteryIssueComponent implements OnInit {
   public is_visible_input: boolean;//显示手动录号弹框
   public searchValue = '';
   public choise_lottery = '0';
+  public previous_number = '0';
   public note_value: string;
   public sortName: string | null = null;
   public sortValue: string | null = null;
@@ -312,6 +313,7 @@ export class GameLotteryIssueComponent implements OnInit {
   change_index(index: number) {
     this.tab_index = index;
     this.choise_lottery = '0';
+    this.previous_number = '0';
     this.search_number = null;
     this.search();
     if (this.lotteries_tabs[this.tab_index].value != 10086) {
@@ -463,6 +465,9 @@ export class GameLotteryIssueComponent implements OnInit {
     }
     if (this.choise_lottery && this.choise_lottery != '0') {
       data['lottery_id'] = this.choise_lottery;
+    }
+    if (this.previous_number && this.previous_number != '0') {
+      data['previous_number'] = this.previous_number;
     }
     this.gameService.get_issue_list(page_index, data).subscribe((res: any) => {
       if (res && res.success) {

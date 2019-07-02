@@ -19,7 +19,7 @@
                 <tr>
                     <th nzShowExpand></th>
                     <th nzCustomFilter>
-                        method_id
+                        玩法ID
                         <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter
                             #dropdown>
                             <i nz-icon nzType="search" class="ant-table-filter-icon"
@@ -30,7 +30,7 @@
                                     class="search-button">
                                     搜索
                                 </button>
-                                <button nz-button nzSize="small" (click)="reset()">Reset</button>
+                                <button nz-button nzSize="small" (click)="reset()">重置</button>
                             </div>
                         </nz-dropdown>
                     </th>
@@ -57,10 +57,10 @@
                                 <thead>
                                     <tr>
 
-                                        <th>method_id</th>
+                                        <th>玩法ID</th>
                                         <th>玩法中奖等级</th>
                                         <th>position</th>
-                                        <th>count</th>
+                                        <th>全包注数</th>
                                         <th>单注奖金</th>
 
                                         <th>操作</th>
@@ -98,7 +98,7 @@
         </nz-table>
         <!-- 弹框 -->
         <nz-drawer nzWidth='600px' [nzVisible]="if_show_modal" nzPlacement="right"
-            [nzTitle]="modal_type=='create'?'创建公告':'编辑公告'" (nzOnClose)="close_modal()">
+            [nzTitle]="modal_type=='create'?'创建玩法中奖等级':'编辑玩法中奖等级'" (nzOnClose)="close_modal()">
 
             <form nz-form [formGroup]="create_form">
                 <div *ngIf='modal_lodding' class='lodding-box'>
@@ -107,16 +107,19 @@
                 <nz-form-item *ngIf='modal_type!="edit"'>
                     <nz-form-label nzFor="method_id" nzRequired [nzSm]="4" [nzXs]="24">ID</nz-form-label>
                     <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
-                        <input maxlength='16' id="method_id" type="text" formControlName="method_id" nz-input
-                            placeholder="ID" [(ngModel)]="edit_level_obj['method_id']" />
+
+                        <nz-select id="method_id" type="method_id" formControlName="method_id" style="width: 100%;"
+                            [(ngModel)]="edit_level_obj['method_id']" nzShowSearch nzPlaceHolder="玩法ID类型">
+                            <nz-option *ngFor='let item of list_of_data' nzValue='item.method_id'[nzLabel]="item.method_id"></nz-option>
+                        </nz-select>
                         <nz-form-explain
                             *ngIf="create_form.get('method_id')?.dirty && create_form.get('method_id')?.errors">
                             请输入玩法中奖等级ID!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-label nzFor="level" nzRequired [nzSm]="4" [nzXs]="24">玩法中奖等级</nz-form-label>
-                    <nz-form-control [nzSm]="20" [nzXs]="23">
+                    <nz-form-label nzFor="level" nzRequired [nzSm]="6" [nzXs]="24">玩法中奖等级</nz-form-label>
+                    <nz-form-control [nzSm]="18" [nzXs]="23">
                         <nz-slider [(ngModel)]="edit_level_obj['level']" id="level" formControlName="level" [nzMin]="1"
                             [nzMax]="10"></nz-slider>
                     </nz-form-control>
