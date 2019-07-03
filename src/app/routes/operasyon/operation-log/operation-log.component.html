@@ -15,13 +15,67 @@
       [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
       <thead>
         <tr>
-          <th nzWidth="200px">访问域名</th>
-          <th nzWidth="200px"> 访问Ip</th>
+          <th nzCustomFilter nzWidth="200px">
+            访问域名
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                <i nz-icon nzType="search" class="ant-table-filter-icon"
+                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+  
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_origin" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                  <button nz-button nzSize="small" (click)="reset('origin')">取消</button>
+                </div>
+              </nz-dropdown>
+          </th>
+          <th nzCustomFilter nzWidth="200px"> 
+            访问Ip
+            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                <i nz-icon nzType="search" class="ant-table-filter-icon"
+                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+  
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_ip_ad" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                  <button nz-button nzSize="small" (click)="reset('ip')">取消</button>
+                </div>
+              </nz-dropdown>
+          </th>
           <th nzWidth="200px">Ip层级</th>
-          <th nzWidth="200px">管理员</th>
+          <th nzCustomFilter nzWidth="200px">管理员
+              <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                  <i nz-icon nzType="search" class="ant-table-filter-icon"
+                    [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+    
+                  <div class="search-box">
+                    <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_admin_name" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                      搜索
+                    </button>
+                    <button nz-button nzSize="small" (click)="reset('name')">取消</button>
+                  </div>
+                </nz-dropdown>
+          </th>
           <th nzWidth="200px">系统语言</th>
           <th nzWidth="200px">浏览器内核</th>
-          <th nzWidth="200px">操作系统</th>
+          <th nzCustomFilter nzWidth="200px">操作系统
+              <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+                  <i nz-icon nzType="search" class="ant-table-filter-icon"
+                    [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+    
+                  <div class="search-box">
+                    <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_os" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                      搜索
+                    </button>
+                    <button nz-button nzSize="small" (click)="reset('os')">取消</button>
+                  </div>
+                </nz-dropdown>
+          </th>
           <th nzWidth="200px">操作系统版本</th>
           <th nzWidth="200px">浏览器</th>
           <th nzWidth="200px">浏览器版本</th>

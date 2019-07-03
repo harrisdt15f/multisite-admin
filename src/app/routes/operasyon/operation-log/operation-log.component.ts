@@ -18,6 +18,10 @@ export class LogOperationLogComponent implements OnInit {
   public is_visible_city: boolean;
   public start_time: string;
   public end_time: string;
+  public search_origin: string;
+  public search_ip_ad: string;
+  public search_admin_name: string;
+  public search_os: string;
   // public searchValue = '';
   //----------内容
 
@@ -29,7 +33,7 @@ export class LogOperationLogComponent implements OnInit {
   public is_load_list: boolean;
   public if_show_text: boolean;
   public show_text: string;
-  public city_obj: object={};
+  public city_obj: object = {};
 
   // public sortName: string | null = null;
   // public sortValue: string | null = null;
@@ -47,11 +51,11 @@ export class LogOperationLogComponent implements OnInit {
  * 查询ip所在地
  */
   search_ip(ip) {
-  this.is_visible_city=true;
+    this.is_visible_city = true;
 
     this.userManageService.search_city_by_ip(ip).subscribe((res: any) => {
       if (res && res.success) {
-        this.city_obj=res.data;
+        this.city_obj = res.data;
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -108,10 +112,23 @@ export class LogOperationLogComponent implements OnInit {
    *
    * @memberof UserPassportCheckComponent
    */
-  //  reset(): void {
-  //   this.reset = '';
-  //   this.search();
-  // }
+  reset(type?): void {
+    switch (type) {
+      case 'origin':
+        this.search_origin = '';
+        break;
+      case 'ip':
+        this.search_ip_ad = '';
+        break;
+      case 'name':
+        this.search_admin_name = '';
+        break;
+      case 'os':
+        this.search_os = '';
+        break;
+    }
+    this.search();
+  }
   /**
    *搜索数组
    *
@@ -120,12 +137,19 @@ export class LogOperationLogComponent implements OnInit {
   search(page?): void {
     let option = {};//筛选条件
 
-    // if (this.list_of_search_group && this.list_of_search_group != '1000') {
-    //   option['type'] = this.list_of_search_group;
-    // }
-    // if (this.searchValue) {
-    //   option['username'] = this.searchValue;
-    // }
+
+    if (this.search_origin) {
+      option['origin'] = this.search_origin;
+    }
+    if (this.search_ip_ad) {
+      option['ip'] = this.search_ip_ad;
+    }
+    if (this.search_admin_name) {
+      option['admin_name'] = this.search_admin_name;
+    }
+    if (this.search_os) {
+      option['os'] = this.search_os;
+    }
     if (this.start_time) {
       option['start_time'] = this.start_time;
     }
@@ -146,11 +170,11 @@ export class LogOperationLogComponent implements OnInit {
     this.search(item);
   }
   /*
-*
-*获取用户管理列表
-*
-* @memberof UserManageUserComponent
-*/
+  *
+  *获取用户管理列表
+  *
+  * @memberof UserManageUserComponent
+  */
   get_log_list(page_index, option?) {
     this.is_load_list = true;
     this.userManageService.get_log_list(page_index, option).subscribe((res: any) => {

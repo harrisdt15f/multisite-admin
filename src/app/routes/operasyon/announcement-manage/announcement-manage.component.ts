@@ -36,7 +36,16 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   public edit_announcement_obj: object = {
     content: ''
   };//显示加载图标
-  public announcement_type_list: Array<any> = [];//公告分类列表
+  public announcement_type_list: Array<any> = [
+    {
+      title:'平台公告',
+      id:1
+    },
+    {
+      title:'站内信公告',
+      id:2
+    }
+  ];//公告分类列表
   public html_content: string = '';
   constructor(
     private http: _HttpClient,
@@ -67,7 +76,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
       id: this.edit_announcement_obj['id'],
       title: this.edit_announcement_obj['title'],
       status: this.edit_announcement_obj['status'],
-      type:1
+      type:this.edit_announcement_obj['type']
     };
 
     let img_obj = Utils.get_img_iri(this.edit_announcement_obj['content'], 'remove');

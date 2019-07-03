@@ -12,7 +12,7 @@ import { config } from 'rxjs';
   styleUrls: ['./developer-menu.component.less']
 })
 export class DeveloperDeveloperMenuComponent implements OnInit {
-
+  public searchValue: string;
   public dropdown: NzDropdownContextComponent;
   // actived node
   public activedNode: NzTreeNode;
