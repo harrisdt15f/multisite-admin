@@ -21,7 +21,7 @@
         <th >名称</th>
         <th> 签名</th>
         <th >出入账类型</th>
-        <th>类型</th>
+        <th>需要的字段</th>
         <th>操作</th>
       </tr>
     </thead>
@@ -35,7 +35,7 @@
             <span *ngIf='data.in_out==2' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
             <span >{{ data.in_out===2?'减少':'增加'}}</span>
         </td>
-        <td>{{ data.type }}</td>
+        <td>{{ data.param }}</td>
     
         <td >
          
@@ -108,7 +108,13 @@
                           请选择!</nz-form-explain>
                       </nz-form-control>
                     </nz-form-item>
-
+                    <nz-form-item>
+                      <nz-form-label nzFor="param" [nzSm]="6" [nzXs]="24">需要的字段</nz-form-label>
+                      <nz-form-control  [nzSm]="15" [nzXs]="23">
+                        <nz-checkbox-group id="param" formControlName="param" [(ngModel)]="param_list" (ngModelChange)="change_param(param_list)"></nz-checkbox-group>
+  
+                      </nz-form-control>
+                    </nz-form-item>
                 <nz-form-item nz-row style="margin-bottom:8px;">
                   <nz-form-control [nzSpan]="14" [nzOffset]="6">
                     <button *ngIf='modal_type==="create"' (click)="submit_activity()" [disabled]="!create_form.valid" nz-button

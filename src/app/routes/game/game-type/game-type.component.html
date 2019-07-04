@@ -1,9 +1,14 @@
 <page-header></page-header>
 <nz-layout>
   <nz-content style='background-color: white'>
+
     <nz-skeleton *ngIf='lotteries_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
     <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
       <nz-tab *ngFor="let tab of lotteries_tabs" [nzTitle]="tab.label">
+        <button (click)='add_lottery()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+          class="ant-btn__block mb-sm">
+          <i class="anticon anticon-plus"></i><span>添加彩种</span>
+        </button>
         <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
           [nzFrontPagination]='true' [nzData]="list_of_aply_data" [nzPageSize]='9'>
           <thead>
@@ -53,39 +58,112 @@
               <tr [nzExpand]="data.show_rule">
                 <td></td>
                 <td colspan="24">
-                    <nz-table #innerTable [nzData]="[data.issue_rule]" nzSize="middle" [nzShowPagination]="false">
-                        <thead>
-                          <tr>
-                            <th>开始时间</th>
-                            <th>结束时间</th>
-                            <th>周期（秒）</th>
-                            <th>调整截止时间（秒）</th>
-                            <th>奖期期数</th>
-                            <th>是否有效</th>
-                          </tr>
-                        </thead>
-                        <tbody>
+                  <nz-table #innerTable [nzData]="[data.issue_rule]" nzSize="middle" [nzShowPagination]="false">
+                    <thead>
+                      <tr>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>周期（秒）</th>
+                        <th>调整截止时间（秒）</th>
+                        <th>奖期期数</th>
+                        <th>是否有效</th>
+                      </tr>
+                    </thead>
+          <tbody>
 
-                          <tr *ngFor="let item of innerTable.data">
-                            <td>{{ item.begin_time }}</td>
-                            <td>{{ item.end_time }}</td>
-                            <td>{{ item.issue_seconds }}</td>
-                     
-                            <td>{{ item.adjust_time }}</td>
-                            <td>{{ item.issue_count }}</td>
-                            <td>{{ item.status===1?'是':'否' }}</td>
-                           
-                          </tr>
-                        </tbody>
-                      </nz-table>
-                </td>
-              </tr>
-            </ng-template>
+            <tr *ngFor="let item of innerTable.data">
+              <td>{{ item.begin_time }}</td>
+              <td>{{ item.end_time }}</td>
+              <td>{{ item.issue_seconds }}</td>
+              <td>{{ item.adjust_time }}</td>
+              <td>{{ item.issue_count }}</td>
+              <td>{{ item.status===1?'是':'否' }}</td>
 
+            </tr>
           </tbody>
+        </nz-table>
+        </td>
+        </tr>
+        </ng-template>
+
+        </tbody>
         </nz-table>
       </nz-tab>
     </nz-tabset>
+    <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal"
+      [nzTitle]='modal_type==="create"?"添加彩种":"编辑彩种"'>
+      <nz-steps [nzCurrent]="current" nzSize="small">
+        <nz-step nzTitle="彩种信息"></nz-step>
+        <nz-step nzTitle="彩种规则"></nz-step>
+
+      </nz-steps>
+      <form *ngIf='current===0' nz-form [formGroup]="create_form_lottery">
+        <div *ngIf='modal_lodding' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+        </div>
+        <nz-form-item>
+            <nz-form-label nzFor="cn_name" nzRequired [nzSm]="6" [nzXs]="24">中文名称</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+              <input id="cn_name" type="text" formControlName="cn_name" nz-input placeholder="标题"
+                [(ngModel)]="edit_lotteries_obj['cn_name']" />
+              <nz-form-explain *ngIf="create_form_lottery.get('cn_name')?.dirty && create_form_lottery.get('cn_name')?.errors">
+                  <ng-container *ngIf="create_form_lottery.get('cn_name')?.hasError('required')">
+                      请输入要创建的彩种中文名称!
+                  </ng-container>
+                  <ng-container *ngIf="create_form_lottery.get('cn_name')?.hasError('maxlength')">
+                      彩种中文名称最大十六个字符!
+                  </ng-container>
+                </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+              <nz-form-label nzFor="en_name" nzRequired [nzSm]="6" [nzXs]="24">英文名</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                <input id="en_name" type="text" formControlName="en_name" nz-input placeholder="标题"
+                  [(ngModel)]="edit_lotteries_obj['en_name']" />
+                <nz-form-explain *ngIf="create_form_lottery.get('en_name')?.dirty && create_form_lottery.get('en_name')?.errors">
+                    <ng-container *ngIf="create_form_lottery.get('en_name')?.hasError('required')">
+                        请输入要创建的彩种英文文名称!
+                    </ng-container>
+                    <ng-container *ngIf="create_form_lottery.get('en_name')?.hasError('maxlength')">
+                        彩种英文名称最大十六个字符!
+                    </ng-container>
+                  </nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzFor="lottery_type" nzRequired [nzSm]="6" [nzXs]="24">号码是否重复</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                    <nz-radio-group id="lottery_type" formControlName="lottery_type"
+                    [(ngModel)]="edit_lotteries_obj['lottery_type']">
+                    <label nz-radio nzValue='1'>是</label>
+                    <label nz-radio nzValue='2'>否</label>
+                  </nz-radio-group>
+                  <nz-form-explain *ngIf="create_form_lottery.get('lottery_type')?.dirty && create_form_lottery.get('lottery_type')?.errors">
+                      <ng-container *ngIf="create_form_lottery.get('lottery_type')?.hasError('required')">
+                          请选择号码是否重复!
+                      </ng-container>
+                    </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+        <nz-form-item nz-row style="margin-bottom:8px;">
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button (click)="next_form()" [disabled]="!create_form_lottery.valid" nz-button nzType="primary">下一步</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+      <form *ngIf='current===1' nz-form [formGroup]="create_form_rule">
+          <div *ngIf='modal_lodding' class='lodding-box'>
+            <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+          </div>
+          <nz-form-item nz-row style="margin-bottom:8px;">
+            <nz-form-control [nzSpan]="14" [nzOffset]="6">
+              <button (click)="first_form()"  nz-button nzType="primary">上一步</button>
+              <button (click)="submit_lotteries()" [disabled]="!create_form_rule.valid" nz-button nzType="primary">创建</button>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+    </nz-modal>
 
 
   </nz-content>

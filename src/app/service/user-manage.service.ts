@@ -1036,6 +1036,21 @@ get_account_list(page_index?, data?) {
 
   return this.commonService.post(href,  {}, { headers: headers });
 }
+/**
+*帐变类型时需要的字段列表
+*
+* @returns
+* @memberof UserManageService
+*/
+get_param_list() {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/accountChangeType/param-list';
+  return this.commonService.get(href, { headers: headers });
+}
 
 /**
 *获取账变类型列表

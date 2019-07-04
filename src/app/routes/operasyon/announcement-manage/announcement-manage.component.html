@@ -40,7 +40,7 @@
           <td>
             <div class='ellipsis' style='width:400px;' [innerHTML]='data.content'></div>
           </td>
-          <td>{{ data.type }}</td>
+          <td>{{ data.type===1?'平台公告':'站内信公告' }}</td>
           <td>{{ data.start_time }}</td>
           <td>{{ data.end_time }}</td>
           <td>
