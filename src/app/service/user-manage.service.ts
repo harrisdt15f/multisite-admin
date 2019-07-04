@@ -101,18 +101,7 @@ get_frontend_log_list(page_index, data?) {
   const href = this.serviceHttpIri + '/api/log/frontend-list?page_size=' + page_size + '&page=' + page_index;
   return this.commonService.post(href, data, { headers: headers });
 }
-get_ip_list() {
-  let page_size = 20;
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
 
-
-  const href =  'http://ip.taobao.com/service/getIpInfo.php?ip=115.156.238.114';
-  return this.commonService.get(href, { headers: headers });
-}
   /**
 *获取日志操作列表
 *

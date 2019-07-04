@@ -40,30 +40,10 @@ export class OperasyonFrontendListComponent implements OnInit {
   
     ngOnInit() {
       this.search();
-      this.get_list();
+   
     }
 
-        /*
-  *
-  *获取用户管理列表
-  *
-  * @memberof UserManageUserComponent
-  */
- get_list() {
-  this.is_load_list = true;
-  this.userManageService.get_ip_list().subscribe((res: any) => {
-    if (res && res.success) {
 
-
-
-    } else {
-      this.is_load_list = false;
-      this.message.error(res.message, {
-        nzDuration: 10000,
-      });
-    }
-  })
-}
 
     /**
      *时间组件改变

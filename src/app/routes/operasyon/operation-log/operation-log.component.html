@@ -128,7 +128,7 @@
     <nz-modal [(nzVisible)]="is_visible_city" (nzOnCancel)="is_visible_city=false" [nzFooter]='null' nzTitle="城市信息" >
       <p>IP:{{city_obj['ip']}}</p>
       <p>城市:{{city_obj['city']}}</p>
-      <p>地区:{{city_obj['county']}}</p>
+      <p>地区:{{city_obj['county']||city_obj['country']}}</p>
     </nz-modal>
   </nz-content>
 </nz-layout>

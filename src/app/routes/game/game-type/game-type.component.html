@@ -5,10 +5,10 @@
     <nz-skeleton *ngIf='lotteries_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
     <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
       <nz-tab *ngFor="let tab of lotteries_tabs" [nzTitle]="tab.label">
-        <button (click)='add_lottery()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+        <!-- <button (click)='add_lottery()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
           class="ant-btn__block mb-sm">
           <i class="anticon anticon-plus"></i><span>添加彩种</span>
-        </button>
+        </button> -->
         <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
           [nzFrontPagination]='true' [nzData]="list_of_aply_data" [nzPageSize]='9'>
           <thead>
