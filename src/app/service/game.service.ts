@@ -89,6 +89,20 @@ export class GameService {
     const href = this.serviceHttpIri + '/api/lotteries/lotteries-issue-generate';
     return this.commonService.post(href ,data,{ headers: headers });
   }
+  /**
+   *获取奖金组
+   *
+   * @memberof PersonalService
+   */
+  get_prize_group(){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/user-handle/prizegroup';
+    return this.commonService.get(href ,{ headers: headers });
+  }
 
   /**
    *获取采种系列
@@ -103,6 +117,48 @@ export class GameService {
     });
     const href = this.serviceHttpIri + '/api/lotteries/series-lists';
     return this.commonService.get(href ,{ headers: headers });
+  }
+  /**
+   *添加采种
+   *
+   * @memberof PersonalService
+   */
+ add_lotteries(data){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/lotteries/add';
+    return this.commonService.post(href , data,{ headers: headers });
+  }
+    /**
+   *添加采种
+   *
+   * @memberof PersonalService
+   */
+ edit_lotteries(data){
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/lotteries/edit';
+  return this.commonService.post(href , data,{ headers: headers });
+}
+  /**
+   *删除采种
+   *
+   * @memberof PersonalService
+   */
+  delete_lotteries(data){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/lotteries/delete';
+    return this.commonService.post(href , data,{ headers: headers });
   }
     /**
    *获取采种列表

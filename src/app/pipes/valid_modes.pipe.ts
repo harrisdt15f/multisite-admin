@@ -18,6 +18,7 @@ export class ValidModesPipe implements PipeTransform {
         case '1': item = '元'; break;
         case '2': item = '角'; break;
         case '3': item = '分'; break;
+        case '4': item = '厘'; break;
         default: break;
       }
       return item;
