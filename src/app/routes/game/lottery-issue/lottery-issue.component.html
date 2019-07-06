@@ -111,7 +111,7 @@
                 <td>{{ data.begin_time | dateChange}}</td>
                 <td>{{ data.end_time| dateChange }}</td>
                 <td>{{ data.official_code }}</td>
-                <td><button nzSize="small" (click)='input_number(data)' nz-button nzType="primary">录号</button></td>
+                <td><button [disabled]='data.official_code' nzSize="small" (click)='input_number(data)' nz-button nzType="primary">录号</button></td>
                 <td>
                   <button [nzLoading]="is_loading_enco" nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nzType="close"  [disabled]="!(data['status_encode']===1)" nzSize="small" (nzOnConfirm)='calculate_encode_again(data)' nz-button nzType="primary">重新派奖</button></td>
                 <td>{{ data.official_open_time| dateChange }}</td>

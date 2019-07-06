@@ -18,6 +18,7 @@ export class GameLotteryIssueComponent implements OnInit {
   public input_number_rule_obj: object = {};//彩种信息对象
   public list_of_aply_data: Array<any> = [];
   public list_total: number;
+  public up_time: any;
   public list_of_search_status: string;
   public is_loading_enco: boolean;
   public is_load_list: boolean;
@@ -73,24 +74,38 @@ export class GameLotteryIssueComponent implements OnInit {
       lottery_id: [null, [Validators.required]],
       start_time: [null, [Validators.required]],
       end_time: [null, [Validators.required]],
-
     });
+    this.foreach_time();
+  }
+
+  foreach_time() {
+    setInterval(() => {
+      let now_time = new Date().getTime() / 1000;
+      if (this.up_time && now_time >= this.up_time) {
+        setTimeout(() => {
+          this.search();
+          this.up_time = null;
+        }, 3000)
+
+      }
+    }, 10000)
+
   }
   /**
    * 点击重新派奖
    */
-  calculate_encode_again(item){
-    let option={
-      id:item.id
+  calculate_encode_again(item) {
+    let option = {
+      id: item.id
     }
-    this.is_loading_enco=true;
+    this.is_loading_enco = true;
     this.gameService.calculate_encode_again(option).subscribe((res: any) => {
-      this.is_loading_enco=false;
+      this.is_loading_enco = false;
       if (res && res.success) {
         this.message.error('重新派奖成功', {
           nzDuration: 10000,
         });
-  
+
 
 
 
@@ -102,8 +117,8 @@ export class GameLotteryIssueComponent implements OnInit {
     })
   }
   // 选采种变化
-  change_lotteries(){
-    this.previous_number='1';
+  change_lotteries() {
+    this.previous_number = '1';
   }
 
   /**
@@ -136,9 +151,9 @@ export class GameLotteryIssueComponent implements OnInit {
       issue: this.input_number_obj['obj'].issue,
       code: this.get_input_code(this.input_number_obj['obj'].lottery.series_id, this.code_array)
     }
-    this.is_lodding_modal=true;
+    this.is_lodding_modal = true;
     this.gameService.input_number_value(option).subscribe((res: any) => {
-     this.is_lodding_modal=false;
+      this.is_lodding_modal = false;
       if (res && res.success) {
         this.handle_cancel();
         this.message.success('手动录号成功', {
@@ -442,9 +457,6 @@ export class GameLotteryIssueComponent implements OnInit {
             id: item.en_name
           })
         });
-
-
-
       } else {
         this.is_load_list = false;
         this.message.error(res.message, {
@@ -506,6 +518,10 @@ export class GameLotteryIssueComponent implements OnInit {
         this.is_load_list = false;
         this.list_of_data = res.data;
         this.list_of_aply_data = [...this.list_of_data['data']];
+        if (this.previous_number && this.previous_number != '0') {
+          this.get_f5_time()
+
+        }
 
       } else {
         this.is_load_list = false;
@@ -514,6 +530,20 @@ export class GameLotteryIssueComponent implements OnInit {
         });
       }
     })
+  }
+  /**
+   * 获得下次刷新时间
+
+   */
+  get_f5_time() {
+    let is_heve_open = false;
+    this.up_time = this.list_of_aply_data[0].end_time;
+    this.list_of_aply_data.forEach((item, index) => {
+      if (item.official_code && !this.list_of_aply_data[index + 1].official_code) {
+        this.up_time = this.list_of_aply_data[index + 1].end_time;
+        is_heve_open = true;
+      }
+    });
   }
   /**
    *提交审核

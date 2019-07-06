@@ -104,6 +104,7 @@
         <nz-step nzTitle="彩种信息"></nz-step>
         <nz-step nzTitle="彩种规则"></nz-step>
       </nz-steps>
+      <!-- <cron-editor [(cron)]="cronExpression" ></cron-editor> -->
       <form style='margin-top:20px' [nzLayout]="'inline'" *ngIf='current===0' nz-form [formGroup]="create_form_lottery">
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>

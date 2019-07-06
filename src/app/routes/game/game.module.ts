@@ -5,7 +5,7 @@ import { GameGameTypeComponent } from './game-type/game-type.component';
 import { PipesModule } from 'app/pipes/pipes.module';
 import { GameGamePlayComponent } from './game-play/game-play.component';
 import { GameLotteryIssueComponent } from './lottery-issue/lottery-issue.component';
-
+import { CronEditorModule } from "cron-editor";
 const COMPONENTS = [
   GameGameTypeComponent,
   GameGamePlayComponent,
@@ -16,6 +16,7 @@ const COMPONENTS_NOROUNT = [];
   imports: [
     SharedModule,
     PipesModule,
+    CronEditorModule,
     GameRoutingModule
   ],
   declarations: [
