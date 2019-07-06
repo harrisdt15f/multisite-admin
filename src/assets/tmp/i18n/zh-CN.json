@@ -49,6 +49,7 @@
   "recharge.report": "充值报表",
   "account.report": "账变报表",
   "play.level": "玩法管理",
+  "helper": "帮助中心",
   "frontend.data.list": "前台操作日志",
 
   "app.register-result.msg": "你的账户：{{email}} 注册成功",

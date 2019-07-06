@@ -1,5 +1,6 @@
 export class Utils {
   static  httpIri: string;
+  static  fileIri='http://api.9170ttt.com';
   static  total_user_type=2;
   static  acl_route_list: Array<any>=[];
   static  acl_id_list: Array<any>=[];
@@ -8,7 +9,7 @@ export class Utils {
     '/operasyon/operasyon-setting',
     '/passport/login'
   ];
-  static isDevelop: boolean =false;
+  static isDevelop: boolean =true;
   constructor() {
     
   }
@@ -22,8 +23,10 @@ export class Utils {
    */
   static GethttpIri(){
       if (this.isDevelop) {
+      // this.httpIri = 'http://www.lottery.com';
       this.httpIri = 'http://local.multisites.com';
     } else {
+    
       this.httpIri = 'http://api.9170ttt.com';
     }
     return this.httpIri;

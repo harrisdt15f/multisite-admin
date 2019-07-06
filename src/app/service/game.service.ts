@@ -34,6 +34,20 @@ export class GameService {
     return this.commonService.get(href ,{ headers: headers });
   }
   /**
+   *重新派奖
+   *
+   * @memberof PersonalService
+   */
+  calculate_encode_again(option){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/lotteries/calculate-encode-again';
+    return this.commonService.post(href ,option,{ headers: headers });
+  }
+  /**
    *获取某个系统配置的值
    *
    * @memberof PersonalService

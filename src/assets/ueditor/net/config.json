@@ -1,6 +1,6 @@
 {
   "imageActionName": "uploadimage",
-  "imageFieldName": "upfile",
+  "imageFieldName": "pic",
   "imageMaxSize": 2048000,
   "imageAllowFiles": [".png",
   ".jpg",

@@ -94,6 +94,9 @@ get_frontend_log_list(page_index, data?) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
+  if (data.username) {
+    data.query_conditions =JSON.stringify( { "username": "LIKE" });
+  }
   if (data) {
     this.change_time(data);
   }
@@ -111,6 +114,9 @@ get_frontend_log_list(page_index, data?) {
   get_log_list(page_index, data?) {
     let page_size = 20;
     let token = this.tokenService.get().token;
+     if (data.admin_name) {
+      data.query_conditions =JSON.stringify( { "admin_name": "LIKE" });
+    }
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,

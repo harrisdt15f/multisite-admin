@@ -1,0 +1,166 @@
+<page-header></page-header>
+
+<nz-layout>
+    <nz-content>
+        <button (click)='create_helper("parent")' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock
+            [nzType]="'dashed'" class="ant-btn__block mb-sm">
+            <i class="anticon anticon-plus"></i><span>创建一级帮助中心标题</span>
+        </button>
+        <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+            [nzFrontPagination]='true' [nzData]="list_of_data" [nzPageSize]='8'>
+            <thead>
+                <tr>
+                    <th nzShowExpand></th>
+                    <th>ID</th>
+                    <th>名称</th>
+                    <th>开启状态</th>
+
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-template ngFor let-data [ngForOf]="nzTable.data">
+                    <tr>
+                        <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
+                        <td>{{ data.id}}</td>
+                        <td>{{ data.menu}}</td>
+                        <td>
+                            <nz-switch (ngModelChange)='change_status(data)' [ngModel]="data.status===1"
+                                nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+                        </td>
+
+                        <td>
+                            <a (click)='create_helper("child",data.id)'>创建子帮助中心标题</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a (click)='edit_helper(data,"parent")'>修改</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-popconfirm nzTitle="确认删除这个帮助中心项吗?" nzOkText="删除" nzCancelText="取消"
+                                (nzOnConfirm)="delete_helper(data)">删除</a>
+                        </td>
+                    </tr>
+                    <tr [nzExpand]="mapOfExpandData[data.id]">
+                        <td></td>
+                        <td colspan="24">
+                            <nz-table *ngIf='data.children' [nzLoading]='is_load_list_child' nzSize="middle"
+                                [nzShowPagination]="true" #nzTable2 [nzData]="data.children">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>名称</th>
+                                        <th>内容</th>
+                                        <th>启用状态</th>
+                                        <th>操作</th>
+
+                                    </tr>
+                                </thead>
+            <tbody>
+                <ng-template ngFor let-data [ngForOf]="nzTable2.data">
+                    <tr>
+                        <td>{{ data.id}}</td>
+                        <td>
+                            <div class='ellipsis' style='max-width:300px'>
+                                {{ data.menu}}
+                            </div>
+                        </td>
+                        <td>
+                            <div class='ellipsis' style='max-width:300px'>
+                                {{ data.content}}
+                            </div>
+                        </td>
+
+                        <td>
+                            <nz-switch (ngModelChange)='change_status(data)' [ngModel]="data.status===1"
+                                nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+                        </td>
+
+                        <td>
+
+                            <a (click)='edit_helper(data,"child")'>修改</a>
+                            <nz-divider nzType="vertical"></nz-divider>
+                            <a nz-popconfirm nzTitle="确认删除这个帮助中心项吗?" nzOkText="删除" nzCancelText="取消"
+                                (nzOnConfirm)="delete_helper(data)">删除</a>
+                        </td>
+                    </tr>
+                </ng-template>
+
+            </tbody>
+        </nz-table>
+        </td>
+        </tr>
+        </ng-template>
+
+        </tbody>
+        </nz-table>
+        <!-- 创建帮助中心弹框 -->
+        <nz-drawer nzWidth='800px' [nzVisible]="if_create_helper" nzPlacement="right"
+            [nzTitle]="modal_type==='create'?'创建菜单':'修改菜单'" (nzOnClose)="if_create_helper = false">
+            <form nz-form [formGroup]="create_form" (ngSubmit)="submit_helpers()">
+                <div *ngIf='modal_lodding' class='lodding-box'>
+                    <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+                </div>
+                <nz-form-item>
+                    <nz-form-label nzFor="menu" nzRequired [nzSm]="3" [nzXs]="24">名称</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzSm]="21" [nzXs]="23">
+                        <input id="menu" type='text' formControlName="menu" nz-input placeholder="2-32字母、数字、汉字"
+                            [(ngModel)]="helper_obj['menu']" />
+                        <nz-form-explain *ngIf="create_form.get('menu')?.dirty && create_form.get('menu')?.errors">
+
+                            <ng-container *ngIf="create_form.get('menu')?.hasError('required')">
+                                请输入要创建的帮助中心标题名称!
+                            </ng-container>
+                            <ng-container *ngIf="create_form.get('menu')?.hasError('maxlength')">
+                                用户名最大32个字符!
+                            </ng-container>
+                            <ng-container *ngIf="create_form.get('menu')?.hasError('minlength')">
+                                用户名最少2个字符!
+                            </ng-container>
+                        </nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item *ngIf='!is_parent'>
+                    <nz-form-label nzFor="content" nzRequired [nzSm]="3" [nzXs]="24">内容</nz-form-label>
+                    <nz-form-control nzHasFeedback [nzSm]="21" [nzXs]="23">
+                            <ueditor #full  id="content" formControlName="content" [(ngModel)]="helper_obj['content']" 
+                            [config]="{ wordCount: true }"
+                            [loadingTip]="'加载中……'"
+                            (onReady)="_ready($event)"
+                            (onDestroy)="_destroy()"
+                            (ngModelChange)="_change($event)"></ueditor>
+                        <nz-form-explain
+                            *ngIf="create_form.get('content')?.dirty && create_form.get('content')?.errors">
+                            <ng-container *ngIf="create_form.get('content')?.hasError('required')">
+                                键值不能为空!
+                            </ng-container>
+
+                        </nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label nzFor="status" nzRequired [nzSm]="3" [nzXs]="24">是否开启</nz-form-label>
+                    <nz-form-control [nzSm]="21" [nzXs]="23">
+                        <nz-radio-group id="status" formControlName="status" [(ngModel)]="helper_obj['status']">
+                            <label nz-radio nzValue="1">是</label>
+                            <label nz-radio nzValue="0">否</label>
+                        </nz-radio-group>
+                        <nz-form-explain *ngIf="create_form.get('status')?.dirty && create_form.get('status')?.errors">
+                            是否父级菜单!</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+
+
+
+                <nz-form-item nz-row style="margin-bottom:8px;">
+                    <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                        <button *ngIf='modal_type==="create"' [disabled]="!create_form.valid" nz-button
+                            nzType="primary">确认创建</button>
+                        <button *ngIf='modal_type==="edit"' [disabled]="!create_form.valid" nz-button
+                            nzType="primary">确认修改</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+
+
+        </nz-drawer>
+    </nz-content>
+</nz-layout>

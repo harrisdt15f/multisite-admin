@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { Utils } from 'config/utils.config';
 import { SharedModule } from '@shared';
 import { UEditorModule } from 'ngx-ueditor';
 import { ManagerManagerCharacterComponent } from './manager-character/manager-character.component';
@@ -19,6 +20,7 @@ import { OperasyonNavOneComponent } from './nav-one/nav-one.component';
 import { OperasyonNavTwoComponent } from './nav-two/nav-two.component';
 import { OperasyonAnnouncementManageComponent } from './announcement-manage/announcement-manage.component';
 import { OperasyonFrontendListComponent } from './frontend-list/frontend-list.component';
+import { OperasyonHelperComponent } from './helper/helper.component';
 
 const COMPONENTS = [
   ManagerManagerCharacterComponent,
@@ -35,7 +37,8 @@ const COMPONENTS = [
   OperasyonNavOneComponent,
   OperasyonNavTwoComponent,
   OperasyonAnnouncementManageComponent,
-  OperasyonFrontendListComponent];
+  OperasyonFrontendListComponent,
+  OperasyonHelperComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
@@ -52,7 +55,7 @@ const COMPONENTS_NOROUNT = [];
       // 默认前端配置项
       options: {
         UEDITOR_HOME_URL: './assets/ueditor/',
-        serverUrl:'http://52.199.54.78:8080'+ '/api/content/upload-pic?XDEBUG_SESSION_START=PHPSTORM'
+        serverUrl:'http://local.multisites.com/api/content/upload-pic?XDEBUG_SESSION_START=PHPSTORM'
       }
     })
   ],

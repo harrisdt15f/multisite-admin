@@ -13,7 +13,7 @@
       <nz-tab *ngFor="let tab of lotteries_tabs" [nzTitle]="tab.label">
         <span *ngIf='tab_index!==0'>
           <span style='display: inline-block;margin-left:20px'>筛选彩种：</span>
-          <nz-select style='width:300px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="choise_lottery"
+          <nz-select style='width:150px;margin-left:20px'(ngModelChange)='change_lotteries($event)' nzShowSearch nzAllowClear [(ngModel)]="choise_lottery"
             placeholder="筛选彩种">
             <nz-option nzLabel="不选择" nzValue="0"></nz-option>
             <nz-option *ngFor='let item of lotteries_list' [nzLabel]="item.title" [nzValue]="item.id"></nz-option>
@@ -23,12 +23,12 @@
           <span style='display: inline-block;margin-left:20px'>奖期号：</span>
           <!-- <input nz-input placeholder="筛选奖期号" [(ngModel)]="search_number" /> -->
           <nz-input-group [nzSuffix]="suffixTemplate">
-            <input type="text" nz-input [(ngModel)]="search_number" placeholder="筛选奖期号" />
+            <input  style='width:150px;' type="text" nz-input [(ngModel)]="search_number" placeholder="筛选奖期号" />
           </nz-input-group>
         </span>
         <span *ngIf='choise_lottery&&choise_lottery!="0"'>
           <span  style='display: inline-block;margin-left:20px'>筛选最近期数：</span>
-          <nz-select style='width:300px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="previous_number"
+          <nz-select style='width:100px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="previous_number"
           placeholder="选择查看的最近期数">
           <nz-option nzLabel="不选择" nzValue="0"></nz-option>
           <nz-option nzLabel="1" nzValue="1"></nz-option>
@@ -54,16 +54,16 @@
           [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
           <thead>
             <tr>
-              <th nzWidth="200px">彩种ID</th>
-              <th nzWidth="200px">彩种名称</th>
-              <th nzWidth="200px"> 奖期</th>
+              <th nzWidth="100px">彩种ID</th>
+              <th nzWidth="150px">彩种名称</th>
+              <th nzWidth="150px"> 奖期</th>
               <th nzWidth="200px">开始时间</th>
               <th nzWidth="200px">结束时间</th>
               <th nzWidth="200px">中奖号码</th>
               <th nzWidth="200px">手动录号</th>
+              <th nzWidth="200px">重新派奖</th>
               <th nzWidth="200px">官方开奖时间</th>
               <th nzWidth="200px">允许录号时间</th>
-
               <th nzWidth="200px">已录号状态</th>
               <th nzWidth="200px">计奖状态</th>
               <th nzWidth="200px">派奖状态</th>
@@ -105,13 +105,15 @@
           <tbody>
             <ng-template ngFor let-data [ngForOf]="nzTable.data">
               <tr class='table_tr'>
-                <td>{{ data.lottery_id }}</td>
-                <td>{{ data.lottery_name }}</td>
-                <td>{{ data.issue }}</td>
+                <td style='width: 100px'>{{ data.lottery_id }}</td>
+                <td style='width: 150px'>{{ data.lottery_name }}</td>
+                <td  style='width: 150px'>{{ data.issue }}</td>
                 <td>{{ data.begin_time | dateChange}}</td>
                 <td>{{ data.end_time| dateChange }}</td>
                 <td>{{ data.official_code }}</td>
                 <td><button nzSize="small" (click)='input_number(data)' nz-button nzType="primary">录号</button></td>
+                <td>
+                  <button [nzLoading]="is_loading_enco" nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nzType="close"  [disabled]="!(data['status_encode']===1)" nzSize="small" (nzOnConfirm)='calculate_encode_again(data)' nz-button nzType="primary">重新派奖</button></td>
                 <td>{{ data.official_open_time| dateChange }}</td>
                 <td>{{ data.allow_encode_time| dateChange }}</td>
 

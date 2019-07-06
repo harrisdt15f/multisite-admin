@@ -19,6 +19,7 @@ export class GameLotteryIssueComponent implements OnInit {
   public list_of_aply_data: Array<any> = [];
   public list_total: number;
   public list_of_search_status: string;
+  public is_loading_enco: boolean;
   public is_load_list: boolean;
   public is_visible_input: boolean;//显示手动录号弹框
   public searchValue = '';
@@ -74,6 +75,35 @@ export class GameLotteryIssueComponent implements OnInit {
       end_time: [null, [Validators.required]],
 
     });
+  }
+  /**
+   * 点击重新派奖
+   */
+  calculate_encode_again(item){
+    let option={
+      id:item.id
+    }
+    this.is_loading_enco=true;
+    this.gameService.calculate_encode_again(option).subscribe((res: any) => {
+      this.is_loading_enco=false;
+      if (res && res.success) {
+        this.message.error('重新派奖成功', {
+          nzDuration: 10000,
+        });
+  
+
+
+
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
+  // 选采种变化
+  change_lotteries(){
+    this.previous_number='1';
   }
 
   /**
