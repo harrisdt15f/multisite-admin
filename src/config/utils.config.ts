@@ -1,7 +1,6 @@
 export class Utils {
   static  httpIri: string;
   static  fileIri='http://api.9170ttt.com';
-  static  total_user_type=2;
   static  acl_route_list: Array<any>=[];
   static  acl_id_list: Array<any>=[];
   static  white_route: Array<any>=[
@@ -10,6 +9,48 @@ export class Utils {
     '/passport/login'
   ];
   static isDevelop: boolean =false;
+  static  issue_format: Array<any>=[
+    {
+      value:'C6',
+      eg:'735876'
+    },
+    {
+      value:'C7',
+      eg:'0294608'
+    },
+    {
+      value:'Y|T3',
+      eg:'2019001'
+    },
+    {
+      value:'y|T3',
+      eg:'19001'
+    },
+    {
+      value:'ymd|N2',
+      eg:'19070801'
+    },
+    {
+      value:'ymd|N3',
+      eg:'190701001'
+    },
+    {
+      value:'ymd|N4',
+      eg:'1907080001'
+    },
+    {
+      value:'Ymd-|N2',
+      eg:'2019070801'
+    },
+    {
+      value:'Ymd|N3',
+      eg:'20190708001'
+    },
+    {
+      value:'Ymd|N4',
+      eg:'201907080001'
+    }
+  ];
   constructor() {
     
   }

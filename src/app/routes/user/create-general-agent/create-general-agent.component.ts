@@ -59,7 +59,6 @@ public  min_prize_group: number;
 create_user(): void {
   let option=this.create_user_obj;
   this.is_Loading=true;
-  option['type']=2;
   this.userManageService.crete_total_user(option).subscribe((res:any)=>{
     this.is_Loading=false;
     if (res && res.success) {
@@ -157,6 +156,7 @@ create_user(): void {
       password: [null, [Validators.required,Validators.minLength(6),Validators.maxLength(16)]],
       check_password: [null, [Validators.required, this.confirmation_passport]],
       fund_password: [null, [Validators.required]],
+      type: [null, [Validators.required]],
       prize_group: [null, [Validators.required]],
       is_tester: [null],
       check_fund_password: [null, [Validators.required, this.confirmation_prize_passport]]
@@ -173,9 +173,9 @@ class create_user_obj{
   public fund_password:string=null;
   public is_tester:string=null;
   public prize_group: number=null;
-  public type: number=null;
+  public type: string=null;
   constructor(){
-    this.type=Utils.total_user_type;
     this.is_tester='0';
+    this.type='2';
   }
 }

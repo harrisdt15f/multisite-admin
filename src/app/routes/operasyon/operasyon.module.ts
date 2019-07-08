@@ -55,7 +55,7 @@ const COMPONENTS_NOROUNT = [];
       // 默认前端配置项
       options: {
         UEDITOR_HOME_URL: './assets/ueditor/',
-        serverUrl:'http://api.9170ttt.com/api/content/upload-pic?XDEBUG_SESSION_START=PHPSTORM'
+        serverUrl:'http://api.9170ttt.com/api/content/upload-pic?'
       }
     })
   ],

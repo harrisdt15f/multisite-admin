@@ -6,6 +6,19 @@
       <div *ngIf='is_Loading' class='lodding-box'>
         <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
       </div>
+            <!--用户类型-->
+            <nz-form-item>
+                <nz-form-label nzFor="type" [nzSm]="6" [nzXs]="24" nzRequired>用户类型</nz-form-label>
+                <nz-form-control [nzSm]="14" [nzXs]="24">
+        
+                  <nz-radio-group id="type" [(ngModel)]="create_user_obj['type']" formControlName="type">
+                    <label nz-radio nzValue='1'>直属</label>
+                    <label nz-radio nzValue='2'>代理</label>
+                    <label nz-radio nzValue='3'>会员</label>
+                  </nz-radio-group>
+                </nz-form-control>
+        
+              </nz-form-item>
       <!-- 用户名 -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="username" nzRequired>用户名</nz-form-label>

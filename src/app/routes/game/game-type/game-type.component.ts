@@ -5,6 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { GameService } from 'app/service/game.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CronOptions } from "cron-editor/cron-editor";
+import { Utils } from 'config/utils.config';
 
 @Component({
   selector: 'app-game-game-type',
@@ -15,6 +16,7 @@ import { CronOptions } from "cron-editor/cron-editor";
 export class GameGameTypeComponent implements OnInit {
   public page_index = 1;
   public list_of_aply_data: Array<any> = [];
+  public issue_format: Array<any> = [];
   public is_load_list: boolean;
   public tab_index = 0;
   public lotteries_tabs = [];
@@ -60,9 +62,12 @@ export class GameGameTypeComponent implements OnInit {
     private fb: FormBuilder,
     private gameService: GameService,
     private message: NzMessageService
-  ) { }
+  ) {
+    
+   }
 
   ngOnInit() {
+    this.issue_format=Utils.issue_format;
     this.get_lotteries_type();
     this.get_prize_group();
     this.create_form_lottery = this.fb.group({
@@ -96,6 +101,12 @@ export class GameGameTypeComponent implements OnInit {
       issue_count: [null, [Validators.required]],
       status: [null, [Validators.required]]
     });
+  }
+  /**
+   * 切换期号格式
+   */
+  change_issue_format(e){
+
   }
   /**
   * 获取奖金组
@@ -288,7 +299,7 @@ export class GameGameTypeComponent implements OnInit {
    * 点击下一步
    */
   next_form() {
-    this.current = 1;
+    this.current += 1;
   }
   /**
   * 点击上一步

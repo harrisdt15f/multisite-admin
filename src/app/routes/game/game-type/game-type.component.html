@@ -53,8 +53,8 @@
                   <a (click)='edit_lottery(data)'>修改</a>
                   <nz-divider nzType="vertical"></nz-divider>
                   <a nz-popconfirm nzTitle="确认删除这个彩种吗?" nzOkText="删除" nzCancelText="取消"
-                      (nzOnConfirm)="delete_lottery(data)">删除</a>
-              </td>
+                    (nzOnConfirm)="delete_lottery(data)">删除</a>
+                </td>
                 <td>
                   <a (click)='data.show_rule=!data.show_rule'>
                     {{data.show_rule?'点击关闭':'点击展开'}}
@@ -101,13 +101,19 @@
     <nz-modal nzWidth='80%' (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal"
       [nzTitle]='modal_type==="create"?"添加彩种":"编辑彩种"'>
       <!-- {{cronExpression}} -->
-      <nz-steps [nzCurrent]="current" nzSize="small">
+      <nz-steps *ngIf="edit_lotteries_obj['auto_open']!=='1'" [nzCurrent]="current" nzSize="small">
         <nz-step nzTitle="彩种信息"></nz-step>
         <nz-step nzTitle="彩种规则"></nz-step>
       </nz-steps>
-      <!-- <cron-editor [(cron)]="cronExpression" [options]="cronOptions"></cron-editor> -->
+      <nz-steps *ngIf="edit_lotteries_obj['auto_open']==='1'" [nzCurrent]="current" nzSize="small">
+        <nz-step nzTitle="彩种信息"></nz-step>
+        <nz-step nzTitle="彩种规则"></nz-step>
+        <nz-step nzTitle="cron设定"></nz-step>
+      </nz-steps>
 
-      <form style='margin-top:20px;' [nzLayout]="'inline'" *ngIf='current===0' nz-form [formGroup]="create_form_lottery">
+
+      <form style='margin-top:20px;' [nzLayout]="'inline'" *ngIf='current===0' nz-form
+        [formGroup]="create_form_lottery">
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
         </div>
@@ -145,7 +151,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="lottery_type" nzRequired [nzSm]="9" [nzXs]="24">号码是否重复</nz-form-label>
-          <nz-form-control  [nzSm]="15" [nzXs]="23">
+          <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="lottery_type" formControlName="lottery_type"
               [(ngModel)]="edit_lotteries_obj['lottery_type']">
               <label nz-radio nzValue='1'>是</label>
@@ -155,7 +161,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="is_fast" nzRequired [nzSm]="9" [nzXs]="24">是否低频彩</nz-form-label>
-          <nz-form-control  [nzSm]="15" [nzXs]="23">
+          <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="is_fast" formControlName="is_fast" [(ngModel)]="edit_lotteries_obj['is_fast']">
               <label nz-radio nzValue='1'>是</label>
               <label nz-radio nzValue='0'>否</label>
@@ -164,7 +170,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="auto_open" nzRequired [nzSm]="9" [nzXs]="24">是否自开彩</nz-form-label>
-          <nz-form-control  [nzSm]="15" [nzXs]="23">
+          <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="auto_open" formControlName="auto_open" [(ngModel)]="edit_lotteries_obj['auto_open']">
               <label nz-radio nzValue='1'>是</label>
               <label nz-radio nzValue='0'>否</label>
@@ -186,9 +192,16 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="issue_format" nzRequired [nzSm]="9" [nzXs]="24">期号格式</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="issue_format" type="text" formControlName="issue_format" nz-input placeholder="期号格式"
-              [(ngModel)]="edit_lotteries_obj['issue_format']" />
+          <nz-form-control  [nzSm]="15" [nzXs]="23">
+              <div style='width: 250px'>
+                  <nz-select id="issue_format" type="issue_format" formControlName="issue_format"
+                  [(ngModel)]="edit_lotteries_obj['issue_format']" (ngModelChange)='change_issue_format($event)' nzShowSearch
+                  nzPlaceHolder="期号格式">
+      
+                  <nz-option *ngFor="let o of issue_format" [nzValue]="o.value" [nzLabel]="o.value+'(例：'+o.eg+')'"></nz-option>
+                </nz-select>
+              </div>
+
             <nz-form-explain
               *ngIf="create_form_lottery.get('issue_format')?.dirty && create_form_lottery.get('issue_format')?.errors">
               <ng-container *ngIf="create_form_lottery.get('issue_format')?.hasError('required')">
@@ -321,7 +334,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">是否开启</nz-form-label>
-          <nz-form-control  [nzSm]="15" [nzXs]="23">
+          <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_lotteries_obj['status']">
               <label nz-radio nzValue='1'>是</label>
               <label nz-radio nzValue='0'>否</label>
@@ -423,37 +436,47 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-            <nz-form-label nzFor="issue_count" nzRequired [nzSm]="9" [nzXs]="24">奖期期数</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-                <input id="issue_count" type="text" formControlName="issue_count" nz-input placeholder="issue_count"
+          <nz-form-label nzFor="issue_count" nzRequired [nzSm]="9" [nzXs]="24">奖期期数</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="issue_count" type="text" formControlName="issue_count" nz-input placeholder="issue_count"
               [(ngModel)]="edit_rule_obj['issue_count']" />
-  
-              <nz-form-explain
-                *ngIf="create_form_rule.get('issue_count')?.dirty && create_form_rule.get('issue_count')?.errors">
-                <ng-container *ngIf="create_form_rule.get('issue_count')?.hasError('issue_count')">
-                  请输入奖期期数!
-                </ng-container>
-              </nz-form-explain>
-            </nz-form-control>
-          </nz-form-item>
-          <nz-form-item style="width: 46%">
-              <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">是否开启</nz-form-label>
-              <nz-form-control  [nzSm]="15" [nzXs]="23">
-                <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_rule_obj['status']">
-                  <label nz-radio nzValue='0'>是</label>
-                  <label nz-radio nzValue='1'>否</label>
-                </nz-radio-group>
-              </nz-form-control>
-            </nz-form-item>
+
+            <nz-form-explain
+              *ngIf="create_form_rule.get('issue_count')?.dirty && create_form_rule.get('issue_count')?.errors">
+              <ng-container *ngIf="create_form_rule.get('issue_count')?.hasError('issue_count')">
+                请输入奖期期数!
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="width: 46%">
+          <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">是否开启</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
+            <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_rule_obj['status']">
+              <label nz-radio nzValue='0'>是</label>
+              <label nz-radio nzValue='1'>否</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
 
         <nz-form-item nz-row style="margin-bottom:8px;">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <button (click)="first_form()" nz-button nzType="primary">上一步</button>
-            <button (click)="submit_lotteries()" [disabled]="!create_form_rule.valid" nz-button
-              nzType="primary">创建</button>
+            <button [disabled]="!create_form_rule.valid" *ngIf="edit_lotteries_obj['auto_open']==='1'"
+              (click)="next_form()" nz-button nzType="primary">下一步</button>
+            <button *ngIf="edit_lotteries_obj['auto_open']!=='1'" (click)="submit_lotteries()"
+              [disabled]="!create_form_rule.valid" nz-button nzType="primary">创建</button>
           </nz-form-control>
         </nz-form-item>
       </form>
+      <div *ngIf='current===2'>
+        <cron-editor [(cron)]="cronExpression" [options]="cronOptions"></cron-editor>
+         <div>
+           生成的表达式：{{cronExpression}}
+         </div>
+         <button  (click)="submit_lotteries()" nz-button nzType="primary">创建</button>
+        
+      </div>
     </nz-modal>
 
 
