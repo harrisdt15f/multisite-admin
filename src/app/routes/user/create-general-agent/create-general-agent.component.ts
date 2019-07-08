@@ -59,6 +59,7 @@ public  min_prize_group: number;
 create_user(): void {
   let option=this.create_user_obj;
   this.is_Loading=true;
+  option['type']=2;
   this.userManageService.crete_total_user(option).subscribe((res:any)=>{
     this.is_Loading=false;
     if (res && res.success) {

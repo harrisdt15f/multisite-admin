@@ -98,14 +98,16 @@
         </nz-table>
       </nz-tab>
     </nz-tabset>
-    <nz-modal nzWidth='800px' (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal"
+    <nz-modal nzWidth='80%' (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal"
       [nzTitle]='modal_type==="create"?"添加彩种":"编辑彩种"'>
+      <!-- {{cronExpression}} -->
       <nz-steps [nzCurrent]="current" nzSize="small">
         <nz-step nzTitle="彩种信息"></nz-step>
         <nz-step nzTitle="彩种规则"></nz-step>
       </nz-steps>
-      <!-- <cron-editor [(cron)]="cronExpression" ></cron-editor> -->
-      <form style='margin-top:20px' [nzLayout]="'inline'" *ngIf='current===0' nz-form [formGroup]="create_form_lottery">
+      <!-- <cron-editor [(cron)]="cronExpression" [options]="cronOptions"></cron-editor> -->
+
+      <form style='margin-top:20px;' [nzLayout]="'inline'" *ngIf='current===0' nz-form [formGroup]="create_form_lottery">
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
         </div>
@@ -143,7 +145,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="lottery_type" nzRequired [nzSm]="9" [nzXs]="24">号码是否重复</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control  [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="lottery_type" formControlName="lottery_type"
               [(ngModel)]="edit_lotteries_obj['lottery_type']">
               <label nz-radio nzValue='1'>是</label>
@@ -153,7 +155,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="is_fast" nzRequired [nzSm]="9" [nzXs]="24">是否低频彩</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control  [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="is_fast" formControlName="is_fast" [(ngModel)]="edit_lotteries_obj['is_fast']">
               <label nz-radio nzValue='1'>是</label>
               <label nz-radio nzValue='0'>否</label>
@@ -162,7 +164,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="auto_open" nzRequired [nzSm]="9" [nzXs]="24">是否自开彩</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control  [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="auto_open" formControlName="auto_open" [(ngModel)]="edit_lotteries_obj['auto_open']">
               <label nz-radio nzValue='1'>是</label>
               <label nz-radio nzValue='0'>否</label>
@@ -319,7 +321,7 @@
         </nz-form-item>
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">是否开启</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control  [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_lotteries_obj['status']">
               <label nz-radio nzValue='1'>是</label>
               <label nz-radio nzValue='0'>否</label>
@@ -436,7 +438,7 @@
           </nz-form-item>
           <nz-form-item style="width: 46%">
               <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">是否开启</nz-form-label>
-              <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+              <nz-form-control  [nzSm]="15" [nzXs]="23">
                 <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_rule_obj['status']">
                   <label nz-radio nzValue='0'>是</label>
                   <label nz-radio nzValue='1'>否</label>
