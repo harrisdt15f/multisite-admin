@@ -41,7 +41,7 @@
             'directionalityltr', 'directionalityrtl', 'indent', '|',
             'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 'touppercase', 'tolowercase', '|',
             'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
-            'simpleupload', 'insertimage', 'emotion', 'scrawl',  'insertframe', 'insertcode',  'template', '|',
+            'insertimage', 'emotion', 'scrawl',  'insertframe', 'insertcode',  'template', '|',
           
           
           
