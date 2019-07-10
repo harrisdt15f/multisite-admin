@@ -95,7 +95,7 @@ export class GameGamePlayComponent implements OnInit {
    
     this.gameService.row_status(option).subscribe((res: any) => {
       if (res && res.success) {
-        this.message.success('切换玩法行开关成功', {
+        this.message.success('切换开关成功', {
           nzDuration: 10000,
         });
       } else {
@@ -113,6 +113,7 @@ export class GameGamePlayComponent implements OnInit {
       id: item.id,
       status: type?1:0
     }
+    item.status=type?1:0;
     this.gameService.method_status(option).subscribe((res: any) => {
       if (res && res.success) {
         this.message.success('切换玩法开关成功', {
@@ -219,6 +220,13 @@ export class GameGamePlayComponent implements OnInit {
         });
         this.five_level = data.child;
         break;
+        case 5:
+  
+          this.five_level.forEach((item) => {
+            item.is_edit = false;
+          });
+
+          break;
 
     }
     data.is_edit = true;

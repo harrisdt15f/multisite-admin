@@ -93,7 +93,7 @@
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr class='table_tr'>
             <td>{{ data.origin|| '无'}}</td>
-            <td (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
+            <td class='hover-change'  (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
             <td (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
             <td>{{ data.username || '无'}}</td>
             <td>{{ data.lang|| '无'}}</td>

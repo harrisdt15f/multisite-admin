@@ -7,6 +7,7 @@ import { UEditorComponent } from 'ngx-ueditor';
 import { until } from 'protractor';
 import { Utils } from 'config/utils.config';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
+declare let window:any;
 @Component({
   selector: 'app-operasyon-announcement-manage',
   templateUrl: './announcement-manage.component.html',
@@ -257,6 +258,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
    * @memberof OperasyonannouncementManageComponent
    */
   add_announcement() {
+    window.upload_iri = Utils.get_upload_iri('announcement');
 
     this.if_show_modal = true;
     this.modal_type = 'create';
@@ -323,6 +325,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
    * @memberof OperasyonannouncementManageComponent
    */
   edit_announcement(data) {
+    window.upload_iri = Utils.get_upload_iri('announcement');
     this.if_show_modal = true;
     this.modal_type = 'edit';
     // this.update_form();

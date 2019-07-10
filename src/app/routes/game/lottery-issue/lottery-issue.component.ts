@@ -35,13 +35,15 @@ export class GameLotteryIssueComponent implements OnInit {
   public tab_index: number = 0;
   public search_number: string;
 
+
   //-------------弹框参数
+  public code_value: string;
   public visible_modal = false;
   public create_form: FormGroup;//表单对象
   public modal_lodding: boolean;//显示加载图标
   public create_lottery_obj: object = {};//显示加载图标
   public lotteries_list: Array<any> = [];
-  public code_array: Array<any> = [];
+  public code_rule: string;
   public time: Date;
   public every_day_time: string;
   public is_visible_edit_time: boolean;
@@ -132,7 +134,7 @@ export class GameLotteryIssueComponent implements OnInit {
           this.input_number_rule_obj[data.en_name] = {
             code_length: data.code_length,
             en_name: data.en_name,
-            valid_code: data.valid_code.split(',')
+            valid_code: data.valid_code
           }
         })
 
@@ -149,7 +151,7 @@ export class GameLotteryIssueComponent implements OnInit {
     let option = {
       lottery_id: this.input_number_obj['obj'].lottery_id,
       issue: this.input_number_obj['obj'].issue,
-      code: this.get_input_code(this.input_number_obj['obj'].lottery.series_id, this.code_array)
+      code: this.get_input_code(this.input_number_obj['obj'].lottery.series_id, this.code_value)
     }
     this.is_lodding_modal = true;
     this.gameService.input_number_value(option).subscribe((res: any) => {
@@ -172,8 +174,8 @@ export class GameLotteryIssueComponent implements OnInit {
     this.is_visible_input = false;
   }
 
-  get_input_code(type, list) {
-    let value = '';
+  get_input_code(type, value) {
+
     let point = ''
     switch (type) {
       case 'ssc':
@@ -185,15 +187,11 @@ export class GameLotteryIssueComponent implements OnInit {
       case 'lhc':
         point = ' ';
         break;
+      default:
+          point = '';
     }
-    list.forEach((item, index) => {
-      value += item.value;
-      if (index < (list.length - 10)) {
-        value += point;
-      }
 
-    });
-    return value
+    return value.split(',').join(point);
   }
   /**
    * 点击录号
@@ -201,15 +199,21 @@ export class GameLotteryIssueComponent implements OnInit {
   input_number(data) {
     this.is_visible_input = true;
     this.is_lodding_modal = false;
-    let code_length = this.input_number_rule_obj[data.lottery_id].code_length;
+    this.code_value = '';
+    let code_example = []
     this.input_number_obj = this.input_number_rule_obj[data.lottery_id];
     this.input_number_obj['obj'] = data;
-    this.code_array = [];
+    let code_length = this.input_number_obj['code_length'];
     for (var i = 1; i <= code_length; i++) {
-      this.code_array.push({
-        velue: ''
-      })
+      code_example.push(this.input_number_obj['valid_code'].split(',')[i] ? this.input_number_obj['valid_code'].split(',')[i] : this.input_number_obj['valid_code'].split(',')[0]);
     }
+    this.code_rule = `   奖期号：${data.issue}
+    彩种名称：${data.lottery_name}
+    录号位数${code_length}位,用英文“,”隔开
+    号码范围：${this.input_number_obj['valid_code']}
+    例子:${code_example.join(',')}
+    `
+
   }
   /**
    * 关闭弹窗

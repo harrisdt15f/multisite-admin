@@ -128,9 +128,10 @@ export class UserManageUserComponent implements OnInit {
   update_time(){
     this.start_time=this.change_date(new Date(),'start');
     this.end_time=this.change_date(new Date(),'end');
+    this.now_date = [new Date(), new Date()];
   }
   /**
-   * 用户张变记录
+   * 用户账变记录
    */
   user_account_change(data) {
     this.look_history = true;
@@ -493,7 +494,7 @@ export class UserManageUserComponent implements OnInit {
           this.get_user_account_change(this.edit_modal_o);
         break;
       case 'recharge':
-        this.get_user_account_change(this.edit_modal_o);
+        this.get_user_recharge_history(this.edit_modal_o);
         break;
       case 'permission':
           this.get_permission_list(this.edit_modal_o);

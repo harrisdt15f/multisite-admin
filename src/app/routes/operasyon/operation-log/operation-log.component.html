@@ -30,7 +30,7 @@
                 </div>
               </nz-dropdown>
           </th>
-          <th nzCustomFilter nzWidth="200px"> 
+          <th nzCustomFilter  nzWidth="200px"> 
             访问Ip
             <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
                 <i nz-icon nzType="search" class="ant-table-filter-icon"
@@ -93,7 +93,7 @@
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr class='table_tr'>
             <td>{{ data.origin|| '无'}}</td>
-            <td (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
+            <td class='hover-change' (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
             <td (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
             <td>{{ data.admin_name || '无'}}</td>
             <td>{{ data.lang|| '无'}}</td>

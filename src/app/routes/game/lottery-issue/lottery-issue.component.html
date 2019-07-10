@@ -27,7 +27,7 @@
           </nz-input-group>
         </span>
         <span *ngIf='choise_lottery&&choise_lottery!="0"'>
-          <span  style='display: inline-block;margin-left:20px'>筛选最近期数：</span>
+          <span  style='display: inline-block;margin-left:20px'>筛选历史期数：</span>
           <nz-select style='width:100px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="previous_number"
           placeholder="选择查看的最近期数">
           <nz-option nzLabel="不选择" nzValue="0"></nz-option>
@@ -207,10 +207,17 @@
     <nz-modal [nzOkLoading]='is_lodding_modal' nzWidth=1000 [(nzVisible)]="is_visible_input" nzTitle="手动录号" (nzOnCancel)="handle_cancel()"
       (nzOnOk)="handle_ok()">
       <div class='input-box'>
-        <nz-select *ngFor='let rule of code_array' class="input-item" 
+        <!-- <nz-select *ngFor='let rule of code_array' class="input-item" 
         [(ngModel)]="rule['value']" nzShowSearch >
           <nz-option *ngFor="let number of input_number_obj['valid_code']" [nzValue]="number" [nzLabel]="number"></nz-option>
-        </nz-select>
+        </nz-select> -->
+
+        <textarea
+        nz-input
+        [placeholder]="code_rule"
+        [(ngModel)]="code_value"
+        [nzAutosize]="{ minRows: 8, maxRows: 15 }"
+      ></textarea>
       </div>
     </nz-modal>
   </nz-content>

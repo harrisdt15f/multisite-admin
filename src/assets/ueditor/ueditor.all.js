@@ -8454,7 +8454,11 @@
         if (!serverUrl && imageUrl) {
           serverUrl = imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2');
         }
-
+        //uedit修改
+        //window.upload_iri为动态变化上传路径
+        if(!serverUrl&&window.upload_iri){
+          serverUrl=window.upload_iri;
+        }
         if (serverUrl) {
           serverUrl = serverUrl + (serverUrl.indexOf('?') == -1 ? '?' : '&') + 'action=' + (actionName || '');
           return utils.formatUrl(serverUrl);

@@ -1,6 +1,7 @@
 export class Utils {
   static  httpIri: string;
-  static  fileIri='http://api.9170ttt.com';
+  static  image_upload_iri_help:string='/api/sys/upload';
+  static  image_upload_iri_announcement:string='/api/content/upload-pic';
   static  acl_route_list: Array<any>=[];
   static  acl_id_list: Array<any>=[];
   static  white_route: Array<any>=[
@@ -71,6 +72,17 @@ export class Utils {
       this.httpIri = 'http://api.9170ttt.com';
     }
     return this.httpIri;
+  }
+
+  static get_upload_iri(type){
+    if(type==='help'){
+    return this.httpIri+this.image_upload_iri_help;
+
+    }else if(type==='announcement'){
+      return this.httpIri+this.image_upload_iri_announcement;
+      
+    }
+    
   }
   static GetFreezeType(num){
     let type;

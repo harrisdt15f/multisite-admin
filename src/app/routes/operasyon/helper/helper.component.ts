@@ -4,6 +4,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { PersonalService } from 'app/service/personal.service';
+import { Utils } from 'config/utils.config';
+declare let window:any;
 @Component({
   selector: 'app-operasyon-helper',
   templateUrl: './helper.component.html',
@@ -56,6 +58,8 @@ export class OperasyonHelperComponent implements OnInit {
    * @memberof OperasyonOperasyonhelperComponent
    */
   edit_helper(item, type) {
+    window.upload_iri = Utils.get_upload_iri('help');
+
     if (type === 'parent') {
       this.is_parent = true;
     } else {
@@ -77,6 +81,8 @@ export class OperasyonHelperComponent implements OnInit {
    * @memberof OperasyonOperasyonhelperComponent
    */
   create_helper(type, pid?) {
+    window.upload_iri = Utils.get_upload_iri('help');
+
     if (type === 'parent') {
       this.pid = 0;
       this.is_parent = true;

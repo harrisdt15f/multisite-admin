@@ -198,6 +198,8 @@
         
  
               <div>充值金额：{{item.amount}}(元)</div>
+              <div>变更前余额：{{item.before_balance}}(元)</div>
+              <div>变更后余额：{{item.balance}}(元)</div>
               <div>{{item.created_at}}</div>
               <div>状态：{{item.status|rechargeStatus}}</div>
             </div>
@@ -205,6 +207,8 @@
             <div *ngIf='drawer_type=="account"' nz-col [nzSpan]="22">
               <div>{{item.type_name}}</div>
               <div>金额：{{item.amount}}(元)</div>
+              <div>变更前余额：{{item.before_balance}}(元)</div>
+              <div>变更后余额：{{item.balance}}(元)</div>
               <div>{{item.created_at}}</div>
             </div>
 

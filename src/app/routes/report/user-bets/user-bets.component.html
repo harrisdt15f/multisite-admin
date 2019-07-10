@@ -16,27 +16,14 @@
 <nz-layout>
 <nz-content>
 
-<nz-table #nzTable [nzScroll]='{x:"3800px", y: "500px" }' [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+<nz-table #nzTable [nzScroll]='{x:"3200px", y: "500px" }' [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
   [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
   [nzTotal]='list_total'>
   <thead>
     <tr>
-      <th nzWidth="200px" nzCustomFilter>
-        用户名称
-        <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-            <i nz-icon nzType="search" class="ant-table-filter-icon"
-              [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-
-            <div class="search-box">
-              <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
-              <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                搜索
-              </button>
-              <button nz-button nzSize="small" (click)="reset()">取消</button>
-            </div>
-          </nz-dropdown>
-      </th>
-      <th nzWidth="200px" nzCustomFilter> 
+      <th nzWidth="100px">彩种</th>
+     
+      <th nzWidth="150px" nzCustomFilter> 
         奖期号
           <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
                 <i nz-icon nzType="search" class="ant-table-filter-icon"
@@ -51,22 +38,41 @@
                 </div>
               </nz-dropdown>
       </th>
-
+      <th nzWidth="100px"> 投注号码</th>
+      <th nzWidth="100px">倍数</th>
+      <th nzWidth="100px">元角模式</th>
+      <th nzWidth="150px">单注投注额</th>
+      <th nzWidth="150px">总投注额</th> 
+      <th nzWidth="150px">中奖金额 </th>
+      <th nzWidth="200px" nzCustomFilter>
+          用户名称
+          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+              <i nz-icon nzType="search" class="ant-table-filter-icon"
+                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+  
+              <div class="search-box">
+                <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
+                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                  搜索
+                </button>
+                <button nz-button nzSize="small" (click)="reset()">取消</button>
+              </div>
+            </nz-dropdown>
+        </th>
       <th nzWidth="200px" nzShowFilter [nzFilters]="is_tester" 
       [nzFilterMultiple]='false' (nzFilterChange)="filter_deposit_mode_change($event)">是否测试用户</th>
       <th nzWidth="200px" nzShowFilter [nzFilters]="status" 
       [nzFilterMultiple]='false' (nzFilterChange)="filter_status_change($event)">开奖状态
-    </th>
+     </th>
+  
       <th nzWidth="200px">奖金组</th>
-      <th nzWidth="200px">单注投注额</th>
-      <th nzWidth="200px">倍数</th>
-      <th nzWidth="200px">总投注额</th>
-      <th nzWidth="200px">单位</th>
-      <th nzWidth="200px"> 投注号码</th>
+
+
+
       <th nzWidth="200px">开奖号码 </th>
-      <th nzWidth="200px">中奖金额 </th>
+ 
       <th nzWidth="200px">系列</th>
-      <th nzWidth="200px">彩种</th>
+    
       <th nzWidth="200px">玩法ID</th>
       <th nzWidth="200px">玩法</th>
       <th nzWidth="200px">ip</th>
@@ -79,20 +85,23 @@
   <tbody>
     <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
     <tr class='table_tr' *ngFor="let data of list_of_aply_data" >
+      <td style='width: 100px'>{{data.lottery_sign}}</td>
+      <td style='width: 150px'>{{ data.issue }}</td>
+      <td  style='width: 100px'>{{data.bet_number}}</td>
+      <td  style='width: 100px'>{{data.times}}</td>
+      <td  style='width: 100px'> {{data.mode|unit}}</td>
+      <td style='width: 150px'>{{ data.price}}</td>
+      <td style='width: 150px'>{{data.total_cost}}</td>
+      <td style='width: 150px'>{{data.bonus}}</td>
       <td>{{ data.username}}</td>
-      <td>{{ data.issue }}</td>
       <td>{{data.is_tester==1?'是':'否'}}</td>
       <td>{{ data.status|userBet }}</td>
       <td>{{ data.bet_prize_group }}</td>
-      <td>{{ data.price}}</td>
-      <td>{{data.times}}</td>
-      <td>{{data.total_cost}}</td>
-      <td>{{data.mode|unit}}</td>
-      <td>{{data.bet_number}}</td>
+  
       <td>{{data.open_number}}</td>
-      <td>{{data.bonus}}</td>
+    
       <td>{{data.series_id}}</td>
-      <td>{{data.lottery_sign}}</td>
+   
       <td>{{data.method_sign}}</td>
       <td>{{data.method_name}}</td>
       <td>{{data.ip}}</td>
