@@ -2,7 +2,7 @@
 <nz-content style="background-color: white" nz-row nzGutter="32">
   <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
     <nz-tab *ngFor="let tab of model_tabs" [nzTitle]="tab.label">
-      <div nz-col nzSpan="12">
+      <div nz-col nzSpan="8">
         <div class='menu-box'>
           <div>
             <h3 style='text-align: center'>编辑模块</h3>
@@ -51,7 +51,7 @@
 
       </div>
 
-      <div nz-col nzSpan="12">
+      <div nz-col nzSpan="8">
         <div class='menu-box'>
           <div>
             <h3 style='text-align: center'>路由设置</h3>
@@ -73,10 +73,11 @@
                       class="folder-name">{{ node.title }}</span>
                     <span *ngIf='!node.origin.is_route' class="folder-desc">
 
-                      <a (click)='add_route(node.origin)'> 添加路由</a>
+                      <a style='color:blue' (click)='add_route(node.origin)'> 添加路由</a>
                     </span>
                     <span *ngIf='node.origin.is_route' class="folder-desc">
-
+                      <a (click)='edit_route(node.origin)'>编辑</a>
+                      <nz-divider nzType="vertical"></nz-divider>
                       <a style='color:#1D90FF' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
                         (nzOnConfirm)="delete_route(node.origin)">删除</a>
                     </span>
@@ -86,7 +87,7 @@
                     <span [ngStyle]="{'color':node.title.indexOf(searchValue) > -1 && searchValue!=''  ? 'red' : '' }"
                       class="file-name">{{ node.title }}</span>
                     <span *ngIf='!node.origin.is_route' class="folder-desc">
-                      <a (click)='add_route(node.origin)'> 添加路由</a>
+                      <a style='color:blue' (click)='add_route(node.origin)'> 添加路由</a>
                     </span>
                     <span style='display: inline-block;margin-left: 20px;' *ngIf='node.origin.is_route'>
                       <nz-switch [(ngModel)]="node.origin.is_open"
@@ -94,7 +95,8 @@
                         nzUnCheckedChildren="关"></nz-switch>
                     </span>
                     <span *ngIf='node.origin.is_route' class="folder-desc">
-
+                      <a (click)='edit_route(node.origin)'>编辑</a>
+                      <nz-divider nzType="vertical"></nz-divider>
                       <a style='color:blue' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
                         (nzOnConfirm)="delete_route(node.origin)">删除</a>
                     </span>
@@ -102,6 +104,30 @@
                 </span>
               </ng-template>
             </nz-tree>
+          </div>
+        </div>
+      </div>
+      <div nz-col nzSpan="8">
+        <div class='menu-box'>
+          <div>
+            <h3 style='text-align: center'>路由列表</h3>
+          </div>
+          <!-- [nzLoading]="loading" -->
+          <div class="menu_box_content">
+              <nz-list [nzDataSource]="route_array" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" >
+                  <ng-template #item let-item>
+                    <nz-list-item>
+                      <nz-list-item-meta
+                        [nzTitle]="nzTitle"
+                        [nzDescription]="item.route_name"
+                      >
+                        <ng-template #nzTitle>
+                          <span >{{item.title}}</span>
+                        </ng-template>
+                      </nz-list-item-meta>
+                    </nz-list-item>
+                  </ng-template>
+                </nz-list>
           </div>
         </div>
       </div>
@@ -151,7 +177,6 @@
             请选择模块类型!</nz-form-explain>
         </nz-form-control>
       </nz-form-item>
-
 
 
       <nz-form-item>

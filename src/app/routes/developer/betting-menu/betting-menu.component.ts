@@ -36,6 +36,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   public edit_menu_obj: object = {};  //模块编辑对象
   public edit_route_obj: object = {}; //路由编辑对象
   public edit_route_menu: object = {}; 
+  public route_array: Array<any> = []; 
 
   constructor(
     private http: _HttpClient,
@@ -168,6 +169,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.developerService.get_betting_route_list(this.page_type).subscribe((res: any) => {
       if (res && res.success) {
         if (res.data && res.data.length > 0) {
+          this.route_array=res.data;
           res.data.forEach((item, index) => {
             if (!this.edit_route_menu[item.frontend_model_id]) {
               this.edit_route_menu[item.frontend_model_id] = [];
@@ -482,7 +484,15 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * @param data 
    */
   edit_route(data) {
-
+    this.is_show_edit_route=true;
+    this.modal_type='edit';
+ 
+    this.edit_route_obj={
+      id:data.key,
+      title:data.title,
+      menu_group_id:data.menu_group_id,
+      route:data.route_name
+    }
   }
   /**
    * 
@@ -583,7 +593,7 @@ get_route_tree(item, array) {
           is_open: d.is_open===1?true:false,
     
           level: data.level,
-          route_name: data.route_name,
+          route_name: d.route_name,
           children: []
         }
         obj['children'].push(o)

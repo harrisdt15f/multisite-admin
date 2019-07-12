@@ -5,7 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { PersonalService } from 'app/service/personal.service';
 import { Utils } from 'config/utils.config';
-declare let window:any;
+declare let window: any;
 @Component({
   selector: 'app-operasyon-helper',
   templateUrl: './helper.component.html',
@@ -39,7 +39,7 @@ export class OperasyonHelperComponent implements OnInit {
   ngOnInit() {
     this.get_system_helper_list();
     this.create_form = this.fb.group({
-      menu: [null, [Validators.required,Validators.maxLength(32),Validators.minLength(2)]],
+      menu: [null, [Validators.required, Validators.maxLength(32), Validators.minLength(2)]],
       content: [null, [this.confirmationValidator]],
       status: [null, [Validators.required]],
 
@@ -53,27 +53,25 @@ export class OperasyonHelperComponent implements OnInit {
   };
 
   /**
-   *创建子帮助菜单
+   *编辑菜单
    *
    * @memberof OperasyonOperasyonhelperComponent
    */
   edit_helper(item, type) {
     window.upload_iri = Utils.get_upload_iri('help');
-
+    this.helper_obj = JSON.parse(JSON.stringify(item));
     if (type === 'parent') {
       this.is_parent = true;
     } else {
       this.is_parent = false;
+      if (this.helper_obj['content']) {
+        this.helper_obj['content'] = Utils.get_img_iri(this.helper_obj['content'], 'add').content
+      }
     }
-    this.remove_helper_modal();
-
-
-    this.helper_obj = JSON.parse(JSON.stringify(item));
-    this.helper_obj['status']=JSON.stringify(this.helper_obj['status']);
+    this.helper_obj['status'] = JSON.stringify(this.helper_obj['status']);
     this.if_create_helper = true;
     this.modal_type = 'edit';
     this.pid = item.pid;
-
   }
   /**
    *点击创建帮助菜单
@@ -107,8 +105,9 @@ export class OperasyonHelperComponent implements OnInit {
       menu: this.helper_obj['menu'],
       status: this.helper_obj['status']
     };
-    if(!this.is_parent){
-      option['content']=this.helper_obj['content']
+    if (!this.is_parent&&option['content']) {
+      let img_obj = Utils.get_img_iri(this.helper_obj['content'], 'remove');
+      option['content'] = img_obj.content;
     }
     this.modal_lodding = true;
     switch (this.modal_type) {
@@ -209,7 +208,7 @@ export class OperasyonHelperComponent implements OnInit {
       if (res && res.success) {
         this.is_load_list = false;
         this.list_of_data = res.data;
-   
+
       } else {
         this.is_load_list = false;
         this.message.error(res.message, {
@@ -227,16 +226,16 @@ export class OperasyonHelperComponent implements OnInit {
     let option = {
       id: data.id,
       menu: data.menu,
-      status: data.status==1?0:1,
+      status: data.status == 1 ? 0 : 1,
       pid: data.pid
     };
-    if(data.content){
-      option['content']=data.content;
+    if (data.content) {
+      option['content'] = data.content;
     }
     this.is_load_list_child = true;
-    setTimeout(()=>{
+    setTimeout(() => {
       this.is_load_list_child = false;
-    },5000)
+    }, 5000)
     this.personalService.edit_system_helper_list(option).subscribe((res: any) => {
       this.is_load_list_child = false;
       if (res && res.success) {

@@ -108,8 +108,11 @@ export class OperasyonOperasyonSettingComponent implements OnInit {
       sign: this.setting_obj['sign'],
       name: this.setting_obj['name'],
       description: this.setting_obj['description'],
-      value: this.setting_obj['value']
+
     };
+    if(this.parent_id!=0){
+      option['value']=this.setting_obj['value']
+    }
     this.modal_lodding = true;
     switch (this.modal_type) {
       case 'create':

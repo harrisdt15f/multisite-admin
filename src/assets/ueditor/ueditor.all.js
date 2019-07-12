@@ -4321,6 +4321,7 @@
      * @return { Boolean } 是否是空元素
      */
     isEmptyBlock: function (node, reg) {
+      if(!node||!node.nodeType)return;
       if (node.nodeType != 1)
         return 0;
       reg = reg || new RegExp('[ \xa0\t\r\n' + domUtils.fillChar + ']', 'g');
@@ -18053,6 +18054,7 @@
    */
   UE.plugins['autoheight'] = function () {
     var me = this;
+    if(!me.body)return;
     //提供开关，就算加载也可以关闭
     me.autoHeightEnabled = me.options.autoHeightEnabled !== false;
     if (!me.autoHeightEnabled) {

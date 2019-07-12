@@ -137,7 +137,7 @@ static link_check(value){
 }
 
 /**
- *得到字符串中所有的图片iri数组
+ *处理文本中img请求头
  *
  * @static
  * @param {*} str

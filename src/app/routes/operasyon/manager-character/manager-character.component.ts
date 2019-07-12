@@ -145,7 +145,10 @@ export class ManagerManagerCharacterComponent implements OnInit {
    * @memberof ManagerManagerCharacterComponent
    */
   add_group() {
+
+      this.resetForm(this.groupForm);
     this.is_edit_group = false;
+    this.is_super_manage = false;
     this.menu_tree_value = [];
     // this.show_type = "edit";
     this.edit_group_obj = {

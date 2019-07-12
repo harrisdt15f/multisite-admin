@@ -93,7 +93,7 @@
         </nz-table>
         <!-- 创建帮助中心弹框 -->
         <nz-drawer nzWidth='800px' [nzVisible]="if_create_helper" nzPlacement="right"
-            [nzTitle]="modal_type==='create'?'创建菜单':'修改菜单'" (nzOnClose)="if_create_helper = false">
+            [nzTitle]="modal_type==='create'?'创建菜单':'修改菜单'" (nzOnClose)="remove_helper_modal()">
             <form nz-form [formGroup]="create_form" (ngSubmit)="submit_helpers()">
                 <div *ngIf='modal_lodding' class='lodding-box'>
                     <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
