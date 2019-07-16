@@ -382,7 +382,7 @@ export class UserManageUserComponent implements OnInit {
   setting_permission(data) {
     this.is_edit_permission = true;
     this.freeze_obj = {};
-    this.freeze_obj['username'] = data['nickname'];
+    this.freeze_obj['username'] = data['username'];
     this.freeze_obj['user_id'] = data['id'];
   }
   /**
