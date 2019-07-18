@@ -440,8 +440,6 @@ export class UserManageUserComponent implements OnInit {
         }
       })
     }
-
-
   }
   /**
   * *校验密码

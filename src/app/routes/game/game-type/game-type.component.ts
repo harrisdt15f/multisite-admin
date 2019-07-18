@@ -184,11 +184,15 @@ export class GameGameTypeComponent implements OnInit {
    * 删除彩种
    */
   delete_lottery(data) { 
-    this.gameService.delete_lotteries(data.id).subscribe((res: any) => {
+    let option={
+      id:data.id
+    }
+    this.gameService.delete_lotteries(option).subscribe((res: any) => {
       if (res && res.success) {
         this.message.success('删除彩种成功', {
           nzDuration: 10000,
         });
+        this.get_lotteries_list(this.lotteries_tabs[0].value, 0)
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
