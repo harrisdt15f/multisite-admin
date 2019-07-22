@@ -47,6 +47,20 @@ export class GameService {
     const href = this.serviceHttpIri + '/api/lotteries/calculate-encode-again';
     return this.commonService.post(href ,option,{ headers: headers });
   }
+    /**
+   *重新派奖
+   *
+   * @memberof PersonalService
+   */
+  get_encode_splitter(){
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = this.serviceHttpIri + '/api/lotteries/series-lists';
+    return this.commonService.get(href ,{ headers: headers });
+  }
   /**
    *获取某个系统配置的值
    *

@@ -34,6 +34,7 @@ export class GameLotteryIssueComponent implements OnInit {
   public status_type: Array<any> = [];
   public tab_index: number = 0;
   public search_number: string;
+  public encode_splitter: object = {};
 
 
   //-------------弹框参数
@@ -78,7 +79,9 @@ export class GameLotteryIssueComponent implements OnInit {
       end_time: [null, [Validators.required]],
     });
     this.foreach_time();
+
   }
+
 
   foreach_time() {
     setInterval(() => {
@@ -107,10 +110,6 @@ export class GameLotteryIssueComponent implements OnInit {
         this.message.error('重新派奖成功', {
           nzDuration: 10000,
         });
-
-
-
-
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -151,7 +150,7 @@ export class GameLotteryIssueComponent implements OnInit {
     let option = {
       lottery_id: this.input_number_obj['obj'].lottery_id,
       issue: this.input_number_obj['obj'].issue,
-      code: this.get_input_code(this.input_number_obj['obj'].lottery.series_id, this.code_value)
+      code:this.code_value.split(',').join(this.encode_splitter[this.input_number_obj['obj'].lottery.series_id])
     }
     this.is_lodding_modal = true;
     this.gameService.input_number_value(option).subscribe((res: any) => {
@@ -174,25 +173,7 @@ export class GameLotteryIssueComponent implements OnInit {
     this.is_visible_input = false;
   }
 
-  get_input_code(type, value) {
 
-    let point = ''
-    switch (type) {
-      case 'ssc':
-        point = '';
-        break;
-      case 'pk10':
-        point = ',';
-        break;
-      case 'lhc':
-        point = ' ';
-        break;
-      default:
-          point = '';
-    }
-
-    return value.split(',').join(point);
-  }
   /**
    * 点击录号
    */
@@ -367,6 +348,9 @@ export class GameLotteryIssueComponent implements OnInit {
     this.search();
     if (this.lotteries_tabs[this.tab_index].value != 10086) {
       this.get_lotteries_list();
+    
+        this.encode_splitter=this.lotteries_tabs[this.tab_index].encode_splitter;
+      
     }
 
 
@@ -394,13 +378,23 @@ export class GameLotteryIssueComponent implements OnInit {
             value: 10086
           }
         ];
-        for (let key in res.data) {
+        // for (let key in res.data) {
+        //   this.lotteries_tabs.push({
+        //     label: res.data[key],
+        //     value: key
+        //   }
+        //   )
+        // }
+        this.encode_splitter={};
+        res.data.forEach((item,index) => {
           this.lotteries_tabs.push({
-            label: res.data[key],
-            value: key
-          }
-          )
-        }
+            label: item.title,
+            value: item.series_name,
+            status: item.status,
+            encode_splitter: item.encode_splitter
+          });
+          this.encode_splitter[item.series_name]=item.encode_splitter?item.encode_splitter:'';
+        });
 
       } else {
         this.message.error(res.message, {
