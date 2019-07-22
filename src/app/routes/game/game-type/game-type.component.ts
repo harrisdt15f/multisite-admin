@@ -346,13 +346,14 @@ export class GameGameTypeComponent implements OnInit {
     this.gameService.get_lotteries_type().subscribe((res: any) => {
       if (res && res.success) {
         this.lotteries_tabs = [];
-        for (let key in res.data) {
+        res.data.forEach((item,index) => {
           this.lotteries_tabs.push({
-            label: res.data[key],
-            value: key
-          }
-          )
-        }
+            label: item.title,
+            value: item.series_name,
+            status: item.status,
+            encode_splitter: item.encode_splitter
+          });
+        });
         this.get_lotteries_list(this.lotteries_tabs[0].value, 0)
       } else {
         this.message.error(res.message, {
