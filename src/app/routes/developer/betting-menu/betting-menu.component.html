@@ -1,4 +1,12 @@
-<page-header></page-header>
+<page-header  [action]="action"  >
+    <ng-template #action>
+        <button (click)='get_route_list()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+        class="ant-btn__block mb-sm">
+        <i nz-icon nzType="redo" nzTheme="outline"></i>
+        <span>刷新</span>
+      </button>
+    </ng-template>
+  </page-header>
 <nz-content style="background-color: white" nz-row nzGutter="32">
   <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
     <nz-tab *ngFor="let tab of model_tabs" [nzTitle]="tab.label">
@@ -114,20 +122,25 @@
           </div>
           <!-- [nzLoading]="loading" -->
           <div class="menu_box_content">
-              <nz-list [nzDataSource]="route_array" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" >
-                  <ng-template #item let-item>
-                    <nz-list-item>
-                      <nz-list-item-meta
-                        [nzTitle]="nzTitle"
-                        [nzDescription]="item.route_name"
-                      >
-                        <ng-template #nzTitle>
-                          <span >{{item.title}}</span>
-                        </ng-template>
-                      </nz-list-item-meta>
-                    </nz-list-item>
-                  </ng-template>
-                </nz-list>
+
+            <input  (ngModelChange)='change_search_route($event)' type="text" nz-input placeholder="搜索" [(ngModel)]="search_route" />
+
+            <nz-list [nzDataSource]="route_array" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
+              <ng-template #item let-item>
+                <nz-list-item [nzActions]="[opAction]" >
+                  <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="item.route_name">
+                    <ng-template #nzTitle>
+                      <span>{{item.title}}</span>
+                    </ng-template>
+                    <ng-template #opAction>
+                        <nz-switch [(ngModel)]="item.is_open"
+                        (ngModelChange)='change_is_open_btn($event,item)' nzSize="small" nzCheckedChildren="开"
+                        nzUnCheckedChildren="关"></nz-switch>
+                    </ng-template>
+                  </nz-list-item-meta>
+                </nz-list-item>
+              </ng-template>
+            </nz-list>
           </div>
         </div>
       </div>

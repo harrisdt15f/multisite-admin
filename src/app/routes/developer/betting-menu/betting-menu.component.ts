@@ -16,6 +16,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
   public dropdown: NzDropdownContextComponent;
   public page_type: number;
   public searchValue: string;
+  public search_route: string;
   public activedNode: NzTreeNode;
   public edit_menu_nodes = [];//模块数组
   public edit_route_nodes = [];//路由数组
@@ -35,8 +36,9 @@ export class DeveloperBettingMenuComponent implements OnInit {
   public is_show_edit_route: boolean;
   public edit_menu_obj: object = {};  //模块编辑对象
   public edit_route_obj: object = {}; //路由编辑对象
-  public edit_route_menu: object = {}; 
-  public route_array: Array<any> = []; 
+  public edit_route_menu: object = {};
+  public route_array: Array<any> = [];
+  public route_array_total: Array<any> = [];
 
   constructor(
     private http: _HttpClient,
@@ -129,8 +131,8 @@ export class DeveloperBettingMenuComponent implements OnInit {
   load_menu(): void {
     this.isLoading = true;
     this.optionList = [];
-    let data={
-      type:this.page_type
+    let data = {
+      type: this.page_type
     }
     this.developerService.get_route_new_api_list(data).subscribe((res: any) => {
       if (res && res.success) {
@@ -148,14 +150,33 @@ export class DeveloperBettingMenuComponent implements OnInit {
     })
   }
   /**
+   * 搜索路由
+   */
+  change_search_route(e) {
+    let serrch_list = [];
+    if(e){
+      this.route_array_total.forEach((item, index) => {
+        if (item.route_name.indexOf(e) > -1 || item.title.indexOf(e) > -1) {
+          serrch_list.push(item);
+        }
+      });
+      this.route_array=JSON.parse(JSON.stringify(serrch_list));
+    }else{
+      this.route_array=JSON.parse(JSON.stringify(this.route_array_total));
+    }
+
+   
+
+  }
+  /**
    * route选择改变
    * @param e 
    */
-  change_route_obj(e){
-    this.route_choise_obj={};
-    this.optionList.forEach((item,index)=>{
-      if(item.route_name===e)
-      this.route_choise_obj=item;
+  change_route_obj(e) {
+    this.route_choise_obj = {};
+    this.optionList.forEach((item, index) => {
+      if (item.route_name === e)
+        this.route_choise_obj = item;
 
     })
   }
@@ -169,7 +190,8 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.developerService.get_betting_route_list(this.page_type).subscribe((res: any) => {
       if (res && res.success) {
         if (res.data && res.data.length > 0) {
-          this.route_array=res.data;
+          this.route_array = res.data;
+          this.route_array_total = JSON.parse(JSON.stringify(res.data));
           res.data.forEach((item, index) => {
             if (!this.edit_route_menu[item.frontend_model_id]) {
               this.edit_route_menu[item.frontend_model_id] = [];
@@ -233,7 +255,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
       id: this.activedNode.origin['key'],
       level: this.activedNode.origin['level'],
       ptype: this.activedNode.origin['ptype'],
-      type:String(this.activedNode.origin['type']),
+      type: String(this.activedNode.origin['type']),
       pid: this.activedNode.origin['pid']
     };
     console.log(this.edit_menu_obj);
@@ -278,7 +300,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
    */
   delete_menu() {
     let data = {
-      id:this.activedNode.origin['key']
+      id: this.activedNode.origin['key']
     };
     this.developerService.delete_model(data).subscribe((res: any) => {
       if (res && res.success) {
@@ -315,12 +337,12 @@ export class DeveloperBettingMenuComponent implements OnInit {
   //   this.edit_menu_submit(option);
   // }
   /**切换路由开放状态 */
-  change_is_open_btn(e, obj){
+  change_is_open_btn(e, obj) {
     let option = {
-      id: obj['key'],
+      id: obj['key']?obj['key']:obj['id'],
       is_open: obj['is_open'] ? 1 : 0
     }
-    this.developerService.is_open_route(option,this.page_type).subscribe((res: any) => {
+    this.developerService.is_open_route(option, this.page_type).subscribe((res: any) => {
       if (res && res.success) {
         this.message.success('修改路由开放状态成功', {
           nzDuration: 10000,
@@ -415,7 +437,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
     let option = {
       id: this.edit_menu_obj['id'],
       label: this.edit_menu_obj['label'],
-      type:Number(this.edit_menu_obj['type']),
+      type: Number(this.edit_menu_obj['type']),
       pid: this.edit_menu_obj['pid'] ? this.edit_menu_obj['pid'] : 0,
       level: this.edit_menu_obj['level'],
       en_name: this.edit_menu_obj['en_name'],
@@ -484,14 +506,14 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * @param data 
    */
   edit_route(data) {
-    this.is_show_edit_route=true;
-    this.modal_type='edit';
- 
-    this.edit_route_obj={
-      id:data.key,
-      title:data.title,
-      menu_group_id:data.menu_group_id,
-      route:data.route_name
+    this.is_show_edit_route = true;
+    this.modal_type = 'edit';
+
+    this.edit_route_obj = {
+      id: data.key,
+      title: data.title,
+      menu_group_id: data.menu_group_id,
+      route: data.route_name
     }
   }
   /**
@@ -566,45 +588,45 @@ export class DeveloperBettingMenuComponent implements OnInit {
       array.push(obj);
     });
   }
-    /**
+  /**
 * 得到创建组中的模块-路由树
 */
-get_route_tree(item, array) {
-  item.forEach((data) => {
-    let obj = {
-      key: Number(data.id),
-      value: Number(data.id),
-      title: data.label,
-      type: data.type,
-      en_name: data.en_name,
-      expanded: true,
-      level: data.level,
-      pid: data.pid,
-      children: []
-    };
-    if(this.edit_route_menu[Number(data.id)]){
-      this.edit_route_menu[Number(data.id)].forEach((d)=>{
-        let o={
-          key: Number(d.id),
-          value: Number(d.id),
-          title: d.title,
-          is_route: true,
-          isLeaf: true,
-          is_open: d.is_open===1?true:false,
-    
-          level: data.level,
-          route_name: d.route_name,
-          children: []
-        }
-        obj['children'].push(o)
-      })
-    }
-    if (data.childs && data.childs.length > 0) {
-      this.get_route_tree(data.childs, obj['children'])
-    }
-    array.push(obj);
-  });
-}
+  get_route_tree(item, array) {
+    item.forEach((data) => {
+      let obj = {
+        key: Number(data.id),
+        value: Number(data.id),
+        title: data.label,
+        type: data.type,
+        en_name: data.en_name,
+        expanded: true,
+        level: data.level,
+        pid: data.pid,
+        children: []
+      };
+      if (this.edit_route_menu[Number(data.id)]) {
+        this.edit_route_menu[Number(data.id)].forEach((d) => {
+          let o = {
+            key: Number(d.id),
+            value: Number(d.id),
+            title: d.title,
+            is_route: true,
+            isLeaf: true,
+            is_open: d.is_open === 1 ? true : false,
+
+            level: data.level,
+            route_name: d.route_name,
+            children: []
+          }
+          obj['children'].push(o)
+        })
+      }
+      if (data.childs && data.childs.length > 0) {
+        this.get_route_tree(data.childs, obj['children'])
+      }
+      array.push(obj);
+    });
+  }
 
 
 }
