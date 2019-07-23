@@ -32,7 +32,7 @@
           </nz-list-item>
           <nz-list-item [nzActions]="[QRcode]">
             <ng-template #QRcode>
-                <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['qr.code'].status==1"
+              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['qr.code'].status==1"
                 (ngModelChange)="change_open_base($event,home_page_type['qr.code'])" nzCheckedChildren="开"
                 nzUnCheckedChildren="关"></nz-switch>
               <nz-spin *ngIf='is_upload' nzSimple></nz-spin>
@@ -47,7 +47,7 @@
           </nz-list-item>
           <nz-list-item [nzActions]="[QRcode]">
             <ng-template #QRcode>
-                <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['qr.code'].status==1"
+              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['qr.code'].status==1"
                 (ngModelChange)="change_open_base($event,home_page_type['qr.code'])" nzCheckedChildren="开"
                 nzUnCheckedChildren="关"></nz-switch>
               <nz-spin *ngIf='is_upload' nzSimple></nz-spin>
@@ -62,7 +62,7 @@
           </nz-list-item>
           <nz-list-item [nzActions]="[notice]">
             <ng-template #notice>
-                <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['notice'].status==1"
+              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['notice'].status==1"
                 (ngModelChange)="change_open_base($event,home_page_type['notice'])" nzCheckedChildren="开"
                 nzUnCheckedChildren="关"></nz-switch>
               <a (click)='edit_base_msg("notice")'>修改</a>
@@ -75,156 +75,192 @@
             </nz-list-item-meta>
           </nz-list-item>
           <nz-list-item [nzActions]="[banner]">
-              <ng-template #banner>
-                  <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['banner'].status==1"
-                  (ngModelChange)="change_open_base($event,home_page_type['banner'])" nzCheckedChildren="开"
-                  nzUnCheckedChildren="关"></nz-switch>
-               
+            <ng-template #banner>
+              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['banner'].status==1"
+                (ngModelChange)="change_open_base($event,home_page_type['banner'])" nzCheckedChildren="开"
+                nzUnCheckedChildren="关"></nz-switch>
+            </ng-template>
+            <nz-list-item-meta nzTitle="轮播开关" [nzDescription]="bannerDesc">
+              <ng-template #bannerDesc>
+                是否开启轮播图功能<span *ngIf="home_page_type['banner']" class="text-green"></span>
               </ng-template>
-              <nz-list-item-meta nzTitle="轮播开关" [nzDescription]="bannerDesc">
-                <ng-template #bannerDesc>
-                  是否开启轮播图功能<span *ngIf="home_page_type['banner']" class="text-green"></span>
-                </ng-template>
-              </nz-list-item-meta>
-            </nz-list-item>
+            </nz-list-item-meta>
+          </nz-list-item>
+          <nz-list-item [nzActions]="[lotterynotice]">
+            <ng-template #lotterynotice>
+              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['lottery.notice'].status==1"
+                (ngModelChange)="change_open_base($event,home_page_type['lottery.notice'])" nzCheckedChildren="开"
+                nzUnCheckedChildren="关"></nz-switch>
+              <a (click)='edit_base_msg("lottery.notice")'>修改</a>
+            </ng-template>
+            <nz-list-item-meta nzTitle="pc开奖公告展示条数" [nzDescription]="lotterynoticeDesc">
+              <ng-template #lotterynoticeDesc>
+                设置pc开奖公告展示条数：<span *ngIf="home_page_type['lottery.notice']"
+                  class="text-green">{{home_page_type['lottery.notice'].show_num}}
+                  条</span>
+              </ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
+          <nz-list-item [nzActions]="[mobilelotterynotice]">
+            <ng-template #mobilelotterynotice>
+              <nz-switch nzSize="small" class='switch-base'
+                [ngModel]="home_page_type['mobile.lottery.notice'].status==1"
+                (ngModelChange)="change_open_base($event,home_page_type['mobile.lottery.notice'])" nzCheckedChildren="开"
+                nzUnCheckedChildren="关"></nz-switch>
+              <a (click)='edit_base_msg("mobile.lottery.notice")'>修改</a>
+            </ng-template>
+            <nz-list-item-meta nzTitle="手机开奖公告展示条数" [nzDescription]="mobilelotterynoticeDesc">
+              <ng-template #mobilelotterynoticeDesc>
+                设置手机开奖公告展示条数：<span *ngIf="home_page_type['mobile.lottery.notice']"
+                  class="text-green">{{home_page_type['mobile.lottery.notice'].show_num}}
+                  条</span>
+              </ng-template>
+            </nz-list-item-meta>
+          </nz-list-item>
         </nz-list>
+
 
 
 
       </div>
       <!-- 热门彩票一 -->
-      <div *ngIf='type=="popularLotteries.one"' style='min-height: 500px;position: relative;' >
-          <div *ngIf='is_load_list' class='lodding-box'>
-              <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
-            </div>
-            <input style='display: none' (change)='updateFire($event)' type="file" id="pic_2" />
-        
-            <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-              class="ant-btn__block mb-sm">
-              <i class="anticon anticon-plus"></i><span>添加热门彩票</span>
-            </button>
-            <nz-empty *ngIf='!list_of_aply_data||list_of_aply_data.length==0'></nz-empty>
-            <div  *ngIf='list_of_aply_data&&list_of_aply_data.length>0' style='margin-top: 50px;position: relative;'>
-          
-              <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event,1)">
-        
-                <div class="example-box" *ngFor="let data of list_of_aply_data" cdkDrag>
-                  <nz-card style="width:300px;margin-bottom:0" [nzCover]="coverTemplate" [nzActions]="[actionEdit,actionDelet]">
-                    <nz-card-meta [nzTitle]="data.cn_name" ></nz-card-meta>
-                  </nz-card>
-        
-                  <ng-template #coverTemplate>
-                    <img alt="example" [src]='serviceHttpIri+data.pic_path' />
-                  </ng-template>
-            
-                  <ng-template #actionEdit>
-                    <i nz-icon type="edit" (click)='edit_lotteries(data,1)'></i>
-                  </ng-template>
-                  <ng-template #actionDelet>
-           
-                     <i nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close" (nzOnConfirm)='delete_lotteries(data,1)' nzTheme="outline"></i>
-                  </ng-template>
-        
-                </div>
-              </div>
-            </div>
-            <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
-              [nzTitle]="modal_type=='create'?'添加热门彩票':'修改热门彩票'" (nzOnClose)="is_show_box = false">
-              <form nz-form [formGroup]="create_form">
-                <div *ngIf='modal_lodding' class='lodding-box'>
-                  <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
-                </div>
-                <nz-form-item>
-                  <nz-form-label nzFor="pic" nzRequired [nzSm]="6" [nzXs]="24">图片</nz-form-label>
-                  <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-                    <button (click)='click_update_lot()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
-                      <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽度：，最大高度：）</span>
-                    </button>
-                    <img (click)='show_modal_img(file_iri)' style='max-width:100px' id="cropedBigImg">
-                  </nz-form-control>
-                </nz-form-item>       
-                <nz-form-item>
-                  <nz-form-label nzFor="lotteries_id" nzRequired [nzSm]="6" [nzXs]="24">热门彩票</nz-form-label>
-                  <nz-form-control [nzSm]="15" [nzXs]="23">
-                      <nz-select  id="lotteries_id" type="lotteries_id" formControlName="lotteries_id"
-                      style="width: 100%;"
-                      [(ngModel)]="edit_lotteries_obj['lotteries_id']"
-                      nzShowSearch
-                      nzPlaceHolder="选择彩种"
-                       >
+      <div *ngIf='type=="popularLotteries.one"' style='min-height: 500px;position: relative;'>
+        <div *ngIf='is_load_list' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
+        </div>
+        <input style='display: none' (change)='updateFire($event)' type="file" id="pic_2" />
 
-                      <nz-option *ngFor="let o of lotteries_list" [nzValue]="o.id" [nzLabel]="o.cn_name"></nz-option>
-             
-                    </nz-select>
-                    <nz-form-explain *ngIf="create_form.get('lotteries_id')?.dirty && create_form.get('lotteries_id')?.errors">
-                      请选择!</nz-form-explain>
-                  </nz-form-control>
-                </nz-form-item>
-        
-                <nz-form-item nz-row style="margin-bottom:8px;">
-                  <nz-form-control [nzSpan]="14" [nzOffset]="6">
-                    <button *ngIf='modal_type==="create"' (click)="submit_lotteries(1)" [disabled]="!create_form.valid" nz-button
-                      nzType="primary">确认创建</button>
-                    <button *ngIf='modal_type==="edit"' (click)="submit_lotteries(1)" [disabled]="!create_form.valid" nz-button
-                      nzType="primary">确认修改</button>
-                  </nz-form-control>
-                </nz-form-item>
-              </form>
-        
-            </nz-drawer>
-            <!-- 展示图片模态框 -->
-            <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="图片预览">
-              <img id='modal_img' style='max-width:100%'>
-            </nz-modal>
+        <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+          class="ant-btn__block mb-sm">
+          <i class="anticon anticon-plus"></i><span>添加热门彩票</span>
+        </button>
+        <nz-empty *ngIf='!list_of_aply_data||list_of_aply_data.length==0'></nz-empty>
+        <div *ngIf='list_of_aply_data&&list_of_aply_data.length>0' style='margin-top: 50px;position: relative;'>
+
+          <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+            (cdkDropListDropped)="drop($event,1)">
+
+            <div class="example-box" *ngFor="let data of list_of_aply_data" cdkDrag>
+              <nz-card style="width:300px;margin-bottom:0" [nzCover]="coverTemplate"
+                [nzActions]="[actionEdit,actionDelet]">
+                <nz-card-meta [nzTitle]="data.cn_name"></nz-card-meta>
+              </nz-card>
+
+              <ng-template #coverTemplate>
+                <img alt="example" [src]='serviceHttpIri+data.pic_path' />
+              </ng-template>
+
+              <ng-template #actionEdit>
+                <i nz-icon type="edit" (click)='edit_lotteries(data,1)'></i>
+              </ng-template>
+              <ng-template #actionDelet>
+
+                <i nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close"
+                  (nzOnConfirm)='delete_lotteries(data,1)' nzTheme="outline"></i>
+              </ng-template>
+
+            </div>
+          </div>
+        </div>
+        <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
+          [nzTitle]="modal_type=='create'?'添加热门彩票':'修改热门彩票'" (nzOnClose)="is_show_box = false">
+          <form nz-form [formGroup]="create_form">
+            <div *ngIf='modal_lodding' class='lodding-box'>
+              <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+            </div>
+            <nz-form-item>
+              <nz-form-label nzFor="pic" nzRequired [nzSm]="6" [nzXs]="24">图片</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                <button (click)='click_update_lot()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
+                  <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽度：，最大高度：）</span>
+                </button>
+                <img (click)='show_modal_img(file_iri)' style='max-width:100px' id="cropedBigImg">
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="lotteries_id" nzRequired [nzSm]="6" [nzXs]="24">热门彩票</nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="23">
+                <nz-select id="lotteries_id" type="lotteries_id" formControlName="lotteries_id" style="width: 100%;"
+                  [(ngModel)]="edit_lotteries_obj['lotteries_id']" nzShowSearch nzPlaceHolder="选择彩种">
+
+                  <nz-option *ngFor="let o of lotteries_list" [nzValue]="o.id" [nzLabel]="o.cn_name"></nz-option>
+
+                </nz-select>
+                <nz-form-explain
+                  *ngIf="create_form.get('lotteries_id')?.dirty && create_form.get('lotteries_id')?.errors">
+                  请选择!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row style="margin-bottom:8px;">
+              <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                <button *ngIf='modal_type==="create"' (click)="submit_lotteries(1)" [disabled]="!create_form.valid"
+                  nz-button nzType="primary">确认创建</button>
+                <button *ngIf='modal_type==="edit"' (click)="submit_lotteries(1)" [disabled]="!create_form.valid"
+                  nz-button nzType="primary">确认修改</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+
+        </nz-drawer>
+        <!-- 展示图片模态框 -->
+        <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="图片预览">
+          <img id='modal_img' style='max-width:100%'>
+        </nz-modal>
 
       </div>
       <!-- 热门彩票二 -->
-      <div *ngIf='type=="popularLotteries.two"' style='min-height: 500px;position: relative;' >
-          <div *ngIf='is_load_list' class='lodding-box'>
-              <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
+      <div *ngIf='type=="popularLotteries.two"' style='min-height: 500px;position: relative;'>
+        <div *ngIf='is_load_list' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
+        </div>
+        <input style='display: none' (change)='updateFire($event)' type="file" id="pic_2" />
+
+        <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+          class="ant-btn__block mb-sm">
+          <i class="anticon anticon-plus"></i><span>添加热门玩法</span>
+        </button>
+        <nz-empty *ngIf='!list_of_aply_data_two||list_of_aply_data_two.length==0'></nz-empty>
+        <div *ngIf='list_of_aply_data_two&&list_of_aply_data_two.length>0' style='margin-top: 50px;position: relative;'>
+
+          <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+            (cdkDropListDropped)="drop($event,2)">
+
+            <div class="example-box" *ngFor="let data of list_of_aply_data_two" cdkDrag>
+              <nz-card style="width:300px;margin-bottom:0" [nzCover]="coverTemplate"
+                [nzActions]="[actionEdit,actionDelet]">
+                <nz-card-meta [nzTitle]="data.method_name+'('+data.lottery_name+')'"></nz-card-meta>
+              </nz-card>
+
+              <ng-template #coverTemplate>
+                <!-- <img alt="example" [src]='serviceHttpIri+data.pic_path' /> -->
+              </ng-template>
+
+              <ng-template #actionEdit>
+                <i nz-icon type="edit" (click)='edit_lotteries(data,2)'></i>
+              </ng-template>
+              <ng-template #actionDelet>
+
+                <i nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close"
+                  (nzOnConfirm)='delete_lotteries(data,2)' nzTheme="outline"></i>
+              </ng-template>
+
             </div>
-            <input style='display: none' (change)='updateFire($event)' type="file" id="pic_2" />
-        
-            <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-              class="ant-btn__block mb-sm">
-              <i class="anticon anticon-plus"></i><span>添加热门玩法</span>
-            </button>
-            <nz-empty *ngIf='!list_of_aply_data_two||list_of_aply_data_two.length==0'></nz-empty>
-            <div  *ngIf='list_of_aply_data_two&&list_of_aply_data_two.length>0' style='margin-top: 50px;position: relative;'>
-          
-              <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event,2)">
-        
-                <div class="example-box" *ngFor="let data of list_of_aply_data_two" cdkDrag>
-                  <nz-card style="width:300px;margin-bottom:0" [nzCover]="coverTemplate" [nzActions]="[actionEdit,actionDelet]">
-                    <nz-card-meta [nzTitle]="data.method_name+'('+data.lottery_name+')'" ></nz-card-meta>
-                  </nz-card>
-        
-                  <ng-template #coverTemplate>
-                    <!-- <img alt="example" [src]='serviceHttpIri+data.pic_path' /> -->
-                  </ng-template>
-            
-                  <ng-template #actionEdit>
-                    <i nz-icon type="edit" (click)='edit_lotteries(data,2)'></i>
-                  </ng-template>
-                  <ng-template #actionDelet>
-           
-                     <i nz-popconfirm nzTitle="确认删除这个热门彩票吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close" (nzOnConfirm)='delete_lotteries(data,2)' nzTheme="outline"></i>
-                  </ng-template>
-        
-                </div>
-              </div>
+          </div>
+        </div>
+        <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
+          [nzTitle]="modal_type=='create'?'添加热门玩法':'修改热门玩法'" (nzOnClose)="is_show_box = false">
+          <form nz-form [formGroup]="create_form_two">
+            <div *ngIf='modal_lodding' class='lodding-box'>
+              <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
             </div>
-            <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
-              [nzTitle]="modal_type=='create'?'添加热门彩票':'修改热门彩票'" (nzOnClose)="is_show_box = false">
-              <form nz-form [formGroup]="create_form_two">
-                <div *ngIf='modal_lodding' class='lodding-box'>
-                  <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
-                </div>
-                <nz-form-item>
-                  <nz-form-label nzFor="method_id" nzRequired [nzSm]="6" [nzXs]="24">选择玩法</nz-form-label>
-                  <nz-form-control [nzSm]="15" [nzXs]="23">
-                      <nz-cascader nzPlaceHolder="请选择玩法" id="method_id" type="method_id" formControlName="method_id" [nzOptions]="method_option" [(ngModel)]="method_value" (ngModelChange)="onChanges($event)"> </nz-cascader>
-                      <!-- <nz-select  id="lotteries_id" type="lotteries_id" formControlName="lotteries_id"
+            <nz-form-item>
+              <nz-form-label nzFor="method_id" nzRequired [nzSm]="6" [nzXs]="24">选择玩法</nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="23">
+                <nz-cascader nzPlaceHolder="请选择玩法" id="method_id" type="method_id" formControlName="method_id"
+                  [nzOptions]="method_option" [(ngModel)]="method_value" (ngModelChange)="onChanges($event)">
+                </nz-cascader>
+                <!-- <nz-select  id="lotteries_id" type="lotteries_id" formControlName="lotteries_id"
                       style="width: 100%;"
                       [(ngModel)]="edit_lotteries_obj['lotteries_id']"
                       nzShowSearch
@@ -234,31 +270,113 @@
                       <nz-option *ngFor="let o of lotteries_list" [nzValue]="o.id" [nzLabel]="o.cn_name"></nz-option>
              
                     </nz-select> -->
-                    <nz-form-explain *ngIf="create_form_two.get('lotteries_id')?.dirty && create_form_two.get('lotteries_id')?.errors">
-                      请选择!</nz-form-explain>
-                  </nz-form-control>
-                </nz-form-item>
-                <nz-form-item nz-row style="margin-bottom:8px;">
-                  <nz-form-control [nzSpan]="14" [nzOffset]="6">
-                    <button *ngIf='modal_type==="create"' (click)="submit_lotteries(2)" [disabled]="!create_form_two.valid" nz-button
-                      nzType="primary">确认创建</button>
-                    <button *ngIf='modal_type==="edit"' (click)="submit_lotteries(2)" [disabled]="!create_form_two.valid" nz-button
-                      nzType="primary">确认修改</button>
-                  </nz-form-control>
-                </nz-form-item>
-              </form>
-            </nz-drawer>
-            <!-- 展示图片模态框 -->
-            <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="图片预览">
-              <img id='modal_img' style='max-width:100%'>
-            </nz-modal>
+                <nz-form-explain
+                  *ngIf="create_form_two.get('lotteries_id')?.dirty && create_form_two.get('lotteries_id')?.errors">
+                  请选择!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row style="margin-bottom:8px;">
+              <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                <button *ngIf='modal_type==="create"' (click)="submit_lotteries(2)" [disabled]="!create_form_two.valid"
+                  nz-button nzType="primary">确认创建</button>
+                <button *ngIf='modal_type==="edit"' (click)="submit_lotteries(2)" [disabled]="!create_form_two.valid"
+                  nz-button nzType="primary">确认修改</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </nz-drawer>
+        <!-- 展示图片模态框 -->
+        <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="图片预览">
+          <img id='modal_img' style='max-width:100%'>
+        </nz-modal>
+
+      </div>
+      <!--开奖公告一 -->
+      <div *ngIf='type=="lottery.notice"' style='min-height: 500px;position: relative;'>
+        <div *ngIf='is_load_list' class='lodding-box'>
+          <nz-spin nzSimple style="text-align: center;margin-top: 200px;"></nz-spin>
+        </div>
+
+        <button (click)='add_lottery_notic()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+          class="ant-btn__block mb-sm">
+          <i class="anticon anticon-plus"></i><span>添加开奖公告</span>
+        </button>
+        <nz-empty *ngIf='!list_of_aply_data_notice||list_of_aply_data_notice.length==0'></nz-empty>
+        <div *ngIf='list_of_aply_data_notice&&list_of_aply_data_notice.length>0' style='margin-top: 50px;position: relative;'>
+
+          <div cdkDropList cdkDropListOrientation="horizontal" class="example-list"
+            (cdkDropListDropped)="drop($event,1)">
+
+            <div class="example-box" *ngFor="let data of list_of_aply_data_notice" cdkDrag>
+              <nz-card style="width:300px;margin-bottom:0" [nzActions]="[actionEdit,actionDelet]">
+                <nz-card-meta [nzTitle]="data.cn_name"></nz-card-meta>
+              </nz-card>
+
+              <ng-template #actionEdit>
+                <i nz-icon type="edit" (click)='edit_lotteries_notice(data,1)'></i>
+              </ng-template>
+              <ng-template #actionDelet>
+                <i nz-popconfirm nzTitle="确认删除这个开奖公告吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close"
+                  (nzOnConfirm)='delete_lotteries_notice(data)' nzTheme="outline"></i>
+              </ng-template>
+
+            </div>
+          </div>
+        </div>
+        <nz-drawer nzWidth='600px' [nzVisible]="is_show_box" nzPlacement="right"
+          [nzTitle]="modal_type=='create'?'添加开奖公告':'修改开奖公告'" (nzOnClose)="is_show_box = false">
+          <form nz-form [formGroup]="create_form_notice">
+            <div *ngIf='modal_lodding' class='lodding-box'>
+              <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
+            </div>
+        
+            <nz-form-item>
+              <nz-form-label nzFor="lotteries_id" nzRequired [nzSm]="6" [nzXs]="24">选择彩种</nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="23">
+                <nz-select id="lotteries_id" type="lotteries_id" formControlName="lotteries_id" style="width: 100%;"
+                  [(ngModel)]="edit_lotteries_obj['lotteries_id']" nzShowSearch nzPlaceHolder="选择彩种">
+                  <nz-option *ngFor="let o of lotteries_list" [nzValue]="o.en_name" [nzLabel]="o.cn_name"></nz-option>
+                </nz-select>
+                <nz-form-explain
+                  *ngIf="create_form_notice.get('lotteries_id')?.dirty && create_form_notice.get('lotteries_id')?.errors">
+                  请选择!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+              <nz-form-label nzFor="status" nzRequired [nzSm]="9" [nzXs]="24">是否开启</nz-form-label>
+              <nz-form-control [nzSm]="15" [nzXs]="23">
+                <nz-radio-group  id="status" formControlName="status"
+                  [(ngModel)]="edit_lotteries_obj['status']">
+                  <label nz-radio nzValue="1">是</label>
+                  <label nz-radio nzValue="0">否</label>
+                </nz-radio-group>
+                <nz-form-explain *ngIf="create_form_notice.get('status')?.dirty && create_form_notice.get('status')?.errors">
+                  是否开启!</nz-form-explain>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item nz-row style="margin-bottom:8px;">
+              <nz-form-control [nzSpan]="14" [nzOffset]="6">
+                <button *ngIf='modal_type==="create"' (click)="submit_lotteries_notice()" [disabled]="!create_form_notice.valid"
+                  nz-button nzType="primary">确认创建</button>
+                <button *ngIf='modal_type==="edit"' (click)="submit_lotteries_notice()" [disabled]="!create_form_notice.valid"
+                  nz-button nzType="primary">确认修改</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+
+        </nz-drawer>
+        <!-- 展示图片模态框 -->
+        <nz-modal (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal" nzTitle="图片预览">
+          <img id='modal_img' style='max-width:100%'>
+        </nz-modal>
 
       </div>
     </div>
   </div>
   <!-- 修改数据弹框 -->
-  <nz-modal [(nzVisible)]="is_visible_modal" [nzTitle]="modal_type_obj[edit_modal_type].title" (nzOnCancel)="modal_cancel()"
-    (nzOnOk)="modal_ok()" [nzOkLoading]="is_loading_modal">
+  <nz-modal [(nzVisible)]="is_visible_modal" [nzTitle]="modal_type_obj[edit_modal_type].title"
+    (nzOnCancel)="modal_cancel()" (nzOnOk)="modal_ok()" [nzOkLoading]="is_loading_modal">
     <input onkeyup="value=value.replace(/^(0+)|[^\d]+/g,'')" min='1' step='1' type='number' nz-input
       [(ngModel)]="input_value" />
   </nz-modal>

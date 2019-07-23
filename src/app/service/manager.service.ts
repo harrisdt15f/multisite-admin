@@ -349,6 +349,34 @@ get_hot_lotteries_two(): Observable<any> {
   const href = this.serviceHttpIri + '/api/popular-methods/detail';
   return this.commonService.get(href, { headers: headers });
 }
+   /**
+* 热门开奖公告列表
+* 
+* @memberof ManagerService
+*/
+get_hot_lotteries_notice(): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/lottery-notice/detail';
+  return this.commonService.get(href, { headers: headers });
+}
+    /**
+* 添加开奖公告
+* 
+* @memberof ManagerService
+*/
+add_lotteries_notice(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/lottery-notice/add';
+  return this.commonService.post(href, data, { headers: headers });
+}
 
     /**
 * 添加热门彩票列表
@@ -422,6 +450,20 @@ edit_hot_lotteries_list(data): Observable<any> {
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
+* 编辑开奖公告
+* 
+* @memberof ManagerService
+*/
+edit_lotteries_notice(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/lottery-notice/edit';
+  return this.commonService.post(href,data, { headers: headers });
+}
+/**
 * 编辑热门玩法
 * 
 * @memberof ManagerService
@@ -433,6 +475,20 @@ edit_popular_methods_list(data): Observable<any> {
     Authorization: `Bearer ${token}`,
   });
   const href = this.serviceHttpIri + '/api/popular-methods/edit';
+  return this.commonService.post(href,data, { headers: headers });
+}
+/**
+* 删除开奖公告
+* 
+* @memberof ManagerService
+*/
+delete_lotteries_notice_list(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/lottery-notice/delete';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -489,6 +545,20 @@ sort_hot_method_list(data): Observable<any> {
     Authorization: `Bearer ${token}`,
   });
   const href = this.serviceHttpIri + '/api/popular-methods/sort';
+  return this.commonService.post(href,data, { headers: headers });
+}
+/**
+* 开奖公告排序
+* 
+* @memberof ManagerService
+*/
+sort_lottery_notice_list(data): Observable<any> {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = this.serviceHttpIri + '/api/lottery-notice/sort';
   return this.commonService.post(href,data, { headers: headers });
 }
 

@@ -15,6 +15,7 @@ export class OperasyonPageModelComponent implements OnInit {
   //-------------------热门彩票
   public list_of_aply_data: Array<any> = [];
   public list_of_aply_data_two: Array<any> = [];
+  public list_of_aply_data_notice: Array<any> = [];
   public lotteries_list: Array<any> = [];
   public is_load_list: boolean;
   public show_text: string;
@@ -27,6 +28,7 @@ export class OperasyonPageModelComponent implements OnInit {
 
   public create_form: FormGroup;//表单对象
   public create_form_two: FormGroup;//表单对象
+  public create_form_notice: FormGroup;//开奖公告表单对象
   public edit_lotteries_obj: object = {
   };
   public file_obj: any;
@@ -51,6 +53,10 @@ export class OperasyonPageModelComponent implements OnInit {
       key: 'popularLotteries.two',
       title: '热门玩法',
     },
+    {
+      key: 'lottery.notice',
+      title: '开奖公告',
+    },
   ];
   public home_page_type: object = {};
   //---------------------模态框
@@ -64,6 +70,14 @@ export class OperasyonPageModelComponent implements OnInit {
     },
     'notice': {
       title: '中奖公告条数设置',
+      value: '',
+    },
+    'lottery.notice': {
+      title: 'pc开奖公告展示条数',
+      value: '',
+    },
+    'mobile.lottery.notice': {
+      title: '手机开奖公告展示条数',
       value: '',
     }
   }
@@ -88,6 +102,7 @@ export class OperasyonPageModelComponent implements OnInit {
     this.serviceHttpIri = Utils.GethttpIri();
     this.get_lotteries();
     this.get_lotteries_list();
+    this.get_lotteries_notice();
     this.get_methods_list();
     this.get_lotteries_two();
     this.create_form = this.fb.group({
@@ -96,6 +111,10 @@ export class OperasyonPageModelComponent implements OnInit {
     });
     this.create_form_two = this.fb.group({
       method_id: [null, [Validators.required]]
+    });
+    this.create_form_notice = this.fb.group({
+      lotteries_id: [null, [Validators.required]],
+      status: [null, [Validators.required]]
     });
   }
   onChanges(values: any): void {
@@ -111,6 +130,8 @@ export class OperasyonPageModelComponent implements OnInit {
       list_obj = this.list_of_aply_data;
     } else if (type == 2) {
       list_obj = this.list_of_aply_data_two;
+    } else if (type == 3) {
+      list_obj = this.list_of_aply_data_notice;
     };
     let old_array = JSON.parse(JSON.stringify(list_obj));
     moveItemInArray(list_obj, event.previousIndex, event.currentIndex);
@@ -138,6 +159,17 @@ export class OperasyonPageModelComponent implements OnInit {
       })
     } else if (type == 2) {
       this.managerService.sort_hot_method_list(option).subscribe((res: any) => {
+        this.is_load_list = false;
+        if (res && res.success) {
+          this.get_lotteries_two();
+        } else {
+          this.message.error(res.message, {
+            nzDuration: 10000,
+          });
+        }
+      })
+    }else if (type == 3) {
+      this.managerService.sort_lottery_notice_list(option).subscribe((res: any) => {
         this.is_load_list = false;
         if (res && res.success) {
           this.get_lotteries_two();
@@ -258,7 +290,7 @@ export class OperasyonPageModelComponent implements OnInit {
       this.managerService.add_hot_lotteries(data).subscribe((res: any) => {
         this.modal_lodding = false;
         if (res && res.success) {
-          this.get_lotteries();
+          this.get_lotteries_notice();
           this.message.success('添加热门彩票成功', {
             nzDuration: 10000,
           });
@@ -283,6 +315,7 @@ export class OperasyonPageModelComponent implements OnInit {
             nzDuration: 10000,
           });
           this.hide_modal();
+          this.get_lotteries_notice();
           this.update_form();
           this.is_show_modal = false;
           this.is_show_box = false;
@@ -363,6 +396,7 @@ export class OperasyonPageModelComponent implements OnInit {
     this.file_iri = '';
     this.create_form.reset();
     this.create_form_two.reset();
+    this.create_form_notice.reset();
     for (const key in this.create_form.controls) {
       this.create_form.controls[key].markAsPristine();
       this.create_form.controls[key].updateValueAndValidity();
@@ -371,6 +405,10 @@ export class OperasyonPageModelComponent implements OnInit {
     for (const key in this.create_form_two.controls) {
       this.create_form_two.controls[key].markAsPristine();
       this.create_form_two.controls[key].updateValueAndValidity();
+    }
+    for (const key in this.create_form_notice.controls) {
+      this.create_form_notice.controls[key].markAsPristine();
+      this.create_form_notice.controls[key].updateValueAndValidity();
     }
   }
 
@@ -420,15 +458,65 @@ export class OperasyonPageModelComponent implements OnInit {
     })
   }
   /**
+*获取开奖公告列表
+*
+* @param {*} 
+* @memberof OperasyonlotteriesManageComponent
+*/
+  get_lotteries_notice() {
+    this.is_load_list = true;
+    this.managerService.get_hot_lotteries_notice().subscribe((res: any) => {
+      if (res && res.success) {
+
+        this.is_load_list = false;
+        this.list_of_aply_data_notice = res.data;
+
+      } else {
+
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
+  /**
    *点击添加热门彩票一
    *
    * @memberof OperasyonlotteriesManageComponent
    */
   add_lotteries() {
+    this.is_show_box = true;
+    this.modal_type = 'create';
+    this.update_form();
+  }
+  /**
+ *点击添加开奖公告
+ *
+ * @memberof OperasyonlotteriesManageComponent
+ */
+  add_lottery_notic() {
 
     this.is_show_box = true;
     this.modal_type = 'create';
     this.update_form();
+  }
+  /**
+  *点击编辑开奖公告
+  *
+  * @memberof OperasyonlotteriesManageComponent
+  */
+  edit_lotteries_notice(data, type) {
+    this.is_show_box = true;
+    this.modal_type = 'edit';
+    this.edit_lotteries_obj = {
+      "id": data['id'],
+      "status": data['status'],
+    };
+    this.edit_lotteries_obj['lotteries_id'] = Number(data['lotteries_id'])
+
+
+
+
   }
 
 
@@ -454,6 +542,27 @@ export class OperasyonPageModelComponent implements OnInit {
     }
 
 
+  }
+  delete_lotteries_notice(data){
+    let option = {
+      id: data.id
+    }
+    this.is_load_list = true;
+    this.managerService.delete_lotteries_notice_list(option).subscribe((res: any) => {
+      this.is_load_list = false;
+      if (res && res.success) {
+        this.get_lotteries_notice();
+        this.message.success('删除开奖公告成功', {
+          nzDuration: 10000,
+        });
+
+      } else {
+
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
   }
   /**
    * 点击删除
@@ -500,13 +609,96 @@ export class OperasyonPageModelComponent implements OnInit {
     }
 
   }
+  /**
+   * 提交开奖公告
+   */
+  submit_lotteries_notice() {
+    let option = {
+      id: this.edit_lotteries_obj['id'],
+      icon: './',
+      lotteries_id: this.edit_lotteries_obj['lotteries_id'],
+      status: this.edit_lotteries_obj['status'],
+    };
+    this.lotteries_list.forEach((item) => {
+      if (item.en_name === this.edit_lotteries_obj['lotteries_id']) {
+        option['cn_name'] = item.cn_name;
+      }
+    })
+    if (this.modal_type == 'create') {
+      this.add_lotteries_notice_submit(option);
+    } else if (this.modal_type == 'edit') {
+      this.edit_lotteries_notice_submit(option);
+    }
+  }
+  /**
+  *调用添加开奖公告
+  *
+  * @param {*} data
+  * @memberof OperasyonlotteriesManageComponent
+  */
+  add_lotteries_notice_submit(data) {
+    this.managerService.add_lotteries_notice(data).subscribe((res: any) => {
+      this.modal_lodding = false;
+      if (res && res.success) {
+        this.get_lotteries();
+        this.message.success('添加开奖公告成功', {
+          nzDuration: 10000,
+        });
+        this.hide_modal();
+        this.update_form();
+        this.is_show_modal = false;
+        this.is_show_box = false;
+
+      } else {
+
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+
+
+  }
+  /**
+   *调用修改
+   *
+   * @param {*} data
+   * @memberof OperasyonlotteriesManageComponent
+   */
+  edit_lotteries_notice_submit(data) {
+
+    this.managerService.edit_lotteries_notice(data).subscribe((res: any) => {
+      this.modal_lodding = false;
+      this.is_show_box = false;
+      if (res && res.success) {
+        this.get_lotteries();
+
+        this.update_form();
+        this.hide_modal();
+        this.message.success('修改开奖公告成功', {
+          nzDuration: 10000,
+        });
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+
+
+
+  }
+  /**
+   * 
+   * @param type 提交热门彩种
+   */
 
   submit_lotteries(type) {
     this.modal_lodding = true;
     var op: FormData = new FormData();
     op.append('lotteries_id', this.edit_lotteries_obj['lotteries_id']);
-    this.lotteries_list.forEach((item,index) => {
-      if(item.id===this.edit_lotteries_obj['lotteries_id']){
+    this.lotteries_list.forEach((item, index) => {
+      if (item.id === this.edit_lotteries_obj['lotteries_id']) {
         op.append('lotteries_sign', item.en_name);
       }
     });
