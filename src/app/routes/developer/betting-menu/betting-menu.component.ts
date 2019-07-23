@@ -156,7 +156,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
     let serrch_list = [];
     if(e){
       this.route_array_total.forEach((item, index) => {
-        if (item.route_name.indexOf(e) > -1 || item.title.indexOf(e) > -1) {
+        if (item.route_name.indexOf(e) > -1 || item.title.indexOf(e) > -1|| item.real_route.indexOf(e) > -1) {
           serrch_list.push(item);
         }
       });
@@ -164,9 +164,6 @@ export class DeveloperBettingMenuComponent implements OnInit {
     }else{
       this.route_array=JSON.parse(JSON.stringify(this.route_array_total));
     }
-
-   
-
   }
   /**
    * route选择改变

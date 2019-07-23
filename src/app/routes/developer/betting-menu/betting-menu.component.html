@@ -128,7 +128,7 @@
             <nz-list [nzDataSource]="route_array" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
               <ng-template #item let-item>
                 <nz-list-item [nzActions]="[opAction]" >
-                  <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="item.route_name">
+                  <nz-list-item-meta [nzTitle]="nzTitle" [nzDescription]="item.route_name+'-'+item.real_route">
                     <ng-template #nzTitle>
                       <span>{{item.title}}</span>
                     </ng-template>
