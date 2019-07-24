@@ -7,6 +7,7 @@ import { until } from 'protractor';
 import { Utils } from 'config/utils.config';
 import { UserManageService } from 'app/service/user-manage.service';
 import { Router } from '@angular/router';
+import { BetInfoService } from 'app/provider/bet-info/bet-info.service';
 
 @Component({
   selector: 'app-user-create-general-agent',
@@ -29,6 +30,7 @@ public  min_prize_group: number;
     private http: _HttpClient,
     private fb: FormBuilder,
     private router: Router,
+    public betInfoProvider: BetInfoService,
     private userManageService: UserManageService,
     private message: NzMessageService
     ) { }
@@ -67,13 +69,11 @@ create_user(): void {
       });
 
       this.router.navigateByUrl('/manage/manage-user');
+      this.betInfoProvider.set_user_manager_update('update');
       this.update_form();
 
 
-      for (const i in this.create_user_form.controls) {
-        this.create_user_form.controls[i].markAsDirty();
-        this.create_user_form.controls[i].updateValueAndValidity();
-      }
+ 
     } else {
       this.message.error(res.message, {
         nzDuration: 10000,

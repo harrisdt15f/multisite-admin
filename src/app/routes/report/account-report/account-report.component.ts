@@ -53,7 +53,7 @@ export class ReportAccountReportComponent implements OnInit {
     if (this.searchValue) {
       option['username'] = this.searchValue;
     }
-    if(this.account_type&&this.account_type!=''){
+    if(this.account_type&&this.account_type!=''&&this.account_type!='1000'){
       option['type_sign'] = this.account_type;
     }
     let data=[];
@@ -178,7 +178,7 @@ export class ReportAccountReportComponent implements OnInit {
     if (this.searchValue) {
       option['username'] = this.searchValue;
     }
-    if(this.account_type&&this.account_type!=''){
+    if(this.account_type&&this.account_type!=''&&this.account_type!='1000'){
       option['type_sign'] = this.account_type;
     }
 

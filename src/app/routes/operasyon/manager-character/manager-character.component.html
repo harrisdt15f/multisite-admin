@@ -172,7 +172,7 @@
                   <nz-form-label [nzXs]="24" style="text-align: left" nzRequired>选择添加的分组</nz-form-label>
                   <nz-form-control nzHasFeedback>
 
-                    <nz-select [nzDisabled]='is_edit_manager' (ngModelChange)="change_group_select($event)"
+                    <nz-select [nzDisabled]='is_super_manage' (ngModelChange)="change_group_select($event)"
                       formControlName="group_id" style="width: 100%;" [nzDropdownStyle]='select_style' nzShowSearch
                       nzAllowClear nzPlaceHolder="选择分组" [(ngModel)]="create_manager_obj['group_id']">
                       <nz-option *ngFor="let item of group_list_total ; let i=index" [nzLabel]="item.group_name"
@@ -191,7 +191,7 @@
                     <div class='create-btn'>
                       <button (click)='remove_edit_mnager()' nz-button nzType="default">取消</button>
                       <button (click)="update_manager()" nz-button class='btn-color' nzType="primary"
-                        [disabled]="!change_group.valid||is_edit_manager">提交修改</button>
+                        [disabled]="!change_group.valid||is_super_manage">提交修改</button>
                     </div>
                   </nz-form-control>
                 </nz-form-item>

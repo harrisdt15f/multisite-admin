@@ -8,6 +8,7 @@ import { Validators, FormGroup, FormBuilder, FormControl } from '@angular/forms'
 import { Router } from '@angular/router';
 import { BetInfoService } from 'app/provider/bet-info/bet-info.service';
 import { Utils } from 'config/utils.config';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-user-manage-user',
@@ -37,7 +38,7 @@ export class UserManageUserComponent implements OnInit {
   public list_of_total = [
     { text: '总代', value: '1' },
     { text: '代理', value: '2' },
-    { text: '玩家', value: '3' },
+    { text: '会员', value: '3' },
     { text: '不限', value: '1000' },
   ];
   /**
@@ -93,11 +94,14 @@ export class UserManageUserComponent implements OnInit {
   public isOkLoading: boolean;
   public recharge_num: number;
   public apply_note: string;
+  public user_manager_sub: Subscription;
+  
   constructor(
     private http: _HttpClient,
     private fb: FormBuilder,
-    private betInfoService: BetInfoService,
+    private betInfoProvider: BetInfoService,
     private router: Router,
+    
     private userManageService: UserManageService,
     private injector: Injector,
     private message: NzMessageService
@@ -120,6 +124,12 @@ export class UserManageUserComponent implements OnInit {
       username: [null, [Validators.required]],
       frozen_type: [null, [Validators.required]],
       comment: [null]
+    });
+    //监听，在打开此路由情况下，创建用户刷新
+    this.user_manager_sub = this.betInfoProvider.get_user_manager_update().subscribe(data => {
+      if (data == 'update') {
+        this.get_user_manage_list(1);
+      }
     });
   }
 /**
@@ -314,10 +324,13 @@ export class UserManageUserComponent implements OnInit {
     this.userManageService.submit_freeze(option).subscribe((res: any) => {
       this.modal_lodding = false;
       if (res && res.success) {
+        this.get_user_manage_list(1);
+        this.is_edit_permission = false;
         for (const i in this.freeze_form.controls) {
           this.freeze_form.controls[i].markAsDirty();
           this.freeze_form.controls[i].updateValueAndValidity();
         }
+     
         this.message.success('修改账户权限成功', {
           nzDuration: 10000,
         });
