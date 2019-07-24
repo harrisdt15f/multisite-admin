@@ -98,8 +98,7 @@ export class GameGameTypeComponent implements OnInit {
       first_time: [null, [Validators.required]],
       adjust_time: [null, [Validators.required]],
       encode_time: [null, [Validators.required]],
-      issue_count: [null, [Validators.required]],
-      status: [null, [Validators.required]]
+      issue_count: [null, [Validators.required]]
     });
   }
   /**
@@ -234,7 +233,7 @@ export class GameGameTypeComponent implements OnInit {
         encode_time: this.edit_rule_obj['encode_time'],
         issue_seconds: this.edit_rule_obj['issue_seconds'],
         issue_count: this.edit_rule_obj['issue_count'],
-        status: this.edit_rule_obj['status'],
+        status: this.edit_lotteries_obj['status'],
         first_time: this.get_time(this.edit_rule_obj['first_time']),
         end_time: this.get_time(this.edit_rule_obj['end_time']),
         begin_time: this.get_time(this.edit_rule_obj['begin_time'])
