@@ -33,7 +33,7 @@ export class DeveloperService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/method-level/detail';
+    const href =  '/api/method-level/detail';
     return this.commonService.post(href,{},{ headers: headers });
   }
     /**
@@ -48,7 +48,7 @@ export class DeveloperService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/method-level/add';
+    const href =  '/api/method-level/add';
     return this.commonService.post(href,data,{ headers: headers });
   }
     /**
@@ -63,7 +63,7 @@ export class DeveloperService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/method-level/edit';
+    const href =  '/api/method-level/edit';
     return this.commonService.post(href,data,{ headers: headers });
   }
     /**
@@ -78,7 +78,7 @@ export class DeveloperService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/method-level/delete';
+    const href =  '/api/method-level/delete';
     return this.commonService.post(href,data,{ headers: headers });
   }
 
@@ -98,9 +98,9 @@ export class DeveloperService {
     });
     let href='';
     if(type==2){
-       href = this.serviceHttpIri + '/api/frontend-web-route/detail';
+       href =  '/api/frontend-web-route/detail';
     }else if(type==3){
-      href = this.serviceHttpIri + '/api/frontend-app-route/detail';
+      href =  '/api/frontend-app-route/detail';
     }
     let data={
       type:type
@@ -121,7 +121,7 @@ export class DeveloperService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/route/detail';
+    const href =  '/api/route/detail';
     return this.commonService.post(href,{},{ headers: headers });
   }
   /**
@@ -136,7 +136,7 @@ export class DeveloperService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/menu/get-all-menu';
+    const href =  '/api/menu/get-all-menu';
 
     return this.commonService.get(href ,{ headers: headers });
   }
@@ -151,7 +151,7 @@ add_menu(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/menu/add';
+  const href =  '/api/menu/add';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -165,7 +165,7 @@ edit_menu(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/menu/edit';
+  const href =  '/api/menu/edit';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -179,7 +179,7 @@ delete_menu(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/menu/delete';
+  const href =  '/api/menu/delete';
   return this.commonService.post(href, data,{ headers: headers });
 }
 
@@ -201,7 +201,7 @@ get_route_api_list(page_index,data?) {
         data.query_conditions =JSON.stringify( { "username": "LIKE" });
       }
     }
-    const href = this.serviceHttpIri + '/api/route/detail?&page_size=' + page_size + '&page=' + page_index;
+    const href =  '/api/route/detail?&page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, data, { headers: headers });
 }
 
@@ -218,7 +218,7 @@ get_route_new_api_list(data) {
       Authorization: `Bearer ${token}`,
     });
 
-    const href = this.serviceHttpIri + '/api/menu';
+    const href =  '/api/menu';
     return this.commonService.post(href,data,  { headers: headers });
 }
 /**
@@ -235,9 +235,9 @@ get_route_betting_api_list(type) {
   });
   let href='';
   if(type==2){
-     href = this.serviceHttpIri + '/api/frontend-web-route/detail';
+     href =  '/api/frontend-web-route/detail';
   }else if(type==3){
-    href = this.serviceHttpIri + '/api/frontend-app-route/detail';
+    href =  '/api/frontend-app-route/detail';
   }
 
   return this.commonService.post(href,{},  { headers: headers });
@@ -253,7 +253,7 @@ add_route(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/route/add';
+  const href =  '/api/route/add';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -267,7 +267,7 @@ edit_route(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/route/edit';
+  const href =  '/api/route/edit';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -281,7 +281,7 @@ delete_route(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/route/delete';
+  const href =  '/api/route/delete';
   return this.commonService.post(href, data,{ headers: headers });
 }
   /**
@@ -295,7 +295,7 @@ add_betting_route(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/frontend-web-route/add';
+  const href =  '/api/frontend-web-route/add';
   return this.commonService.post(href, data,{ headers: headers });
 }
   /**
@@ -311,9 +311,9 @@ is_open_route(data,type){
   });
   let href;
   if(type==2){
-     href = this.serviceHttpIri + '/api/frontend-web-route/is-open';
+     href =  '/api/frontend-web-route/is-open';
   }else if(type==3){
-    href = this.serviceHttpIri + '/api/frontend-app-route/is-open';
+    href =  '/api/frontend-app-route/is-open';
   }
  
   return this.commonService.post(href, data,{ headers: headers });
@@ -329,7 +329,7 @@ is_open_admin_route(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  let href=this.serviceHttpIri + '/api/route/is-open';
+  let href= '/api/route/is-open';
   return this.commonService.post(href, data,{ headers: headers });
 }
 
@@ -344,7 +344,7 @@ delete_betting_route(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/frontend-web-route/delete';
+  const href =  '/api/frontend-web-route/delete';
   return this.commonService.post(href, data,{ headers: headers });
 }
 
@@ -362,7 +362,7 @@ delete_betting_route(data){
       Authorization: `Bearer ${token}`,
     });
 
-    const href = this.serviceHttpIri + '/api/frontend-allocated-model/detail';
+    const href =  '/api/frontend-allocated-model/detail';
 
     return this.commonService.post(href,data,{ headers: headers });
   }
@@ -377,7 +377,7 @@ add_model(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/frontend-allocated-model/add';
+  const href =  '/api/frontend-allocated-model/add';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -391,7 +391,7 @@ edit_model(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/frontend-allocated-model/edit';
+  const href =  '/api/frontend-allocated-model/edit';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -405,7 +405,7 @@ delete_model(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/frontend-allocated-model/delete';
+  const href =  '/api/frontend-allocated-model/delete';
   return this.commonService.post(href, data,{ headers: headers });
 }
   

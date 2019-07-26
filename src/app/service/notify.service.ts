@@ -29,7 +29,7 @@ export class NotifyService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/internal-notice-message/admin-messages';
+    const href =  '/api/internal-notice-message/admin-messages';
     return this.commonService.get(href, { headers: headers });
   }
 

@@ -32,7 +32,7 @@ export class PersonalService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-user/self-reset-password?';
+    const href =  '/api/partner-admin-user/self-reset-password?';
     return this.commonService.post(href , data,{ headers: headers });
   }
 
@@ -49,7 +49,7 @@ get_system_helper_list(page_index?, data?) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/help/detail';
+  const href =  '/api/help/detail';
   return this.commonService.get(href, { headers: headers });
 }
     /**
@@ -64,7 +64,7 @@ create_system_helper_list( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/help/add';
+  const href =  '/api/help/add';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -79,7 +79,7 @@ edit_system_helper_list( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/help/edit';
+  const href =  '/api/help/edit';
   return this.commonService.post(href,data, { headers: headers });
 }
     /**
@@ -94,7 +94,7 @@ delete_system_helper_list( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/help/delete';
+  const href =  '/api/help/delete';
   return this.commonService.post(href,data, { headers: headers });
 }
 

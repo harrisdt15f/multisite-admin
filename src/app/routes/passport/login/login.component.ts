@@ -3,6 +3,7 @@ import { Component, OnDestroy, Inject, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+// import { ToolService } from '../../../../tool/tool.service';
 import {
   SocialService,
   SocialOpenType,
@@ -27,6 +28,7 @@ export class UserLoginComponent implements OnDestroy {
   public type = 0;
 
   constructor(
+    // public utils: ToolService,
     public loginService: LoginService,
     fb: FormBuilder,
     modalSrv: NzModalService,
@@ -128,6 +130,7 @@ export class UserLoginComponent implements OnDestroy {
           // 清空路由复用信息
           this.reuseTabService.clear();
           // 设置用户Token信息
+          // this.utils.storage.set('tokens', res.data.access_token);
           this.tokenService.set({
             token: res.data.access_token,
             name: this.userName.value,

@@ -29,7 +29,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-group/create';
+    const href =  '/api/partner-admin-group/create';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -42,7 +42,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-group/detail';
+    const href =  '/api/partner-admin-group/detail';
     return this.commonService.get(href, { headers: headers });
 
   }
@@ -56,7 +56,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-group/edit';
+    const href =  '/api/partner-admin-group/edit';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -70,7 +70,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-group/delete-access-group';
+    const href =  '/api/partner-admin-group/delete-access-group';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -84,7 +84,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-group/specific-group-users';
+    const href =  '/api/partner-admin-group/specific-group-users';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -98,7 +98,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-user/delete-user';
+    const href =  '/api/partner-admin-user/delete-user';
     return this.commonService.post(href, data, { headers: headers });
   }
 
@@ -113,7 +113,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin/register';
+    const href =  '/api/partner-admin/register';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -126,7 +126,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-user/get-all-users';
+    const href =  '/api/partner-admin-user/get-all-users';
     return this.commonService.get(href, { headers: headers });
   }
   /**
@@ -139,7 +139,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-user/update-user-group';
+    const href =  '/api/partner-admin-user/update-user-group';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -152,7 +152,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-admin-user/reset-password';
+    const href =  '/api/partner-admin-user/reset-password';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -166,7 +166,7 @@ export class ManagerService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage-rotation-chart/activity-list';
+    const href =  '/api/homepage-rotation-chart/activity-list';
     return this.commonService.get(href, { headers: headers });
   }
   /**
@@ -180,7 +180,7 @@ sort_bannar(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`
   });
-  const href = this.serviceHttpIri + '/api/homepage-rotation-chart/sort' ;
+  const href =  '/api/homepage-rotation-chart/sort' ;
   return this.commonService.post(href,data, { headers: headers });
 }
 
@@ -196,7 +196,7 @@ sort_bannar(data){
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage-rotation-chart/detail';
+    const href =  '/api/homepage-rotation-chart/detail';
     return this.commonService.post(href, {}, { headers: headers });
   }
   /**
@@ -210,7 +210,7 @@ sort_bannar(data){
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage-rotation-chart/delete';
+    const href =  '/api/homepage-rotation-chart/delete';
     return this.commonService.post(href, data, { headers: headers });
   }
 
@@ -225,7 +225,7 @@ sort_bannar(data){
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage-rotation-chart/add';
+    const href =  '/api/homepage-rotation-chart/add';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -238,7 +238,7 @@ sort_bannar(data){
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage-rotation-chart/edit';
+    const href =  '/api/homepage-rotation-chart/edit';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -251,7 +251,7 @@ sort_bannar(data){
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage/detail?pid='+pid;
+    const href =  '/api/homepage/detail?pid='+pid;
     return this.commonService.get(href, { headers: headers });
   }
   /**
@@ -264,7 +264,7 @@ get_nav_one_list(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/homepage/nav-one';
+  const href =  '/api/homepage/nav-one';
   return this.commonService.get(href, { headers: headers });
 }
   /**
@@ -277,7 +277,7 @@ get_page_model_list(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/homepage/page-model';
+  const href =  '/api/homepage/page-model';
   return this.commonService.get(href, { headers: headers });
 }
   /**
@@ -290,7 +290,7 @@ get_page_model_list(): Observable<any> {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage/upload-pic';
+    const href =  '/api/homepage/upload-pic';
     return this.commonService.post(href, data, { headers: headers });
   }
     /**
@@ -303,7 +303,7 @@ upload_ico(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/homepage/upload-ico';
+  const href =  '/api/homepage/upload-ico';
   return this.commonService.post(href, data, { headers: headers });
 }
   /**
@@ -317,7 +317,7 @@ edit_home_page(data): Observable<any> {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/homepage/edit';
+    const href =  '/api/homepage/edit';
     return this.commonService.post(href, data, { headers: headers });
   }
 
@@ -332,7 +332,7 @@ get_hot_lotteries_one(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/detail';
+  const href =  '/api/popular-lotteries/detail';
   return this.commonService.get(href, { headers: headers });
 }
     /**
@@ -346,7 +346,7 @@ get_hot_lotteries_two(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-methods/detail';
+  const href =  '/api/popular-methods/detail';
   return this.commonService.get(href, { headers: headers });
 }
    /**
@@ -360,7 +360,7 @@ get_hot_lotteries_notice(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/lottery-notice/detail';
+  const href =  '/api/lottery-notice/detail';
   return this.commonService.get(href, { headers: headers });
 }
     /**
@@ -374,7 +374,7 @@ add_lotteries_notice(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/lottery-notice/add';
+  const href =  '/api/lottery-notice/add';
   return this.commonService.post(href, data, { headers: headers });
 }
 
@@ -389,7 +389,7 @@ add_hot_lotteries(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/add';
+  const href =  '/api/popular-lotteries/add';
   return this.commonService.post(href, data, { headers: headers });
 }
     /**
@@ -403,7 +403,7 @@ add_popular_methods(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-methods/add';
+  const href =  '/api/popular-methods/add';
   return this.commonService.post(href, data, { headers: headers });
 }
     /**
@@ -417,7 +417,7 @@ get_methods_list(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-methods/methods-list';
+  const href =  '/api/popular-methods/methods-list';
   return this.commonService.get(href, { headers: headers });
 }
 
@@ -432,7 +432,7 @@ get_hot_lotteries_list(): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/lotteries-list';
+  const href =  '/api/popular-lotteries/lotteries-list';
   return this.commonService.get(href, { headers: headers });
 }
 /**
@@ -446,7 +446,7 @@ edit_hot_lotteries_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/edit';
+  const href =  '/api/popular-lotteries/edit';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -460,7 +460,7 @@ edit_lotteries_notice(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/lottery-notice/edit';
+  const href =  '/api/lottery-notice/edit';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -474,7 +474,7 @@ edit_popular_methods_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-methods/edit';
+  const href =  '/api/popular-methods/edit';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -488,7 +488,7 @@ delete_lotteries_notice_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/lottery-notice/delete';
+  const href =  '/api/lottery-notice/delete';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -502,7 +502,7 @@ delete_hot_lotteries_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/delete';
+  const href =  '/api/popular-lotteries/delete';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -516,7 +516,7 @@ delete_hot_methods_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-methods/delete';
+  const href =  '/api/popular-methods/delete';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -530,7 +530,7 @@ sort_hot_lotteries_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-lotteries/sort';
+  const href =  '/api/popular-lotteries/sort';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -544,7 +544,7 @@ sort_hot_method_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/popular-methods/sort';
+  const href =  '/api/popular-methods/sort';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -558,7 +558,7 @@ sort_lottery_notice_list(data): Observable<any> {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/lottery-notice/sort';
+  const href =  '/api/lottery-notice/sort';
   return this.commonService.post(href,data, { headers: headers });
 }
 

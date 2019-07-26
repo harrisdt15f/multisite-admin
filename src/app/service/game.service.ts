@@ -30,7 +30,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/lotteries-code-length';
+    const href =  '/api/lotteries/lotteries-code-length';
     return this.commonService.get(href ,{ headers: headers });
   }
   /**
@@ -44,7 +44,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/calculate-encode-again';
+    const href =  '/api/lotteries/calculate-encode-again';
     return this.commonService.post(href ,option,{ headers: headers });
   }
     /**
@@ -58,7 +58,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/series-lists';
+    const href =  '/api/lotteries/series-lists';
     return this.commonService.get(href ,{ headers: headers });
   }
   /**
@@ -72,7 +72,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-sys-configures/sys-configure-value';
+    const href =  '/api/partner-sys-configures/sys-configure-value';
     return this.commonService.post(href ,data,{ headers: headers });
   }
     /**
@@ -86,7 +86,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/input-code';
+    const href =  '/api/lotteries/input-code';
     return this.commonService.post(href ,data,{ headers: headers });
   }
     /**
@@ -100,7 +100,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/partner-sys-configures/generate-issue-time';
+    const href =  '/api/partner-sys-configures/generate-issue-time';
     return this.commonService.post(href ,data,{ headers: headers });
   }
 /**
@@ -114,7 +114,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/lotteries-issue-generate';
+    const href =  '/api/lotteries/lotteries-issue-generate';
     return this.commonService.post(href ,data,{ headers: headers });
   }
   /**
@@ -128,7 +128,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/user-handle/prizegroup';
+    const href =  '/api/user-handle/prizegroup';
     return this.commonService.get(href ,{ headers: headers });
   }
 
@@ -143,7 +143,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/series-lists';
+    const href =  '/api/lotteries/series-lists';
     return this.commonService.get(href ,{ headers: headers });
   }
   /**
@@ -157,7 +157,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/add';
+    const href =  '/api/lotteries/add';
     return this.commonService.post(href , data,{ headers: headers });
   }
     /**
@@ -171,7 +171,7 @@ export class GameService {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/lotteries/edit';
+  const href =  '/api/lotteries/edit';
   return this.commonService.post(href , data,{ headers: headers });
 }
   /**
@@ -185,7 +185,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/delete';
+    const href =  '/api/lotteries/delete';
     return this.commonService.post(href , data,{ headers: headers });
   }
     /**
@@ -199,7 +199,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/lotteries-lists';
+    const href =  '/api/lotteries/lotteries-lists';
     return this.commonService.post(href , data,{ headers: headers });
   }
       /**
@@ -239,7 +239,7 @@ export class GameService {
      
     }
 
-    const href = this.serviceHttpIri + '/api/lotteries/lotteries-issue-lists?&page_size=' + page_size + '&page=' + page_index;
+    const href =  '/api/lotteries/lotteries-issue-lists?&page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
   /**
@@ -254,7 +254,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/lotteries-method-lists?';
+    const href =  '/api/lotteries/lotteries-method-lists?';
     return this.commonService.get(href ,{ headers: headers });
   }
 
@@ -269,7 +269,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/lotteries-switch';
+    const href =  '/api/lotteries/lotteries-switch';
     return this.commonService.post(href , data,{ headers: headers });
   }
 
@@ -284,7 +284,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/method-group-switch';
+    const href =  '/api/lotteries/method-group-switch';
     return this.commonService.post(href , data,{ headers: headers });
   }
     /**
@@ -298,7 +298,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/method-row-switch';
+    const href =  '/api/lotteries/method-row-switch';
     return this.commonService.post(href , data,{ headers: headers });
   }
     /**
@@ -312,7 +312,7 @@ export class GameService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/lotteries/method-switch';
+    const href =  '/api/lotteries/method-switch';
     return this.commonService.post(href , data,{ headers: headers });
   }
 

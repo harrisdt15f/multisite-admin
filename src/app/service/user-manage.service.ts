@@ -27,7 +27,7 @@ export class UserManageService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/log/get-address?ip='+ip;
+    const href =  '/api/log/get-address?ip='+ip;
     return this.commonService.get(href, { headers: headers });
   }
 
@@ -41,7 +41,7 @@ export class UserManageService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/user-handle/create-user?';
+    const href =  '/api/user-handle/create-user?';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -56,7 +56,7 @@ export class UserManageService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/user-handle/prizegroup?';
+    const href =  '/api/user-handle/prizegroup?';
     return this.commonService.get(href, { headers: headers });
   }
   /**
@@ -78,7 +78,7 @@ export class UserManageService {
       }
       this.change_time(data);
     }
-    const href = this.serviceHttpIri + '/api/user-handle/users-info?page_size=' + page_size + '&page=' + page_index;
+    const href =  '/api/user-handle/users-info?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, data, { headers: headers });
   }
 /**
@@ -101,7 +101,7 @@ get_frontend_log_list(page_index, data?) {
     this.change_time(data);
   }
 
-  const href = this.serviceHttpIri + '/api/log/frontend-list?page_size=' + page_size + '&page=' + page_index;
+  const href =  '/api/log/frontend-list?page_size=' + page_size + '&page=' + page_index;
   return this.commonService.post(href, data, { headers: headers });
 }
 
@@ -125,7 +125,7 @@ get_frontend_log_list(page_index, data?) {
       this.change_time(data);
     }
 
-    const href = this.serviceHttpIri + '/api/log/list?page_size=' + page_size + '&page=' + page_index;
+    const href =  '/api/log/list?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, data, { headers: headers });
   }
    /**
@@ -159,7 +159,7 @@ get_country_by_ip(ip) {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/user-handle/reset-password?';
+    const href =  '/api/user-handle/reset-password?';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -175,7 +175,7 @@ get_country_by_ip(ip) {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/user-handle/reset-fund-password?';
+    const href =  '/api/user-handle/reset-fund-password?';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -216,7 +216,7 @@ get_country_by_ip(ip) {
     }
     option['type']=1
 
-    const href = this.serviceHttpIri + '/api/user-handle/reset-password-list?page_size=' + page_size + '&page=' + page_index;
+    const href =  '/api/user-handle/reset-password-list?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
   /**
@@ -229,7 +229,7 @@ get_country_by_ip(ip) {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/user-handle/audit-applied-password?';
+    const href =  '/api/user-handle/audit-applied-password?';
     return this.commonService.post(href, data, { headers: headers });
   }
   /*获取提交用户修改资金密码申请列表
@@ -269,7 +269,7 @@ get_country_by_ip(ip) {
      
     }
     option['type']=2
-    const href = this.serviceHttpIri + '/api/user-handle/reset-fund-password-list?&page_size=' + page_size + '&page=' + page_index;
+    const href =  '/api/user-handle/reset-fund-password-list?&page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
   /**
@@ -286,7 +286,7 @@ get_country_by_ip(ip) {
       Authorization: `Bearer ${token}`,
     });
 
-    const href = this.serviceHttpIri + '/api/user-handle/deactivate';
+    const href =  '/api/user-handle/deactivate';
     return this.commonService.post(href, data, { headers: headers });
   }
     /**
@@ -303,7 +303,7 @@ get_country_by_ip(ip) {
       Authorization: `Bearer ${token}`,
     });
 
-    const href = this.serviceHttpIri + '/api/user-handle/deactivated-detail';
+    const href =  '/api/user-handle/deactivated-detail';
     return this.commonService.post(href, data, { headers: headers });
   }
       /**
@@ -320,7 +320,7 @@ get_country_by_ip(ip) {
       Authorization: `Bearer ${token}`,
     });
 
-    const href = this.serviceHttpIri + '/api/user-handle/user_account_change';
+    const href =  '/api/user-handle/user_account_change';
     return this.commonService.post(href, data, { headers: headers });
   }
       /**
@@ -337,7 +337,7 @@ get_country_by_ip(ip) {
       Authorization: `Bearer ${token}`,
     });
 
-    const href = this.serviceHttpIri + '/api/user-handle/user_recharge_history';
+    const href =  '/api/user-handle/user_recharge_history';
     return this.commonService.post(href, data, { headers: headers });
   }
     /**
@@ -353,7 +353,7 @@ get_system_setting_list(page_index?, data?) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/partner-sys-configures/detail';
+  const href =  '/api/partner-sys-configures/detail';
   return this.commonService.get(href, { headers: headers });
 }
     /**
@@ -368,7 +368,7 @@ create_system_setting_list( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/partner-sys-configures/add?XDEBUG_SESSION_START=PHPSTORM';
+  const href =  '/api/partner-sys-configures/add?XDEBUG_SESSION_START=PHPSTORM';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -383,7 +383,7 @@ edit_system_setting_list( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/partner-sys-configures/edit';
+  const href =  '/api/partner-sys-configures/edit';
   return this.commonService.post(href,data, { headers: headers });
 }
     /**
@@ -398,7 +398,7 @@ delete_system_setting_list( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/partner-sys-configures/delete';
+  const href =  '/api/partner-sys-configures/delete';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -413,7 +413,7 @@ change_status( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/partner-sys-configures/switch';
+  const href =  '/api/partner-sys-configures/switch';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -428,7 +428,7 @@ edit_city_msg(data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/region/edit';
+  const href =  '/api/region/edit';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -443,7 +443,7 @@ add_city_msg(data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/region/add';
+  const href =  '/api/region/add';
   return this.commonService.post(href,data, { headers: headers });
 }
 
@@ -459,7 +459,7 @@ get_city_list() {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/region/detail';
+  const href =  '/api/region/detail';
   return this.commonService.get(href, { headers: headers });
 }
 /**
@@ -474,7 +474,7 @@ get_city_last_list(data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/region/get_town';
+  const href =  '/api/region/get_town';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -490,7 +490,7 @@ edit_activity_type(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/activity/edit-actype';
+  const href =  '/api/activity/edit-actype';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -504,7 +504,7 @@ get_activity_type_list(){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/activity/type';
+  const href =  '/api/activity/type';
   return this.commonService.get(href, { headers: headers });
 }
 
@@ -546,7 +546,7 @@ get_activity_list(page_index,data?) {
      
     }
    
-    const href = this.serviceHttpIri + '/api/activity/detail?&page_size=' + page_size + '&page=' + page_index;
+    const href =  '/api/activity/detail?&page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
 }
 /**
@@ -560,7 +560,7 @@ add_activity(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/activity/add?XDEBUG_SESSION_START=PHPSTORM';
+  const href =  '/api/activity/add?XDEBUG_SESSION_START=PHPSTORM';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -574,7 +574,7 @@ edit_activity(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/activity/edit';
+  const href =  '/api/activity/edit';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -588,7 +588,7 @@ delete_activity(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/activity/delete';
+  const href =  '/api/activity/delete';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -603,7 +603,7 @@ get_category_manage_list(page_index?, data?) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/content/category';
+  const href =  '/api/content/category';
   return this.commonService.get(href, { headers: headers });
 }
   /**
@@ -620,7 +620,7 @@ get_article_type() {
     Authorization: `Bearer ${token}`,
   });
 
-  const href = this.serviceHttpIri + '/api/content/category-select' ;
+  const href =  '/api/content/category-select' ;
   return this.commonService.get(href, { headers: headers });
 }
   /**
@@ -636,7 +636,7 @@ let page_size='20';
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/content/detail?page_size='+ page_size + '&page=' + page_index; ;
+  const href =  '/api/content/detail?page_size='+ page_size + '&page=' + page_index; ;
   return this.commonService.post(href,{}, { headers: headers });
 }
 /**
@@ -650,7 +650,7 @@ sort_article(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`
   });
-  const href = this.serviceHttpIri + '/api/content/sort-articles' ;
+  const href =  '/api/content/sort-articles' ;
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -664,7 +664,7 @@ sort_activity(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`
   });
-  const href = this.serviceHttpIri + '/api/activity/sort' ;
+  const href =  '/api/activity/sort' ;
   return this.commonService.post(href,data, { headers: headers });
 }
 
@@ -678,7 +678,7 @@ top_articles(data){
    Accept: 'application/json',
    Authorization: `Bearer ${token}`
  });
- const href = this.serviceHttpIri + '/api/content/top-articles' ;
+ const href =  '/api/content/top-articles' ;
  return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -692,7 +692,7 @@ add_article(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/content/add-articles';
+  const href =  '/api/content/add-articles';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -706,7 +706,7 @@ edit_article(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/content/edit-articles';
+  const href =  '/api/content/edit-articles';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -720,7 +720,7 @@ delete_article(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/content/delete-articles';
+  const href =  '/api/content/delete-articles';
   return this.commonService.post(href, data,{ headers: headers });
 }
 
@@ -749,7 +749,7 @@ get_bank_list(page_index, data?) {
       option=data;
      
     }
-    const href = this.serviceHttpIri + '/api/bank/detail?page_size='+ page_size + '&page=' + page_index; ;
+    const href =  '/api/bank/detail?page_size='+ page_size + '&page=' + page_index; ;
     return this.commonService.post(href,option, { headers: headers });
   }
 
@@ -764,7 +764,7 @@ add_bank(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/bank/add-bank';
+  const href =  '/api/bank/add-bank';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -778,7 +778,7 @@ edit_bank(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/bank/edit-bank';
+  const href =  '/api/bank/edit-bank';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -792,7 +792,7 @@ delete_bank(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/bank/delete-bank';
+  const href =  '/api/bank/delete-bank';
   return this.commonService.post(href, data,{ headers: headers });
 }
   /**
@@ -809,7 +809,7 @@ get_quota_history(data) {
       Authorization: `Bearer ${token}`,
     });
 
-    const href = this.serviceHttpIri + '/api/fundOperation/fund-change-log';
+    const href =  '/api/fundOperation/fund-change-log';
     return this.commonService.post(href,data, { headers: headers });
   }
 
@@ -839,7 +839,7 @@ get_quota_list(page_index, data?) {
       option=data;
      
     }
-    const href = this.serviceHttpIri + '/api/fundOperation/admins?page_size='+ page_size + '&page=' + page_index; ;
+    const href =  '/api/fundOperation/admins?page_size='+ page_size + '&page=' + page_index; ;
     return this.commonService.post(href,option, { headers: headers });
   }
 
@@ -854,7 +854,7 @@ set_day_quota(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/fundOperation/every-day-fund';
+  const href =  '/api/fundOperation/every-day-fund';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -868,7 +868,7 @@ add_manage_quota(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/fundOperation/add-fund';
+  const href =  '/api/fundOperation/add-fund';
   return this.commonService.post(href, data,{ headers: headers });
 }
 
@@ -921,7 +921,7 @@ get_recharge_list(page_index, data?) {
       option=data;
      
     }
-    const href = this.serviceHttpIri + '/api/artificialRecharge/users?page_size='+ page_size + '&page=' + page_index; ;
+    const href =  '/api/artificialRecharge/users?page_size='+ page_size + '&page=' + page_index; ;
     return this.commonService.post(href,option, { headers: headers });
   }
 /**
@@ -935,7 +935,7 @@ add_recharge_quota(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/artificialRecharge/add';
+  const href =  '/api/artificialRecharge/add';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**
@@ -949,7 +949,7 @@ reduce_quota(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/user-handle/deduction_balance';
+  const href =  '/api/user-handle/deduction_balance';
   return this.commonService.post(href, data,{ headers: headers });
 }
   /**
@@ -964,9 +964,9 @@ reduce_quota(data){
     });
     let href ='';
     if(type==1){
-       href = this.serviceHttpIri + '/api/recharge-check/audit-success?';
+       href =  '/api/recharge-check/audit-success?';
     }else if(type==2){
-       href = this.serviceHttpIri + '/api/recharge-check/audit-failure?';
+       href =  '/api/recharge-check/audit-failure?';
     }
   
     return this.commonService.post(href, data, { headers: headers });
@@ -1009,7 +1009,7 @@ get_recharge_check_list(page_index, data?) {
    
   }
 
-  const href = this.serviceHttpIri + '/api/recharge-check/detail?page_size=' + page_size + '&page=' + page_index;
+  const href =  '/api/recharge-check/detail?page_size=' + page_size + '&page=' + page_index;
   return this.commonService.post(href, option, { headers: headers });
 }
 
@@ -1027,7 +1027,7 @@ get_account_list(page_index?, data?) {
     Authorization: `Bearer ${token}`,
   });
 
-  const href = this.serviceHttpIri + '/api/accountChangeType/detail?page_size='+ page_size + '&page=' + page_index; ;
+  const href =  '/api/accountChangeType/detail?page_size='+ page_size + '&page=' + page_index; ;
 
   return this.commonService.post(href,  {}, { headers: headers });
 }
@@ -1043,7 +1043,7 @@ get_param_list() {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/accountChangeType/param-list';
+  const href =  '/api/accountChangeType/param-list';
   return this.commonService.get(href, { headers: headers });
 }
 
@@ -1059,7 +1059,7 @@ add_account_type(data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/accountChangeType/add';
+  const href =  '/api/accountChangeType/add';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -1074,7 +1074,7 @@ edit_account_type(data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/accountChangeType/edit';
+  const href =  '/api/accountChangeType/edit';
   return this.commonService.post(href,data, { headers: headers });
 }/**
 *删除账变类型列表
@@ -1088,7 +1088,7 @@ delete_account_type(data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href = this.serviceHttpIri + '/api/accountChangeType/delete';
+  const href =  '/api/accountChangeType/delete';
   return this.commonService.post(href,data, { headers: headers });
 }
 
@@ -1096,14 +1096,8 @@ delete_account_type(data) {
 *
 * @memberof UserManageService
 */
-get_announcement(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
-  });
-  const href = this.serviceHttpIri + '/api/notice/detail' ;
-  return this.commonService.get(href, { headers: headers });
+get_announcement(data: any){
+  return this.commonService.post('/api/notice/detail', data);
  }
 
 /*给公告排序
@@ -1116,20 +1110,7 @@ sort_announcement(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`
   });
-  const href = this.serviceHttpIri + '/api/notice/sort' ;
-  return this.commonService.post(href,data, { headers: headers });
- }
- /*给公告置顶
-*
-* @memberof UserManageService
-*/
-top_announcement(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
-  });
-  const href = this.serviceHttpIri + '/api/notice/top' ;
+  const href =  '/api/notice/sort' ;
   return this.commonService.post(href,data, { headers: headers });
  }
  /**
@@ -1143,7 +1124,7 @@ top_announcement(data){
      Accept: 'application/json',
      Authorization: `Bearer ${token}`,
    });
-   const href = this.serviceHttpIri + '/api/notice/add';
+   const href =  '/api/notice/add';
    return this.commonService.post(href, data,{ headers: headers });
  }
  /**
@@ -1157,7 +1138,7 @@ top_announcement(data){
      Accept: 'application/json',
      Authorization: `Bearer ${token}`,
    });
-   const href = this.serviceHttpIri + '/api/notice/edit';
+   const href =  '/api/notice/edit';
    return this.commonService.post(href, data,{ headers: headers });
  }
  /**
@@ -1171,7 +1152,7 @@ top_announcement(data){
      Accept: 'application/json',
      Authorization: `Bearer ${token}`,
    });
-   const href = this.serviceHttpIri + '/api/notice/delete';
+   const href =  '/api/notice/delete';
    return this.commonService.post(href, data,{ headers: headers });
  }
 

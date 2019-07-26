@@ -110,7 +110,7 @@
 
                         <nz-select id="method_id" type="method_id" formControlName="method_id" style="width: 100%;"
                             [(ngModel)]="edit_level_obj['method_id']" nzShowSearch nzPlaceHolder="玩法ID类型">
-                            <nz-option *ngFor='let item of list_of_data' nzValue='item.method_id'[nzLabel]="item.method_id"></nz-option>
+                            <nz-option *ngFor='let item of list_of_data' [nzValue]='item.method_id' [nzLabel]="item.method_id"></nz-option>
                         </nz-select>
                         <nz-form-explain
                             *ngIf="create_form.get('method_id')?.dirty && create_form.get('method_id')?.errors">

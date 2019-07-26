@@ -35,6 +35,8 @@ export class OperasyonPageModelComponent implements OnInit {
   public file_iri: string;
   //-------------------热门彩票
 
+  public updateData = null;
+
   public mode = 'inline';
   public title: string;
   public type: string;
@@ -264,7 +266,7 @@ export class OperasyonPageModelComponent implements OnInit {
   * 点击上传文件
   */
 
-  click_update_lot() {
+  click_update_lot(e: any) {
     document.getElementById('pic_5').click();
   }
   updateFire_lot(item) {
@@ -750,8 +752,9 @@ export class OperasyonPageModelComponent implements OnInit {
   * 点击上传文件
   */
 
-  click_update() {
+  click_update(e: any) {
     // this.edit
+    this.updateData = this.home_page_type['qr.code'];
     document.getElementById('pic_4').click();
   }
   updateFire(item) {
@@ -761,6 +764,7 @@ export class OperasyonPageModelComponent implements OnInit {
     var op: FormData = new FormData();
     op.append('pic', this.file_obj);
     op.append('key', 'qr.code');
+    op.append('en_name', this.updateData.en_name);
     setTimeout(() => {
       this.is_upload = false;
     }, 10000)

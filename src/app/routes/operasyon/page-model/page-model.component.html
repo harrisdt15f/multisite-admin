@@ -36,7 +36,7 @@
                 (ngModelChange)="change_open_base($event,home_page_type['qr.code'])" nzCheckedChildren="开"
                 nzUnCheckedChildren="关"></nz-switch>
               <nz-spin *ngIf='is_upload' nzSimple></nz-spin>
-              <a *ngIf='!is_upload' (click)='click_update()'>上传</a>
+              <a *ngIf='!is_upload' (click)="click_update(home_page_type['qr.code'])">上传</a>
             </ng-template>
             <nz-list-item-meta nzTitle="下载二维码" [nzDescription]="QRcodeDesc">
               <ng-template #QRcodeDesc>
@@ -45,13 +45,13 @@
               </ng-template>
             </nz-list-item-meta>
           </nz-list-item>
-          <nz-list-item [nzActions]="[QRcode]">
+          <!-- <nz-list-item [nzActions]="[QRcode]">
             <ng-template #QRcode>
               <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['qr.code'].status==1"
                 (ngModelChange)="change_open_base($event,home_page_type['qr.code'])" nzCheckedChildren="开"
                 nzUnCheckedChildren="关"></nz-switch>
               <nz-spin *ngIf='is_upload' nzSimple></nz-spin>
-              <a *ngIf='!is_upload' (click)='click_update()'>上传</a>
+              <a *ngIf='!is_upload' (click)="click_update(home_page_type['qr.code'])">上传</a>
             </ng-template>
             <nz-list-item-meta nzTitle="下载二维码" [nzDescription]="QRcodeDesc">
               <ng-template #QRcodeDesc>
@@ -59,7 +59,7 @@
                   [src]="serviceHttpIri+home_page_type['qr.code'].value">
               </ng-template>
             </nz-list-item-meta>
-          </nz-list-item>
+          </nz-list-item> -->
           <nz-list-item [nzActions]="[notice]">
             <ng-template #notice>
               <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['notice'].status==1"

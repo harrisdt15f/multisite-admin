@@ -209,7 +209,6 @@ export class StartupService {
       Authorization: `Bearer ${token}`,
     });
     const href = this.serviceHttpIri + '/api/menu/current-admin-menu';
-    // const href = this.serviceHttpIri + '/api/menu/current-admin-menu';
 
     return this.httpClient.get(href, { headers: headers });
   }
