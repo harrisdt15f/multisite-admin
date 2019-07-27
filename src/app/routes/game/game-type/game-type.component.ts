@@ -84,6 +84,7 @@ export class GameGameTypeComponent implements OnInit {
       valid_code: [null, [Validators.required]],
       code_length: [null, [Validators.required]],
       prize_group: [null, [Validators.required]],
+      max_bonus: [null, [Validators.required]],
       min_times: [null, [Validators.required]],
       max_times: [null, [Validators.required]],
       valid_modes: [null, [Validators.required]],
@@ -159,6 +160,7 @@ export class GameGameTypeComponent implements OnInit {
       max_trace_number: data['max_trace_number'],
       min_times: data['min_times'],
       positions: data['positions'],
+      max_bonus: data['max_bonus'],
       prize_group: [
         data['min_prize_group'],
         data['max_prize_group']
@@ -224,7 +226,8 @@ export class GameGameTypeComponent implements OnInit {
         max_prize_group: this.edit_lotteries_obj['prize_group'][1],
         status: this.edit_lotteries_obj['status'],
         valid_code: this.edit_lotteries_obj['valid_code'],
-        valid_modes: this.edit_lotteries_obj['valid_modes']
+        valid_modes: this.edit_lotteries_obj['valid_modes'],
+        max_bonus: this.edit_lotteries_obj['max_bonus']
       },
       issue_rule: {
         lottery_name: this.edit_lotteries_obj['cn_name'],
@@ -424,6 +427,7 @@ class LotteriesObj {
   public min_times: string;
   public max_times: string;
   public valid_modes: string;
+  public max_bonus: any;
   public status = '0';
 
   constructor(private min_group, private max_group) {

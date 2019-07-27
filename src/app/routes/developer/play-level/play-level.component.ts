@@ -115,14 +115,21 @@ public edit_paly(data) {
     position:data.position,
     count:data.count,
     prize:data.prize,
-    series_id: data.child[0].series_id
+    series_id: data.series_id
   }
 }
   /**
    * 点击提交
    */
   public submit_paly_level() {
-
+    if (this.modal_type === 'create' && !this.edit_level_obj['series_id']) {
+      console.log(1)
+      for(const k of this.list_of_data) {
+        if (this.edit_level_obj['method_id'] === k['method_id']) {
+          this.edit_level_obj['series_id'] = k['child'][0]['series_id'];
+        }
+      }
+    }
     if(this.is_add_child){
       this.is_load_list_child = true;
     }else{
@@ -137,7 +144,6 @@ public edit_paly(data) {
       prize: this.edit_level_obj['prize'],
       series_id: this.edit_level_obj['series_id'],
     };
-    console.log(option)
     if (this.modal_type == 'create') {
       this.add_paly_level(option);
     } else if (this.modal_type == 'edit') {

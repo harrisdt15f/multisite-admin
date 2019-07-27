@@ -257,17 +257,17 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
         rearways_id: this.list_of_aply_data[last_index].id,
         rearways_sort: old_array[last_index].sort
       }
-      this.is_load_list = true;
-      this.userManageService.sort_announcement(option).subscribe((res: any) => {
-        this.is_load_list = false;
-        if (res && res.success) {
-          this.get_announcement_list();
-        } else {
-          this.message.error(res.message, {
-            nzDuration: 10000,
-          });
-        }
-      })
+      // this.is_load_list = true;
+      // this.userManageService.sort_announcement(option).subscribe((res: any) => {
+      //   this.is_load_list = false;
+      //   if (res && res.success) {
+      //     this.get_announcement_list();
+      //   } else {
+      //     this.message.error(res.message, {
+      //       nzDuration: 10000,
+      //     });
+      //   }
+      // })
     }
   }
   /**

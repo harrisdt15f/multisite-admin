@@ -293,6 +293,19 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item style="width: 46%">
+          <nz-form-label nzFor="max_bonus" nzRequired [nzSm]="9" [nzXs]="24">最大奖金</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <input id="max_bonus" type="text" formControlName="max_bonus" nz-input placeholder="最大奖金"
+              [(ngModel)]="edit_lotteries_obj['max_bonus']" />
+            <nz-form-explain
+              *ngIf="create_form_lottery.get('max_bonus')?.dirty && create_form_lottery.get('max_bonus')?.errors">
+              <ng-container *ngIf="create_form_lottery.get('max_bonus')?.hasError('required')">
+                最大奖金
+              </ng-container>
+            </nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="width: 46%">
           <nz-form-label nzFor="min_times" nzRequired [nzSm]="9" [nzXs]="24">min_times</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
             <input id="min_times" type="text" formControlName="min_times" nz-input placeholder="请输入min_times"

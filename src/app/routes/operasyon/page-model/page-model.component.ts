@@ -28,7 +28,10 @@ export class OperasyonPageModelComponent implements OnInit {
 
   public create_form: FormGroup;//表单对象
   public create_form_two: FormGroup;//表单对象
+  // 开奖公告
   public create_form_notice: FormGroup;//开奖公告表单对象
+  public page_index = 1;
+
   public edit_lotteries_obj: object = {
   };
   public file_obj: any;
@@ -497,7 +500,6 @@ export class OperasyonPageModelComponent implements OnInit {
  * @memberof OperasyonlotteriesManageComponent
  */
   add_lottery_notic() {
-
     this.is_show_box = true;
     this.modal_type = 'create';
     this.update_form();
@@ -514,11 +516,8 @@ export class OperasyonPageModelComponent implements OnInit {
       "id": data['id'],
       "status": data['status'],
     };
-    this.edit_lotteries_obj['lotteries_id'] = Number(data['lotteries_id'])
-
-
-
-
+    console.log(this.edit_lotteries_obj)
+    this.edit_lotteries_obj['lotteries_id'] = data['lotteries_id']
   }
 
 
@@ -617,9 +616,8 @@ export class OperasyonPageModelComponent implements OnInit {
   submit_lotteries_notice() {
     let option = {
       id: this.edit_lotteries_obj['id'],
-      icon: './',
       lotteries_id: this.edit_lotteries_obj['lotteries_id'],
-      status: this.edit_lotteries_obj['status'],
+      status: +this.edit_lotteries_obj['status'],
     };
     this.lotteries_list.forEach((item) => {
       if (item.en_name === this.edit_lotteries_obj['lotteries_id']) {
@@ -648,6 +646,7 @@ export class OperasyonPageModelComponent implements OnInit {
         });
         this.hide_modal();
         this.update_form();
+        this.get_lotteries_notice();
         this.is_show_modal = false;
         this.is_show_box = false;
 
@@ -674,7 +673,7 @@ export class OperasyonPageModelComponent implements OnInit {
       this.is_show_box = false;
       if (res && res.success) {
         this.get_lotteries();
-
+        this.get_lotteries_notice();
         this.update_form();
         this.hide_modal();
         this.message.success('修改开奖公告成功', {
@@ -746,7 +745,57 @@ export class OperasyonPageModelComponent implements OnInit {
       }
     })
   }
-
+  // 开奖公告 拖动排序
+  public drop_announcement(event: CdkDragDrop<string[]>): void {
+    let old_array = JSON.parse(JSON.stringify(this.list_of_aply_data_notice));
+    if (event.previousIndex != event.currentIndex) {
+      moveItemInArray(this.list_of_aply_data_notice, event.previousIndex, event.currentIndex);
+      let first_index = event.previousIndex > event.currentIndex ? event.currentIndex : event.previousIndex;
+      let last_index = event.previousIndex > event.currentIndex ? event.previousIndex : event.currentIndex;
+      let option = {
+        sort_type: event.previousIndex > event.currentIndex ? 1 : 2,
+        front_id: this.list_of_aply_data_notice[first_index].id,
+        front_sort: old_array[first_index].sort,
+        rearways_id: this.list_of_aply_data_notice[last_index].id,
+        rearways_sort: old_array[last_index].sort
+      };
+      this.is_load_list = true;
+      this.managerService.sort_lottery_notice_list(option).subscribe((res: any) => {
+        this.is_load_list = false;
+        if (res && res.success) {
+          this.get_lotteries_notice();
+          this.message.success('保存成功!', {
+            nzDuration: 2000,
+          });
+        } else {
+          this.message.error(res.message, {
+            nzDuration: 10000,
+          });
+        }
+      })
+    }
+  }
+  // 开奖公告状态
+  public change_status(e: any) {
+    let status = 0;
+    e.status ? status = 0 : status = 1;
+    let data = {
+      id: e['id'],
+      status: status
+    }
+    this.managerService.edit_lotteries_notice(data).subscribe((res: any) => {
+      if (res && res.success) {
+        this.get_lotteries_notice();
+        this.message.success('保存成功!', {
+          nzDuration: 2500,
+        });
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
 
   /**
   * 点击上传文件

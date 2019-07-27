@@ -157,10 +157,11 @@
                 <nz-form-item nz-row style="margin-bottom:8px;">
                     <nz-form-control [nzSpan]="14" [nzOffset]="6">
                         <button *ngIf='modal_type==="create"' (click)="submit_paly_level()"
-                            [disabled]="!create_form.valid" nz-button nzType="primary">确认创建</button>
+                            nz-button nzType="primary">确认创建</button>
                         <button *ngIf='modal_type==="edit"' (click)="submit_paly_level()"
-                            [disabled]="!create_form.valid" nz-button nzType="primary">确认修改</button>
+                         nz-button nzType="primary">确认修改</button>
                     </nz-form-control>
+                    <!-- [disabled]="!create_form.valid"  -->
                 </nz-form-item>
             </form>
 

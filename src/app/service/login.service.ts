@@ -16,14 +16,14 @@ export class LoginService {
     let headers = new HttpHeaders({
       'Accept': 'application/json'
     });
-    const href =  '/api/login?XDEBUG_SESSION_START=PHPSTORM';
+    const href = this.serviceHttpIri + '/api/login?XDEBUG_SESSION_START=PHPSTORM';
     return this.http.post(href,data , { headers: headers });
   }
   login_out(data): Observable<any> {
     let headers = new HttpHeaders({
       'Accept': 'application/json'
     });
-    const href =  '/api/login?email='+data.userName+'&password='+data.email;
+    const href = this.serviceHttpIri + '/api/login?email='+data.userName+'&password='+data.email;
     return this.http.post(href,{} , { headers: headers });
   }
 }

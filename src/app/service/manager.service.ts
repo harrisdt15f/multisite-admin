@@ -272,13 +272,7 @@ get_nav_one_list(): Observable<any> {
 * @memberof ManagerService
 */
 get_page_model_list(): Observable<any> {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/homepage/page-model';
-  return this.commonService.get(href, { headers: headers });
+  return this.commonService.get('/api/homepage/page-model');
 }
   /**
 * 上传logo
@@ -312,13 +306,7 @@ upload_ico(data): Observable<any> {
 * @memberof ManagerService
 */
 edit_home_page(data): Observable<any> {
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-    const href =  '/api/homepage/edit';
-    return this.commonService.post(href, data, { headers: headers });
+    return this.commonService.post('/api/homepage/edit', data);
   }
 
     /**
@@ -341,13 +329,7 @@ get_hot_lotteries_one(): Observable<any> {
 * @memberof ManagerService
 */
 get_hot_lotteries_two(): Observable<any> {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/popular-methods/detail';
-  return this.commonService.get(href, { headers: headers });
+  return this.commonService.get('/api/popular-methods/detail');
 }
    /**
 * 热门开奖公告列表
@@ -355,13 +337,7 @@ get_hot_lotteries_two(): Observable<any> {
 * @memberof ManagerService
 */
 get_hot_lotteries_notice(): Observable<any> {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/lottery-notice/detail';
-  return this.commonService.get(href, { headers: headers });
+  return this.commonService.get('/api/lottery-notice/detail');
 }
     /**
 * 添加开奖公告
@@ -455,13 +431,7 @@ edit_hot_lotteries_list(data): Observable<any> {
 * @memberof ManagerService
 */
 edit_lotteries_notice(data): Observable<any> {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/lottery-notice/edit';
-  return this.commonService.post(href,data, { headers: headers });
+  return this.commonService.post('/api/lottery-notice/edit', data);
 }
 /**
 * 编辑热门玩法
@@ -553,13 +523,7 @@ sort_hot_method_list(data): Observable<any> {
 * @memberof ManagerService
 */
 sort_lottery_notice_list(data): Observable<any> {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/lottery-notice/sort';
-  return this.commonService.post(href,data, { headers: headers });
+  return this.commonService.post('/api/lottery-notice/sort',data);
 }
 
 
