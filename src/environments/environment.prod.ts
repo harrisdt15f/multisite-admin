@@ -12,6 +12,6 @@ export const environment = {
   useHash: false,
   hmr: false,
   envName: 'prod',
-  // apiBaseUrl: 'http://api.9170ttt.com',
-  apiBaseUrl: 'http://local.multisites.com',
+  apiBaseUrl: 'http://api.9170ttt.com',
+  // apiBaseUrl: 'http://local.multisites.com',
 };
