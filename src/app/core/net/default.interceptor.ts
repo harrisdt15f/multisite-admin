@@ -1,6 +1,6 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable, Injector, Inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase, HttpResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHeaders, HttpHandler, HttpErrorResponse, HttpEvent, HttpResponseBase, HttpResponse } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { mergeMap, catchError } from 'rxjs/operators';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
@@ -32,7 +32,10 @@ const CODEMESSAGE = {
  */
 @Injectable()
 export class DefaultInterceptor implements HttpInterceptor {
-  constructor(private injector: Injector) { }
+  constructor(
+    private injector: Injector,
+    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
+    ) { }
 
   get msg(): NzMessageService {
     return this.injector.get(NzMessageService);
@@ -118,7 +121,6 @@ export class DefaultInterceptor implements HttpInterceptor {
     if (!url.startsWith('https://') && !url.startsWith('http://')) {
       url = environment.SERVER_URL + url;
     }
-
     const newReq = req.clone({ url });
     return next.handle(newReq).pipe(
       mergeMap((event: any) => {

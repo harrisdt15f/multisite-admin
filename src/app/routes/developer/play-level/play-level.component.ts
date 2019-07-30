@@ -97,7 +97,8 @@ export class DeveloperPlayLevelComponent implements OnInit {
     this.edit_level_obj['level']=5;
     if(data){
       this.is_add_child = true;
-      this.edit_level_obj['method_id']=data.method_id;
+      this.edit_level_obj['method_id'] = data.method_id;
+      this.edit_level_obj['series_id'] = data.child[0].series_id;
     }
   }
     /**
@@ -113,14 +114,22 @@ public edit_paly(data) {
     level:data.level,
     position:data.position,
     count:data.count,
-    prize:data.prize
+    prize:data.prize,
+    series_id: data.series_id
   }
 }
   /**
    * 点击提交
    */
   public submit_paly_level() {
-
+    if (this.modal_type === 'create' && !this.edit_level_obj['series_id']) {
+      console.log(1)
+      for(const k of this.list_of_data) {
+        if (this.edit_level_obj['method_id'] === k['method_id']) {
+          this.edit_level_obj['series_id'] = k['child'][0]['series_id'];
+        }
+      }
+    }
     if(this.is_add_child){
       this.is_load_list_child = true;
     }else{
@@ -133,6 +142,7 @@ public edit_paly(data) {
       position: this.edit_level_obj['position'],
       count: this.edit_level_obj['count'],
       prize: this.edit_level_obj['prize'],
+      series_id: this.edit_level_obj['series_id'],
     };
     if (this.modal_type == 'create') {
       this.add_paly_level(option);
@@ -232,7 +242,8 @@ public edit_paly(data) {
     this.is_load_list = true;
     this.developerService.get_game_level().subscribe((res: any) => {
       if (res && res.success) {
-    
+  
+        console.log(res);
         this.is_load_list = false;
         this.list_of_data = [];
 

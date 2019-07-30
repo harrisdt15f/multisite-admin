@@ -29,7 +29,7 @@ export class AdService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/advertisement-type/detail';
+    const href =  '/api/advertisement-type/detail';
     return this.commonService.get(href, { headers: headers });
   }
 
@@ -47,7 +47,7 @@ export class AdService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href = this.serviceHttpIri + '/api/advertisement-type/edit';
+    const href =  '/api/advertisement-type/edit';
     return this.commonService.post(href, data, { headers: headers });
   }
 }

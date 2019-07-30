@@ -44,7 +44,7 @@ export class ReportService {
         Authorization: `Bearer ${token}`,
       });
    
-      const href = this.serviceHttpIri + '/api/reportManagement/account_change_type'; 
+      const href =  '/api/reportManagement/account_change_type'; 
       return this.commonService.get(href, { headers: headers });
     }
 
@@ -73,7 +73,7 @@ export class ReportService {
         option=data;
        
       }
-      const href = this.serviceHttpIri + '/api/reportManagement/user-account-change?page_size='+ page_size + '&page=' + page_index; ;
+      const href =  '/api/reportManagement/user-account-change?page_size='+ page_size + '&page=' + page_index; ;
       return this.commonService.post(href,option, { headers: headers });
     }
     /**
@@ -97,7 +97,7 @@ export class ReportService {
         option=data;
        
       }
-      const href = this.serviceHttpIri + '/api/reportManagement/user-recharge-history?page_size='+ page_size + '&page=' + page_index; ;
+      const href =  '/api/reportManagement/user-recharge-history?page_size='+ page_size + '&page=' + page_index; ;
       return this.commonService.post(href,option, { headers: headers });
   }
 
@@ -122,7 +122,7 @@ export class ReportService {
       option=data;
      
     }
-    const href = this.serviceHttpIri + '/api/reportManagement/user-bets?page_size='+ page_size + '&page=' + page_index; ;
+    const href =  '/api/reportManagement/user-bets?page_size='+ page_size + '&page=' + page_index; ;
     return this.commonService.post(href,option, { headers: headers });
 }
   

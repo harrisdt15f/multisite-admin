@@ -110,7 +110,7 @@
 
                         <nz-select id="method_id" type="method_id" formControlName="method_id" style="width: 100%;"
                             [(ngModel)]="edit_level_obj['method_id']" nzShowSearch nzPlaceHolder="玩法ID类型">
-                            <nz-option *ngFor='let item of list_of_data' nzValue='item.method_id'[nzLabel]="item.method_id"></nz-option>
+                            <nz-option *ngFor='let item of list_of_data' [nzValue]='item.method_id' [nzLabel]="item.method_id"></nz-option>
                         </nz-select>
                         <nz-form-explain
                             *ngIf="create_form.get('method_id')?.dirty && create_form.get('method_id')?.errors">
@@ -125,31 +125,31 @@
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-label nzFor="position" nzRequired [nzSm]="4" [nzXs]="24">position</nz-form-label>
+                    <nz-form-label nzFor="position" nzRequired [nzSm]="4" [nzXs]="24">开奖位置</nz-form-label>
                     <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
                         <input maxlength='16' id="position" type="text" formControlName="position" nz-input
-                            placeholder="position" [(ngModel)]="edit_level_obj['position']" />
+                            placeholder="请输开奖位置" [(ngModel)]="edit_level_obj['position']" />
                         <nz-form-explain
                             *ngIf="create_form.get('position')?.dirty && create_form.get('position')?.errors">
-                            请输position!</nz-form-explain>
+                            请输开奖位置!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-label nzFor="count" nzRequired [nzSm]="4" [nzXs]="24">count</nz-form-label>
+                    <nz-form-label nzFor="count" nzRequired [nzSm]="4" [nzXs]="24">全包中奖注数</nz-form-label>
                     <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
                         <input maxlength='16' id="count" type="text" formControlName="count" nz-input
-                            placeholder="count" [(ngModel)]="edit_level_obj['count']" />
+                            placeholder="全包中奖注数" [(ngModel)]="edit_level_obj['count']" />
                         <nz-form-explain *ngIf="create_form.get('count')?.dirty && create_form.get('count')?.errors">
-                            count!</nz-form-explain>
+                                全包中奖注数!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-label nzFor="prize" nzRequired [nzSm]="4" [nzXs]="24">prize</nz-form-label>
+                    <nz-form-label nzFor="prize" nzRequired [nzSm]="4" [nzXs]="24">奖金</nz-form-label>
                     <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
                         <input maxlength='16' id="prize" type="text" formControlName="prize" nz-input
-                            placeholder="prize" [(ngModel)]="edit_level_obj['prize']" />
+                            placeholder="奖金" [(ngModel)]="edit_level_obj['prize']" />
                         <nz-form-explain *ngIf="create_form.get('prize')?.dirty && create_form.get('prize')?.errors">
-                            prize!</nz-form-explain>
+                            奖金!</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
 
@@ -157,10 +157,11 @@
                 <nz-form-item nz-row style="margin-bottom:8px;">
                     <nz-form-control [nzSpan]="14" [nzOffset]="6">
                         <button *ngIf='modal_type==="create"' (click)="submit_paly_level()"
-                            [disabled]="!create_form.valid" nz-button nzType="primary">确认创建</button>
+                            nz-button nzType="primary">确认创建</button>
                         <button *ngIf='modal_type==="edit"' (click)="submit_paly_level()"
-                            [disabled]="!create_form.valid" nz-button nzType="primary">确认修改</button>
+                         nz-button nzType="primary">确认修改</button>
                     </nz-form-control>
+                    <!-- [disabled]="!create_form.valid"  -->
                 </nz-form-item>
             </form>
 

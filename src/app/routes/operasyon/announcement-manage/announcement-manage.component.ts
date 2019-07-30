@@ -21,7 +21,24 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   public list_of_data: object = {};
   public list_of_aply_data: Array<any> = [];
   public list_total: number;
-  // public widthConfig = ['100px', '200px', '200px', '100px', '100px', '200px', '200px', '100px', '200px', '200px', '100px', '100px', '200px', '200px', '100px', '200px', '100px'];
+  public nzTitle = ''; 
+
+  public page_tabs = [
+    {title: '平台公告'},
+    {title: '站内信'},
+  ];
+  // 公告
+  public notice = {
+    list: {
+      title: null,
+      content: null,
+      type: 1,
+      start_time: null,
+      end_time: null,
+      page_size: 20,
+      page: 1
+    }
+  }
 
   public is_load_list: boolean;
 
@@ -64,20 +81,20 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
       status: [null, [Validators.required]],
       end_time: [null, [Validators.required]]
     });
-    this.get_announcement_type();
-    this.get_announcement_list(1);
+    // this.get_announcement_type();
+    this.get_announcement_list();
   }
   /**
    *提交
    *
    * @memberof OperasyonannouncementManageComponent
    */
-  submit_activity() {
+  public submit_activity() {
     let option = {
       id: this.edit_announcement_obj['id'],
       title: this.edit_announcement_obj['title'],
       status: this.edit_announcement_obj['status'],
-      type:this.edit_announcement_obj['type']
+      type: this.notice.list.type
     };
 
     let img_obj = Utils.get_img_iri(this.edit_announcement_obj['content'], 'remove');
@@ -101,25 +118,6 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     }
 
   }
-
-    /**
-   *修改状态
-   *
-   * @param {*} data
-   * @memberof OperasyonadTypeComponent
-   */
-  edit_status(e,data) {
-    let option = {
-      id: data['id'],
-      title: data['title'],
-      status: e?1:0,
-      content: data['content'],
-      start_time: data['start_time'],
-      end_time: data['end_time'],
-      type:1
-    };
-    this.edit_announcement_submit(option);
-  }
   /**
    *调用添加
    *
@@ -130,8 +128,8 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     this.userManageService.add_announcement(data).subscribe((res: any) => {
       this.modal_lodding = false;
       if (res && res.success) {
-        this.get_announcement_list(1);
-        this.message.success('添加公告成功', {
+        this.get_announcement_list();
+        this.message.success('添加成功', {
           nzDuration: 10000,
         });
 
@@ -172,23 +170,19 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   on_ok_end(item) { }
   /**
    *调用修改
-   *
-   * @param {*} data
-   * @memberof OperasyonannouncementManageComponent
    */
   edit_announcement_submit(data) {
     this.userManageService.edit_announcement(data).subscribe((res: any) => {
       this.modal_lodding = false;
       if (res && res.success) {
         this.if_show_modal = false;
-        this.get_announcement_list(1);
+        this.get_announcement_list();
         this.update_form();
         this.message.success('修改公告成功', {
           nzDuration: 10000,
         });
 
       } else {
-
         this.message.error(res.message, {
           nzDuration: 10000,
         });
@@ -197,9 +191,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   }
 
   /**
- *d刷新表单
- *
- * @memberof OperasyonActivityListComponent
+ *刷新表单
  */
   update_form() {
     this.edit_announcement_obj = {
@@ -212,37 +204,16 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     }
   }
   /**
-   * 获取公告分类
-   */
-  get_announcement_type() {
-    // this.userManageService.get_announcement_type().subscribe((res: any) => {
-    //   if (res && res.success) {
-    //     this.announcement_type_list = res.data;
-
-    //   } else {
-
-    //     this.message.error(res.message, {
-    //       nzDuration: 10000,
-    //     });
-    //   }
-    // })
-  }
-  /**
    *获取公告列表
-   *
-   * @param {*} page_index
-   * @memberof OperasyonannouncementManageComponent
    */
-  get_announcement_list(page_index) {
+  get_announcement_list() {
     this.is_load_list = true;
-    this.userManageService.get_announcement(page_index).subscribe((res: any) => {
+    this.userManageService.get_announcement(this.notice.list).subscribe((res: any) => {
       if (res && res.success) {
-        this.page_index = page_index
-        // this.list_total = res.data.total;
-        this.list_total = res.data.length;
+        this.list_total = res.data.total;
         this.is_load_list = false;
      
-        this.list_of_aply_data = res.data;
+        this.list_of_aply_data = res.data.data;
 
       } else {
 
@@ -257,11 +228,15 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
    *
    * @memberof OperasyonannouncementManageComponent
    */
-  add_announcement() {
+  public add_announcement() {
     window.upload_iri = Utils.get_upload_iri('announcement');
-
     this.if_show_modal = true;
     this.modal_type = 'create';
+    if (this.notice.list.type === 1) {
+      this.nzTitle = '添加公告';
+    } else {
+      this.nzTitle = '添加站内信';
+    }
     this.update_form();
   }
   /**
@@ -282,42 +257,18 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
         rearways_id: this.list_of_aply_data[last_index].id,
         rearways_sort: old_array[last_index].sort
       }
-      this.is_load_list = true;
-      this.userManageService.sort_announcement(option).subscribe((res: any) => {
-        this.is_load_list = false;
-        if (res && res.success) {
-          this.get_announcement_list(this.page_index);
-        } else {
-          this.message.error(res.message, {
-            nzDuration: 10000,
-          });
-        }
-      })
+      // this.is_load_list = true;
+      // this.userManageService.sort_announcement(option).subscribe((res: any) => {
+      //   this.is_load_list = false;
+      //   if (res && res.success) {
+      //     this.get_announcement_list();
+      //   } else {
+      //     this.message.error(res.message, {
+      //       nzDuration: 10000,
+      //     });
+      //   }
+      // })
     }
-  }
-  /**
-   *置顶
-   *
-   * @memberof OperasyonannouncementManageComponent
-   */
-  announcement_to_up(item) {
-    this.is_load_list = true;
-    let option = {
-      id: item.id,  //公告id
-    };
-    this.userManageService.top_announcement(option).subscribe((res: any) => {
-      this.is_load_list = false;
-      if (res && res.success) {
-        this.get_announcement_list(1);
-        this.message.success('公告置顶成功', {
-          nzDuration: 10000,
-        });
-      } else {
-        this.message.error(res.message, {
-          nzDuration: 10000,
-        });
-      }
-    })
   }
   /**
    *点击编辑
@@ -328,6 +279,11 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     window.upload_iri = Utils.get_upload_iri('announcement');
     this.if_show_modal = true;
     this.modal_type = 'edit';
+    if (this.notice.list.type === 1) {
+      this.nzTitle = '编辑公告';
+    } else {
+      this.nzTitle = '编辑站内信';
+    }
     // this.update_form();
     this.edit_announcement_obj = JSON.parse(JSON.stringify(data));
     this.edit_announcement_obj['status']=String(this.edit_announcement_obj['status']);
@@ -353,8 +309,8 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     this.userManageService.delete_announcement(option).subscribe((res: any) => {
       this.is_load_list = false;
       if (res && res.success) {
-        this.get_announcement_list(1);
-        this.message.success('删除公告成功', {
+        this.get_announcement_list();
+        this.message.success('删除成功', {
           nzDuration: 10000,
         });
 
@@ -366,89 +322,22 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
       }
     })
   }
-  /** */
-  /**
-   * 点击列表项展示详情
-   */
-  // show_content(data, type) {
-  //   this.if_show_modal = true;
-  //   if (type == 'object') {
-  //     let value = JSON.parse(data);
-  //     this.show_text = JSON.stringify(value, undefined, 2);
-  //   } else {
-  //     this.show_text = data;
-  //   }
-  // }
 
-
-  /**
-   *取消搜索
-   *
-   * @memberof UserPassportCheckComponent
-   */
-  //  reset(): void {
-  //   this.searchValue = '';
-  //   this.search();
-  // }
-  /**
-   *搜索数组
-   *
-   * @memberof UserPassportCheckComponent
-   */
-  // search(): void {
-  //   const filterFunc = (item) => {
-  //     return (
-
-  //        item.username.indexOf(this.searchValue) !== -1
-  //     );
-  //   };
-  //   const data = this.list_of_data['data'].filter((item) => filterFunc(item));
-  //   this.list_of_aply_data = data.sort((a, b) =>
-  //     this.sortValue === 'ascend'
-  //       ? a[this.sortName!] > b[this.sortName!]
-  //         ? 1
-  //         : -1
-  //       : b[this.sortName!] > a[this.sortName!]
-  //       ? 1
-  //       : -1
-  //   );
-  // }
-  /**
-  *改变页数
-  *
-  * @param {*} item
-  * @memberof UserManageUserComponent
-  */
-  chang_page_index(item) {
-    this.get_announcement_list(item);
+  public chang_page_index(item: any) {
+    this.notice.list.page = item;
+    this.get_announcement_list();
   }
-  /*
-*
-*获取用户管理列表
-*
-* @memberof UserManageUserComponent
-*/
-  // get_log_list(page_index) {
-  //   this.is_load_list = true;
-  //   this.userManageService.get_log_list(page_index).subscribe((res: any) => {
-  //     if (res && res.success) {
-  //       this.list_total = res.data.total;
-  //       this.is_load_list = false;
-  //       this.list_of_data = res.data;
-  //       this.list_of_aply_data = [...this.list_of_data['data']];
-
-  //     } else {
-  //       this.is_load_list = false;
-  //       this.message.error(res.message, {
-  //         nzDuration: 10000,
-  //       });
-  //     }
-  //   })
-  // }
-
-
-  _ready(e) { }
-  _destroy() { }
-  _change(e) { }
+  // 切换公告
+  public change_index(e: any) {
+    if (!e) {
+      this.notice.list.type = 1;
+    } else {
+      this.notice.list.type = 2;
+    }
+   this.get_announcement_list();
+  }
+  public _ready(e) { }
+  public _destroy() { }
+  public _change(e) { }
 }
 

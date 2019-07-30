@@ -19,6 +19,9 @@ export class OperasyonNavOneComponent implements OnInit {
   public logo_iri: string;
   public is_edit_service: boolean;
   public loadding_btn: boolean;
+  public tab = {
+    en_name: null
+  }
   
   constructor(
     private http: _HttpClient,
@@ -37,7 +40,7 @@ export class OperasyonNavOneComponent implements OnInit {
 */
 
 click_update(tab) {
-  // this.edit
+  this.tab = tab;
   document.getElementById('pic_3').click();
 }
 updateFire(item) {
@@ -46,6 +49,7 @@ updateFire(item) {
   var op: FormData = new FormData();
   op.append('pic',  this.file_obj);
   op.append('key',  'logo');
+  op.append('en_name',  this.tab.en_name);
   this.managerService.upload_logo(op).subscribe((res: any) => {
     if (res && res.success) {
       this.get_home_page_list();
@@ -64,15 +68,16 @@ updateFire(item) {
 * 点击上传ico文件
 */
 
-click_ico_update(tab) {
-  // this.edit
+click_ico_update(tab: any) {
+  this.tab = tab;
   document.getElementById('pic_6').click();
 }
-update_ico_fire(item) {
+update_ico_fire(item: any) {
   this.file_obj = item.target['files'][0];
   this.file_iri = window.URL.createObjectURL(this.file_obj);
   var op: FormData = new FormData();
   op.append('ico',  this.file_obj);
+  op.append('en_name',  this.tab.en_name);
   this.managerService.upload_ico(op).subscribe((res: any) => {
     if (res && res.success) {
       this.get_home_page_list();

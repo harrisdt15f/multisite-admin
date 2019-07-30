@@ -1,0 +1,97 @@
+<page-header [action]="action" >
+  <ng-template #action>
+      <button (click)='getList()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i nz-icon nzType="redo" nzTheme="outline"></i>
+      <span>刷新</span>
+    </button>
+  </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content style='background-color: white'>
+      <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='changPage()' [nzLoading]='dataLoading'
+      [(nzPageIndex)]='pages.page' [nzFrontPagination]='false' [nzData]="dataList" [nzPageSize]='pages.page_size'
+      [nzTotal]='pages.total'>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th nzCustomFilter>
+            开户银行
+            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" (nzVisibleChange)="reset()" nzTableFilter #dropdown2>
+                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索银行" [(ngModel)]="listData.bank_sign" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                  <!-- <button nz-button nzSize="small" (click)="reset()">取消</button> -->
+                </div>
+              </nz-dropdown>
+          </th>
+          <th>开户支行</th>
+          <th nzCustomFilter>
+            银行卡号
+            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" nzTableFilter #dropdown3>
+                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索卡号" [(ngModel)]="listData.card_number" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                </div>
+              </nz-dropdown>
+          </th>
+          <th>标示</th>
+          <th nzCustomFilter>
+            用户名称
+            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" nzTableFilter #dropdown4>
+                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="listData.username" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                </div>
+              </nz-dropdown>
+          </th>
+          <th nzCustomFilter>
+            银行卡户名
+              <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" nzTableFilter #dropdown4>
+                  <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
+                  <div class="search-box">
+                    <input type="text" nz-input placeholder="搜索户名" [(ngModel)]="listData.owner_name" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                      搜索
+                    </button>
+                  </div>
+                </nz-dropdown>
+          </th>
+          <th>状态</th>
+          <th>创建时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr>
+            <td>{{ data.id }}</td>
+            <td>{{ data.bank_name }} {{ data.bank_sign }}</td>
+            <td>{{ data.branch }}</td>
+            <td>{{ data.card_number }}</td>
+            <td>{{ data.bank_sign }}</td>
+            <td>{{ data.username}}</td>
+            <td>{{ data.owner_name }}</td>
+            <td>
+              <ng-container *ngIf="data.status; else elseTemplate">
+                  开启
+                </ng-container>
+                <ng-template #elseTemplate>
+                    关闭
+                </ng-template>
+            </td>
+            <td>{{ data.created_at }}</td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+  </nz-content>
+</nz-layout>

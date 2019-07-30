@@ -1,22 +1,35 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import {  HttpClient } from '@angular/common/http';
+import {  HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, tap, catchError } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd';
 import { Router } from '@angular/router';
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { Utils } from 'config/utils.config';
+
 @Injectable({
   providedIn: 'root',
 })
 export class CommonService {
-
+  public serviceHttpIri: string;
   constructor(
     private http: HttpClient,
     private router: Router,
+    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private message: NzMessageService
     ) {
+      this.serviceHttpIri = Utils.GethttpIri();
   }
   public post(url: string, data?: Object, options?: Object): Observable<any> {
-    return this.http.post<string[]>(url, data, options)
+    let token = this.tokenService.get().token;
+    let headers = {};
+    if (token) {
+      headers = new HttpHeaders({
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      });
+    }
+    return this.http.post<string[]>(this.serviceHttpIri + url, data, options = {headers: headers})
   }
     /**
    * http-get请求，获取数据
@@ -27,7 +40,15 @@ export class CommonService {
    * @memberof RestProvider
    */
   public get(url: string, options?: Object): Observable<string[]> {
-    return this.http.get<string[]>(url, options)
+    let token = this.tokenService.get().token;
+    let headers = {};
+    if (token) {
+      headers = new HttpHeaders({
+        Accept: 'application/json',
+        Authorization: `Bearer ${token}`,
+      });
+    }
+    return this.http.get<string[]>(this.serviceHttpIri + url, options = {headers: headers})
   }
     /**
    * 错误信息处理

@@ -1,3 +1,4 @@
+import { environment } from '../environments/environment';
 export class Utils {
   static  httpIri: string;
   static  image_upload_iri_help:string='/api/sys/upload';
@@ -64,13 +65,14 @@ export class Utils {
    * @memberof Utils
    */
   static GethttpIri(){
-      if (this.isDevelop) {
-      // this.httpIri = 'http://www.lottery.com';
-      this.httpIri = 'http://local.multisites.com';
-    } else {
+    //   if (this.isDevelop) {
+    //   // this.httpIri = 'http://www.lottery.com';
+    //   this.httpIri = 'http://local.multisites.com';
+    // } else {
     
-      this.httpIri = 'http://api.9170ttt.com';
-    }
+    //   this.httpIri = 'http://api.9170ttt.com';
+    // }
+    this.httpIri = environment.apiBaseUrl
     return this.httpIri;
   }
 
