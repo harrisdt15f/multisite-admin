@@ -14,6 +14,8 @@ import { Utils } from 'config/utils.config';
 
 })
 export class GameGameTypeComponent implements OnInit {
+  public file_obj: any;
+  public file_iri: any;
   public page_index = 1;
   public list_of_aply_data: Array<any> = [];
   public issue_format: Array<any> = [];
@@ -89,8 +91,6 @@ export class GameGameTypeComponent implements OnInit {
       max_times: [null, [Validators.required]],
       valid_modes: [null, [Validators.required]],
       status: [null, [Validators.required]]
-
-
     });
     this.create_form_rule = this.fb.group({
       begin_time: [null, [Validators.required]],
@@ -101,6 +101,22 @@ export class GameGameTypeComponent implements OnInit {
       encode_time: [null, [Validators.required]],
       issue_count: [null, [Validators.required]]
     });
+  }
+
+  // 添加彩种icon
+  click_update_lot(e: any) {
+    console.log(1) 
+    document.getElementById('pic_5').click();
+  }
+  updateFire_lot(item) {
+    console.log(item)
+    this.file_obj = item.target['files'][0];
+    this.file_iri = window.URL.createObjectURL(this.file_obj);
+    console.log(this.file_obj)
+    console.log(this.file_iri)
+    document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
+    this.edit_lotteries_obj['icon'] = this.file_obj;
+    console.log(this.edit_lotteries_obj)
   }
   /**
    * 切换期号格式
@@ -167,7 +183,8 @@ export class GameGameTypeComponent implements OnInit {
       ],
       status: String(data['status']),
       valid_code: data['valid_code'],
-      valid_modes: data['valid_modes']
+      valid_modes: data['valid_modes'],
+      icon: data['icon']
     };
     this.edit_rule_obj = {
       adjust_time: data.issue_rule['adjust_time'],
@@ -205,6 +222,8 @@ export class GameGameTypeComponent implements OnInit {
    * 提交表单
    */
   submit_lotteries() {
+    console.log(this.edit_lotteries_obj)
+    console.log(this.edit_lotteries_obj['icon'])
     let option = {
       lottery: {
         series_id: this.lotteries_tabs[this.tab_index].value,
@@ -227,7 +246,15 @@ export class GameGameTypeComponent implements OnInit {
         status: this.edit_lotteries_obj['status'],
         valid_code: this.edit_lotteries_obj['valid_code'],
         valid_modes: this.edit_lotteries_obj['valid_modes'],
-        max_bonus: this.edit_lotteries_obj['max_bonus']
+        max_bonus: this.edit_lotteries_obj['max_bonus'],
+        icon: {
+          lastModified: this.edit_lotteries_obj['icon']['lastModified'],
+          lastModifiedDate: this.edit_lotteries_obj['icon']['lastModifiedDate'],
+          name: this.edit_lotteries_obj['icon']['name'],
+          size: this.edit_lotteries_obj['icon']['size'],
+          type: this.edit_lotteries_obj['icon']['type'],
+          webkitRelativePath: this.edit_lotteries_obj['icon']['webkitRelativePath']
+        }
       },
       issue_rule: {
         lottery_name: this.edit_lotteries_obj['cn_name'],
@@ -242,6 +269,12 @@ export class GameGameTypeComponent implements OnInit {
         begin_time: this.get_time(this.edit_rule_obj['begin_time'])
       }
     };
+    
+    // let op = new FormData();
+    // op.append('lottery', option.lottery);
+    // option.lottery['icon'] = new FormData();
+    // option.lottery['icon'].append('pic', this.edit_lotteries_obj['icon'], this.edit_lotteries_obj['icon']['name']);
+      // console.log(option)
     switch (this.modal_type) {
       case 'create':
         this.submit_add_lotteries(option);
@@ -428,6 +461,7 @@ class LotteriesObj {
   public max_times: string;
   public valid_modes: string;
   public max_bonus: any;
+  public icon: any;
   public status = '0';
 
   constructor(private min_group, private max_group) {

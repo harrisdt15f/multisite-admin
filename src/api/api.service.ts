@@ -29,10 +29,10 @@ export class ApiService {
     }
     return data;
   }
-  /** ========================== 运营管理 ======================== */
+  /** ========================== 玩家管理 ======================== */
 
-  // 公告管理
+  // 银行卡查询
   public noticeDetail(data: any): any{
-    return this.commonService.post('/api/notice/detail', data)
+    return this.commonService.post('/api/user-handle/bank-card-list', data)
    }
 }

@@ -12,6 +12,7 @@ import { UserPrizeManageComponent } from './prize-manage/prize-manage.component'
 import { UserRechargeComponent } from './recharge/recharge.component';
 import { UserRechargeCheckComponent } from './recharge-check/recharge-check.component';
 import { UserAccountTypeComponent } from './account-type/account-type.component';
+import { ManageBankComponent } from './manage-bank/manage-bank.component';
 
 const COMPONENTS = [
   UserCreateGeneralAgentComponent,
@@ -22,7 +23,8 @@ const COMPONENTS = [
   UserPrizeManageComponent,
   UserRechargeComponent,
   UserRechargeCheckComponent,
-  UserAccountTypeComponent];
+  UserAccountTypeComponent,
+  ManageBankComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
@@ -33,7 +35,7 @@ const COMPONENTS_NOROUNT = [];
   ],
   declarations: [
     ...COMPONENTS,
-    ...COMPONENTS_NOROUNT
+    ...COMPONENTS_NOROUNT,
   ],
   entryComponents: COMPONENTS_NOROUNT
 })

@@ -84,6 +84,18 @@ export class OperasyonPageModelComponent implements OnInit {
     'mobile.lottery.notice': {
       title: '手机开奖公告展示条数',
       value: '',
+    },
+    'popular.lotteries.one': {
+      title: 'pc热门彩种条数',
+      value: '',
+    },
+    'mobile.popular.lotteries.one': {
+      title: '手机热门彩种条数',
+      value: '',
+    },
+    'popularLotteries.two': {
+      title: '热门玩法条数',
+      value: '',
     }
   }
 
@@ -123,7 +135,6 @@ export class OperasyonPageModelComponent implements OnInit {
     });
   }
   onChanges(values: any): void {
-    console.log(values, this.method_value);
     this.edit_lotteries_obj['method_id'] = values[1].split('&')[0];
     this.edit_lotteries_obj['lotteries_id'] = values[1].split('&')[1];
 
@@ -249,8 +260,6 @@ export class OperasyonPageModelComponent implements OnInit {
     if (document.getElementById('modal_img')) {
       document.getElementById('modal_img').setAttribute('src', img_iri);
     }
-
-
   }
   /**
    *隐藏图片模态kuang
@@ -516,7 +525,6 @@ export class OperasyonPageModelComponent implements OnInit {
       "id": data['id'],
       "status": data['status'],
     };
-    console.log(this.edit_lotteries_obj)
     this.edit_lotteries_obj['lotteries_id'] = data['lotteries_id']
   }
 
@@ -715,7 +723,6 @@ export class OperasyonPageModelComponent implements OnInit {
 
     }
     op.append('type', type);
-
     if (this.modal_type == 'create') {
       this.add_lotteries_submit(op, type);
     } else if (this.modal_type == 'edit') {
@@ -727,7 +734,7 @@ export class OperasyonPageModelComponent implements OnInit {
   /**
    * 基本设置开关切换
    */
-  change_open_base(type, item) {
+  change_open_base(type: any, item: any) {
     let op = {
       id: item.id,
       status: type ? 1 : 0
@@ -897,7 +904,7 @@ export class OperasyonPageModelComponent implements OnInit {
   /**
    * 点击修改
    */
-  edit_base_msg(type) {
+  edit_base_msg(type: any) {
     this.edit_modal_type = type;
     this.is_visible_modal = true;
     this.input_value = '';

@@ -97,6 +97,7 @@ export class StartupService {
         children: [],
       },
     ];
+    console.log(item)
     for (let key in item) {
       let obj = {
         key: key,
@@ -145,7 +146,7 @@ export class StartupService {
       }
       menuList[0].children.push(obj);
     }
-
+    console.log(menuList);
     return menuList;
   }
   /**

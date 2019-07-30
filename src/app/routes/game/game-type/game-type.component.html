@@ -150,6 +150,16 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item style="width: 46%">
+          <nz-form-label nzFor="lottery_type" nzRequired [nzSm]="9" [nzXs]="24">icon</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
+              <input style='display: none' (change)='updateFire_lot($event)' type="file" id="pic_5" />
+              <button (click)='click_update_lot()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
+                  <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽度：，最大高度：）</span>
+              </button>
+             <img style='max-width:100px' id="cropedBigImg">
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item style="width: 46%">
           <nz-form-label nzFor="lottery_type" nzRequired [nzSm]="9" [nzXs]="24">号码是否重复</nz-form-label>
           <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="lottery_type" formControlName="lottery_type"
@@ -475,11 +485,12 @@
         <nz-form-item nz-row style="margin-bottom:8px;">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <button (click)="first_form()" nz-button nzType="primary">上一步</button>
-            <button [disabled]="!create_form_rule.valid" *ngIf="edit_lotteries_obj['auto_open']==='1'"
+            <button *ngIf="edit_lotteries_obj['auto_open']==='1'"
               (click)="next_form()" nz-button nzType="primary">下一步</button>
             <button *ngIf="edit_lotteries_obj['auto_open']!=='1'" (click)="submit_lotteries()"
               [disabled]="!create_form_rule.valid" nz-button nzType="primary">创建</button>
           </nz-form-control>
+          <!-- [disabled]="!create_form_rule.valid"  -->
         </nz-form-item>
       </form>
       <div *ngIf='current===2'>

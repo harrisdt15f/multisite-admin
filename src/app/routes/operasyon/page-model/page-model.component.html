@@ -102,25 +102,49 @@
               </ng-template>
             </nz-list-item-meta>
           </nz-list-item>
+          <nz-list-item [nzActions]="[pcHotLottery]">
+              <ng-template #pcHotLottery>
+                <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['popular.lotteries.one'].status"
+                  (ngModelChange)="change_open_base($event,home_page_type['popular.lotteries.one'])" nzCheckedChildren="开"
+                  nzUnCheckedChildren="关"></nz-switch>
+                <a (click)='edit_base_msg("popular.lotteries.one")'>修改</a>
+              </ng-template>
+              <nz-list-item-meta nzTitle="pc热门彩种" [nzDescription]="pcHotLotteryDesc">
+                <ng-template #pcHotLotteryDesc>
+                  pc热门彩种条数：<span *ngIf="home_page_type['popular.lotteries.one']"
+                    class="text-green">{{home_page_type['popular.lotteries.one'].show_num}} 条</span>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
           <nz-list-item [nzActions]="[hotLottery]">
             <ng-template #hotLottery>
-              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['winning.ranking'].status==1"
-                (ngModelChange)="change_open_base($event,home_page_type['winning.ranking'])" nzCheckedChildren="开"
+              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['mobile.popular.lotteries.one'].status"
+                (ngModelChange)="change_open_base($event,home_page_type['mobile.popular.lotteries.one'])" nzCheckedChildren="开"
                 nzUnCheckedChildren="关"></nz-switch>
-              <a (click)='edit_base_msg("winning.ranking")'>修改</a>
+              <a (click)='edit_base_msg("mobile.popular.lotteries.one")'>修改</a>
             </ng-template>
-            <nz-list-item-meta nzTitle="热门彩种" [nzDescription]="rankingDesc">
-              <ng-template #rankingDesc>
-                热门彩种条数：<span *ngIf="home_page_type['winning.ranking']"
-                  class="text-green">{{home_page_type['winning.ranking'].show_num}} 条</span>
+            <nz-list-item-meta nzTitle="手机热门彩种" [nzDescription]="hotLotteryDesc">
+              <ng-template #hotLotteryDesc>
+                手机热门彩种条数：<span *ngIf="home_page_type['mobile.popular.lotteries.one']"
+                  class="text-green">{{home_page_type['mobile.popular.lotteries.one'].show_num}} 条</span>
               </ng-template>
             </nz-list-item-meta>
           </nz-list-item>
+          <nz-list-item [nzActions]="[hotMethods]">
+              <ng-template #hotMethods>
+                <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['popularLotteries.two'].status"
+                  (ngModelChange)="change_open_base($event,home_page_type['popularLotteries.two'])" nzCheckedChildren="开"
+                  nzUnCheckedChildren="关"></nz-switch>
+                <a (click)='edit_base_msg("popularLotteries.two")'>修改</a>
+              </ng-template>
+              <nz-list-item-meta nzTitle="热门玩法" [nzDescription]="hotMethodsDesc">
+                <ng-template #hotMethodsDesc>
+                  热门玩法条数：<span *ngIf="home_page_type['popularLotteries.two']"
+                    class="text-green">{{home_page_type['popularLotteries.two'].show_num}} 条</span>
+                </ng-template>
+              </nz-list-item-meta>
+            </nz-list-item>
         </nz-list>
-
-
-
-
       </div>
       <!-- 热门彩票一 -->
       <div *ngIf='type=="popularLotteries.one"' style='min-height: 500px;position: relative;'>
