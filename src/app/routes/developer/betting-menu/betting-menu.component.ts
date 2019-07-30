@@ -607,6 +607,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
             key: Number(d.id),
             value: Number(d.id),
             title: d.title,
+            route_to_update: d.route_to_update,
             is_route: true,
             isLeaf: true,
             is_open: d.is_open === 1 ? true : false,
