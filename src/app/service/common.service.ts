@@ -12,13 +12,16 @@ import { Utils } from 'config/utils.config';
 })
 export class CommonService {
   public serviceHttpIri: string;
+    // 上传图片地址
+  public imgURL = '/api/system/upload-pic';
   constructor(
     private http: HttpClient,
     private router: Router,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
-    private message: NzMessageService
+    private message: NzMessageService,
     ) {
       this.serviceHttpIri = Utils.GethttpIri();
+      window['upload_iri'] = this.serviceHttpIri + this.imgURL;
   }
   public post(url: string, data?: Object, options?: Object): Observable<any> {
     let token = this.tokenService.get().token;

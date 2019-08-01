@@ -13,6 +13,7 @@ export class ApiService {
   public serviceHttpIri: string;
   public pageSize: any = 15;
 
+
   constructor(
     public utils: ToolService,
     public commonService: CommonService
@@ -34,5 +35,12 @@ export class ApiService {
   // 银行卡查询
   public noticeDetail(data: any): any{
     return this.commonService.post('/api/user-handle/bank-card-list', data)
-   }
+  }
+
+
+
+  // 上传图片
+  public uploadPic(data: any): any{
+    return this.commonService.post(this.commonService.imgURL, data)
+  }
 }

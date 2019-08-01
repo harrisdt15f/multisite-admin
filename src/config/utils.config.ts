@@ -1,8 +1,9 @@
 import { environment } from '../environments/environment';
+import { ApiService } from '../api/api.service';
 export class Utils {
   static  httpIri: string;
   static  image_upload_iri_help:string='/api/sys/upload';
-  static  image_upload_iri_announcement:string='/api/content/upload-pic';
+  static  image_upload_iri_announcement:string ;
   static  acl_route_list: Array<any>=[];
   static  acl_id_list: Array<any>=[];
   static  white_route: Array<any>=[
@@ -53,8 +54,9 @@ export class Utils {
       eg:'201907080001'
     }
   ];
-  constructor() {
-    
+  constructor(
+    public Api: ApiService
+  ) {
   }
   
   /**
@@ -78,10 +80,10 @@ export class Utils {
 
   static get_upload_iri(type){
     if(type==='help'){
-    return this.httpIri+this.image_upload_iri_help;
+    return environment.apiBaseUrl + this.image_upload_iri_help;
 
     }else if(type==='announcement'){
-      return this.httpIri+this.image_upload_iri_announcement;
+      return environment.apiBaseUrl + this.image_upload_iri_announcement;
       
     }
     
@@ -150,27 +152,25 @@ static get_img_iri(str,type){
   var srcReg = /src=[\'\"]?([^\'\"]*)[\'\"]?/i;
   var arr = str.match(imgReg);  // arr 为包含所有img标签的数组
   var st=str;
-  var pic_path=[];
-  var pic_name=[];
+  var pic_path = '';
+  var pic_name = '';
   if(arr){
       for (var i = 0; i < arr.length; i++) {
     var src = arr[i].match(srcReg);
     if(type=='remove'){
       var replace_src=src[1].replace(Utils.httpIri,'')
       st=st.replace(src[1],replace_src);
-      pic_path.push(replace_src);
-      pic_name.push(replace_src.split('/')[replace_src.split('/').length-1]);
+      pic_path += replace_src + '|';
+      pic_name += replace_src.split('/')[replace_src.split('/').length-1] + '|';
     }else if(type=='add'){
       st=st.replace(src[1],Utils.httpIri+src[1]);
     }
- 
-
    }
   }
     return {
       content:st,
-      pic_path:pic_path,
-      pic_name:pic_name,
+      pic_path: pic_path.substring(0, pic_path.length - 1),
+      pic_name: pic_name.substring(0, pic_name.length - 1),
     }
 }
 

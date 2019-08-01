@@ -6,7 +6,7 @@
  */
 
 (function() {
-    var imgIriHead = 'http://local.multisites.com/';
+    var imgIriHead = 'http://api.9170ttt.com/';
 
     var remoteImage,
         uploadImage,
@@ -691,7 +691,6 @@
                 }
                 updateTotalProgress();
             });
-
             uploader.on('all', function(type, files) {
                 switch (type) {
                     case 'uploadFinished':
@@ -709,15 +708,15 @@
                         break;
                 }
             });
-
             uploader.on('uploadBeforeSend', function(file, data, header) {
-                //这里可以通过data对象添加POST参数
+                //这里可以通过data对象添加POST参数 
+                // data上传图片的formDATA参数
+                data['folder_name'] = 'notice';
                 header['X_Requested_With'] = 'XMLHttpRequest';
                 header['Accept'] = 'application/json';
-                header['Authorization'] = 'Bearer '+window.localStorage['token'];
+                header['Authorization'] = 'Bearer ' + window.localStorage['token'];
                 header['token'] = window.localStorage['token'];
             });
-
             uploader.on('uploadProgress', function(file, percentage) {
                 var $li = $('#' + file.id),
                     $percent = $li.find('.progress span');
@@ -726,7 +725,6 @@
                 percentages[file.id][1] = percentage;
                 updateTotalProgress();
             });
-
             uploader.on('uploadSuccess', function(file, ret) {
                 var $file = $('#' + file.id);
                 try {
@@ -759,7 +757,6 @@
                 if ($(this).hasClass('disabled')) {
                     return false;
                 }
-
                 if (state === 'ready') {
                     uploader.upload();
                 } else if (state === 'paused') {
@@ -870,7 +867,6 @@
         /* 向后台拉取图片列表数据 */
         getImageData: function() {
             var _this = this;
-
             if (!_this.listEnd && !this.isLoadingData) {
                 this.isLoadingData = true;
                 var url = editor.getActionUrl(editor.getOpt('imageManagerActionName')),
@@ -922,14 +918,13 @@
 
                     domUtils.on(img, 'load', (function(image) {
                         return function() {
-                            _this.scale(image, image.parentNode.offsetWidth, image.parentNode.offsetHeight);
+                           _this.scale(image, image.parentNode.offsetWidth, image.parentNode.offsetHeight);
                         }
                     })(img));
                     img.width = 113;
                     img.setAttribute('src', urlPrefix + list[i].url + (list[i].url.indexOf('?') == -1 ? '?noCache=' : '&noCache=') + (+new Date()).toString(36));
                     img.setAttribute('_src', urlPrefix + list[i].url);
                     domUtils.addClass(icon, 'icon');
-
                     item.appendChild(img);
                     item.appendChild(icon);
                     this.list.insertBefore(item, this.clearFloat);
@@ -978,7 +973,6 @@
                         floatStyle: align
                     });
                 }
-
             }
             return list;
         }
@@ -994,7 +988,6 @@
         },
         initEvents: function() {
             var _this = this;
-
             /* 点击搜索按钮 */
             domUtils.on($G('searchBtn'), 'click', function() {
                 var key = $G('searchTxt').value;

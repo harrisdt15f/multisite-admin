@@ -17,6 +17,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   @ViewChild('full')
   full: UEditorComponent;
   html: string;
+  public serviceHttpIri: string;
   public page_index = 1;
   public list_of_data: object = {};
   public list_of_aply_data: Array<any> = [];
@@ -70,7 +71,9 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     private userManageService: UserManageService,
     private fb: FormBuilder,
     private message: NzMessageService
-  ) { }
+  ) {
+    this.serviceHttpIri = Utils.GethttpIri();
+  }
 
   ngOnInit() {
     this.create_form = this.fb.group({
@@ -210,11 +213,14 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     this.is_load_list = true;
     this.userManageService.get_announcement(this.notice.list).subscribe((res: any) => {
       if (res && res.success) {
+        let data = res.data.data;
         this.list_total = res.data.total;
         this.is_load_list = false;
-     
-        this.list_of_aply_data = res.data.data;
-
+        for(const k of data) {
+          k['content'] = Utils.get_img_iri(k['content'], 'add');
+        }
+        console.log(data)
+        this.list_of_aply_data = data;
       } else {
 
         this.message.error(res.message, {
@@ -229,7 +235,6 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
    * @memberof OperasyonannouncementManageComponent
    */
   public add_announcement() {
-    window.upload_iri = Utils.get_upload_iri('announcement');
     this.if_show_modal = true;
     this.modal_type = 'create';
     if (this.notice.list.type === 1) {
@@ -276,7 +281,6 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
    * @memberof OperasyonannouncementManageComponent
    */
   edit_announcement(data) {
-    window.upload_iri = Utils.get_upload_iri('announcement');
     this.if_show_modal = true;
     this.modal_type = 'edit';
     if (this.notice.list.type === 1) {
@@ -294,7 +298,6 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     if (data.end_time) {
       this.edit_announcement_obj['end_time'] = new Date(data.end_time);
     }
-    console.log(this.edit_announcement_obj);
   }
   /**
    * 点击删除

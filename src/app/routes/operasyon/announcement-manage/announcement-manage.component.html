@@ -24,8 +24,8 @@
             <tr>
               <th>标题</th>
               <th>内容</th>
-              <th>开始时间</th>
-              <th>结束时间</th>
+              <th *ngIf="notice.list.type === 1">开始时间</th>
+              <th *ngIf="notice.list.type === 1">结束时间</th>
               <th>操作</th>
             </tr>
           </thead>    
@@ -36,10 +36,10 @@
                     <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
                 </td>
                 <td>
-                  <div class='ellipsis' style='width:400px;' [innerHTML]='data.content'></div>
+                  <div class='ellipsis' style='width:400px;' [innerHTML]='data.content.content'></div>
                 </td>
-                <td>{{ data.start_time }}</td>
-                <td>{{ data.end_time }}</td>
+                <td *ngIf="notice.list.type === 1">{{ data.start_time }}</td>
+                <td *ngIf="notice.list.type === 1">{{ data.end_time }}</td>
                 <td>
                   <a (click)='edit_announcement(data)'>编辑</a>
                   <nz-divider nzType="vertical"></nz-divider>
@@ -85,28 +85,30 @@
                   请输入内容!</nz-form-explain>
               </nz-form-control>
             </nz-form-item>
-            <!-- <nz-form-item>
-              <nz-form-label nzFor="start_time" nzRequired [nzSm]="6" [nzXs]="24">开始时间</nz-form-label>
-              <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-                <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['start_time']" id="start_time"
-                  formControlName="start_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择开始时间"
-                  (ngModelChange)="on_change_start($event)" (nzOnOk)="on_ok_start($event)"></nz-date-picker>
-                <nz-form-explain *ngIf="create_form.get('start_time')?.dirty && create_form.get('start_time')?.errors">
-                  请输入的开始时间!</nz-form-explain>
-              </nz-form-control>
-            </nz-form-item>
+            <ng-container *ngIf="notice.list.type === 1">
+              <nz-form-item >
+                <nz-form-label nzFor="start_time" nzRequired [nzSm]="6" [nzXs]="24">开始时间</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                  <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['start_time']" id="start_time"
+                    formControlName="start_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择开始时间"
+                    (ngModelChange)="on_change_start($event)" (nzOnOk)="on_ok_start($event)"></nz-date-picker>
+                  <nz-form-explain *ngIf="create_form.get('start_time')?.dirty && create_form.get('start_time')?.errors">
+                    请输入的开始时间!</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
 
-    
-            <nz-form-item >
-              <nz-form-label nzFor="end_time" nzRequired [nzSm]="6" [nzXs]="24">结束时间</nz-form-label>
-              <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-                <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['end_time']" id="end_time"
-                  formControlName="end_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择结束时间"
-                  (ngModelChange)="on_change_end($event)" (nzOnOk)="on_ok_end($event)"></nz-date-picker>
-                <nz-form-explain *ngIf="create_form.get('end_time')?.dirty && create_form.get('end_time')?.errors">
-                  请输入公告的结束时间!</nz-form-explain>
-              </nz-form-control>
-            </nz-form-item> -->
+      
+              <nz-form-item >
+                <nz-form-label nzFor="end_time" nzRequired [nzSm]="6" [nzXs]="24">结束时间</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                  <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['end_time']" id="end_time"
+                    formControlName="end_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择结束时间"
+                    (ngModelChange)="on_change_end($event)" (nzOnOk)="on_ok_end($event)"></nz-date-picker>
+                  <nz-form-explain *ngIf="create_form.get('end_time')?.dirty && create_form.get('end_time')?.errors">
+                    请输入公告的结束时间!</nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+          </ng-container>
         <nz-form-item nz-row style="margin-bottom:8px;">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <button *ngIf='modal_type==="create"' (click)="submit_activity()" nz-button nzType="primary">确认创建</button>
@@ -114,7 +116,6 @@
           </nz-form-control>
         </nz-form-item>
       </form>
-      
   </nz-drawer>
 </nz-content>
 </nz-layout>

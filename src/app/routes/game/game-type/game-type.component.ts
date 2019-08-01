@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -6,6 +6,7 @@ import { GameService } from 'app/service/game.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CronOptions } from "cron-editor/cron-editor";
 import { Utils } from 'config/utils.config';
+import { ApiService } from '../../../../api/api.service';
 
 @Component({
   selector: 'app-game-game-type',
@@ -13,7 +14,7 @@ import { Utils } from 'config/utils.config';
   styleUrls: ['./game-type.component.less']
 
 })
-export class GameGameTypeComponent implements OnInit {
+export class GameGameTypeComponent implements OnInit, AfterContentInit {
   public file_obj: any;
   public file_iri: any;
   public page_index = 1;
@@ -37,7 +38,7 @@ export class GameGameTypeComponent implements OnInit {
   public edit_rule_obj: object = {
 
   };
-  public cronExpression:any='00:00:00'
+  public cronExpression: any='00:00:00'
   public cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',
     formSelectClass: 'form-control cron-editor-select',
@@ -54,13 +55,14 @@ export class GameGameTypeComponent implements OnInit {
     hideYearlyTab: false,
     hideAdvancedTab: true,
     use24HourTime: true,
-    hideSeconds: false,
+    hideSeconds: false
   };
 
 
 
   constructor(
     private http: _HttpClient,
+    private Api: ApiService,
     private fb: FormBuilder,
     private gameService: GameService,
     private message: NzMessageService
@@ -103,20 +105,34 @@ export class GameGameTypeComponent implements OnInit {
     });
   }
 
+  ngAfterContentInit() {
+  }
+
   // 添加彩种icon
-  click_update_lot(e: any) {
-    console.log(1) 
+  public updateFireChange(e: any) {
     document.getElementById('pic_5').click();
   }
-  updateFire_lot(item) {
-    console.log(item)
+  public updateFire_lot(item: any) {
+    let data = new FormData();
     this.file_obj = item.target['files'][0];
     this.file_iri = window.URL.createObjectURL(this.file_obj);
-    console.log(this.file_obj)
-    console.log(this.file_iri)
-    document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
-    this.edit_lotteries_obj['icon'] = this.file_obj;
-    console.log(this.edit_lotteries_obj)
+    data.append('pic', this.file_obj, this.file_obj.name)
+    data.append('folder_name', 'lottery')
+
+    this.Api.uploadPic(data).subscribe((response: any) => {
+      if (response && response['success']) {
+        document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
+        this.message.success('上传成功', {
+          nzDuration: 2500,
+        });
+        this.edit_lotteries_obj['icon_name'] = response['data']['name'];
+        this.edit_lotteries_obj['icon_path'] = response['data']['path'];
+      } else {
+        this.message.error(response.message, {
+          nzDuration: 2500,
+        });
+      }
+    })
   }
   /**
    * 切换期号格式
@@ -153,11 +169,12 @@ export class GameGameTypeComponent implements OnInit {
     this.modal_type = 'create';
     this.edit_lotteries_obj = new LotteriesObj(this.min_prize_group, this.max_prize_group);
     this.edit_rule_obj = new RuleObj();
+    document.getElementById('cropedBigImg').setAttribute('src', '');
   }
   /**
    * 编辑采种
    */
-  edit_lottery(data) {
+  edit_lottery(data: any) {
     this.is_show_modal = true;
     this.modal_type = 'edit';
     this.edit_lotteries_obj = {
@@ -184,7 +201,7 @@ export class GameGameTypeComponent implements OnInit {
       status: String(data['status']),
       valid_code: data['valid_code'],
       valid_modes: data['valid_modes'],
-      icon: data['icon']
+      icon_path: data['icon_path']
     };
     this.edit_rule_obj = {
       adjust_time: data.issue_rule['adjust_time'],
@@ -196,6 +213,11 @@ export class GameGameTypeComponent implements OnInit {
       end_time: new Date('2019-10-10 ' + data.issue_rule['end_time']),
       begin_time: new Date('2019-10-10 ' + data.issue_rule['begin_time'])
     };
+    if (data['icon_path']) {
+      document.getElementById('cropedBigImg').setAttribute('src', data['icon_path']);
+    } else {
+      document.getElementById('cropedBigImg').setAttribute('src', '');
+    }
 
   }
   /**
@@ -222,8 +244,6 @@ export class GameGameTypeComponent implements OnInit {
    * 提交表单
    */
   submit_lotteries() {
-    console.log(this.edit_lotteries_obj)
-    console.log(this.edit_lotteries_obj['icon'])
     let option = {
       lottery: {
         series_id: this.lotteries_tabs[this.tab_index].value,
@@ -247,14 +267,8 @@ export class GameGameTypeComponent implements OnInit {
         valid_code: this.edit_lotteries_obj['valid_code'],
         valid_modes: this.edit_lotteries_obj['valid_modes'],
         max_bonus: this.edit_lotteries_obj['max_bonus'],
-        icon: {
-          lastModified: this.edit_lotteries_obj['icon']['lastModified'],
-          lastModifiedDate: this.edit_lotteries_obj['icon']['lastModifiedDate'],
-          name: this.edit_lotteries_obj['icon']['name'],
-          size: this.edit_lotteries_obj['icon']['size'],
-          type: this.edit_lotteries_obj['icon']['type'],
-          webkitRelativePath: this.edit_lotteries_obj['icon']['webkitRelativePath']
-        }
+        icon_name: this.edit_lotteries_obj['icon_name'],
+        icon_path: this.edit_lotteries_obj['icon_path']
       },
       issue_rule: {
         lottery_name: this.edit_lotteries_obj['cn_name'],
@@ -270,11 +284,6 @@ export class GameGameTypeComponent implements OnInit {
       }
     };
     
-    // let op = new FormData();
-    // op.append('lottery', option.lottery);
-    // option.lottery['icon'] = new FormData();
-    // option.lottery['icon'].append('pic', this.edit_lotteries_obj['icon'], this.edit_lotteries_obj['icon']['name']);
-      // console.log(option)
     switch (this.modal_type) {
       case 'create':
         this.submit_add_lotteries(option);

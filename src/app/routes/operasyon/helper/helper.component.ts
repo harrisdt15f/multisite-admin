@@ -58,7 +58,6 @@ export class OperasyonHelperComponent implements OnInit {
    * @memberof OperasyonOperasyonhelperComponent
    */
   edit_helper(item, type) {
-    window.upload_iri = Utils.get_upload_iri('help');
     this.helper_obj = JSON.parse(JSON.stringify(item));
     if (type === 'parent') {
       this.is_parent = true;
@@ -79,7 +78,6 @@ export class OperasyonHelperComponent implements OnInit {
    * @memberof OperasyonOperasyonhelperComponent
    */
   create_helper(type, pid?) {
-    window.upload_iri = Utils.get_upload_iri('help');
 
     if (type === 'parent') {
       this.pid = 0;
