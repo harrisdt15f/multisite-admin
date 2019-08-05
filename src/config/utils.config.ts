@@ -205,11 +205,11 @@ static get_img_iri(str,type){
     if (String(new Date(obj).getTime()).length < 13) {
       obj = new Date(obj).getTime() * 1000;
     }
-    let date = new Date(obj);
-    let date2 = date.toLocaleDateString().split('/');
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let seconds = date.getSeconds();
+    let date: any = new Date(obj);
+    let date2: any = date.toLocaleDateString().split('/');
+    let hours: any = date.getHours();
+    let minutes: any = date.getMinutes();
+    let seconds: any = date.getSeconds();
     if (+date2[1] < 10) {
       date2[1] = '0' + date2[1]
     }
@@ -225,7 +225,7 @@ static get_img_iri(str,type){
     if (seconds < 10) {
       seconds = '0' + seconds
     }
-    let dateDay = date2.join('-');
+    let dateDay: any = date2.join('-');
     if (format === 'YYYY-MM-DD') {
       return dateDay;
     } else if (format === 'HH:MM:SS') {
