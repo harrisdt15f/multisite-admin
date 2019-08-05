@@ -194,4 +194,56 @@ static get_img_iri(str,type){
     return Str;
   }
 
+  // 时间转换
+  static formatTime(obj: any, format = 'YYYY-MM-DD HH:MM:SS') {
+    if (!obj) {
+      return;
+    }
+    if (typeof obj === 'string') {
+      obj = Number(obj);
+    }
+    if (String(new Date(obj).getTime()).length < 13) {
+      obj = new Date(obj).getTime() * 1000;
+    }
+    let date = new Date(obj);
+    let date2 = date.toLocaleDateString().split('/');
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let seconds = date.getSeconds();
+    if (+date2[1] < 10) {
+      date2[1] = '0' + date2[1]
+    }
+    if (+date2[2] < 10) {
+      date2[2] = '0' + date2[2]
+    }
+    if (hours < 10) {
+      hours = '0' + hours
+    }
+    if (+minutes < 10) {
+      minutes = '0' + minutes
+    }
+    if (seconds < 10) {
+      seconds = '0' + seconds
+    }
+    let dateDay = date2.join('-');
+    if (format === 'YYYY-MM-DD') {
+      return dateDay;
+    } else if (format === 'HH:MM:SS') {
+      return hours + ":" + minutes + ':' + seconds
+    } else if (format === 'YYYY-MM-DD HH:MM:SS') {
+      return dateDay + ' ' + hours + ":" + minutes + ':' + seconds
+    }
+  }
+     // 限制 只输入数字 包括不能输入字符和小数点
+ static number (str: any, float = false) {
+    // float = true 可以输入小数点
+    str = String(str);
+    if (float) {
+      return str.replace(/[^\d.]/g, '').replace(/^0{1,}/g,'');
+    }
+    else {
+      return str.replace(/[^\d]/g, '').replace(/^0{1,}/g,'');
+    }
+ }
+
 }

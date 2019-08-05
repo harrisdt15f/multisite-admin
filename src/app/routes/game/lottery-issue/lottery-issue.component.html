@@ -26,6 +26,10 @@
             <input  style='width:150px;' type="text" nz-input [(ngModel)]="search_number" placeholder="筛选奖期号" />
           </nz-input-group>
         </span>
+        <span>
+            <span style='display: inline-block;margin-left:20px'>时间：</span>
+            <nz-range-picker [(ngModel)]="searchTime" nzShowTime></nz-range-picker>
+          </span>
         <span *ngIf='choise_lottery&&choise_lottery!="0"'>
           <span  style='display: inline-block;margin-left:20px'>筛选历史期数：</span>
           <nz-select style='width:100px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="previous_number"
@@ -59,10 +63,10 @@
               <th nzWidth="150px"> 奖期</th>
               <th nzWidth="200px">开始时间</th>
               <th nzWidth="200px">结束时间</th>
+              <th nzWidth="200px">官方开奖时间</th>
               <th nzWidth="200px">中奖号码</th>
               <th nzWidth="200px">手动录号</th>
               <th nzWidth="200px">重新派奖</th>
-              <th nzWidth="200px">官方开奖时间</th>
               <th nzWidth="200px">允许录号时间</th>
               <th nzWidth="200px">已录号状态</th>
               <th nzWidth="200px">计奖状态</th>
@@ -111,11 +115,11 @@
                 <td  style='width: 150px'>{{ data.issue }}</td>
                 <td>{{ data.begin_time | dateChange}}</td>
                 <td>{{ data.end_time| dateChange }}</td>
+                <td>{{ data.official_open_time| dateChange }}</td>
                 <td>{{ data.official_code }}</td>
                 <td><button [disabled]='data.official_code' nzSize="small" (click)='input_number(data)' nz-button nzType="primary">录号</button></td>
                 <td>
                   <button [nzLoading]="is_loading_enco"   [disabled]="!(data['status_encode']===1)" nzSize="small" (click)='calculate_encode_again(data)' nz-button nzType="primary">重新派奖</button></td>
-                <td>{{ data.official_open_time| dateChange }}</td>
                 <td>{{ data.allow_encode_time| dateChange }}</td>
 
                 <td>{{ data.status_encode }}</td>

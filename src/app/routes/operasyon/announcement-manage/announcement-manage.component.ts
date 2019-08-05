@@ -280,7 +280,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
    *
    * @memberof OperasyonannouncementManageComponent
    */
-  edit_announcement(data) {
+  edit_announcement(data: any) {
     this.if_show_modal = true;
     this.modal_type = 'edit';
     if (this.notice.list.type === 1) {
@@ -291,7 +291,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     // this.update_form();
     this.edit_announcement_obj = JSON.parse(JSON.stringify(data));
     this.edit_announcement_obj['status']=String(this.edit_announcement_obj['status']);
-    this.edit_announcement_obj['content'] = Utils.get_img_iri(this.edit_announcement_obj['content'], 'add').content;
+    this.edit_announcement_obj['content'] = data.content.content;
     if (data.start_time) {
       this.edit_announcement_obj['start_time'] = new Date(data.start_time);
     }

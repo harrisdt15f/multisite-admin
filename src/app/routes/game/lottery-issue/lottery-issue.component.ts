@@ -36,6 +36,8 @@ export class GameLotteryIssueComponent implements OnInit {
   public search_number: string;
   public encode_splitter: object = {};
 
+  // 搜索的时间
+  public searchTime = null;
 
   //-------------弹框参数
   public code_value: string;
@@ -79,10 +81,7 @@ export class GameLotteryIssueComponent implements OnInit {
       end_time: [null, [Validators.required]],
     });
     this.foreach_time();
-
   }
-
-
   foreach_time() {
     setInterval(() => {
       let now_time = new Date().getTime() / 1000;
@@ -178,6 +177,12 @@ export class GameLotteryIssueComponent implements OnInit {
    * 点击录号
    */
   input_number(data) {
+    let separator = null;
+    for (let i of this.lotteries_tabs) {
+      if(data['lottery']['series_id'] === i['value']) {
+        separator = i['encode_splitter'];
+      }
+    }
     this.is_visible_input = true;
     this.is_lodding_modal = false;
     this.code_value = '';
@@ -188,11 +193,14 @@ export class GameLotteryIssueComponent implements OnInit {
     for (var i = 1; i <= code_length; i++) {
       code_example.push(this.input_number_obj['valid_code'].split(',')[i] ? this.input_number_obj['valid_code'].split(',')[i] : this.input_number_obj['valid_code'].split(',')[0]);
     }
-    this.code_rule = `   奖期号：${data.issue}
+    if(separator === null) {
+      separator = '';
+    }
+    this.code_rule = `    奖期号：${data.issue}
     彩种名称：${data.lottery_name}
-    录号位数${code_length}位,用英文“,”隔开
+    录号位数${code_length}位,${separator === '' ? '不用隔开' : '用英文“' + separator + '”隔开'}
     号码范围：${this.input_number_obj['valid_code']}
-    例子:${code_example.join(',')}
+    例子:${code_example.join(separator)}
     `
 
   }
@@ -463,6 +471,12 @@ export class GameLotteryIssueComponent implements OnInit {
       }
     })
   }
+  public getWeek(data: any) {
+    // 
+    console.log()
+    console.log(data)
+    
+  }
   /**
    *搜索数组
    *
@@ -479,7 +493,9 @@ export class GameLotteryIssueComponent implements OnInit {
     if (this.search_number) {
       option['issue'] = this.search_number;
     }
-
+    if (this.searchTime) {
+      option['time_condtions'] = JSON.stringify([['created_at', '>=', Utils.formatTime(this.searchTime[0])],['created_at', '<=', Utils.formatTime(this.searchTime[1])]])
+    }
     this.get_issue_list(page ? page : 1, option);
   }
   /**

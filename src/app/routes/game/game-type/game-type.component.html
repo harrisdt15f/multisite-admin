@@ -15,7 +15,8 @@
             <tr>
               <th>彩种ID</th>
               <th>彩种名称</th>
-              <th> 英文名</th>
+              <th>英文名</th>
+              <th>图标</th>
               <th>玩法系列</th>
               <th>是否低频彩</th>
               <th>累加模式</th>
@@ -37,6 +38,9 @@
                 <td>{{ data.id}}</td>
                 <td>{{ data.cn_name}}</td>
                 <td>{{ data.en_name}}</td>
+                <td>
+                    <img [src]='Api.serviceHttpIri + data.icon_path'/>
+                </td>
                 <td>{{ data.series_id}}</td>
                 <td>{{ data.is_fast==1?'是':'否'}}</td>
                 <td>{{ data.issue_type|issueType:data.issue_type}}</td>
@@ -74,7 +78,7 @@
                         <th>周期（秒）</th>
                         <th>调整截止时间（秒）</th>
                         <th>奖期期数</th>
-                        <th>是否有效</th>
+                        <th>是否开启</th>
                       </tr>
                     </thead>
           <tbody>
@@ -112,7 +116,7 @@
       </nz-steps>
 
 
-      <form style='margin-top:20px;' [nzLayout]="'inline'" *ngIf='current===0' nz-form
+      <form style='margin-top:20px;' class="from" [nzLayout]="'inline'" *ngIf='current===0' nz-form
         [formGroup]="create_form_lottery">
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
@@ -120,7 +124,7 @@
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="cn_name" nzRequired [nzSm]="9" [nzXs]="24">中文名称</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="cn_name" type="text" formControlName="cn_name" nz-input placeholder="标题"
+            <input id="cn_name" type="text" formControlName="cn_name" nz-input placeholder="请输入中文名"
               [(ngModel)]="edit_lotteries_obj['cn_name']" />
             <nz-form-explain
               *ngIf="create_form_lottery.get('cn_name')?.dirty && create_form_lottery.get('cn_name')?.errors">
@@ -136,7 +140,7 @@
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="en_name" nzRequired [nzSm]="9" [nzXs]="24">英文名</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="en_name" type="text" formControlName="en_name" nz-input placeholder="标题"
+            <input id="en_name" type="text" formControlName="en_name" nz-input placeholder="请输入英文名"
               [(ngModel)]="edit_lotteries_obj['en_name']" />
             <nz-form-explain
               *ngIf="create_form_lottery.get('en_name')?.dirty && create_form_lottery.get('en_name')?.errors">
@@ -154,7 +158,7 @@
           <nz-form-control [nzSm]="15" [nzXs]="23" style='width:310px;'>
               <input style='display: none' (change)='updateFire_lot($event)' type="file" id="pic_5" />
               <button (click)='updateFireChange()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
-                  <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽:, 最大高:）</span>
+                  <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽:80, 最大高:80）</span>
               </button>
              <img style='max-width:100px' id="cropedBigImg">
           </nz-form-control>
@@ -178,7 +182,7 @@
             </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
+        <nz-form-item style="width: 46%" *ngIf="modal_type === 'create'">
           <nz-form-label nzFor="auto_open" nzRequired [nzSm]="9" [nzXs]="24">是否自开彩</nz-form-label>
           <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="auto_open" formControlName="auto_open" [(ngModel)]="edit_lotteries_obj['auto_open']">
@@ -187,11 +191,19 @@
             </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
-          <nz-form-label nzFor="max_trace_number" nzRequired [nzSm]="9" [nzXs]="24">最大追号期数</nz-form-label>
+        <nz-form-item style="width: 46%" class='adds'>
+          <nz-form-label nzFor="max_trace_number" [nzSm]="9" [nzXs]="24">最大追号期数</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="max_trace_number" type="text" formControlName="max_trace_number" nz-input placeholder="最大追号期数"
+            <button class="add" (click)="maxTraceNumberCount('max_trace_number', '-')">-</button>
+            <input
+            id="max_trace_number"
+            type="text"
+            class="add-input"
+            maxlength="6"
+            (keyup)="maxTraceNumber('max_trace_number')"
+            formControlName="max_trace_number" nz-input placeholder="1"
               [(ngModel)]="edit_lotteries_obj['max_trace_number']" />
+              <button class="add add-right" (click)="maxTraceNumberCount('max_trace_number', '+')">+</button>
             <nz-form-explain
               *ngIf="create_form_lottery.get('max_trace_number')?.dirty && create_form_lottery.get('max_trace_number')?.errors">
               <ng-container *ngIf="create_form_lottery.get('max_trace_number')?.hasError('required')">
@@ -223,8 +235,15 @@
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="day_issue" nzRequired [nzSm]="9" [nzXs]="24">每日最大开奖次数</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="day_issue" type="text" formControlName="day_issue" nz-input placeholder="每日最大开奖次数"
+              <button class="add" (click)="maxTraceNumberCount('day_issue', '-')">-</button>
+            <input id="day_issue" type="text"
+            class="add-input"
+            maxlength="6"
+            (keyup)="maxTraceNumber('day_issue')"
+            formControlName="day_issue"
+            nz-input placeholder="1"
               [(ngModel)]="edit_lotteries_obj['day_issue']" />
+              <button class="add add-right" (click)="maxTraceNumberCount('day_issue', '+')">+</button>
             <nz-form-explain
               *ngIf="create_form_lottery.get('day_issue')?.dirty && create_form_lottery.get('day_issue')?.errors">
               <ng-container *ngIf="create_form_lottery.get('day_issue')?.hasError('required')">
@@ -233,11 +252,18 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
+        <nz-form-item style="width: 46%" class='issue_type'>
           <nz-form-label nzFor="issue_type" nzRequired [nzSm]="9" [nzXs]="24">累加模式</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="issue_type" type="text" formControlName="issue_type" nz-input placeholder="累加模式，如‘天’则输入‘day’"
-              [(ngModel)]="edit_lotteries_obj['issue_type']" />
+              <div style='width: 150px'>
+                  <nz-select id="issue_type" type="issue_type" formControlName="issue_type"
+                  [(ngModel)]="edit_lotteries_obj['issue_type']" (ngModelChange)='change_issue_format($event)' nzShowSearch
+                  nzPlaceHolder="累加模式">
+      
+                  <nz-option nzValue="day" nzLabel="每日累加"></nz-option>
+                  <nz-option nzValue="increase" nzLabel="整体累加"></nz-option>
+                </nz-select>
+              </div>
             <nz-form-explain
               *ngIf="create_form_lottery.get('issue_type')?.dirty && create_form_lottery.get('issue_type')?.errors">
               <ng-container *ngIf="create_form_lottery.get('issue_type')?.hasError('required')">
@@ -246,11 +272,21 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
+        <nz-form-item style="width: 46%"  class='valid_code'>
           <nz-form-label nzFor="valid_code" nzRequired [nzSm]="9" [nzXs]="24">合法的开奖号码</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="valid_code" type="text" formControlName="valid_code" nz-input placeholder="合法的开奖号码"
-              [(ngModel)]="edit_lotteries_obj['valid_code']" />
+              <div style='width: 350px'>
+                  <nz-select id="valid_code" type="valid_code" formControlName="valid_code"
+                  [(ngModel)]="edit_lotteries_obj['valid_code']" (ngModelChange)='change_issue_format($event)' nzShowSearch
+                  nzPlaceHolder="合法的开奖号码">
+      
+                  <nz-option nzValue="0,1,2,3,4,5,6,7,8,9" nzLabel="0,1,2,3,4,5,6,7,8,9"></nz-option>
+                  <nz-option nzValue="01,02,03,04,05,06,07,08,09,10,11" nzLabel="01,02,03,04,05,06,07,08,09,10,11"></nz-option>
+                  <nz-option nzValue="1,2,3,4,5,6" nzLabel="1,2,3,4,5,6"></nz-option>
+                  <nz-option nzValue="1,2,3,4,5,6,7,8,9,10" nzLabel="1,2,3,4,5,6,7,8,9,10"></nz-option>
+                  <nz-option nzValue="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49" nzLabel="1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49"></nz-option>
+                </nz-select>
+              </div>
             <nz-form-explain
               *ngIf="create_form_lottery.get('valid_code')?.dirty && create_form_lottery.get('valid_code')?.errors">
               <ng-container *ngIf="create_form_lottery.get('valid_code')?.hasError('required')">
@@ -259,11 +295,22 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
+        <nz-form-item style="width: 46%" class='code-length'>
           <nz-form-label nzFor="code_length" nzRequired [nzSm]="9" [nzXs]="24">开奖号码长度</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="code_length" type="text" formControlName="code_length" nz-input placeholder="请输入正整数开奖号码长度"
-              [(ngModel)]="edit_lotteries_obj['code_length']" />
+
+              <button class="add" (click)="maxTraceNumberCount('code_length', '-')">-</button>
+              <input
+                id="code_length"
+                type="text"
+                class="add-input"
+                maxlength="6"
+                (keyup)="maxTraceNumber('code_length')"
+                formControlName="code_length" nz-input placeholder="1"
+                [(ngModel)]="edit_lotteries_obj['code_length']"
+                />
+              <button class="add add-right" (click)="maxTraceNumberCount('code_length', '+')">+</button>
+
             <nz-form-explain
               *ngIf="create_form_lottery.get('code_length')?.dirty && create_form_lottery.get('code_length')?.errors">
               <ng-container *ngIf="create_form_lottery.get('code_length')?.hasError('required')">
@@ -272,11 +319,22 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
+        <nz-form-item style="width: 46%" class='positions'>
           <nz-form-label nzFor="positions" nzRequired [nzSm]="9" [nzXs]="24">开奖位置</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="positions" type="text" formControlName="positions" nz-input placeholder="请输入开奖位置:如w,q,b,s,g"
-              [(ngModel)]="edit_lotteries_obj['positions']" />
+              <nz-tree-select
+              id='positions'
+              type="positions"
+              style="width: 250px"
+              formControlName="positions"
+              nzPlaceHolder="请选择开奖位置"
+              [nzNodes]="positionOption"
+              nzShowSearch
+              nzCheckable
+              [(ngModel)]="edit_lotteries_obj['positions']"
+              [nzDefaultExpandAll]="true"
+            >
+            </nz-tree-select>
             <nz-form-explain
               *ngIf="create_form_lottery.get('positions')?.dirty && create_form_lottery.get('positions')?.errors">
               <ng-container *ngIf="create_form_lottery.get('positions')?.hasError('required')">
@@ -303,41 +361,61 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item style="width: 46%">
-          <nz-form-label nzFor="max_bonus" nzRequired [nzSm]="9" [nzXs]="24">最大奖金</nz-form-label>
+          <nz-form-label nzFor="max_profit_bonus" nzRequired [nzSm]="9" [nzXs]="24">最大盈利奖金</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="max_bonus" type="text" formControlName="max_bonus" nz-input placeholder="最大奖金"
-              [(ngModel)]="edit_lotteries_obj['max_bonus']" />
+            <input id="max_profit_bonus"
+            (keyup) ="maxTraceNumber('max_profit_bonus', true)"
+            type="text" formControlName="max_profit_bonus" nz-input placeholder="最大盈利奖金"
+              [(ngModel)]="edit_lotteries_obj['max_profit_bonus']" />
             <nz-form-explain
-              *ngIf="create_form_lottery.get('max_bonus')?.dirty && create_form_lottery.get('max_bonus')?.errors">
-              <ng-container *ngIf="create_form_lottery.get('max_bonus')?.hasError('required')">
-                最大奖金
+              *ngIf="create_form_lottery.get('max_profit_bonus')?.dirty && create_form_lottery.get('max_profit_bonus')?.errors">
+              <ng-container *ngIf="create_form_lottery.get('max_profit_bonus')?.hasError('required')">
+                请输入最大盈利奖金
               </ng-container>
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
-          <nz-form-label nzFor="min_times" nzRequired [nzSm]="9" [nzXs]="24">min_times</nz-form-label>
+        <nz-form-item style="width: 46%" class='min-times'>
+          <nz-form-label nzFor="min_times" nzRequired [nzSm]="9" [nzXs]="24">最小下注倍数</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="min_times" type="text" formControlName="min_times" nz-input placeholder="请输入min_times"
-              [(ngModel)]="edit_lotteries_obj['min_times']" />
+              <button class="add" (click)="maxTraceNumberCount('min_times', '-')">-</button>
+              <input
+                id="min_times"
+                type="text"
+                class="add-input"
+                maxlength="6"
+                (keyup)="maxTraceNumber('min_times')"
+                formControlName="min_times" nz-input placeholder="1"
+                [(ngModel)]="edit_lotteries_obj['min_times']"
+                />
+              <button class="add add-right" (click)="maxTraceNumberCount('min_times', '+')">+</button>
             <nz-form-explain
               *ngIf="create_form_lottery.get('min_times')?.dirty && create_form_lottery.get('min_times')?.errors">
               <ng-container *ngIf="create_form_lottery.get('min_times')?.hasError('required')">
-                请输入min_times!
+                请输入最小下注倍数!
               </ng-container>
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item style="width: 46%">
-          <nz-form-label nzFor="max_times" nzRequired [nzSm]="9" [nzXs]="24">max_times</nz-form-label>
+        <nz-form-item style="width: 46%" class='max-times'>
+          <nz-form-label nzFor="max_times" nzRequired [nzSm]="9" [nzXs]="24">最大下注倍数</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="max_times" type="text" formControlName="max_times" nz-input placeholder="请输入max_times"
-              [(ngModel)]="edit_lotteries_obj['max_times']" />
+              <button class="add" (click)="maxTraceNumberCount('max_times', '-')">-</button>
+              <input
+                id="max_times"
+                type="text"
+                class="add-input"
+                maxlength="6"
+                (keyup)="maxTraceNumber('max_times')"
+                formControlName="max_times" nz-input placeholder="1"
+                [(ngModel)]="edit_lotteries_obj['max_times']"
+                />
+              <button class="add add-right" (click)="maxTraceNumberCount('max_times', '+')">+</button>
             <nz-form-explain
               *ngIf="create_form_lottery.get('max_times')?.dirty && create_form_lottery.get('max_times')?.errors">
               <ng-container *ngIf="create_form_lottery.get('max_times')?.hasError('required')">
-                请输入max_times!
+                请输入最大下注倍数!
               </ng-container>
             </nz-form-explain>
           </nz-form-control>
@@ -345,8 +423,19 @@
         <nz-form-item style="width: 46%">
           <nz-form-label nzFor="valid_modes" nzRequired [nzSm]="9" [nzXs]="24">投注单位</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="valid_modes" type="text" formControlName="valid_modes" nz-input placeholder="如‘1,2,3元角分’"
-              [(ngModel)]="edit_lotteries_obj['valid_modes']" />
+              <nz-tree-select
+              id='valid_modes'
+              type="valid_modes"
+              style="width: 250px"
+              formControlName="valid_modes"
+              nzPlaceHolder="请选择投注单位"
+              [nzNodes]="validModesOption"
+              nzShowSearch
+              nzCheckable
+              [(ngModel)]="edit_lotteries_obj['valid_modes']"
+              [nzDefaultExpandAll]="true"
+            >
+            </nz-tree-select>
             <nz-form-explain
               *ngIf="create_form_lottery.get('valid_modes')?.dirty && create_form_lottery.get('valid_modes')?.errors">
               <ng-container *ngIf="create_form_lottery.get('valid_modes')?.hasError('valid_modes')">
@@ -366,12 +455,13 @@
         </nz-form-item>
         <nz-form-item nz-row style="margin-top:20px;width: 100%">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button (click)="next_form()" [disabled]="!create_form_lottery.valid" nz-button
+            <button (click)="next_form()" nz-button
               nzType="primary">下一步</button>
+              <!-- [disabled]="!create_form_lottery.valid" -->
           </nz-form-control>
         </nz-form-item>
       </form>
-      <form *ngIf='current===1' nz-form [formGroup]="create_form_rule">
+      <form *ngIf='current=== 0 ' nz-form [formGroup]="create_form_rule" class='from'>
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
         </div>
@@ -402,11 +492,20 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
+        <nz-form-item class='issue_seconds'>
           <nz-form-label nzFor="issue_seconds" nzRequired [nzSm]="9" [nzXs]="24">周期（秒）</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="issue_seconds" type="text" formControlName="issue_seconds" nz-input placeholder="周期’"
-              [(ngModel)]="edit_rule_obj['issue_seconds']" />
+              <button class="add" (click)="maxTraceNumberCount('issue_seconds', '-', 2)">-</button>
+              <input
+                id="issue_seconds"
+                type="text"
+                class="add-input"
+                maxlength="6"
+                (keyup)="maxTraceNumber('issue_seconds', false, 2)"
+                formControlName="issue_seconds" nz-input placeholder="1"
+                [(ngModel)]="edit_rule_obj['issue_seconds']"
+                />
+              <button class="add add-right" (click)="maxTraceNumberCount('issue_seconds', '+', 2)">+</button>
 
             <nz-form-explain
               *ngIf="create_form_rule.get('issue_seconds')?.dirty && create_form_rule.get('issue_seconds')?.errors">
@@ -430,11 +529,20 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
+        <nz-form-item class='adjust-time'>
           <nz-form-label nzFor="adjust_time" nzRequired [nzSm]="9" [nzXs]="24">调整截止时间(秒)</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="adjust_time" type="text" formControlName="adjust_time" nz-input placeholder="调整截止时间"
-              [(ngModel)]="edit_rule_obj['adjust_time']" />
+              <button class="add" (click)="maxTraceNumberCount('adjust_time', '-', 2)">-</button>
+              <input
+                id="adjust_time"
+                type="text"
+                class="add-input"
+                maxlength="6"
+                (keyup)="maxTraceNumber('adjust_time', false, 2)"
+                formControlName="adjust_time" nz-input placeholder="1"
+                [(ngModel)]="edit_rule_obj['adjust_time']"
+                />
+              <button class="add add-right" (click)="maxTraceNumberCount('adjust_time', '+', 2)">+</button>
 
             <nz-form-explain
               *ngIf="create_form_rule.get('adjust_time')?.dirty && create_form_rule.get('adjust_time')?.errors">
@@ -444,11 +552,20 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
+        <nz-form-item class='encode-time'>
           <nz-form-label nzFor="encode_time" nzRequired [nzSm]="9" [nzXs]="24">录号时间</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="encode_time" type="text" formControlName="encode_time" nz-input placeholder="录号时间"
-              [(ngModel)]="edit_rule_obj['encode_time']" />
+              <button class="add" (click)="maxTraceNumberCount('encode_time', '-', 2)">-</button>
+              <input
+                id="encode_time"
+                type="text"
+                class="add-input"
+                maxlength="6"
+                (keyup)="maxTraceNumber('encode_time', false, 2)"
+                formControlName="encode_time" nz-input placeholder="1"
+                [(ngModel)]="edit_rule_obj['encode_time']"
+                />
+              <button class="add add-right" (click)="maxTraceNumberCount('encode_time', '+', 2)">+</button>
 
             <nz-form-explain
               *ngIf="create_form_rule.get('encode_time')?.dirty && create_form_rule.get('encode_time')?.errors">
@@ -458,11 +575,20 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
+        <nz-form-item class='issue-count'>
           <nz-form-label nzFor="issue_count" nzRequired [nzSm]="9" [nzXs]="24">奖期期数</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="issue_count" type="text" formControlName="issue_count" nz-input placeholder="issue_count"
-              [(ngModel)]="edit_rule_obj['issue_count']" />
+              <button class="add" (click)="maxTraceNumberCount('issue_count', '-', 2)">-</button>
+              <input
+                id="issue_count"
+                type="text"
+                class="add-input"
+                maxlength="6"
+                (keyup)="maxTraceNumber('issue_count', false, 2)"
+                formControlName="issue_count" nz-input placeholder="1"
+                [(ngModel)]="edit_rule_obj['issue_count']"
+                />
+              <button class="add add-right" (click)="maxTraceNumberCount('issue_count', '+', 2)">+</button>
 
             <nz-form-explain
               *ngIf="create_form_rule.get('issue_count')?.dirty && create_form_rule.get('issue_count')?.errors">
@@ -488,7 +614,7 @@
             <button *ngIf="edit_lotteries_obj['auto_open']==='1'"
               (click)="next_form()" nz-button nzType="primary">下一步</button>
             <button *ngIf="edit_lotteries_obj['auto_open']!=='1'" (click)="submit_lotteries()"
-              [disabled]="!create_form_rule.valid" nz-button nzType="primary">创建</button>
+              [disabled]="!create_form_rule.valid" nz-button nzType="primary">{{modal_type === "create" ? "创建" : "保存"}}</button>
           </nz-form-control>
           <!-- [disabled]="!create_form_rule.valid" -->
         </nz-form-item>
@@ -498,7 +624,7 @@
          <div>
            生成的表达式：{{cronExpression}}
          </div>
-         <button  (click)="submit_lotteries()" nz-button nzType="primary">创建</button>
+         <button  (click)="submit_lotteries()" nz-button nzType="primary">{{modal_type === "create" ? "创建" : "保存"}}</button>
   
       </div>
     </nz-modal>

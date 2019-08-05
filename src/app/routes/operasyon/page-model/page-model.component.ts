@@ -306,7 +306,7 @@ export class OperasyonPageModelComponent implements OnInit {
         if (res && res.success) {
           this.get_lotteries_notice();
           this.message.success('添加热门彩票成功', {
-            nzDuration: 10000,
+            nzDuration: 2500,
           });
           this.hide_modal();
           this.update_form();

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 
@@ -7,6 +7,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CronOptions } from "cron-editor/cron-editor";
 import { Utils } from 'config/utils.config';
 import { ApiService } from '../../../../api/api.service';
+import { utils } from 'protractor';
 
 @Component({
   selector: 'app-game-game-type',
@@ -14,7 +15,7 @@ import { ApiService } from '../../../../api/api.service';
   styleUrls: ['./game-type.component.less']
 
 })
-export class GameGameTypeComponent implements OnInit, AfterContentInit {
+export class GameGameTypeComponent implements OnInit {
   public file_obj: any;
   public file_iri: any;
   public page_index = 1;
@@ -23,6 +24,11 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
   public is_load_list: boolean;
   public tab_index = 0;
   public lotteries_tabs = [];
+  // 开奖位置选项
+  public positionOption = [];
+
+  // 投注单位选项
+  public validModesOption = [];
   //----------弹框
   public current = 0;
   public is_show_modal: boolean;
@@ -32,12 +38,8 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
   public modal_lodding: boolean;
   public create_form_lottery: FormGroup;//表单对象
   public create_form_rule: FormGroup;//表单对象
-  public edit_lotteries_obj: object = {
-
-  };
-  public edit_rule_obj: object = {
-
-  };
+  public edit_lotteries_obj: object = {};
+  public edit_rule_obj: object = {};
   public cronExpression: any='00:00:00'
   public cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',
@@ -88,7 +90,7 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
       valid_code: [null, [Validators.required]],
       code_length: [null, [Validators.required]],
       prize_group: [null, [Validators.required]],
-      max_bonus: [null, [Validators.required]],
+      max_profit_bonus: [null, [Validators.required]],
       min_times: [null, [Validators.required]],
       max_times: [null, [Validators.required]],
       valid_modes: [null, [Validators.required]],
@@ -105,9 +107,125 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
     });
   }
 
-  ngAfterContentInit() {
+  // 开奖位置
+  public positions() {
+    let data = this.lotteries_tabs[this.tab_index];
+    let result =[];
+    if(data['value'] === 'pk10') {
+      let arr = ['0', 1, 2, 3, 4, 5, 6, 7, 8, 9];
+      result[0] = {
+        title: '全选',
+        value: '0, 1, 2, 3, 4, 5, 6, 7, 8, 9',
+        key: '0, 1, 2, 3, 4, 5, 6, 7, 8, 9',
+        children: [],
+        isLeaf: false
+      }
+      for (let i = 0; i < arr.length; i++) {
+        let json = {};
+        json['key'] = arr[i];
+        json['value'] = arr[i];
+        json['title'] = arr[i];
+        json['isLeaf'] = true;
+        result[0].children.push(json);
+      }
+    } else if(data['value'] === 'lhc') {
+      let arr = [1, 2, 3, 4, 5, 6, 7];
+      result[0] = {
+        title: '全选',
+        value: '1, 2, 3, 4, 5, 6, 7',
+        key: '1, 2, 3, 4, 5, 6, 7',
+        children: [],
+        isLeaf: false
+      }
+      for (let i = 0; i < arr.length; i++) {
+        let json = {};
+        json['key'] = arr[i];
+        json['value'] = arr[i];
+        json['title'] = arr[i];
+        json['isLeaf'] = true;
+        result[0].children.push(json);
+      }
+    } else {
+      let arr = [
+        {lable: '万', value: '0'},
+        {lable: '千', value: 1},
+        {lable: '百', value: 2},
+        {lable: '十', value: 3},
+        {lable: '个', value: 4},
+      ];
+      result[0] = {
+        title: '全选',
+        value: '万, 千, 百, 十, 个',
+        key: '0, 1, 2, 3, 4',
+        children: [],
+        isLeaf: false
+      }
+      for (let i = 0; i < arr.length; i++) {
+        let json = {};
+        json['key'] = arr[i].value;
+        json['value'] = arr[i].value;
+        json['title'] = arr[i].lable;
+        json['isLeaf'] = true;
+        result[0].children.push(json);
+      }
+    }
+    
+    this.positionOption = result;
   }
-
+  // 投注单位 
+  public validModesOptions() {
+    let result =[];
+    let arr = [
+      {lable: '元', value: '0'},
+      {lable: '角', value: 1},
+      {lable: '分', value: 2}
+    ];
+    result[0] = {
+      title: '全选',
+      value: '0, 1, 2',
+      key: '0, 1, 2',
+      children: [],
+      isLeaf: false
+    }
+    for (let i = 0; i < arr.length; i++) {
+      let json = {};
+      json['key'] = arr[i].value;
+      json['value'] = arr[i].value;
+      json['title'] = arr[i].lable;
+      json['isLeaf'] = true;
+      result[0].children.push(json);
+    }
+    
+    this.validModesOption = result;
+  }
+  //  加减
+  public maxTraceNumberCount(obj: any, type: any, number = 1) {
+    if (number === 1) {
+      if (type === '-') {
+        if (+this.edit_lotteries_obj[obj] > 0) {
+          +this.edit_lotteries_obj[obj] --;
+        }
+      } else {
+        +this.edit_lotteries_obj[obj] ++;
+      }
+    } else {
+      if (type === '-') {
+        if (+this.edit_rule_obj[obj] > 0) {
+          +this.edit_rule_obj[obj] --;
+        }
+      } else {
+        +this.edit_rule_obj[obj] ++;
+      }
+    }
+  }
+  // 限制输入数字
+  public maxTraceNumber(obj: any, type = false, number = 1) {
+    if (number === 1) {
+      this.edit_lotteries_obj[obj] = Utils.number(this.edit_lotteries_obj[obj], type);
+    } else {
+      this.edit_rule_obj[obj] = Utils.number(this.edit_rule_obj[obj], type);
+    }
+  }
   // 添加彩种icon
   public updateFireChange(e: any) {
     document.getElementById('pic_5').click();
@@ -170,6 +288,8 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
     this.edit_lotteries_obj = new LotteriesObj(this.min_prize_group, this.max_prize_group);
     this.edit_rule_obj = new RuleObj();
     document.getElementById('cropedBigImg').setAttribute('src', '');
+    this.positions();
+    this.validModesOptions();
   }
   /**
    * 编辑采种
@@ -193,7 +313,7 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
       max_trace_number: data['max_trace_number'],
       min_times: data['min_times'],
       positions: data['positions'],
-      max_bonus: data['max_bonus'],
+      max_profit_bonus: data['max_profit_bonus'],
       prize_group: [
         data['min_prize_group'],
         data['max_prize_group']
@@ -266,7 +386,7 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
         status: this.edit_lotteries_obj['status'],
         valid_code: this.edit_lotteries_obj['valid_code'],
         valid_modes: this.edit_lotteries_obj['valid_modes'],
-        max_bonus: this.edit_lotteries_obj['max_bonus'],
+        max_profit_bonus: this.edit_lotteries_obj['max_profit_bonus'],
         icon_name: this.edit_lotteries_obj['icon_name'],
         icon_path: this.edit_lotteries_obj['icon_path']
       },
@@ -283,6 +403,7 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
         begin_time: this.get_time(this.edit_rule_obj['begin_time'])
       }
     };
+
     
     switch (this.modal_type) {
       case 'create':
@@ -347,6 +468,12 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
    * 点击下一步
    */
   next_form() {
+    if(+this.edit_lotteries_obj['max_times'] < +this.edit_lotteries_obj['min_times']) {
+      this.message.error('最大下注倍数 不能小于 最小下注倍数', {
+        nzDuration: 2500,
+      });
+      return;
+    }
     this.current += 1;
   }
   /**
@@ -401,7 +528,7 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
         this.get_lotteries_list(this.lotteries_tabs[0].value, 0)
       } else {
         this.message.error(res.message, {
-          nzDuration: 10000,
+          nzDuration: 2500,
         });
       }
     })
@@ -413,7 +540,7 @@ export class GameGameTypeComponent implements OnInit, AfterContentInit {
    */
   change_index(index: number) {
     this.tab_index = index;
-
+    console.log(this.lotteries_tabs[index])
     if (this.lotteries_tabs[index].lotteries) {
       this.list_of_aply_data = this.lotteries_tabs[index].lotteries;
     } else {
@@ -458,18 +585,18 @@ class LotteriesObj {
   public is_fast = '0';
   public lottery_type = '1';
   public auto_open = '0';
-  public max_trace_number: number;
-  public day_issue: string;
+  public max_trace_number = 1;
+  public day_issue = 1;
   public positions: string;
   public issue_format: string;
   public issue_type: string;
   public valid_code: string;
-  public code_length: string;
+  public code_length = 1;
   public prize_group: Array<any>;
-  public min_times: string;
-  public max_times: string;
+  public min_times = 1;
+  public max_times = 1;
   public valid_modes: string;
-  public max_bonus: any;
+  public max_profit_bonus: any;
   public icon: any;
   public status = '0';
 
@@ -482,11 +609,11 @@ class LotteriesObj {
 }
 class RuleObj {
   public begin_time: string;
-  public issue_seconds: string;
+  public issue_seconds = 1;
   public first_time: string;
-  public adjust_time: string;
-  public encode_time: string;
-  public issue_count: string;
+  public adjust_time = 1;
+  public encode_time = 1;
+  public issue_count = 1;
   public status = '0';
   constructor() {
   }

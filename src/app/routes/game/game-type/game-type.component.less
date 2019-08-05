@@ -111,3 +111,60 @@ pre {
     height: auto;
   }
 }
+.from{
+  .add {
+    float: left;
+    width: 29px;
+    height: 32px;
+    line-height: 25px;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 22px;
+    margin-right: 5px;
+    cursor: pointer;
+    outline: aliceblue;
+  }
+  .add-right{
+    margin-right:auto;
+    margin-left:5px;
+  }
+  .add-input{
+    width:70px;
+    padding:0;
+    float:left;
+    text-align:center;
+  }
+  .adds,
+  .code-length,
+  .min-times,
+  .max-times,
+  .adjust-time,
+  .issue-count,
+  .encode-time,
+  .issue_seconds{
+    ::ng-deep{
+      .ant-form-item-children-icon{
+        top: 15px;
+        right: 27px;
+      }
+    }
+  }
+
+  .issue_type{
+    ::ng-deep{
+      .ant-form-item-children-icon{
+        right: -150px;
+        top: -21px;
+      }
+    }
+  }
+  .valid_code{
+    ::ng-deep{
+      .ant-form-item-children-icon{
+        right: -350px;
+        top: -21px;
+      }
+    }
+  }
+}
