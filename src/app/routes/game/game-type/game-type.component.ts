@@ -334,7 +334,7 @@ export class GameGameTypeComponent implements OnInit {
       begin_time: new Date('2019-10-10 ' + data.issue_rule['begin_time'])
     };
     if (data['icon_path']) {
-      document.getElementById('cropedBigImg').setAttribute('src', data['icon_path']);
+      document.getElementById('cropedBigImg').setAttribute('src', Utils.GethttpIri() + data['icon_path']);
     } else {
       document.getElementById('cropedBigImg').setAttribute('src', '');
     }
