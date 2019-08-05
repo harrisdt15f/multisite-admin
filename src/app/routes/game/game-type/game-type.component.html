@@ -278,7 +278,7 @@
               <div style='width: 350px'>
                   <nz-select id="valid_code" type="valid_code" formControlName="valid_code"
                   [(ngModel)]="edit_lotteries_obj['valid_code']" (ngModelChange)='change_issue_format($event)' nzShowSearch
-                  nzPlaceHolder="合法的开奖号码">
+                  nzPlaceHolder="请选择合法的开奖号码">
       
                   <nz-option nzValue="0,1,2,3,4,5,6,7,8,9" nzLabel="0,1,2,3,4,5,6,7,8,9"></nz-option>
                   <nz-option nzValue="01,02,03,04,05,06,07,08,09,10,11" nzLabel="01,02,03,04,05,06,07,08,09,10,11"></nz-option>
@@ -327,7 +327,7 @@
               type="positions"
               style="width: 250px"
               formControlName="positions"
-              nzPlaceHolder="请选择开奖位置"
+              [nzPlaceHolder]="positionText"
               [nzNodes]="positionOption"
               nzShowSearch
               nzCheckable
@@ -365,7 +365,7 @@
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
             <input id="max_profit_bonus"
             (keyup) ="maxTraceNumber('max_profit_bonus', true)"
-            type="text" formControlName="max_profit_bonus" nz-input placeholder="最大盈利奖金"
+            type="text" formControlName="max_profit_bonus" nz-input [placeholder]="edit_lotteries_obj['max_profit_bonus']"
               [(ngModel)]="edit_lotteries_obj['max_profit_bonus']" />
             <nz-form-explain
               *ngIf="create_form_lottery.get('max_profit_bonus')?.dirty && create_form_lottery.get('max_profit_bonus')?.errors">
@@ -428,7 +428,7 @@
               type="valid_modes"
               style="width: 250px"
               formControlName="valid_modes"
-              nzPlaceHolder="请选择投注单位"
+              [nzPlaceHolder]="validModesText"
               [nzNodes]="validModesOption"
               nzShowSearch
               nzCheckable

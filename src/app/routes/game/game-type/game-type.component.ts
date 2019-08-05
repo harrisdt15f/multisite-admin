@@ -26,9 +26,12 @@ export class GameGameTypeComponent implements OnInit {
   public lotteries_tabs = [];
   // 开奖位置选项
   public positionOption = [];
+  public positionText = '请选择开奖位置';
 
   // 投注单位选项
   public validModesOption = [];
+  // 默认显示的文字
+  public validModesText = '请选择投注单位';
   //----------弹框
   public current = 0;
   public is_show_modal: boolean;
@@ -147,16 +150,16 @@ export class GameGameTypeComponent implements OnInit {
       }
     } else {
       let arr = [
-        {lable: '万', value: '0'},
-        {lable: '千', value: 1},
-        {lable: '百', value: 2},
-        {lable: '十', value: 3},
-        {lable: '个', value: 4},
+        {lable: '万', value: 'w'},
+        {lable: '千', value: 'q'},
+        {lable: '百', value: 'b'},
+        {lable: '十', value: 's'},
+        {lable: '个', value: 'g'},
       ];
       result[0] = {
         title: '全选',
         value: '万, 千, 百, 十, 个',
-        key: '0, 1, 2, 3, 4',
+        key: 'w, q, b, s, g',
         children: [],
         isLeaf: false
       }
@@ -176,14 +179,14 @@ export class GameGameTypeComponent implements OnInit {
   public validModesOptions() {
     let result =[];
     let arr = [
-      {lable: '元', value: '0'},
-      {lable: '角', value: 1},
-      {lable: '分', value: 2}
+      {lable: '元', value: '1'},
+      {lable: '角', value: '2'},
+      {lable: '分', value: '3'}
     ];
     result[0] = {
       title: '全选',
-      value: '0, 1, 2',
-      key: '0, 1, 2',
+      value: '1, 2, 3',
+      key: '1, 2, 3',
       children: [],
       isLeaf: false
     }
@@ -297,6 +300,54 @@ export class GameGameTypeComponent implements OnInit {
   edit_lottery(data: any) {
     this.is_show_modal = true;
     this.modal_type = 'edit';
+    this.positions();
+    this.validModesOptions();
+
+    if (data['valid_modes']) {
+      let modes = '';
+      for(let k of data['valid_modes'].split(',')) {
+        switch (k) {
+          case '1':
+              modes += '元 ';
+            break
+          case '2':
+              modes += '角 ';
+            break
+          case '3':
+              modes += '分 ';
+            break
+          case '4':
+              modes += '厘';
+            break
+        }
+      }
+      this.validModesText = modes;
+    }
+
+    if (data['positions']) {
+      let text = '';
+      for(let k of data['positions'].split(',')) {
+        switch (k) {
+          case 'w':
+              text += '万 ';
+            break
+          case 'q':
+              text += '千 ';
+            break
+          case 'b':
+              text += '百 ';
+            break
+          case 's':
+              text += '十 ';
+            break
+          case 'g':
+              text += '个';
+            break
+        }
+      }
+      this.positionText = text;
+    }
+
     this.edit_lotteries_obj = {
       id: String(data['id']),
       auto_open: String(data['auto_open']),
@@ -595,8 +646,8 @@ class LotteriesObj {
   public prize_group: Array<any>;
   public min_times = 1;
   public max_times = 1;
-  public valid_modes: string;
-  public max_profit_bonus: any;
+  public valid_modes = '请选择投注单位';
+  public max_profit_bonus = 0;
   public icon: any;
   public status = '0';
 
