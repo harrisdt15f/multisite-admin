@@ -315,6 +315,8 @@ export class GameGameTypeComponent implements OnInit {
     this.is_show_modal = true;
     this.modal_type = 'create';
     this.edit_lotteries_obj = new LotteriesObj(this.min_prize_group, this.max_prize_group);
+    this.positionText = '请选择开奖位置';
+    this.validModesText = '请选择投注单位';
     this.edit_rule_obj = [{
      end_time: new Date(),
      begin_time: new Date(),
@@ -384,6 +386,9 @@ export class GameGameTypeComponent implements OnInit {
             break
           case 'g':
               text += '个';
+            break
+            default:
+            text += k + ' '
             break
         }
       }

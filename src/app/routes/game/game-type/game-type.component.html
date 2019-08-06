@@ -613,7 +613,7 @@
           </nz-form-control>
         </nz-form-item> -->
 
-        <nz-form-item nz-row style="margin-bottom:8px;">
+        <nz-form-item nz-row style="margin-bottom:8px;position:relative;z-index:1;">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <button (click)="first_form()" nz-button nzType="primary">上一步</button>
             <button *ngIf="edit_lotteries_obj['auto_open']==='1'"
