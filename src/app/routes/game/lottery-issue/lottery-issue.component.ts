@@ -200,7 +200,7 @@ export class GameLotteryIssueComponent implements OnInit {
     彩种名称：${data.lottery_name}
     录号位数${code_length}位,${separator === '' ? '不用隔开' : '用英文“' + separator + '”隔开'}
     号码范围：${this.input_number_obj['valid_code']}
-    例子:${data['code_example']}
+    例子: ${data['code_example']}
     `
     // 例子:${code_example.join(separator)}
   }
