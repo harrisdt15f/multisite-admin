@@ -368,7 +368,7 @@ create_system_setting_list( data) {
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href =  '/api/partner-sys-configures/add?XDEBUG_SESSION_START=PHPSTORM';
+  const href =  '/api/partner-sys-configures/add';
   return this.commonService.post(href,data, { headers: headers });
 }
 /**
@@ -560,7 +560,7 @@ add_activity(data){
     Accept: 'application/json',
     Authorization: `Bearer ${token}`,
   });
-  const href =  '/api/activity/add?XDEBUG_SESSION_START=PHPSTORM';
+  const href =  '/api/activity/add';
   return this.commonService.post(href, data,{ headers: headers });
 }
 /**

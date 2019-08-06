@@ -42,7 +42,16 @@ export class GameGameTypeComponent implements OnInit {
   public create_form_lottery: FormGroup;//表单对象
   public create_form_rule: FormGroup;//表单对象
   public edit_lotteries_obj: object = {};
-  public edit_rule_obj: object = {};
+  public edit_rule_obj = [{
+    begin_time: new Date(),
+    end_time: new Date(),
+    issue_seconds: 1,
+    first_time: new Date(),
+    adjust_time: 1,
+    encode_time: 1,
+    issue_count: 1,
+    status: '0'
+   }];;
   public cronExpression: any='00:00:00'
   public cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',
@@ -213,11 +222,11 @@ export class GameGameTypeComponent implements OnInit {
       }
     } else {
       if (type === '-') {
-        if (+this.edit_rule_obj[obj] > 0) {
-          +this.edit_rule_obj[obj] --;
+        if (+this.edit_rule_obj[0][obj] > 0) {
+          +this.edit_rule_obj[0][obj] --;
         }
       } else {
-        +this.edit_rule_obj[obj] ++;
+        +this.edit_rule_obj[0][obj] ++;
       }
     }
   }
@@ -226,7 +235,7 @@ export class GameGameTypeComponent implements OnInit {
     if (number === 1) {
       this.edit_lotteries_obj[obj] = Utils.number(this.edit_lotteries_obj[obj], type);
     } else {
-      this.edit_rule_obj[obj] = Utils.number(this.edit_rule_obj[obj], type);
+      this.edit_rule_obj[0][obj] = Utils.number(this.edit_rule_obj[0][obj], type);
     }
   }
   // 添加彩种icon
@@ -289,7 +298,16 @@ export class GameGameTypeComponent implements OnInit {
     this.is_show_modal = true;
     this.modal_type = 'create';
     this.edit_lotteries_obj = new LotteriesObj(this.min_prize_group, this.max_prize_group);
-    this.edit_rule_obj = new RuleObj();
+    this.edit_rule_obj = [{
+     end_time: new Date(),
+     begin_time: new Date(),
+     issue_seconds: 1,
+     first_time: new Date(),
+     adjust_time: 1,
+     encode_time: 1,
+     issue_count: 1,
+     status: '0'
+    }];
     document.getElementById('cropedBigImg').setAttribute('src', '');
     this.positions();
     this.validModesOptions();
@@ -302,7 +320,6 @@ export class GameGameTypeComponent implements OnInit {
     this.modal_type = 'edit';
     this.positions();
     this.validModesOptions();
-
     if (data['valid_modes']) {
       let modes = '';
       for(let k of data['valid_modes'].split(',')) {
@@ -323,7 +340,6 @@ export class GameGameTypeComponent implements OnInit {
       }
       this.validModesText = modes;
     }
-
     if (data['positions']) {
       let text = '';
       for(let k of data['positions'].split(',')) {
@@ -374,16 +390,20 @@ export class GameGameTypeComponent implements OnInit {
       valid_modes: data['valid_modes'],
       icon_path: data['icon_path']
     };
-    this.edit_rule_obj = {
-      adjust_time: data.issue_rule['adjust_time'],
-      encode_time: data.issue_rule['encode_time'],
-      issue_seconds: data.issue_rule['issue_seconds'],
-      issue_count: data.issue_rule['issue_count'],
-      status: String(data.issue_rule['status']),
-      first_time: new Date('2019-10-10 ' + data.issue_rule['first_time']),
-      end_time: new Date('2019-10-10 ' + data.issue_rule['end_time']),
-      begin_time: new Date('2019-10-10 ' + data.issue_rule['begin_time'])
-    };
+    let rule = [];
+    for (let i = 0; i < data['issue_rule'].length; i++) {
+      rule.push({
+        'adjust_time': data.issue_rule[i]['adjust_time'],
+        'encode_time': data.issue_rule[i]['encode_time'],
+        'issue_seconds': data.issue_rule[i]['issue_seconds'],
+        'issue_count': data.issue_rule[i]['issue_count'],
+        'status': String(data.issue_rule[i]['status']),
+        'first_time': new Date('2019-10-10 ' + data.issue_rule[i]['first_time']),
+        'end_time': new Date('2019-10-10 ' + data.issue_rule[i]['end_time']),
+        'begin_time': new Date('2019-10-10 ' + data.issue_rule[i]['begin_time'])
+      });
+    }
+    this.edit_rule_obj = rule;
     if (data['icon_path']) {
       document.getElementById('cropedBigImg').setAttribute('src', Utils.GethttpIri() + data['icon_path']);
     } else {
@@ -431,30 +451,33 @@ export class GameGameTypeComponent implements OnInit {
         max_times: this.edit_lotteries_obj['max_times'],
         max_trace_number: this.edit_lotteries_obj['max_trace_number'],
         min_times: this.edit_lotteries_obj['min_times'],
-        positions: this.edit_lotteries_obj['positions'].join(','),
+        positions: Array.isArray(this.edit_lotteries_obj['positions']) ? this.edit_lotteries_obj['positions'].join(',') : this.edit_lotteries_obj['positions'],
         min_prize_group: this.edit_lotteries_obj['prize_group'][0],
         max_prize_group: this.edit_lotteries_obj['prize_group'][1],
         status: this.edit_lotteries_obj['status'],
         valid_code: this.edit_lotteries_obj['valid_code'],
-        valid_modes: this.edit_lotteries_obj['valid_modes'].join(','),
+        valid_modes: Array.isArray(this.edit_lotteries_obj['valid_modes']) ? this.edit_lotteries_obj['positions'].join(',') : this.edit_lotteries_obj['valid_modes'],
         max_profit_bonus: this.edit_lotteries_obj['max_profit_bonus'],
         icon_name: this.edit_lotteries_obj['icon_name'],
         icon_path: this.edit_lotteries_obj['icon_path']
       },
-      issue_rule: {
+      issue_rule: []
+    };
+    for(let k of Object.keys(this.edit_rule_obj)){
+      option.issue_rule.push({
+        id: this.edit_lotteries_obj['id'],
         lottery_name: this.edit_lotteries_obj['cn_name'],
         lottery_id: this.edit_lotteries_obj['en_name'],
-        adjust_time: this.edit_rule_obj['adjust_time'],
-        encode_time: this.edit_rule_obj['encode_time'],
-        issue_seconds: this.edit_rule_obj['issue_seconds'],
-        issue_count: this.edit_rule_obj['issue_count'],
+        adjust_time: this.edit_rule_obj[k]['adjust_time'],
+        encode_time: this.edit_rule_obj[k]['encode_time'],
+        issue_seconds: this.edit_rule_obj[k]['issue_seconds'],
+        issue_count: this.edit_rule_obj[k]['issue_count'],
         status: this.edit_lotteries_obj['status'],
-        first_time: this.get_time(this.edit_rule_obj['first_time']),
-        end_time: this.get_time(this.edit_rule_obj['end_time']),
-        begin_time: this.get_time(this.edit_rule_obj['begin_time'])
-      }
-    };
-
+        first_time: this.get_time(this.edit_rule_obj[k]['first_time']),
+        end_time: this.get_time(this.edit_rule_obj[k]['end_time']),
+        begin_time: this.get_time(this.edit_rule_obj[k]['begin_time'])
+      });
+    }
     
     switch (this.modal_type) {
       case 'create':
@@ -464,7 +487,6 @@ export class GameGameTypeComponent implements OnInit {
         option.lottery['id'] = this.edit_lotteries_obj['id'];
         this.submit_edit_lotteries(option);
         break;
-
     }
 
   }
@@ -519,11 +541,39 @@ export class GameGameTypeComponent implements OnInit {
    * 点击下一步
    */
   next_form() {
+    console.log(this.edit_lotteries_obj)
     if(+this.edit_lotteries_obj['max_times'] < +this.edit_lotteries_obj['min_times']) {
       this.message.error('最大下注倍数 不能小于 最小下注倍数', {
         nzDuration: 2500,
       });
       return;
+    }
+
+    if (this.modal_type === 'create') {
+      this.edit_rule_obj = [{
+        end_time: new Date(),
+        begin_time: new Date(),
+        issue_seconds: 1,
+        first_time: new Date(),
+        adjust_time: 1,
+        encode_time: 1,
+        issue_count: 1,
+        status: '0'
+       }];
+      if (this.edit_lotteries_obj['en_name'] === 'cqssc') {
+        this.edit_rule_obj.push({
+          begin_time: new Date(),
+          end_time: new Date(),
+          issue_seconds: 1,
+          first_time: new Date(),
+          adjust_time: 1,
+          encode_time: 1,
+          issue_count: 1,
+          status: '0'
+         });
+      }
+    } else {
+
     }
     this.current += 1;
   }
@@ -657,15 +707,4 @@ class LotteriesObj {
     ]
   }
 
-}
-class RuleObj {
-  public begin_time: string;
-  public issue_seconds = 1;
-  public first_time: string;
-  public adjust_time = 1;
-  public encode_time = 1;
-  public issue_count = 1;
-  public status = '0';
-  constructor() {
-  }
 }

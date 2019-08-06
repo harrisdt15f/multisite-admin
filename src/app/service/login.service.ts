@@ -16,7 +16,7 @@ export class LoginService {
     let headers = new HttpHeaders({
       'Accept': 'application/json'
     });
-    const href = this.serviceHttpIri + '/api/login?XDEBUG_SESSION_START=PHPSTORM';
+    const href = this.serviceHttpIri + '/api/login';
     return this.http.post(href,data , { headers: headers });
   }
   login_out(data): Observable<any> {

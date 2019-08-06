@@ -186,6 +186,7 @@ export class GameGamePlayComponent implements OnInit {
      * @memberof UserCityListComponent
      */
   show_child_city(data, num) {
+    console.log(data)
     switch (num) {
       case 1:
         this.first_level.forEach((item) => {
