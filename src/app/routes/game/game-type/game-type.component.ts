@@ -251,7 +251,9 @@ export class GameGameTypeComponent implements OnInit {
 
     this.Api.uploadPic(data).subscribe((response: any) => {
       if (response && response['success']) {
-        document.getElementById('cropedBigImg')['src'] = this.file_iri;
+        setTimeout(() => {
+          document.getElementById('cropedBigImg')['src'] = this.file_iri;
+        }, 30)
         this.message.success('上传成功', {
           nzDuration: 2500,
         });
@@ -308,7 +310,10 @@ export class GameGameTypeComponent implements OnInit {
      issue_count: 1,
      status: '0'
     }];
-    document.getElementById('cropedBigImg')['src'] = '';
+    setTimeout(() => {
+      console.log(document.getElementById('cropedBigImg'))
+      document.getElementById('cropedBigImg')['src'] = '';
+    }, 30)
     this.positions();
     this.validModesOptions();
   }
@@ -405,9 +410,13 @@ export class GameGameTypeComponent implements OnInit {
     }
     this.edit_rule_obj = rule;
     if (data['icon_path']) {
-      document.getElementById('cropedBigImg')['src'] = Utils.GethttpIri() + data['icon_path'];
+      setTimeout(() => {
+        document.getElementById('cropedBigImg')['src'] = Utils.GethttpIri() + data['icon_path'];
+      }, 30)
     } else {
-      document.getElementById('cropedBigImg')['src'] = '';
+      setTimeout(() => {
+        document.getElementById('cropedBigImg')['src'] = '';
+      }, 30)
     }
 
   }
