@@ -239,10 +239,10 @@ static get_img_iri(str,type){
     // float = true 可以输入小数点
     str = String(str);
     if (float) {
-      return str.replace(/[^\d.]/g, '').replace(/^0{1,}/g,'');
+      return str.replace(/[^\d.]/g, '').replace(/^0{-1,}/g,'');
     }
     else {
-      return str.replace(/[^\d]/g, '').replace(/^0{1,}/g,'');
+      return str.replace(/[^\d]/g, '').replace(/^0{-1,}/g,'');
     }
  }
 

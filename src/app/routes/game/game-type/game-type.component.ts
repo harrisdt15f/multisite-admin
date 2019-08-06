@@ -322,8 +322,8 @@ export class GameGameTypeComponent implements OnInit {
      begin_time: new Date(),
      issue_seconds: 1,
      first_time: new Date(),
-     adjust_time: 1,
-     encode_time: 1,
+     adjust_time: 0,
+     encode_time: 0,
      issue_count: 1,
      status: '0'
     }];
@@ -603,8 +603,8 @@ export class GameGameTypeComponent implements OnInit {
         begin_time: new Date(),
         issue_seconds: 1,
         first_time: new Date(),
-        adjust_time: 1,
-        encode_time: 1,
+        adjust_time: 0,
+        encode_time: 0,
         issue_count: 1,
         status: '0'
        }];
@@ -614,8 +614,8 @@ export class GameGameTypeComponent implements OnInit {
           end_time: new Date(),
           issue_seconds: 1,
           first_time: new Date(),
-          adjust_time: 1,
-          encode_time: 1,
+          adjust_time: 0,
+          encode_time: 0,
           issue_count: 1,
           status: '0'
          });

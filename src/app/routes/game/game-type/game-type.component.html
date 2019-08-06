@@ -231,7 +231,7 @@
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item style="width: 46%">
+        <nz-form-item style="width: 46%" class='day_issue'>
           <nz-form-label nzFor="day_issue" nzRequired [nzSm]="9" [nzXs]="24">每日最大开奖次数</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
               <span class="add" (click)="maxTraceNumberCount('day_issue', '-')">-</span>
@@ -542,7 +542,7 @@
                   class="add-input"
                   maxlength="6"
                   (keyup)="maxTraceNumber('adjust_time', false, 2)"
-                  formControlName="adjust_time" nz-input placeholder="1"
+                  formControlName="adjust_time" nz-input [placeholder]="item['adjust_time']"
                   [(ngModel)]="item['adjust_time']"
                   />
                 <span class="add add-right" (click)="maxTraceNumberCount('adjust_time', '+', 2)">+</span>
@@ -565,7 +565,7 @@
                   class="add-input"
                   maxlength="6"
                   (keyup)="maxTraceNumber('encode_time', false, 2)"
-                  formControlName="encode_time" nz-input placeholder="1"
+                  formControlName="encode_time" nz-input [placeholder]="item['encode_time']"
                   [(ngModel)]="item['encode_time']"
                   />
                 <span class="add add-right" (click)="maxTraceNumberCount('encode_time', '+', 2)">+</span>
