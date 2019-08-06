@@ -311,7 +311,6 @@ export class GameGameTypeComponent implements OnInit {
      status: '0'
     }];
     setTimeout(() => {
-      console.log(document.getElementById('cropedBigImg'))
       document.getElementById('cropedBigImg')['src'] = '';
     }, 30)
     this.positions();

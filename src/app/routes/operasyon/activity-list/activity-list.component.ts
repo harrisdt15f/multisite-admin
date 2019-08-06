@@ -27,8 +27,18 @@ export class OperasyonActivityListComponent implements OnInit {
   public sortName: string | null = null;
   public sortValue: string | null = null;
   public serviceHttpIri: string | null = null;
-
-
+  // activity
+  public page_tabs = [
+    {title: '电脑端'},
+    {title: '移动端'},
+  ];
+  public activity = {
+    list: {
+      type: '1',
+      page_size: 20,
+      page: 1
+    }
+  }
 
   public status_type = [
     { text: '关闭', value: '0' },
@@ -43,6 +53,8 @@ export class OperasyonActivityListComponent implements OnInit {
   public is_edit_activity = false;
   public file_obj: any;
   public file_iri: string;
+  public fileIriPreviewObj: any;
+  public fileIriPreview: string;
 
   public edit_activity_obj: object = {
 
@@ -67,9 +79,20 @@ export class OperasyonActivityListComponent implements OnInit {
       start_time: [null],
       end_time: [null],
       status: [null, [Validators.required]],
-      redirect_url: [null, [Validators.required]],
       is_time_interval: [null, [Validators.required]],
+      is_redirect: [null, [Validators.required]],
+      redirect_url: [null, [Validators.required]]
     });
+  }
+
+  // 切换类型
+  public change_index(e: any) {
+    if (!e) {
+      this.activity['list']['type'] = '1';
+    } else {
+      this.activity['list']['type'] = '2';
+    }
+    this.search(1);
   }
   /**
    * 拉动排序
@@ -143,6 +166,15 @@ export class OperasyonActivityListComponent implements OnInit {
     document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
   }
 
+  click_update2() {
+    document.getElementById('pic2').click();
+  }
+  updateFire2(item) {
+    this.fileIriPreviewObj = item.target['files'][0];
+    this.fileIriPreview = window.URL.createObjectURL(this.fileIriPreviewObj)
+    document.getElementById('cropedBigImg2').setAttribute('src', this.fileIriPreview);
+  }
+
   /**
    *开始时间变化
    *
@@ -178,7 +210,7 @@ export class OperasyonActivityListComponent implements OnInit {
     this.is_edit_activity = true;
     this.edit_activity_obj = {};
     this.modal_type = 'create';
-
+    document.getElementById('cropedBigImg2').setAttribute('src', '');
   }
 
 
@@ -265,6 +297,7 @@ export class OperasyonActivityListComponent implements OnInit {
     if (this.searchValue) {
       option['title'] = this.searchValue;
     }
+    option['type'] = this.activity.list.type;
     this.get_activity_aply_list(page ? page : 1, option);
   }
   /**
@@ -274,7 +307,6 @@ export class OperasyonActivityListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   chang_page_index(item) {
-    // this.get_activity_aply_list(item);
     this.page_index=item;
     this.search(item);
   }
@@ -341,9 +373,11 @@ export class OperasyonActivityListComponent implements OnInit {
       "title": this.edit_activity_obj['title'],
       "content": this.edit_activity_obj['content'],
       "pic": this.file_obj,
+      "preview_pic": this.fileIriPreviewObj,
       "status": this.edit_activity_obj['status'],
       "redirect_url": this.edit_activity_obj['redirect_url'],
       "is_time_interval": this.edit_activity_obj['is_time_interval'],
+      "is_redirect": this.edit_activity_obj['is_redirect'],
     };
     if (this.edit_activity_obj['start_time']) {
       option['start_time'] = Utils.change_date(this.edit_activity_obj['start_time'], 'time');
@@ -353,14 +387,17 @@ export class OperasyonActivityListComponent implements OnInit {
     }
     var op: FormData = new FormData();
     if (this.file_obj) op.append('pic', this.file_obj, this.file_obj.name);
+    if (this.fileIriPreviewObj) op.append('preview_pic', this.fileIriPreviewObj, this.fileIriPreviewObj.name);
     if (option.id) op.append('id', option['id']);
     op.append('title', option['title']);
     op.append('content', option['content']);
     if (option['start_time']) op.append('start_time', option['start_time']);
     if (option['end_time']) op.append('end_time', option['end_time']);
     op.append('status', option['status']);
+    op.append('is_redirect', option['is_redirect']);
     op.append('redirect_url', option['redirect_url']);
     op.append('is_time_interval', option['is_time_interval']);
+    op.append('type', this.activity.list.type);
     if (this.modal_type === 'create') {
       this.userManageService.add_activity(op).subscribe((res: any) => {
         this.modal_lodding = false;
@@ -369,11 +406,11 @@ export class OperasyonActivityListComponent implements OnInit {
           this.search();
           this.update_form();
           this.message.success('创建活动成功', {
-            nzDuration: 10000,
+            nzDuration: 2500,
           });
         } else {
           this.message.error(res.message, {
-            nzDuration: 10000,
+            nzDuration: 2500,
           });
         }
       })
@@ -385,12 +422,12 @@ export class OperasyonActivityListComponent implements OnInit {
           this.search();
           this.update_form();
           this.message.success('修改活动成功', {
-            nzDuration: 10000,
+            nzDuration: 2500,
           });
         } else {
 
           this.message.error(res.message, {
-            nzDuration: 10000,
+            nzDuration: 2500,
           });
         }
       })

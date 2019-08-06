@@ -30,6 +30,19 @@ export class OperasyonBannarComponent implements OnInit {
   public file_obj: any;
   public file_iri: string;
 
+  // banner
+  public page_tabs = [
+    {title: '电脑端'},
+    {title: '移动端'},
+  ];
+  public banner = {
+    list: {
+      type: '1',
+      page_size: 20,
+      page: 1
+    }
+  }
+
   constructor(
     private http: _HttpClient,
     private fb: FormBuilder,
@@ -55,6 +68,16 @@ export class OperasyonBannarComponent implements OnInit {
       pic: [null],
     });
   }
+  // 切换轮播
+  public change_index(e: any) {
+    if (!e) {
+      this.banner['list']['type'] = '1';
+    } else {
+      this.banner['list']['type'] = '2';
+    }
+    this.get_bannar_list();
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     let old_array = JSON.parse(JSON.stringify(this.list_of_aply_data));
     moveItemInArray(this.list_of_aply_data, event.previousIndex, event.currentIndex);
@@ -264,7 +287,7 @@ export class OperasyonBannarComponent implements OnInit {
    */
   get_bannar_list() {
     this.is_load_list = true;
-    this.managerService.get_banner_list().subscribe((res: any) => {
+    this.managerService.get_banner_list(this.banner['list']['type']).subscribe((res: any) => {
       if (res && res.success) {
 
         this.is_load_list = false;
@@ -288,6 +311,7 @@ export class OperasyonBannarComponent implements OnInit {
     this.is_show_box = true;
     this.modal_type = 'create';
     this.update_form();
+    document.getElementById('cropedBigImg').setAttribute('src', '');
   }
 
 
@@ -374,6 +398,7 @@ export class OperasyonBannarComponent implements OnInit {
     op.append('content', this.edit_bannar_obj['content']);
     op.append('title', this.edit_bannar_obj['title']);
     op.append('type', this.edit_bannar_obj['type']);
+    op.append('flag', this.banner.list.type);
     if (this.edit_bannar_obj['id']) {
       op.append('id', this.edit_bannar_obj['id']);
     }

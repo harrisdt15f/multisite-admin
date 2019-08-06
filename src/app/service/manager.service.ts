@@ -190,14 +190,11 @@ sort_bannar(data){
 *
 * @memberof ManagerService
 */
-  get_banner_list() {
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-    const href =  '/api/homepage-rotation-chart/detail';
-    return this.commonService.post(href, {}, { headers: headers });
+  get_banner_list(flag: any) {
+    let data = {
+      flag: flag
+    }
+    return this.commonService.post('/api/homepage-rotation-chart/detail', data);
   }
   /**
   *删除轮播图
@@ -219,14 +216,8 @@ sort_bannar(data){
  * 创建轮播图
  * @memberof ManagerService
  */
-  create_banner(data): Observable<any> {
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-    const href =  '/api/homepage-rotation-chart/add';
-    return this.commonService.post(href, data, { headers: headers });
+  create_banner(data: any) {
+    return this.commonService.post('/api/homepage-rotation-chart/add', data);
   }
   /**
 * 编辑轮播图
