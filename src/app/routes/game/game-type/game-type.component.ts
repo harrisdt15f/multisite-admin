@@ -41,6 +41,7 @@ export class GameGameTypeComponent implements OnInit {
   public modal_lodding: boolean;
   public create_form_lottery: FormGroup;//表单对象
   public create_form_rule: FormGroup;//表单对象
+  public create_form_cron: FormGroup;//表单对象
   public edit_lotteries_obj: object = {};
   public edit_rule_obj = [{
     begin_time: new Date(),
@@ -52,7 +53,14 @@ export class GameGameTypeComponent implements OnInit {
     issue_count: 1,
     status: '0'
    }];;
-  public cronExpression: any='00:00:00'
+  public editCron = {
+    schedule: '00:00:00',
+    status: '0',
+    command: '',
+    param: '',
+    remarks: ''
+  }
+
   public cronOptions: CronOptions = {
     formInputClass: 'form-control cron-editor-input',
     formSelectClass: 'form-control cron-editor-select',
@@ -116,6 +124,13 @@ export class GameGameTypeComponent implements OnInit {
       adjust_time: [null, [Validators.required]],
       encode_time: [null, [Validators.required]],
       issue_count: [null, [Validators.required]]
+    });
+    this.create_form_cron = this.fb.group({
+      schedule: [null, [Validators.required]],
+      status: [null, [Validators.required]],
+      command: [null, [Validators.required]],
+      param: [null, [Validators.required]],
+      remarks: [null, [Validators.required]]
     });
   }
 
@@ -310,6 +325,13 @@ export class GameGameTypeComponent implements OnInit {
      issue_count: 1,
      status: '0'
     }];
+    this.editCron = {
+      schedule: '00:00:00',
+      status: '0',
+      command: '',
+      param: '',
+      remarks: ''
+    }
     setTimeout(() => {
       document.getElementById('cropedBigImg')['src'] = '';
     }, 30)
@@ -486,6 +508,19 @@ export class GameGameTypeComponent implements OnInit {
         begin_time: this.get_time(this.edit_rule_obj[k]['begin_time'])
       });
     }
+    if(this.edit_lotteries_obj['auto_open'] === '1'){
+      option['cron'] = {
+        schedule: this.editCron.schedule,
+        status: this.editCron.status,
+        command: this.editCron.command,
+        param: this.editCron.param,
+        remarks: this.editCron.remarks
+      }
+    } else {
+      if(option['cron']) {
+        delete option['cron'];
+      }
+    }
     
     switch (this.modal_type) {
       case 'create':
@@ -589,7 +624,7 @@ export class GameGameTypeComponent implements OnInit {
   * 点击上一步
   */
   first_form() {
-    this.current = 0;
+    this.current -= 1;
   }
   hide_modal() {
     this.is_show_modal = false;

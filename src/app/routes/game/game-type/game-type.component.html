@@ -104,7 +104,6 @@
     </nz-tabset>
     <nz-modal nzWidth='80%' (nzOnCancel)="hide_modal()" [nzFooter]="null" [(nzVisible)]="is_show_modal"
       [nzTitle]='modal_type==="create"?"添加彩种":"编辑彩种"'>
-      <!-- {{cronExpression}} -->
       <nz-steps *ngIf="edit_lotteries_obj['auto_open']!=='1'" [nzCurrent]="current" nzSize="small">
         <nz-step nzTitle="彩种信息"></nz-step>
         <nz-step nzTitle="彩种规则"></nz-step>
@@ -625,11 +624,63 @@
           <!-- [disabled]="!create_form_rule.valid" -->
         </nz-form-item>
       </form>
-      <div *ngIf='current===2'>
-        <cron-editor [(cron)]="cronExpression" [options]="cronOptions"></cron-editor>
-         <div>
-           生成的表达式：{{cronExpression}}
+      <div *ngIf='current=== 2' class='cron-box'>
+        <cron-editor [(cron)]="editCron.schedule" [options]="cronOptions"></cron-editor>
+         <div style="padding: 31px 0 11px 22px;color: #333;">
+            定时表达式：{{editCron.schedule}}
          </div>
+
+         <form style='margin: 5px 0 30px;' class="from" [nzLayout]="'inline'" nz-form [formGroup]="create_form_cron">
+            <nz-form-item style="display: block;">
+                <nz-form-label nzFor="status" nzRequired [nzSm]="2" [nzXs]="24">是否开启</nz-form-label>
+                <nz-form-control [nzSm]="15" [nzXs]="23">
+                  <nz-radio-group id="status" formControlName="status" [(ngModel)]="editCron['status']">
+                    <label nz-radio nzValue='1'>是</label>
+                    <label nz-radio nzValue='0'>否</label>
+                  </nz-radio-group>
+                </nz-form-control>
+              </nz-form-item>
+            <nz-form-item style="display: block;">
+                <nz-form-label nzFor="command" nzRequired [nzSm]="2" [nzXs]="24">定时任务命令</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                  <input id="command" type="text" formControlName="command" nz-input placeholder="请输入定时任务命令"
+                    [(ngModel)]="editCron['command']" style='width: 888px;' />
+                  <nz-form-explain
+                    *ngIf="create_form_cron.get('command')?.dirty && create_form_cron.get('command')?.errors">
+                    <ng-container *ngIf="create_form_cron.get('command')?.hasError('required')">
+                      请输入定时任务命令!
+                    </ng-container>
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+              <nz-form-item style="display: block;">
+                <nz-form-label nzFor="param" nzRequired [nzSm]="2"  [nzXs]="24">参数</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                  <input id="param" type="text" formControlName="param" nz-input placeholder="请输入参数"
+                    [(ngModel)]="editCron['param']" style='width: 888px;' />
+                  <nz-form-explain
+                    *ngIf="create_form_cron.get('param')?.dirty && create_form_cron.get('param')?.errors">
+                    <ng-container *ngIf="create_form_cron.get('param')?.hasError('required')">
+                      请输入参数!
+                    </ng-container>
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+            <nz-form-item style="display: block;">
+                <nz-form-label nzFor="remarks" nzRequired [nzSm]="2" [nzXs]="24">作用描述</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+                  <input id="remarks" type="text" formControlName="remarks" nz-input placeholder="请输入作用描述"
+                    [(ngModel)]="editCron['remarks']" style='width: 888px;' />
+                  <nz-form-explain
+                    *ngIf="create_form_cron.get('remarks')?.dirty && create_form_cron.get('remarks')?.errors">
+                    <ng-container *ngIf="create_form_cron.get('remarks')?.hasError('required')">
+                      请输入作用描述!
+                    </ng-container>
+                  </nz-form-explain>
+                </nz-form-control>
+              </nz-form-item>
+         </form>
+         <button (click)="first_form()" nz-button nzType="primary" style="margin: 0 20px 0 100px;">上一步</button>
          <button  (click)="submit_lotteries()" nz-button nzType="primary">{{modal_type === "create" ? "创建" : "保存"}}</button>
   
       </div>
