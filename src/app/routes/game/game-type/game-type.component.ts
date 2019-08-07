@@ -32,6 +32,10 @@ export class GameGameTypeComponent implements OnInit {
   public validModesOption = [];
   // 默认显示的文字
   public validModesText = '请选择投注单位';
+  // 添加编辑彩种 彩种规则开始时间单独设置
+  public beginime = []; 
+  public firstTime = []; 
+  public twoTime = new Date(); 
   //----------弹框
   public current = 0;
   public is_show_modal: boolean;
@@ -44,12 +48,12 @@ export class GameGameTypeComponent implements OnInit {
   public create_form_cron: FormGroup;//表单对象
   public edit_lotteries_obj: object = {};
   public edit_rule_obj = [{
-    begin_time: new Date(),
-    end_time: new Date(),
+    begin_time: 0,
+    end_time: 0,
     issue_seconds: 1,
-    first_time: new Date(),
-    adjust_time: 1,
-    encode_time: 1,
+    first_time: 0,
+    adjust_time: 0,
+    encode_time: 0,
     issue_count: 1,
     status: '0'
    }];;
@@ -117,13 +121,27 @@ export class GameGameTypeComponent implements OnInit {
       status: [null, [Validators.required]]
     });
     this.create_form_rule = this.fb.group({
-      begin_time: [null, [Validators.required]],
-      end_time: [null, [Validators.required]],
-      issue_seconds: [null, [Validators.required]],
-      first_time: [null, [Validators.required]],
-      adjust_time: [null, [Validators.required]],
-      encode_time: [null, [Validators.required]],
-      issue_count: [null, [Validators.required]]
+      begin_time0: [null, [Validators.required]],
+      begin_time1: [null, [Validators.required]],
+      begin_time2: [null, [Validators.required]],
+      end_time0: [null, [Validators.required]],
+      end_time1: [null, [Validators.required]],
+      end_time2: [null, [Validators.required]],
+      issue_seconds0: [null, [Validators.required]],
+      issue_seconds1: [null, [Validators.required]],
+      issue_seconds2: [null, [Validators.required]],
+      first_time0: [null, [Validators.required]],
+      first_time1: [null, [Validators.required]],
+      first_time2: [null, [Validators.required]],
+      adjust_time0: [null, [Validators.required]],
+      adjust_time1: [null, [Validators.required]],
+      adjust_time2: [null, [Validators.required]],
+      encode_time0: [null, [Validators.required]],
+      encode_time1: [null, [Validators.required]],
+      encode_time2: [null, [Validators.required]],
+      issue_count0: [null, [Validators.required]],
+      issue_count1: [null, [Validators.required]],
+      issue_count2: [null, [Validators.required]]
     });
     this.create_form_cron = this.fb.group({
       schedule: [null, [Validators.required]],
@@ -318,10 +336,10 @@ export class GameGameTypeComponent implements OnInit {
     this.positionText = '请选择开奖位置';
     this.validModesText = '请选择投注单位';
     this.edit_rule_obj = [{
-     end_time: new Date(),
-     begin_time: new Date(),
+     end_time: 0,
+     begin_time: 0,
      issue_seconds: 1,
-     first_time: new Date(),
+     first_time: 0,
      adjust_time: 0,
      encode_time: 0,
      issue_count: 1,
@@ -422,6 +440,7 @@ export class GameGameTypeComponent implements OnInit {
       icon_path: data['icon_path']
     };
     let rule = [];
+    this.firstTime = [];
     for (let i = 0; i < data['issue_rule'].length; i++) {
       rule.push({
         'adjust_time': data.issue_rule[i]['adjust_time'],
@@ -433,6 +452,7 @@ export class GameGameTypeComponent implements OnInit {
         'end_time': new Date('2019-10-10 ' + data.issue_rule[i]['end_time']),
         'begin_time': new Date('2019-10-10 ' + data.issue_rule[i]['begin_time'])
       });
+      this.firstTime.push()
     }
     this.edit_rule_obj = rule;
     if (data['icon_path']) {
@@ -470,6 +490,8 @@ export class GameGameTypeComponent implements OnInit {
    * 提交表单
    */
   submit_lotteries() {
+    console.log(this.edit_lotteries_obj)
+    console.log(this.edit_rule_obj)
     let option = {
       lottery: {
         series_id: this.lotteries_tabs[this.tab_index].value,
@@ -491,26 +513,26 @@ export class GameGameTypeComponent implements OnInit {
         max_prize_group: this.edit_lotteries_obj['prize_group'][1],
         status: this.edit_lotteries_obj['status'],
         valid_code: this.edit_lotteries_obj['valid_code'],
-        valid_modes: Array.isArray(this.edit_lotteries_obj['valid_modes']) ? this.edit_lotteries_obj['positions'].join(',') : this.edit_lotteries_obj['valid_modes'],
+        valid_modes: Array.isArray(this.edit_lotteries_obj['valid_modes']) ? this.edit_lotteries_obj['valid_modes'].join(',') : this.edit_lotteries_obj['valid_modes'],
         max_profit_bonus: this.edit_lotteries_obj['max_profit_bonus'],
         icon_name: this.edit_lotteries_obj['icon_name'],
         icon_path: this.edit_lotteries_obj['icon_path']
       },
       issue_rule: []
     };
-    for(let k of Object.keys(this.edit_rule_obj)){
+    for(let k of this.edit_rule_obj){
       option.issue_rule.push({
         id: this.edit_lotteries_obj['id'],
         lottery_name: this.edit_lotteries_obj['cn_name'],
         lottery_id: this.edit_lotteries_obj['en_name'],
-        adjust_time: this.edit_rule_obj[k]['adjust_time'],
-        encode_time: this.edit_rule_obj[k]['encode_time'],
-        issue_seconds: this.edit_rule_obj[k]['issue_seconds'],
-        issue_count: this.edit_rule_obj[k]['issue_count'],
-        status: this.edit_lotteries_obj['status'],
-        first_time: this.get_time(this.edit_rule_obj[k]['first_time']),
-        end_time: this.get_time(this.edit_rule_obj[k]['end_time']),
-        begin_time: this.get_time(this.edit_rule_obj[k]['begin_time'])
+        adjust_time: k['adjust_time'],
+        encode_time: k['encode_time'],
+        issue_seconds: k['issue_seconds'],
+        issue_count: k['issue_count'],
+        status: k['status'],
+        first_time: this.get_time(k['first_time']),
+        end_time: this.get_time(k['end_time']),
+        begin_time: this.get_time(k['begin_time'])
       });
     }
     if(this.edit_lotteries_obj['auto_open'] === '1'){
@@ -589,7 +611,6 @@ export class GameGameTypeComponent implements OnInit {
    * 点击下一步
    */
   next_form() {
-    console.log(this.edit_lotteries_obj)
     if(+this.edit_lotteries_obj['max_times'] < +this.edit_lotteries_obj['min_times']) {
       this.message.error('最大下注倍数 不能小于 最小下注倍数', {
         nzDuration: 2500,
@@ -599,10 +620,10 @@ export class GameGameTypeComponent implements OnInit {
 
     if (this.modal_type === 'create') {
       this.edit_rule_obj = [{
-        end_time: new Date(),
-        begin_time: new Date(),
+        end_time: 0,
+        begin_time: 0,
         issue_seconds: 1,
-        first_time: new Date(),
+        first_time: 0,
         adjust_time: 0,
         encode_time: 0,
         issue_count: 1,
@@ -610,18 +631,16 @@ export class GameGameTypeComponent implements OnInit {
        }];
       if (this.edit_lotteries_obj['en_name'] === 'cqssc') {
         this.edit_rule_obj.push({
-          begin_time: new Date(),
-          end_time: new Date(),
+          begin_time: 0,
+          end_time: 0,
           issue_seconds: 1,
-          first_time: new Date(),
+          first_time: 0,
           adjust_time: 0,
           encode_time: 0,
           issue_count: 1,
           status: '0'
          });
       }
-    } else {
-
     }
     this.current += 1;
   }
@@ -689,7 +708,6 @@ export class GameGameTypeComponent implements OnInit {
    */
   change_index(index: number) {
     this.tab_index = index;
-    console.log(this.lotteries_tabs[index])
     if (this.lotteries_tabs[index].lotteries) {
       this.list_of_aply_data = this.lotteries_tabs[index].lotteries;
     } else {
