@@ -443,6 +443,7 @@ export class GameGameTypeComponent implements OnInit {
     this.firstTime = [];
     for (let i = 0; i < data['issue_rule'].length; i++) {
       rule.push({
+        'id': data.issue_rule[i]['id'],
         'adjust_time': data.issue_rule[i]['adjust_time'],
         'encode_time': data.issue_rule[i]['encode_time'],
         'issue_seconds': data.issue_rule[i]['issue_seconds'],
@@ -490,8 +491,6 @@ export class GameGameTypeComponent implements OnInit {
    * 提交表单
    */
   submit_lotteries() {
-    console.log(this.edit_lotteries_obj)
-    console.log(this.edit_rule_obj)
     let option = {
       lottery: {
         series_id: this.lotteries_tabs[this.tab_index].value,
@@ -522,14 +521,14 @@ export class GameGameTypeComponent implements OnInit {
     };
     for(let k of this.edit_rule_obj){
       option.issue_rule.push({
-        id: this.edit_lotteries_obj['id'],
+        id: k['id'],
         lottery_name: this.edit_lotteries_obj['cn_name'],
         lottery_id: this.edit_lotteries_obj['en_name'],
         adjust_time: k['adjust_time'],
         encode_time: k['encode_time'],
         issue_seconds: k['issue_seconds'],
         issue_count: k['issue_count'],
-        status: k['status'],
+        status: this.edit_lotteries_obj['status'],
         first_time: this.get_time(k['first_time']),
         end_time: this.get_time(k['end_time']),
         begin_time: this.get_time(k['begin_time'])
