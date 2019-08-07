@@ -244,7 +244,7 @@ export class GameGameTypeComponent implements OnInit {
     this.validModesOption = result;
   }
   //  加减
-  public maxTraceNumberCount(obj: any, type: any, number = 1) {
+  public maxTraceNumberCount(obj: any, type: any, number = 1, index: any) {
     if (number === 1) {
       if (type === '-') {
         if (+this.edit_lotteries_obj[obj] > 0) {
@@ -255,20 +255,20 @@ export class GameGameTypeComponent implements OnInit {
       }
     } else {
       if (type === '-') {
-        if (+this.edit_rule_obj[0][obj] > 0) {
-          +this.edit_rule_obj[0][obj] --;
+        if (+this.edit_rule_obj[index][obj] > 0) {
+          +this.edit_rule_obj[index][obj] --;
         }
       } else {
-        +this.edit_rule_obj[0][obj] ++;
+        +this.edit_rule_obj[index][obj] ++;
       }
     }
   }
   // 限制输入数字
-  public maxTraceNumber(obj: any, type = false, number = 1) {
+  public maxTraceNumber(obj: any, type = false, number = 1, index: any) {
     if (number === 1) {
       this.edit_lotteries_obj[obj] = Utils.number(this.edit_lotteries_obj[obj], type);
     } else {
-      this.edit_rule_obj[0][obj] = Utils.number(this.edit_rule_obj[0][obj], type);
+      this.edit_rule_obj[index][obj] = Utils.number(this.edit_rule_obj[index][obj], type);
     }
   }
   // 添加彩种icon

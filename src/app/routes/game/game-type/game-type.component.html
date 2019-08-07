@@ -486,17 +486,17 @@
           <nz-form-item class='issue_seconds'>
             <nz-form-label [nzFor]="'issue_seconds' + i" nzRequired [nzSm]="10" [nzXs]="24">周期（秒）</nz-form-label>
             <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="23">
-                <span class="add" (click)="maxTraceNumberCount('issue_seconds', '-', 2)">-</span>
+                <span class="add" (click)="maxTraceNumberCount('issue_seconds', '-', 2, i)">-</span>
                 <input
                   id="issue_seconds"
                   type="text"
                   class="add-input"
                   maxlength="6"
-                  (keyup)="maxTraceNumber('issue_seconds', false, 2)"
+                  (keyup)="maxTraceNumber('issue_seconds', false, 2, i)"
                   [formControlName]="'issue_seconds' + i" nz-input placeholder="1"
                   [(ngModel)]="item['issue_seconds']"
                   />
-                <span class="add add-right" (click)="maxTraceNumberCount('issue_seconds', '+', 2)">+</span>
+                <span class="add add-right" (click)="maxTraceNumberCount('issue_seconds', '+', 2, i)">+</span>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
@@ -509,49 +509,49 @@
           <nz-form-item class='adjust-time'>
             <nz-form-label [nzFor]="'adjust_time' + i" nzRequired [nzSm]="10" [nzXs]="24">截止时间(秒)</nz-form-label>
             <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="23">
-                <span class="add" (click)="maxTraceNumberCount('adjust_time', '-', 2)">-</span>
+                <span class="add" (click)="maxTraceNumberCount('adjust_time', '-', 2, i)">-</span>
                 <input
                   id="adjust_time"
                   type="text"
                   class="add-input"
                   maxlength="6"
-                  (keyup)="maxTraceNumber('adjust_time', false, 2)"
+                  (keyup)="maxTraceNumber('adjust_time', false, 2, i)"
                   [formControlName]="'adjust_time' + i" nz-input [placeholder]="item['adjust_time']"
                   [(ngModel)]="item['adjust_time']"
                   />
-                <span class="add add-right" (click)="maxTraceNumberCount('adjust_time', '+', 2)">+</span>
+                <span class="add add-right" (click)="maxTraceNumberCount('adjust_time', '+', 2, i)">+</span>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item class='encode-time'>
             <nz-form-label [nzFor]="'encode_time' + i" nzRequired [nzSm]="10" [nzXs]="24">录号时间</nz-form-label>
             <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="23">
-                <span class="add" (click)="maxTraceNumberCount('encode_time', '-', 2)">-</span>
+                <span class="add" (click)="maxTraceNumberCount('encode_time', '-', 2, i)">-</span>
                 <input
                   id="encode_time"
                   type="text"
                   class="add-input"
                   maxlength="6"
-                  (keyup)="maxTraceNumber('encode_time', false, 2)"
+                  (keyup)="maxTraceNumber('encode_time', false, 2, i)"
                   [formControlName]="'encode_time' + i" nz-input [placeholder]="item['encode_time']"
                   [(ngModel)]="item['encode_time']"
                   />
-                <span class="add add-right" (click)="maxTraceNumberCount('encode_time', '+', 2)">+</span>
+                <span class="add add-right" (click)="maxTraceNumberCount('encode_time', '+', 2, i)">+</span>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item class='issue-count'>
             <nz-form-label [nzFor]="'issue_count' + i" nzRequired [nzSm]="10" [nzXs]="24">奖期期数</nz-form-label>
             <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="23">
-                <span class="add" (click)="maxTraceNumberCount('issue_count', '-', 2)">-</span>
+                <span class="add" (click)="maxTraceNumberCount('issue_count', '-', 2, i)">-</span>
                 <input
                   id="issue_count"
                   type="text"
                   class="add-input"
                   maxlength="6"
-                  (keyup)="maxTraceNumber('issue_count', false, 2)"
+                  (keyup)="maxTraceNumber('issue_count', false, 2, i)"
                   [formControlName]="'issue_count' + i" nz-input placeholder="1"
                   [(ngModel)]="item['issue_count']"
                   />
-                <span class="add add-right" (click)="maxTraceNumberCount('issue_count', '+', 2)">+</span>
+                <span class="add add-right" (click)="maxTraceNumberCount('issue_count', '+', 2, i)">+</span>
             </nz-form-control>
           </nz-form-item>
         </section>
