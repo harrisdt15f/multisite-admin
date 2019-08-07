@@ -160,8 +160,8 @@ export class GameGameTypeComponent implements OnInit {
       let arr = ['0', 1, 2, 3, 4, 5, 6, 7, 8, 9];
       result[0] = {
         title: '全选',
-        value: '0, 1, 2, 3, 4, 5, 6, 7, 8, 9',
-        key: '0, 1, 2, 3, 4, 5, 6, 7, 8, 9',
+        value: '0,1,2,3,4,5,6,7,8,9',
+        key: '0,1,2,3,4,5,6,7,8,9',
         children: [],
         isLeaf: false
       }
@@ -177,8 +177,8 @@ export class GameGameTypeComponent implements OnInit {
       let arr = [1, 2, 3, 4, 5, 6, 7];
       result[0] = {
         title: '全选',
-        value: '1, 2, 3, 4, 5, 6, 7',
-        key: '1, 2, 3, 4, 5, 6, 7',
+        value: '1,2,3,4,5,6,7',
+        key: '1,2,3,4,5,6,7',
         children: [],
         isLeaf: false
       }
@@ -200,8 +200,8 @@ export class GameGameTypeComponent implements OnInit {
       ];
       result[0] = {
         title: '全选',
-        value: '万, 千, 百, 十, 个',
-        key: 'w, q, b, s, g',
+        value: '万,千,百,十,个',
+        key: 'w,q,b,s,g',
         children: [],
         isLeaf: false
       }
@@ -227,8 +227,8 @@ export class GameGameTypeComponent implements OnInit {
     ];
     result[0] = {
       title: '全选',
-      value: '1, 2, 3',
-      key: '1, 2, 3',
+      value: '1,2,3',
+      key: '1,2,3',
       children: [],
       isLeaf: false
     }
