@@ -49,10 +49,10 @@ export class GameGameTypeComponent implements OnInit {
   public edit_lotteries_obj: object = {};
   public edit_rule_obj = [{
     id: 1,
-    begin_time: 0,
-    end_time: 0,
+    begin_time: new Date('2019-10-10 00:00:00'),
+    end_time: new Date('2019-10-10  00:00:00'),
     issue_seconds: 1,
-    first_time: 0,
+    first_time: new Date('2019-10-10  00:00:00'),
     adjust_time: 0,
     encode_time: 0,
     issue_count: 1,
@@ -338,10 +338,10 @@ export class GameGameTypeComponent implements OnInit {
     this.validModesText = '请选择投注单位';
     this.edit_rule_obj = [{
      id: 1,
-     end_time: 0,
-     begin_time: 0,
+     begin_time: new Date('2019-10-10 00:00:00'),
+     end_time: new Date('2019-10-10  00:00:00'),
      issue_seconds: 1,
-     first_time: 0,
+     first_time: new Date('2019-10-10  00:00:00'),
      adjust_time: 0,
      encode_time: 0,
      issue_count: 1,
@@ -622,10 +622,10 @@ export class GameGameTypeComponent implements OnInit {
     if (this.modal_type === 'create') {
       this.edit_rule_obj = [{
         id: 1,
-        end_time: 0,
-        begin_time: 0,
+        begin_time: new Date('2019-10-10 00:00:00'),
+        end_time: new Date('2019-10-10  00:00:00'),
         issue_seconds: 1,
-        first_time: 0,
+        first_time: new Date('2019-10-10  00:00:00'),
         adjust_time: 0,
         encode_time: 0,
         issue_count: 1,
@@ -634,10 +634,10 @@ export class GameGameTypeComponent implements OnInit {
       if (this.edit_lotteries_obj['en_name'] === 'cqssc') {
         this.edit_rule_obj.push({
           id: 2,
-          begin_time: 0,
-          end_time: 0,
+          begin_time: new Date('2019-10-10 00:00:00'),
+          end_time: new Date('2019-10-10  00:00:00'),
           issue_seconds: 1,
-          first_time: 0,
+          first_time: new Date('2019-10-10  00:00:00'),
           adjust_time: 0,
           encode_time: 0,
           issue_count: 1,
