@@ -146,6 +146,9 @@ export class GameLotteryIssueComponent implements OnInit {
     })
   }
   handle_ok() {
+    console.log(this.input_number_obj)
+    console.log(this.encode_splitter)
+    console.log(this.input_number_obj['obj'].lottery.series_id)
     let option = {
       lottery_id: this.input_number_obj['obj'].lottery_id,
       issue: this.input_number_obj['obj'].issue,
@@ -160,7 +163,6 @@ export class GameLotteryIssueComponent implements OnInit {
           nzDuration: 10000,
         });
         this.search();
-
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,
@@ -357,8 +359,7 @@ export class GameLotteryIssueComponent implements OnInit {
     if (this.lotteries_tabs[this.tab_index].value != 10086) {
       this.get_lotteries_list();
     
-        this.encode_splitter=this.lotteries_tabs[this.tab_index].encode_splitter;
-      
+        this.encode_splitter = this.lotteries_tabs[this.tab_index].encode_splitter === null ? '' : this.lotteries_tabs[this.tab_index].encode_splitter;
     }
 
 
