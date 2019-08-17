@@ -57,7 +57,6 @@ export class DeveloperBettingMenuComponent implements OnInit {
     this.load_menu();
 
     // this.edit_menu_nodes = this.startupService.menu_list;
-    console.log(this.edit_menu_nodes);
     this.create_form = this.fb.group({
       label: [null, [Validators.required]],
       pid: [null],
@@ -95,6 +94,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
         break;
     };
     this.get_route_list();
+    this.load_menu();
   }
   //-----------------------start 
   openFolder(data: NzTreeNode | Required<NzFormatEmitEvent>): void {
@@ -134,6 +134,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
     let data = {
       type: this.page_type
     }
+    console.log(this.page_type)
     this.developerService.get_route_new_api_list(data).subscribe((res: any) => {
       if (res && res.success) {
         res.data.route_info.forEach((item, index) => {
