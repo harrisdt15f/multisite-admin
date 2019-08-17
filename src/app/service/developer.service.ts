@@ -289,14 +289,12 @@ delete_route(data){
  *
  * @memberof UserManageService
  */
-add_betting_route(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/frontend-web-route/add';
-  return this.commonService.post(href, data,{ headers: headers });
+add_betting_route(data: any){
+  let href = '/api/frontend-web-route/add';
+  if(data['type'] === 3) {
+   href = '/api/frontend-app-route/add';
+  }
+  return this.commonService.post(href, data);
 }
   /**
  *是否开放路由
@@ -338,14 +336,12 @@ is_open_admin_route(data){
  *
  * @memberof UserManageService
  */
-delete_betting_route(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/frontend-web-route/delete';
-  return this.commonService.post(href, data,{ headers: headers });
+public delete_betting_route(data: any){
+  let href =  '/api/frontend-web-route/delete';
+  if (+data['type'] === 3) {
+    href = '/api/frontend-app-route/delete';
+  }
+  return this.commonService.post(href, data);
 }
 
 

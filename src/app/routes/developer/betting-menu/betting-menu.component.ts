@@ -134,7 +134,6 @@ export class DeveloperBettingMenuComponent implements OnInit {
     let data = {
       type: this.page_type
     }
-    console.log(this.page_type)
     this.developerService.get_route_new_api_list(data).subscribe((res: any) => {
       if (res && res.success) {
         res.data.route_info.forEach((item, index) => {
@@ -358,7 +357,9 @@ export class DeveloperBettingMenuComponent implements OnInit {
    */
 
   submit_route() {
+
     let option = {
+      id: this.edit_route_obj['id'],
       route_name: this.route_choise_obj['route_name'],
       controller: this.route_choise_obj['controller'].split('@')[0],
       method: this.route_choise_obj['controller'].split('@')[1],
@@ -369,7 +370,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
     if (this.modal_type == 'create') {
       this.add_route_submit(option);
     } else if (this.modal_type == 'edit') {
-      // this.edit_route_submit(option);
+      this.edit_route_submit(option);
     }
   }
   /**
@@ -378,7 +379,8 @@ export class DeveloperBettingMenuComponent implements OnInit {
   * @param {*} data
   * @memberof OperasyonArticleManageComponent
   */
-  add_route_submit(data) {
+  add_route_submit(data: any) {
+    data['type'] = +this.page_type;
     this.developerService.add_betting_route(data).subscribe((res: any) => {
       this.isOkLoading = false;
       if (res && res.success) {
@@ -404,26 +406,27 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * @param {*} data
    * @memberof OperasyonArticleManageComponent
    */
-  // edit_route_submit(data) {
-  //   this.developerService.edit_route(data).subscribe((res: any) => {
-  //     this.isOkLoading = false;
-  //     if (res && res.success) {
-  //       this.is_show_edit_route = false;
-  //       this.get_route_list();
+  public edit_route_submit(data: any) {
+    data['type'] = +this.page_type;
+    this.developerService.edit_route(data).subscribe((res: any) => {
+      this.isOkLoading = false;
+      if (res && res.success) {
+        this.is_show_edit_route = false;
+        this.get_route_list();
 
-  //       this.update_form();
-  //       this.message.success('修改模块成功', {
-  //         nzDuration: 10000,
-  //       });
+        this.update_form();
+        this.message.success('修改路由成功', {
+          nzDuration: 10000,
+        });
 
-  //     } else {
+      } else {
 
-  //       this.message.error(res.message, {
-  //         nzDuration: 10000,
-  //       });
-  //     }
-  //   })
-  // }
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
 
   /**
    *提交模块
@@ -479,7 +482,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * @param {*} data
    * @memberof OperasyonArticleManageComponent
    */
-  edit_menu_submit(data) {
+  edit_menu_submit(data: any) {
     this.developerService.edit_model(data).subscribe((res: any) => {
       this.isOkLoading = false;
       if (res && res.success) {
@@ -503,7 +506,7 @@ export class DeveloperBettingMenuComponent implements OnInit {
    * 编辑路由
    * @param data 
    */
-  edit_route(data) {
+ public edit_route(data: any) {
     this.is_show_edit_route = true;
     this.modal_type = 'edit';
 
@@ -520,7 +523,8 @@ export class DeveloperBettingMenuComponent implements OnInit {
    */
   delete_route(data) {
     let option = {
-      id: data.key
+      id: data.key,
+      type: +this.page_type
     }
     this.developerService.delete_betting_route(option).subscribe((res: any) => {
       this.isOkLoading = false;

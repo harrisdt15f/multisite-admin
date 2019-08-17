@@ -84,7 +84,7 @@
                       <a style='color:blue' (click)='add_route(node.origin)'> 添加路由</a>
                     </span>
                     <span *ngIf='node.origin.is_route' class="folder-desc">
-                      <a (click)='edit_route(node.origin)'>编辑</a>
+                      <!-- <a (click)='edit_route(node.origin)'>编辑</a> -->
                       <nz-divider nzType="vertical"></nz-divider>
                       <a style='color:#1D90FF' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
                         (nzOnConfirm)="delete_route(node.origin)">删除</a>
@@ -103,7 +103,7 @@
                         nzUnCheckedChildren="关"></nz-switch>
                     </span>
                     <span *ngIf='node.origin.is_route' class="folder-desc">
-                      <a (click)='edit_route(node.origin)'>编辑</a>
+                      <!-- <a (click)='edit_route(node.origin)'>编辑</a> -->
                       <nz-divider nzType="vertical"></nz-divider>
                       <a style='color:blue' nz-popconfirm nzTitle="确认删除这个路由吗?" nzOkText="删除" nzCancelText="取消"
                         (nzOnConfirm)="delete_route(node.origin)">删除</a>
