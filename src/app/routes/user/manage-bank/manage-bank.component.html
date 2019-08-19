@@ -16,11 +16,11 @@
         <tr>
           <th>ID</th>
           <th nzCustomFilter>
-            开户银行
+            <span class="search">开户银行</span>
             <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" (nzVisibleChange)="reset()" nzTableFilter #dropdown2>
                 <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
                 <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索银行" [(ngModel)]="listData.bank_sign" />
+                  <input type="text" nz-input placeholder="搜索银行" [(ngModel)]="listData.bank_name" />
                   <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
                     搜索
                   </button>
@@ -28,10 +28,22 @@
                 </div>
               </nz-dropdown>
           </th>
-          <th>开户支行</th>
           <th nzCustomFilter>
-            银行卡号
-            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" nzTableFilter #dropdown3>
+            <span class="search">开户支行</span>
+            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" (nzVisibleChange)="reset()" (nzVisibleChange)="reset()" nzTableFilter #dropdown3>
+                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
+                <div class="search-box">
+                  <input type="text" nz-input placeholder="搜索支行" [(ngModel)]="listData.branch" />
+                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                    搜索
+                  </button>
+                  <!-- <button nz-button nzSize="small" (click)="reset()">取消</button> -->
+                </div>
+              </nz-dropdown>
+          </th>
+          <th nzCustomFilter>
+            <span class="search">银行卡号</span>
+            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()" nzTableFilter #dropdown4>
                 <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
                 <div class="search-box">
                   <input type="text" nz-input placeholder="搜索卡号" [(ngModel)]="listData.card_number" />
@@ -41,10 +53,21 @@
                 </div>
               </nz-dropdown>
           </th>
-          <th>标示</th>
           <th nzCustomFilter>
-            用户名称
-            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" nzTableFilter #dropdown4>
+              <span class="search">标识</span>
+              <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()" nzTableFilter #dropdown5>
+                  <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
+                  <div class="search-box">
+                    <input type="text" nz-input placeholder="搜索银行" [(ngModel)]="listData.bank_sign" />
+                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                      搜索
+                    </button>
+                  </div>
+                </nz-dropdown>
+          </th>
+          <th nzCustomFilter>
+            <span class="search">用户名称</span> 
+            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()" nzTableFilter #dropdown6>
                 <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
                 <div class="search-box">
                   <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="listData.username" />
@@ -55,8 +78,8 @@
               </nz-dropdown>
           </th>
           <th nzCustomFilter>
-            银行卡户名
-              <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" nzTableFilter #dropdown4>
+            <span class="search">银行卡户名</span>
+              <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()"  nzTableFilter #dropdown7>
                   <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
                   <div class="search-box">
                     <input type="text" nz-input placeholder="搜索户名" [(ngModel)]="listData.owner_name" />
@@ -66,7 +89,9 @@
                   </div>
                 </nz-dropdown>
           </th>
-          <th>状态</th>
+          <th>
+            状态
+          </th>
           <th>创建时间</th>
         </tr>
       </thead>
@@ -74,7 +99,7 @@
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
             <td>{{ data.id }}</td>
-            <td>{{ data.bank_name }} {{ data.bank_sign }}</td>
+            <td>{{ data.bank_name }}</td>
             <td>{{ data.branch }}</td>
             <td>{{ data.card_number }}</td>
             <td>{{ data.bank_sign }}</td>

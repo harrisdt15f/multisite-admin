@@ -13,10 +13,13 @@ export class ManageBankComponent implements OnInit {
     total: 0
   }
   public listData = {
+    bank_name: null,
+    branch: null,
     username: null,
     owner_name: null,
     card_number: null,
-    bank_sign: null
+    bank_sign: null,
+    status: null
   }
   public searchs = {
     show: true
@@ -70,10 +73,13 @@ export class ManageBankComponent implements OnInit {
   // 取消搜索
   reset() {
     this.listData = {
+      bank_name: null,
+      branch: null,
       username: null,
       owner_name: null,
       card_number: null,
-      bank_sign: null
+      bank_sign: null,
+      status: null
     }
   }
 }
