@@ -101,9 +101,10 @@ export class OperasyonHelperComponent implements OnInit {
     let option = {
       pid: this.pid,
       menu: this.helper_obj['menu'],
+      content: this.helper_obj['content'],
       status: this.helper_obj['status']
     };
-    if (!this.is_parent&&option['content']) {
+    if (!this.is_parent && option['content']) {
       let img_obj = Utils.get_img_iri(this.helper_obj['content'], 'remove');
       option['content'] = img_obj.content;
     }
