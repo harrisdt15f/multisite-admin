@@ -453,7 +453,7 @@
         </nz-form-item>
         <nz-form-item nz-row style="margin-top:20px;width: 100%">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button (click)="next_form()" nz-button
+            <button (click)="next_form(1)" nz-button
               nzType="primary">下一步</button>
               <!-- [disabled]="!create_form_lottery.valid" -->
           </nz-form-control>
@@ -559,7 +559,7 @@
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <button (click)="first_form()" nz-button nzType="primary">上一步</button>
             <button *ngIf="edit_lotteries_obj['auto_open']==='1'"
-              (click)="next_form()" nz-button nzType="primary">下一步</button>
+              (click)="next_form(2)" nz-button nzType="primary">下一步</button>
             <button *ngIf="edit_lotteries_obj['auto_open']!=='1'" (click)="submit_lotteries()" nz-button nzType="primary">{{modal_type === "create" ? "创建" : "保存"}}</button>
           </nz-form-control>
           <!-- [disabled]="!create_form_rule.valid" -->

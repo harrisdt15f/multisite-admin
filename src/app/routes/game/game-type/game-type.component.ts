@@ -611,29 +611,17 @@ export class GameGameTypeComponent implements OnInit {
   /**
    * 点击下一步
    */
-  next_form() {
+  next_form(obj: any) {
     if(+this.edit_lotteries_obj['max_times'] < +this.edit_lotteries_obj['min_times']) {
       this.message.error('最大下注倍数 不能小于 最小下注倍数', {
         nzDuration: 2500,
       });
       return;
     }
-
-    if (this.modal_type === 'create') {
-      this.edit_rule_obj = [{
-        id: 1,
-        begin_time: new Date('2019-10-10 00:00:00'),
-        end_time: new Date('2019-10-10  00:00:00'),
-        issue_seconds: 1,
-        first_time: new Date('2019-10-10  00:00:00'),
-        adjust_time: 0,
-        encode_time: 0,
-        issue_count: 1,
-        status: '0'
-       }];
-      if (this.edit_lotteries_obj['en_name'] === 'cqssc') {
-        this.edit_rule_obj.push({
-          id: 2,
+    if (+obj === 1) {
+      if (this.modal_type === 'create') {
+        this.edit_rule_obj = [{
+          id: 1,
           begin_time: new Date('2019-10-10 00:00:00'),
           end_time: new Date('2019-10-10  00:00:00'),
           issue_seconds: 1,
@@ -642,8 +630,24 @@ export class GameGameTypeComponent implements OnInit {
           encode_time: 0,
           issue_count: 1,
           status: '0'
-         });
+         }];
+        if (this.edit_lotteries_obj['en_name'] === 'cqssc') {
+          this.edit_rule_obj.push({
+            id: 2,
+            begin_time: new Date('2019-10-10 00:00:00'),
+            end_time: new Date('2019-10-10  00:00:00'),
+            issue_seconds: 1,
+            first_time: new Date('2019-10-10  00:00:00'),
+            adjust_time: 0,
+            encode_time: 0,
+            issue_count: 1,
+            status: '0'
+           });
+        }
       }
+    }
+    if (+this.edit_lotteries_obj['auto_open'] !== 0) {
+
     }
     this.current += 1;
   }
