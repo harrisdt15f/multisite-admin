@@ -67,7 +67,7 @@
         <section class="item-box">
             <nz-form-label nzFor="xlbs" nzRequired [nzSm]="4" [nzXs]="24" class="lable">奖金差值</nz-form-label>
             <input id="xlbs"
-            (keyup)="priceNumber(lotterySeries['price_difference'])"
+            (keyup)="priceNumber()"
             maxlength="18"
             [(ngModel)]="lotterySeries['price_difference']" type="text" nz-input placeholder="请输入奖金差值"  class="lable-input"/>
         </section>
