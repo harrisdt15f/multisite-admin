@@ -63,6 +63,11 @@ export class LotterySeriesComponent implements OnInit {
   }
   // 提交 修改 创建
   public submit() {
+    if(this.lotterySeries['encode_splitter'] === 'null') {
+      this.lotterySeries['encode_splitter'] = null;
+    } else if(this.lotterySeries['encode_splitter'] === ' ') {
+      this.lotterySeries['encode_splitter'] = 'space';
+    }
     if (!this.modal_type) {
       this.Api.lotterySeriesAdd(this.lotterySeries).subscribe((response: any) => {
         if (response && response['success']) {
@@ -74,11 +79,6 @@ export class LotterySeriesComponent implements OnInit {
         }
       })
     } else {
-      if(this.lotterySeries['encode_splitter'] === 'null') {
-        this.lotterySeries['encode_splitter'] = null;
-      } else if(this.lotterySeries['encode_splitter'] === ' ') {
-        this.lotterySeries['encode_splitter'] = 'space';
-      }
       this.Api.lotterySeriesEdit(this.lotterySeries).subscribe((response: any) => {
         if (response && response['success']) {
           this.message.success('编辑成功', {
