@@ -20,6 +20,7 @@
   "operasyon.setting": "系统设置",
   "city.list": "省市地区列表",
   "game.play": "系列玩法",
+  "lottery.series": "彩种系列",
   "activity": "活动管理",
   "activity.list": "活动列表",
   "activity.type": "活动分类",
@@ -96,7 +97,7 @@
   "manage.user": "管理用户",
   "create.general.agent": "创建用户",
   "passport.check": "密码审核",
-  "bank.check": "银行卡管理",
+  "bank.check": "",
   "capital.passport.check": "资金密码审核",
   "log": "日志",
   "operation.log": "操作日志"

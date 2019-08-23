@@ -1,0 +1,104 @@
+<page-header [action]="action" >
+  <ng-template #action>
+      <button (click)='getList()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i nz-icon nzType="redo" nzTheme="outline"></i>
+      <span>刷新</span>
+    </button>
+  </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content style='background-color: white'>
+        <button (click)='add_lottery(0)' style='width:300px;margin: 30px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+          class="ant-btn__block mb-sm">
+          <i class="anticon anticon-plus"></i><span>添加系列</span>
+        </button>
+      <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='changPage()' [nzLoading]='dataLoading'
+      [(nzPageIndex)]='pages.page' [nzFrontPagination]='false' [nzData]="dataList" [nzPageSize]='pages.page_size'
+      [nzTotal]='pages.total'>
+      <thead>
+        <tr>
+          <th style="width:150px;">系列名</th>
+          <th style="width:150px;">系列标示</th>
+          <th style="width:150px;">录号标示</th>
+          <th style="width:150px;">奖金差值</th>
+          <th style="width:150px;">状态</th>
+          <th style="width:150px;">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+          <tr>
+            <td style="width:150px;">{{data['title']}}</td>
+            <td style="width:150px;">{{data['series_name']}}</td>
+            <td style="width:150px;" *ngIf="!data['encode_splitter']">不分割(null)</td>
+            <td style="width:150px;" *ngIf="data['encode_splitter'] === ' '">空格分割(" ")</td>
+            <td style="width:150px;" *ngIf="data['encode_splitter'] === ','">逗号分割( , )</td>
+            <td style="width:150px;">{{!data['price_difference'] ? 0 : data['price_difference']}}</td>
+            <td style="width:150px;">{{data['status'] ? '开' : '关'}}</td>
+            <td style="width:150px;"> 
+              <a class="edit-link" (click)="add_lottery(1, data)">修改</a>
+              <a style="padding-left:10px;" nz-popconfirm nzTitle="确认删除吗?" nzOkText="删除" nzCancelText="取消"
+              (nzOnConfirm)="deleteList(data)">删除</a>
+            </td>
+          </tr>
+        </ng-template>
+      </tbody>
+    </nz-table>
+
+    <!-- 添加编辑 -->
+    <nz-modal nzWidth='55%' (nzOnCancel)="is_show_modal = false" [nzFooter]="null" [(nzVisible)]="is_show_modal"
+    [nzTitle]='!modal_type ? "添加系列" : "编辑系列"'>
+
+    <section style='margin-top:20px;'>
+        <section class="item-box">
+          <nz-form-label nzFor="cn_name" nzRequired [nzSm]="4" [nzXs]="24" class="lable">系列名</nz-form-label>
+          <input type="text" nz-input placeholder="请输入系列名"
+          maxlength="18"
+          [(ngModel)]="lotterySeries['title']" class="lable-input"/>
+
+        </section>
+        <section class="item-box" *ngIf="!modal_type">
+            <nz-form-label nzFor="xlbs" nzRequired [nzSm]="4" [nzXs]="24" class="lable">系列标示</nz-form-label>
+            <input id="xlbs"
+            maxlength="18"
+            [(ngModel)]="lotterySeries['series_name']" type="text" nz-input placeholder="请输入系列标示"  class="lable-input"/>
+        </section>
+        <section class="item-box">
+            <nz-form-label nzFor="xlbs" nzRequired [nzSm]="4" [nzXs]="24" class="lable">奖金差值</nz-form-label>
+            <input id="xlbs"
+            (keyup)="priceNumber(lotterySeries['price_difference'])"
+            maxlength="18"
+            [(ngModel)]="lotterySeries['price_difference']" type="text" nz-input placeholder="请输入奖金差值"  class="lable-input"/>
+        </section>
+
+        <section class="item-box">
+            <nz-form-label nzFor="xlbs" nzRequired [nzSm]="4" [nzXs]="24"  class="lable">是否开启</nz-form-label>
+            <!-- (ngModelChange)='isOpen($event, data)'  -->
+            <nz-switch class="switch" nzSize="small" [ngModel]="lotterySeries['status']"
+                maxlength="18"nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+        </section>
+
+        <section class="item-box">
+            <nz-form-label nzFor="xlbs" nzRequired [nzSm]="4" [nzXs]="24" class="lable">录号标示</nz-form-label>
+            <div style='width: 100%;'>
+                <nz-select 
+                style="width:300px;"
+                [(ngModel)]="lotterySeries['encode_splitter']" nzShowSearch
+                [nzPlaceHolder]="lotterySeries['encode_splitter']">
+                <nz-option nzValue="null" nzLabel="null"></nz-option>
+                <nz-option nzValue="," nzLabel=","></nz-option>
+                <nz-option nzValue=" " nzLabel="空格"></nz-option>
+              </nz-select>
+            </div>
+      
+        </section>
+
+
+        <button (click)="submit()" nz-button nzType="primary" style="margin-left:30%;">{{!modal_type ? '确认添加' : '确认编辑'}}</button>
+      
+      </section>
+    
+    </nz-modal>
+  </nz-content>
+</nz-layout>

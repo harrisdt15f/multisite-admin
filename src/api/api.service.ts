@@ -37,10 +37,25 @@ export class ApiService {
     return this.commonService.post('/api/user-handle/bank-card-list', data)
   }
 
-
-
   // 上传图片
   public uploadPic(data: any): any{
     return this.commonService.post(this.commonService.imgURL, data)
+  }
+  /** ========================== 游戏管理 ======================== */
+  // 彩种系列 列表
+  public lotterySeriesList(data: any): any{
+    return this.commonService.get('/api/lottery-series/detail', data)
+  }
+  // 彩种系列 添加
+  public lotterySeriesAdd(data: any): any{
+    return this.commonService.post('/api/lottery-series/add', data)
+  }
+  // 彩种系列 编辑
+  public lotterySeriesEdit(data: any): any{
+    return this.commonService.post('/api/lottery-series/edit', data)
+  }
+  // 彩种系列 删除
+  public lotterySeriesDelete(data: any): any{
+    return this.commonService.post('/api/lottery-series/delete', data)
   }
 }

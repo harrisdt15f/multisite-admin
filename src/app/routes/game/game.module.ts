@@ -6,9 +6,11 @@ import { PipesModule } from 'app/pipes/pipes.module';
 import { GameGamePlayComponent } from './game-play/game-play.component';
 import { GameLotteryIssueComponent } from './lottery-issue/lottery-issue.component';
 import { CronEditorModule } from "cron-editor";
+import { LotterySeriesComponent } from './lottery-series/lottery-series.component';
 const COMPONENTS = [
   GameGameTypeComponent,
   GameGamePlayComponent,
+  LotterySeriesComponent,
   GameLotteryIssueComponent];
 const COMPONENTS_NOROUNT = [];
 

@@ -36,7 +36,7 @@
                     <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
                 </td>
                 <td>
-                  <div class='ellipsis' style='width:400px;' [innerHTML]='data.content.content'></div>
+                  <div class='ellipsis' style='width:400px;white-space: inherit;' [innerHTML]='data.content.content'></div>
                 </td>
                 <td *ngIf="notice.list.type === 1">{{ data.start_time }}</td>
                 <td *ngIf="notice.list.type === 1">{{ data.end_time }}</td>
