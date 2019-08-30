@@ -186,7 +186,9 @@ export class GameGamePlayComponent implements OnInit {
      * @memberof UserCityListComponent
      */
   show_child_city(data, num) {
+    console.log(1)
     console.log(data)
+    // console.log(this.thirst_level)
     switch (num) {
       case 1:
         this.first_level.forEach((item) => {
@@ -202,12 +204,12 @@ export class GameGamePlayComponent implements OnInit {
           item.is_edit = false;
         });
         this.is_group_disabled=data.status==1?false:true;
-        this.thirst_level = data.child;
+        this.thirst_level = data.child[0].child;
         this.four_level = [];
         this.five_level = [];
         break;
       case 3:
-          this.is_row_disabled=data.status==1?false:true;
+        this.is_row_disabled=data.status==1?false:true;
         this.thirst_level.forEach((item) => {
           item.is_edit = false;
         });
@@ -222,7 +224,6 @@ export class GameGamePlayComponent implements OnInit {
         this.five_level = data.child;
         break;
         case 5:
-  
           this.five_level.forEach((item) => {
             item.is_edit = false;
           });
