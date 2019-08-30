@@ -90,7 +90,7 @@
       <div class='city-content'>
         <div nz-row class='content-list' [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }"
           (click)='show_child_city(item,5)' *ngFor="let item of five_level ; let i=index" class="scene-obj">
-          <div nz-col nzSpan="18">{{item.method_name}}</div>
+          <div nz-col nzSpan="18">{{item.method_name}} </div>
           <div nz-col nzSpan="6">
             <nz-switch [nzDisabled]='is_method_disabled||is_row_disabled||is_group_disabled' (ngModelChange)='change_method_status($event,item)' [ngModel]="item.status===1" nzCheckedChildren="开"
             nzUnCheckedChildren="关"></nz-switch>

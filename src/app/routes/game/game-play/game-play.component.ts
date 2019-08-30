@@ -204,7 +204,7 @@ export class GameGamePlayComponent implements OnInit {
           item.is_edit = false;
         });
         this.is_group_disabled=data.status==1?false:true;
-        this.thirst_level = data.child[0].child;
+        this.thirst_level = data.child;
         this.four_level = [];
         this.five_level = [];
         break;
