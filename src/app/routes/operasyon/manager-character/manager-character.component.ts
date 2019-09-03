@@ -3,7 +3,7 @@ import { _HttpClient } from '@delon/theme';
 import { StartupService } from '@core/startup/startup.service';
 import { ManagerService } from 'app/service/manager.service';
 import { Injectable, Injector } from '@angular/core';
-import { NzMessageService ,NzNotificationService } from 'ng-zorro-antd';
+import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { AUTO_STYLE } from '@angular/animations';
 import {
   FormGroup,
@@ -55,13 +55,13 @@ export class ManagerManagerCharacterComponent implements OnInit {
   public modal_lodding: boolean;
   public is_visible_delete_modal: boolean;
   public move_group_name: string;
-  public delet_group: object = {}; 
+  public delet_group: object = {};
 
   //管理员-------------------------
   public is_edit_manager = false; //创建/编辑组
   public create_manager_obj: object = new create_manager_obj(); //创建的菜单对象
   public manager_page_index: number = 1; //加载图标
-  public is_edit_manage_modal:boolean;
+  public is_edit_manage_modal: boolean;
   constructor(
     private http: _HttpClient,
     private startupService: StartupService,
@@ -146,7 +146,7 @@ export class ManagerManagerCharacterComponent implements OnInit {
    */
   add_group() {
 
-      this.resetForm(this.groupForm);
+    this.resetForm(this.groupForm);
     this.is_edit_group = false;
     this.is_super_manage = false;
     this.menu_tree_value = [];
@@ -187,11 +187,10 @@ export class ManagerManagerCharacterComponent implements OnInit {
     });
   }
 
+
   /**
-   *处理菜单数组
+   * 处理菜单数组
    *
-   * @returns
-   * @memberof ManagerManagerCharacterComponent
    */
   get_group_role() {
     let role = [];
@@ -206,12 +205,11 @@ export class ManagerManagerCharacterComponent implements OnInit {
         //如果是父级元素，则把子全都加入
         for (let key in menu_obj[item].child) {
           role.push(Number(key));
-          if(menu_obj[item].child[key].child){
+          if (menu_obj[item].child[key].child) {
             for (let x in menu_obj[item].child[key].child) {
               role.push(Number(x));
             }
           }
-
         }
 
       }
@@ -256,11 +254,11 @@ export class ManagerManagerCharacterComponent implements OnInit {
     this.get_member_list(item);
     if (item.role != '*') {
       this.is_super_manage = false;
-      this.menu_tree_value=[]
+      this.menu_tree_value = []
       JSON.parse(item.role).forEach((item) => {
-       if(!this.startupService.menu_obj[item].is_parent){
-         this.menu_tree_value.push(item);
-       }
+        if (!this.startupService.menu_obj[item].is_parent) {
+          this.menu_tree_value.push(item);
+        }
       });
 
     } else {
@@ -316,18 +314,18 @@ export class ManagerManagerCharacterComponent implements OnInit {
    * @memberof ManagerManagerCharacterComponent
    */
   delete_group(item, i) {
-    this.is_visible_delete_modal=true;
-    this.delet_group=item;
-   
+    this.is_visible_delete_modal = true;
+    this.delet_group = item;
+
   }
-  delete_group_submit_cancel(){
-    this.is_visible_delete_modal=false;
+  delete_group_submit_cancel() {
+    this.is_visible_delete_modal = false;
   }
 
   delete_group_submit() {
     let option = {
       id: this.delet_group['id'],
-      group_name:  this.delet_group['group_name']
+      group_name: this.delet_group['group_name']
     };
     this.is_loading_delete = true;
     setTimeout(() => {
@@ -337,10 +335,10 @@ export class ManagerManagerCharacterComponent implements OnInit {
       this.is_loading_delete = false;
       if (res && res.success) {
         this.remove_edit_group();
-        this.is_visible_delete_modal=false;
+        this.is_visible_delete_modal = false;
         //获取组
         this.get_group();
-     
+
         this.message.success('删除组成功', {
           nzDuration: 3000,
         });
@@ -392,7 +390,7 @@ export class ManagerManagerCharacterComponent implements OnInit {
    * @memberof ManagerManagerCharacterComponent
    */
   remove_edit_mnager() {
-    this.is_edit_manage_modal=false;
+    this.is_edit_manage_modal = false;
     this.create_manager_obj = new create_manager_obj();
   }
   /**
@@ -457,16 +455,16 @@ export class ManagerManagerCharacterComponent implements OnInit {
     });
   }
 
-    /**
-   *点击添加管理员按钮
-   *
-   * @memberof ManagerManagerCharacterComponent
-   */
+  /**
+ *点击添加管理员按钮
+ *
+ * @memberof ManagerManagerCharacterComponent
+ */
   add_mnager(id) {
 
     this.modal_lodding = false;
     this.is_edit_manager = false;
-    this.is_edit_manage_modal=true;
+    this.is_edit_manage_modal = true;
     this.create_manager_obj = new create_manager_obj(id);
   }
   /**
@@ -475,10 +473,10 @@ export class ManagerManagerCharacterComponent implements OnInit {
    * @memberof ManagerManagerCharacterComponent
    */
   edit_manager(item) {
- 
-      this.is_edit_manager = true;
-      this.modal_lodding = false;
-    this.is_edit_manage_modal=true;
+
+    this.is_edit_manager = true;
+    this.modal_lodding = false;
+    this.is_edit_manage_modal = true;
     this.create_manager_obj = item;
   }
   /**
@@ -504,7 +502,7 @@ export class ManagerManagerCharacterComponent implements OnInit {
       this.modal_lodding = false;
       if (res && res.success) {
         this.remove_edit_mnager();
-    
+
         this.get_member_list(this.edit_group_obj);
         this.resetForm(this.managerCreateForm);
         this.message.success('创建管理员成功', {
@@ -544,7 +542,7 @@ export class ManagerManagerCharacterComponent implements OnInit {
       this.modal_lodding = false;
       if (res && res.success) {
         this.remove_edit_mnager();
-      
+
         this.resetForm(this.change_passports);
         this.message.success('修改管理员密码成功', {
           nzDuration: 3000,
@@ -569,10 +567,10 @@ export class ManagerManagerCharacterComponent implements OnInit {
    * 管理员选择分组
    * @param e 
    */
-  change_group_select(e){
-    this.group_list.forEach((item)=>{
-      if(item.id==e){
-        this.move_group_name=item.group_name;
+  change_group_select(e) {
+    this.group_list.forEach((item) => {
+      if (item.id == e) {
+        this.move_group_name = item.group_name;
       }
     })
 
@@ -597,13 +595,13 @@ export class ManagerManagerCharacterComponent implements OnInit {
         this.remove_edit_mnager();
         this.resetForm(this.change_group);
         this.get_member_list(this.edit_group_obj);
-     
+
         // this.message.success('修改成功！该管理员已挪至'+this.move_group_name, {
         //   nzDuration: 3000,
         // });
         this.injector.get(NzNotificationService).success(
           '修改管理员分组成功！',
-          '该管理员已挪至分组"'+this.move_group_name+'"',
+          '该管理员已挪至分组"' + this.move_group_name + '"',
         );
       } else {
         this.message.error(res.message, {
@@ -620,7 +618,7 @@ class create_manager_obj {
   public password: string;
   public c_password: string;
   public group_id: number;
-  constructor(id?:number) { 
-    this.group_id =id;
+  constructor(id?: number) {
+    this.group_id = id;
   }
 }
