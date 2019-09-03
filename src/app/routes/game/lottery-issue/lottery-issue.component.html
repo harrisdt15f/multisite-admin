@@ -208,14 +208,12 @@
       </form>
     </nz-drawer>
     <!-- 手动录号弹框 -->
-    <nz-modal [nzOkLoading]='is_lodding_modal' nzWidth=1000 [(nzVisible)]="is_visible_input" nzTitle="手动录号" (nzOnCancel)="handle_cancel()"
-      (nzOnOk)="handle_ok()">
+    <nz-modal  [nzFooter]="modalFooter" (nzOnCancel)="handle_cancel()" nzWidth=1000 [(nzVisible)]="is_visible_input" nzTitle="手动录号">
       <div class='input-box'>
         <!-- <nz-select *ngFor='let rule of code_array' class="input-item" 
         [(ngModel)]="rule['value']" nzShowSearch >
           <nz-option *ngFor="let number of input_number_obj['valid_code']" [nzValue]="number" [nzLabel]="number"></nz-option>
         </nz-select> -->
-
         <textarea
         nz-input
         [placeholder]="code_rule"
@@ -223,6 +221,11 @@
         [nzAutosize]="{ minRows: 8, maxRows: 15 }"
       ></textarea>
       </div>
+      <ng-template #modalFooter>
+        <button nz-button nzType="primary" (click)="check_code_rule()" >验证录号格式</button>
+        <button nz-button nzType="default" (click)="handle_cancel()">取消</button>
+        <button nz-button nzType="primary" (click)="handle_ok()" [nzLoading]="is_lodding_modal">确认提交</button>
+      </ng-template>
     </nz-modal>
   </nz-content>
 

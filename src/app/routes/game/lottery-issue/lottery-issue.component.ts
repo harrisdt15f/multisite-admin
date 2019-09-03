@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 
 import { GameService } from 'app/service/game.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -57,6 +57,7 @@ export class GameLotteryIssueComponent implements OnInit {
     private http: _HttpClient,
     private gameService: GameService,
     private fb: FormBuilder,
+    private modalService: NzModalService,
     private message: NzMessageService
   ) {
     this.status_type = [
@@ -145,14 +146,16 @@ export class GameLotteryIssueComponent implements OnInit {
       }
     })
   }
+  /**
+   * 手动录号
+   */
   handle_ok() {
-    console.log(this.input_number_obj)
-    console.log(this.encode_splitter)
-    console.log(this.input_number_obj['obj'].lottery.series_id)
+    let result = this.check_code_rule(1);
+    if (!result) return;
     let option = {
       lottery_id: this.input_number_obj['obj'].lottery_id,
       issue: this.input_number_obj['obj'].issue,
-      code:this.code_value.split(',').join(this.encode_splitter[this.input_number_obj['obj'].lottery.series_id])
+      code: this.code_value
     }
     this.is_lodding_modal = true;
     this.gameService.input_number_value(option).subscribe((res: any) => {
@@ -170,8 +173,45 @@ export class GameLotteryIssueComponent implements OnInit {
       }
     })
   }
+  /**
+   * 取消录号
+   */
   handle_cancel() {
     this.is_visible_input = false;
+  }
+  /**
+   * 
+   * @param code 检查录号格式
+   * @param issu_obj 
+   */
+  check_code_rule(type?) {
+    let code=this.code_value;
+    let issu_obj:any= this.input_number_obj;
+    let status = true;
+    let split_icon = this.encode_splitter[this.input_number_obj['obj'].lottery.series_id];
+    let code_array = code.split(split_icon);
+    let valid_code = issu_obj.valid_code.split(',');
+    if (!(code_array.length == issu_obj.code_length)) {
+      status = false;
+    } else {
+      code_array.forEach((item) => {
+        if (valid_code.indexOf(item) < 0) {
+          status = false;
+        }
+      });
+    }
+    if(!status){
+      const modal = this.modalService.error({
+        nzTitle: '录号格式错误！',
+        nzContent: '请检查是否符合规则:' + this.code_rule
+      });
+    }else if(!type&&status){
+      const modal = this.modalService.success({
+        nzTitle: '录号格式正确！！'
+      });
+    }
+    return status;
+ 
   }
 
 
@@ -181,7 +221,7 @@ export class GameLotteryIssueComponent implements OnInit {
   input_number(data) {
     let separator = null;
     for (let i of this.lotteries_tabs) {
-      if(data['lottery']['series_id'] === i['value']) {
+      if (data['lottery']['series_id'] === i['value']) {
         separator = i['encode_splitter'];
       }
     }
@@ -195,7 +235,7 @@ export class GameLotteryIssueComponent implements OnInit {
     for (var i = 1; i <= code_length; i++) {
       code_example.push(this.input_number_obj['valid_code'].split(',')[i] ? this.input_number_obj['valid_code'].split(',')[i] : this.input_number_obj['valid_code'].split(',')[0]);
     }
-    if(separator === null) {
+    if (separator === null) {
       separator = '';
     }
     this.code_rule = `    奖期号：${data.issue}
@@ -358,11 +398,8 @@ export class GameLotteryIssueComponent implements OnInit {
     this.search();
     if (this.lotteries_tabs[this.tab_index].value != 10086) {
       this.get_lotteries_list();
-    
-        this.encode_splitter = this.lotteries_tabs[this.tab_index].encode_splitter === null ? '' : this.lotteries_tabs[this.tab_index].encode_splitter;
+      this.encode_splitter = this.lotteries_tabs[this.tab_index].encode_splitter === null ? '' : this.lotteries_tabs[this.tab_index].encode_splitter;
     }
-
-
   }
   /**
    *点击生成奖期号
@@ -394,15 +431,15 @@ export class GameLotteryIssueComponent implements OnInit {
         //   }
         //   )
         // }
-        this.encode_splitter={};
-        res.data.forEach((item,index) => {
+        this.encode_splitter = {};
+        res.data.forEach((item, index) => {
           this.lotteries_tabs.push({
             label: item.title,
             value: item.series_name,
             status: item.status,
             encode_splitter: item.encode_splitter
           });
-          this.encode_splitter[item.series_name]=item.encode_splitter?item.encode_splitter:'';
+          this.encode_splitter[item.series_name] = item.encode_splitter ? item.encode_splitter : '';
         });
 
       } else {
@@ -476,7 +513,7 @@ export class GameLotteryIssueComponent implements OnInit {
     // 
     console.log()
     console.log(data)
-    
+
   }
   /**
    *搜索数组
@@ -495,7 +532,7 @@ export class GameLotteryIssueComponent implements OnInit {
       option['issue'] = this.search_number;
     }
     if (this.searchTime) {
-      option['time_condtions'] = JSON.stringify([['created_at', '>=', Utils.formatTime(this.searchTime[0])],['created_at', '<=', Utils.formatTime(this.searchTime[1])]])
+      option['time_condtions'] = JSON.stringify([['created_at', '>=', Utils.formatTime(this.searchTime[0])], ['created_at', '<=', Utils.formatTime(this.searchTime[1])]])
     }
     this.get_issue_list(page ? page : 1, option);
   }
