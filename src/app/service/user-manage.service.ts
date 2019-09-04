@@ -88,7 +88,7 @@ export class UserManageService {
 * @memberof UserManageService
 */
 get_frontend_log_list(page_index, data?) {
-  let page_size = 20;
+  let page_size = Utils.page_size;
   let token = this.tokenService.get().token;
   let headers = new HttpHeaders({
     Accept: 'application/json',
@@ -112,7 +112,7 @@ get_frontend_log_list(page_index, data?) {
 * @memberof UserManageService
 */
   get_log_list(page_index, data?) {
-    let page_size = 20;
+    let page_size = Utils.page_size;
     let token = this.tokenService.get().token;
      if (data.admin_name) {
       data.query_conditions =JSON.stringify( { "admin_name": "LIKE" });

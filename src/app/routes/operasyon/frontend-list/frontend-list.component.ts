@@ -171,7 +171,7 @@ export class OperasyonFrontendListComponent implements OnInit {
     if (this.searchData.os) option.os = this.searchData.os;
     if (this.start_time) option.start_time = this.start_time;
     if (this.end_time) option.end_time = this.end_time;
-    this.userManageService.get_frontend_log_list(this.searchData.pageSize, option).subscribe((res: any) => {
+    this.userManageService.get_frontend_log_list(this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
