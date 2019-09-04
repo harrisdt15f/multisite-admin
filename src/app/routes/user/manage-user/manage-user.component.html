@@ -1,65 +1,83 @@
-<page-header [action]="action" >
+<page-header [action]="action">
   <ng-template #action>
-    <button (click)='get_user_manage_list(1)' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-    class="ant-btn__block mb-sm">
-    <i nz-icon nzType="redo" nzTheme="outline"></i>
-    <span>刷新</span>
-  </button>
-</ng-template>
+    <button (click)='get_user_manage_list(1)' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock
+      [nzType]="'dashed'" class="ant-btn__block mb-sm">
+      <i nz-icon nzType="redo" nzTheme="outline"></i>
+      <span>刷新</span>
+    </button>
+  </ng-template>
 </page-header>
 <nz-layout>
   <nz-content style='background-color: white'>
-    <div nz-row style="margin:20px">
-      <div nz-col nzSpan="9">
+    <section class="select-lottery">
+      <!-- <span>
+        <span>玩家ID:</span>
+        <input nz-input nzSize="small" placeholder="用户ID" [(ngModel)]="searchData.id" class="select-lottery-input" />
+      </span> -->
+      <span>
+        <span>用户昵称:</span>
+        <input nz-input nzSize="small" placeholder="用户昵称" [(ngModel)]="searchData.username"
+          class="select-lottery-input" />
+      </span>
+      <span>
+        <span>上级ID:</span>
+        <input nz-input nzSize="small" placeholder="上级ID" [(ngModel)]="searchData.parent_id"
+          class="select-lottery-input" />
+      </span>
+      <span>
+        <span>用户组:</span>
+        <nz-select nzSize="small" style="width: 120px;" [(ngModel)]="searchData.type" nzAllowClear nzPlaceHolder="用户组">
+          <nz-option nzValue="" nzLabel="全部"></nz-option>
+          <nz-option nzValue="1" nzLabel="总代"></nz-option>
+          <nz-option nzValue="2" nzLabel="代理"></nz-option>
+          <nz-option nzValue="3" nzLabel="会员"></nz-option>
+        </nz-select>
+      </span>
+      <span>
+        <span>测试人员:</span>
+        <nz-select nzSize="small" style="width: 120px;" [(ngModel)]="searchData.is_tester" nzAllowClear
+          nzPlaceHolder="是否测试用户">
+          <nz-option nzValue="" nzLabel="全部"></nz-option>
+          <nz-option nzValue="1" nzLabel="是"></nz-option>
+          <nz-option nzValue="0" nzLabel="否"></nz-option>
+        </nz-select>
+      </span>
+      <span>
         <span>注册时间：</span>
-        <nz-range-picker nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" ngModel (ngModelChange)="on_change_time_permission($event)">
+        <nz-range-picker nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" ngModel
+          (ngModelChange)="on_change_time_permission($event)">
         </nz-range-picker>
-      </div>
-      <!-- <div nz-col nzSpan="7">
-        <span>可用余额：</span>
-        <input style="width:100px;display: inline-block" nz-input />至
-        <input style="width:100px;display: inline-block" nz-input />（元）
-      </div> -->
+      </span>
+      <span>
 
-    </div>
-
-
-    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+        <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon type="search"></i>搜索</button>&nbsp;&nbsp;
+        <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon type="sync"></i>重置</button>
+      </span>
+    </section>
+    <section class="select-lottery" *ngIf="parent_set.length > 0">
+        <a href="javascript:;" class="a-link" (click)="find_child('',-1)">根目录</a>
+        <ng-container *ngFor="let item of parent_set;let i=index ">
+          >> <a href="javascript:;" class="a-link" (click)="find_child(item.id,i)">{{item.name}}{{item.id}}</a>
+        </ng-container>
+      </section>
+    <nz-table #nzTable [nzLoadingDelay]='100' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
       [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="listOfDisplayData" [nzPageSize]='20'
       [nzTotal]='list_total'>
       <thead>
         <tr>
           <th nzShowExpand></th>
-          <th nzCustomFilter>
-            用户名
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-              <i nz-icon nzType="search" class="ant-table-filter-icon"
-                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-              <div class="search-box">
-                <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="searchValue" />
-                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                  搜索
-                </button>
-                <button nz-button nzSize="small" (click)="reset()">取消</button>
-              </div>
-            </nz-dropdown>
-          </th>
+          <th nzCustomFilter>用户名</th>
           <th>账户余额</th>
           <th>冻结金额</th>
           <th>用户层级</th>
           <th>上下级转账</th>
-          <th nzShowFilter [nzFilters]="list_of_total" [nzFilterMultiple]='false'
-            (nzFilterChange)="filter_user_group_change($event)">身份</th>
-
+          <th>身份</th>
           <th>奖金组</th>
           <th>冻结</th>
-          <th nzShowFilter [nzFilters]="is_test_user" [nzFilterMultiple]='false'
-            (nzFilterChange)="is_test_user_change($event)">是否测试用户</th>
+          <th>是否测试用户</th>
           <th>账户激活时间</th>
           <th>最后登录时间</th>
           <th>创建时间</th>
-
-
         </tr>
       </thead>
       <tbody>
@@ -78,7 +96,6 @@
             <td>{{ data.register_time }}</td>
             <td>{{ data.last_login_time }}</td>
             <td>{{ data.created_at }}</td>
-
           </tr>
           <tr [nzExpand]="mapOfExpandData[data.id]">
             <td colspan="17">
@@ -88,7 +105,8 @@
               <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">下级</button></span> -->
               <span class='list_btn'><button (click)='person_amount(data,"add")' nz-button [nzSize]='"small"'
                   nzType="primary">充值</button></span>
-              <span class='list_btn'><button (click)='person_amount(data,"reduce")' nz-button [nzSize]='"small"' nzType="primary">扣减</button></span>
+              <span class='list_btn'><button (click)='person_amount(data,"reduce")' nz-button [nzSize]='"small"'
+                  nzType="primary">扣减</button></span>
               <!-- <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">查看</button></span> -->
               <span class='list_btn'><button (click)='edit_change_passport(data,"prize")' nz-button [nzSize]='"small"'
                   nzType="primary">重置资金密码</button></span>
@@ -103,8 +121,12 @@
                   nzType="primary">账变记录</button></span>
               <span class='list_btn'><button (click)='user_recharge_history(data)' nz-button [nzSize]='"small"'
                   nzType="primary">充值记录</button></span>
+                  <span class='list_btn'><button (click)='search_team_top(data)' nz-button [nzSize]='"small"'
+                    nzType="primary">查看直属上级</button></span>
+                  <span class='list_btn'><button (click)='search_team(data)' nz-button [nzSize]='"small"'
+                    nzType="primary">查看直属下级</button></span>
               <!-- <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">分红比例</button></span> -->
- 
+
             </td>
           </tr>
         </ng-template>
@@ -113,7 +135,7 @@
     <div>
       <!-- 修改密码弹框 -->
       <nz-drawer nzWidth='400px' [nzVisible]="is_edit_change_passport" nzPlacement="right"
-        [nzTitle]="modal_type=='login'?'重置登录密码':'重置资金密码'" (nzOnClose)="is_edit_change_passport = false">
+        [nzTitle]="modal_type=='login'?'重置登录密码':'重置资金密码'" (nzOnClose)="close_reset_pwd()">
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
         </div>
@@ -145,7 +167,6 @@
               </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
-
           <!-- 备注 -->
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="apply_note" nzRequired>备注</nz-form-label>
@@ -155,11 +176,6 @@
 
             </nz-form-control>
           </nz-form-item>
-
-
-
-
-
           <nz-form-item nz-row style="margin-bottom:8px;">
             <nz-form-control [nzSpan]="14" [nzOffset]="6">
               <button [disabled]="!change_passport_apply.valid" nz-button nzType="primary">
@@ -190,16 +206,12 @@
             <!-- 权限历史 -->
             <div *ngIf='drawer_type=="permission"' nz-col [nzSpan]="22">
               <div>{{item.comment}}</div>
-         
+
               <div>{{item.created_at}}</div>
             </div>
             <!-- 充值历史 -->
             <div *ngIf='drawer_type=="recharge"' nz-col [nzSpan]="22">
-        
- 
               <div>充值金额：{{item.amount}}(元)</div>
-              <div>变更前余额：{{item.before_balance}}(元)</div>
-              <div>变更后余额：{{item.balance}}(元)</div>
               <div>{{item.created_at}}</div>
               <div>状态：{{item.status|rechargeStatus}}</div>
             </div>
@@ -269,8 +281,8 @@
       </nz-drawer>
       <!-- 人工充值摩态框 -->
 
-      <nz-modal [nzOkLoading]="isOkLoading" [nzMaskClosable]='true' [(nzVisible)]="is_show_recharge_num" [nzTitle]="amount_type=='add'?'人工充值':'人工扣减'"
-        (nzOnCancel)="cancel_recharge_num()" (nzOnOk)="ok_recharge()">
+      <nz-modal [nzOkLoading]="isOkLoading" [nzMaskClosable]='true' [(nzVisible)]="is_show_recharge_num"
+        [nzTitle]="amount_type=='add'?'人工充值':'人工扣减'" (nzOnCancel)="cancel_recharge_num()" (nzOnOk)="ok_recharge()">
         <nz-input-group nzAddOnAfter="元">
           <input type="text" (keyup)="account_check()" placeholder="请输入金额" nz-input [(ngModel)]="recharge_num" />
         </nz-input-group>

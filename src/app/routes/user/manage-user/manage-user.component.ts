@@ -1,6 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { STColumn } from '@delon/abc';
 import { startOfMonth } from 'date-fns';
 import { UserManageService } from 'app/service/user-manage.service';
@@ -17,42 +17,26 @@ import { Subscription } from 'rxjs';
 })
 export class UserManageUserComponent implements OnInit {
 
+  // 搜索对象
+  public searchData = {
+    pageIndex: 1,
+    pageSize: 15,
+    id: '',
+    is_tester: '',
+    parent_name: '',
+    type: '',
+    username: '',
+    parent_id: ''
+  };
   public edit_change_passport_obj: object = {};//点击的用户对象
   public now_date = [new Date(), new Date()];
-
   public ranges1 = {
     "今日": [new Date(), new Date()],
     '本月': [startOfMonth(new Date()), new Date()]
   };
-  public searchValue = '';
-
   public sortName: string | null = null;
   public sortValue: string | null = null;
   public mapOfExpandData: { [key: string]: boolean } = {};
-
-  /**
-   *用户组筛选菜单
-   *
-   * @memberof UserManageUserComponent
-   */
-  public list_of_total = [
-    { text: '总代', value: '1' },
-    { text: '代理', value: '2' },
-    { text: '会员', value: '3' },
-    { text: '不限', value: '1000' },
-  ];
-  /**
-   *是否测试用户筛选菜单
-   *
-   * @memberof UserManageUserComponent
-   */
-  public is_test_user = [
-    { text: '是', value: '1' },
-    { text: '否', value: '0' },
-    { text: '不限', value: '1000' },
-  ];
-  public list_of_search_group: string;
-  public list_of_search_is_test: string;
   public change_passport_obj: object = {};
   public listOfData: object = {};
   public listOfDisplayData = [];
@@ -65,7 +49,6 @@ export class UserManageUserComponent implements OnInit {
   public end_time: string;
   public amount_type: string;//充值还是扣减
   public change_passport_apply: FormGroup;//提交申请修改密码表单
-
   //--------------弹框
   public look_history: boolean;//显示修改密码申请弹框
   public is_edit_change_passport: boolean;//显示权限操作历史
@@ -74,7 +57,7 @@ export class UserManageUserComponent implements OnInit {
   //-------------操作历史参数
   public spin_show: boolean;
   public drawer_type: string;
-  public edit_modal_o: object={};
+  public edit_modal_o: object = {};
   public drawer_title = {
     account: '账变记录历史',
     recharge: '充值记录历史',
@@ -95,13 +78,13 @@ export class UserManageUserComponent implements OnInit {
   public recharge_num: number;
   public apply_note: string;
   public user_manager_sub: Subscription;
-  
+  public parent_set = [];
   constructor(
     private http: _HttpClient,
     private fb: FormBuilder,
     private betInfoProvider: BetInfoService,
     private router: Router,
-    
+    private modalService: NzModalService,
     private userManageService: UserManageService,
     private injector: Injector,
     private message: NzMessageService
@@ -111,7 +94,7 @@ export class UserManageUserComponent implements OnInit {
 
   ngOnInit() {
     //获取列表第一页
-    this.get_user_manage_list(1);
+    this.get_user_manage_list();
     //重制密码表单验证
     this.change_passport_apply = this.fb.group({
       apply_note: [null],
@@ -128,16 +111,17 @@ export class UserManageUserComponent implements OnInit {
     //监听，在打开此路由情况下，创建用户刷新
     this.user_manager_sub = this.betInfoProvider.get_user_manager_update().subscribe(data => {
       if (data == 'update') {
-        this.get_user_manage_list(1);
+        this.page_index = 1;
+        this.get_user_manage_list();
       }
     });
   }
-/**
- * 初始化时间
- */
-  update_time(){
-    this.start_time=this.change_date(new Date(),'start');
-    this.end_time=this.change_date(new Date(),'end');
+  /**
+   * 初始化时间
+   */
+  update_time() {
+    this.start_time = this.change_date(new Date(), 'start');
+    this.end_time = this.change_date(new Date(), 'end');
     this.now_date = [new Date(), new Date()];
   }
   /**
@@ -147,16 +131,22 @@ export class UserManageUserComponent implements OnInit {
     this.look_history = true;
     this.drawer_type = 'account';
     this.history_list = [];
-    this.edit_modal_o=data;
+    this.edit_modal_o = data;
     this.update_time();
     this.get_user_account_change(data);
-   
+
   }
-  get_user_account_change(data){
+  /**
+   *获取账变列表
+   *
+   * @param {*} data
+   * @memberof UserManageUserComponent
+   */
+  get_user_account_change(data) {
     let option = {
       user_id: data.id,
-      start_time:this.start_time,
-      end_time:this.end_time
+      start_time: this.start_time,
+      end_time: this.end_time
     }
     this.spin_show = true;
     this.userManageService.user_account_change(option).subscribe((res: any) => {
@@ -171,11 +161,17 @@ export class UserManageUserComponent implements OnInit {
       }
     })
   }
-  get_user_recharge_history(data){
+  /**
+   *获取充值列表
+   *
+   * @param {*} data
+   * @memberof UserManageUserComponent
+   */
+  get_user_recharge_history(data) {
     let option = {
       user_id: data.id,
-      start_time:this.start_time,
-      end_time:this.end_time
+      start_time: this.start_time,
+      end_time: this.end_time
     }
     this.spin_show = true;
     this.userManageService.user_recharge_history(option).subscribe((res: any) => {
@@ -194,19 +190,18 @@ export class UserManageUserComponent implements OnInit {
  * 用户充值记录
  */
   user_recharge_history(data) {
-    this.edit_modal_o=data;
+    this.edit_modal_o = data;
     this.update_time();
     this.drawer_type = 'recharge';
     this.look_history = true;
     this.history_list = [];
     this.get_user_recharge_history(data);
-   
+
   }
   /**
  * 金额输入框验证
  */
   account_check() {
-
     this.recharge_num = Utils.account_check(this.recharge_num, 90000);
   }
 
@@ -216,8 +211,8 @@ export class UserManageUserComponent implements OnInit {
  * @param {*} data
  * @memberof OperasyonrechargeManageComponent
  */
-  person_amount(data,type) {
-    this.amount_type=type;
+  person_amount(data, type) {
+    this.amount_type = type;
     this.is_show_recharge_num = true;
     this.now_edit_manage = data;
   }
@@ -239,15 +234,15 @@ export class UserManageUserComponent implements OnInit {
    */
   add_recharge_quota() {
 
-    if(this.amount_type=="add"){
+    if (this.amount_type == "add") {
       let option = {
         id: this.now_edit_manage['id'],
         amount: this.recharge_num,
-        apply_note: this.apply_note?this.apply_note:'确认人工充值'
+        apply_note: this.apply_note ? this.apply_note : '确认人工充值'
       };
       this.submit_add(option);
 
-    }else if(this.amount_type=="reduce"){
+    } else if (this.amount_type == "reduce") {
       let option = {
         user_id: this.now_edit_manage['id'],
         amount: this.recharge_num,
@@ -257,12 +252,11 @@ export class UserManageUserComponent implements OnInit {
     }
 
   }
-/**
- * 
- * @param option 调用充值
- */
-  submit_add(option){
-
+  /**
+   * 
+   * @param option 调用充值
+   */
+  submit_add(option) {
     this.userManageService.add_recharge_quota(option).subscribe((res: any) => {
       this.isOkLoading = false;
       this.isOkLoading = false;
@@ -275,18 +269,32 @@ export class UserManageUserComponent implements OnInit {
         });
         this.cancel_recharge_num();
       } else {
-
         this.message.error(res.message, {
           nzDuration: 10000,
         });
       }
-    })
+    });
+  }
+  /**重置搜做参数 */
+  resetSearch() {
+    this.searchData = {
+      pageIndex: 1,
+      pageSize: 15,
+      is_tester: '',
+      parent_name: '',
+      type: '',
+      id: '',
+      username: '',
+      parent_id: ''
+    };
+    this.page_index = 1;
+    this.get_user_manage_list();
   }
   /**
  * 
  * @param option 调用扣减
  */
-  submit_reduce(option){
+  submit_reduce(option) {
     this.userManageService.reduce_quota(option).subscribe((res: any) => {
       this.isOkLoading = false;
       this.isOkLoading = false;
@@ -324,26 +332,21 @@ export class UserManageUserComponent implements OnInit {
     this.userManageService.submit_freeze(option).subscribe((res: any) => {
       this.modal_lodding = false;
       if (res && res.success) {
-        this.get_user_manage_list(1);
+        this.get_user_manage_list();
         this.is_edit_permission = false;
         for (const i in this.freeze_form.controls) {
           this.freeze_form.controls[i].markAsDirty();
           this.freeze_form.controls[i].updateValueAndValidity();
         }
-     
         this.message.success('修改账户权限成功', {
           nzDuration: 10000,
         });
-
-
       } else {
-
         this.message.error(res.message, {
           nzDuration: 10000,
         });
       }
     })
-
   }
   //---------冻结账户end
 
@@ -360,20 +363,19 @@ export class UserManageUserComponent implements OnInit {
     this.look_history = true;
     this.update_time();
     this.history_list = [];
-    this.edit_modal_o=data;
+    this.edit_modal_o = data;
     this.get_permission_list(data);
-
   }
   /**
    * 获取历史 列表
    * @param data 
    */
-  get_permission_list(data){
+  get_permission_list(data) {
     this.spin_show = true;
     let option = {
       user_id: data.id,
-      start_time:this.start_time,
-      end_time:this.end_time
+      start_time: this.start_time,
+      end_time: this.end_time
     }
     this.userManageService.submit_freeze_history(option).subscribe((res: any) => {
       if (res && res.success) {
@@ -415,14 +417,12 @@ export class UserManageUserComponent implements OnInit {
         this.modal_lodding = false;
         if (res && res.success) {
           this.is_edit_change_passport = false;
-          this.message.success('提交修改登录成功', {
-            nzDuration: 10000,
+          this.modalService.info({
+            nzTitle: '修改密码成功！',
+            nzContent: '点击确定跳转审核！',
+            nzOnOk: () => this.router.navigateByUrl('/manage/passport-check')
           });
-          //重置表单
-          for (const i in this.change_passport_apply.controls) {
-            this.change_passport_apply.controls[i].markAsDirty();
-            this.change_passport_apply.controls[i].updateValueAndValidity();
-          }
+          this.reseat_form();
 
         } else {
           this.is_edit_change_passport = false;
@@ -436,14 +436,13 @@ export class UserManageUserComponent implements OnInit {
         this.modal_lodding = false;
         if (res && res.success) {
           this.is_edit_change_passport = false;
-          this.message.success('提交修改资金密码成功', {
-            nzDuration: 10000,
+          this.modalService.info({
+            nzTitle: '修改资金密码成功！',
+            nzContent: '点击确定跳转审核！',
+            nzOnOk: () => this.router.navigateByUrl('/manage/capital-passport-check')
           });
-          //重置表单
-          for (const i in this.change_passport_apply.controls) {
-            this.change_passport_apply.controls[i].markAsDirty();
-            this.change_passport_apply.controls[i].updateValueAndValidity();
-          }
+          this.reseat_form();
+
 
         } else {
           this.is_edit_change_passport = false;
@@ -454,6 +453,25 @@ export class UserManageUserComponent implements OnInit {
       })
     }
   }
+  /**
+   * 重置资金密码表单
+   */
+  reseat_form() {
+    this.change_passport_obj = {};
+    //重置资金密码表单
+    for (const i in this.change_passport_apply.controls) {
+      this.change_passport_apply.controls[i].markAsDirty();
+      this.change_passport_apply.controls[i].updateValueAndValidity();
+    }
+    //重置密码表单
+    for (const i in this.change_passport_apply.controls) {
+      this.change_passport_apply.controls[i].markAsDirty();
+      this.change_passport_apply.controls[i].updateValueAndValidity();
+    }
+    this.change_passport_apply.reset();
+  }
+
+
   /**
   * *校验密码
   *
@@ -479,7 +497,7 @@ export class UserManageUserComponent implements OnInit {
   };
 
   reset(): void {
-    this.searchValue = '';
+
     this.search();
   }
   sort(sortName: string, value: string): void {
@@ -488,7 +506,7 @@ export class UserManageUserComponent implements OnInit {
     this.search();
   }
   on_change_time_permission(result: Date[]): void {
-    this.drawer_type='index';
+    this.drawer_type = 'index';
     this.on_change_time(result);
 
   }
@@ -502,19 +520,26 @@ export class UserManageUserComponent implements OnInit {
     }
     switch (this.drawer_type) {
       case 'account':
-          this.get_user_account_change(this.edit_modal_o);
+        this.get_user_account_change(this.edit_modal_o);
         break;
       case 'recharge':
         this.get_user_recharge_history(this.edit_modal_o);
         break;
       case 'permission':
-          this.get_permission_list(this.edit_modal_o);
+        this.get_permission_list(this.edit_modal_o);
         break;
-        case 'index':
-            this.search();
-          break;
+      case 'index':
+        this.search();
+        break;
     }
-   
+
+  }
+  /**
+   * 关闭修改密码弹框
+   */
+  close_reset_pwd() {
+    this.is_edit_change_passport = false;
+    this.reseat_form();
   }
 
 
@@ -535,8 +560,8 @@ export class UserManageUserComponent implements OnInit {
    * @memberof UserManageUserComponent
    */
   chang_page_index(item) {
-    this.search(item);
-    // this.get_user_manage_list(item);
+    this.page_index = item;
+    this.get_user_manage_list();
   }
   /**
    *点击修改登录密码
@@ -550,30 +575,40 @@ export class UserManageUserComponent implements OnInit {
     //   this.change_passport_apply.controls[i].markAsDirty();
     //   this.change_passport_apply.controls[i].updateValueAndValidity();
     // }
-    this.change_passport_obj = {};
-
-
-
+    this.reseat_form();
     this.edit_change_passport_obj = data;
     this.is_edit_change_passport = true;
-
   }
   /*
-  *
    *获取用户管理列表
    *
    * @memberof UserManageUserComponent
    */
-  get_user_manage_list(page_index, data?) {
+  get_user_manage_list() {
     this.is_load_list = true;
-    this.userManageService.get_user_manage_list(page_index, data).subscribe((res: any) => {
+    let option: any = {
+      parent_name: 1
+    };
+    if (this.searchData.id) option.id = this.searchData.id;
+    if (this.searchData.username) option.username = this.searchData.username;
+    if (this.searchData.parent_id) option.parent_id = this.searchData.parent_id;
+    if (this.searchData.is_tester) option.is_tester = this.searchData.is_tester;
+    if (this.searchData.type) option.type = this.searchData.type;
+    // if (this.searchData.parent_name) option.parent_name = this.searchData.parent_name;
+    if (this.start_time) option.start_time = this.start_time;
+    if (this.end_time) option.end_time = this.end_time;
+    this.userManageService.get_user_manage_list(this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
-        this.page_index = page_index;
         this.list_total = res.data.total;
         this.is_load_list = false;
         this.listOfData = res.data;
         this.listOfDisplayData = [...this.listOfData['data']];
+        if (res.data.parent_username) {
 
+
+
+
+        }
       } else {
         this.is_load_list = false;
         this.message.error(res.message, {
@@ -582,52 +617,103 @@ export class UserManageUserComponent implements OnInit {
       }
     })
   }
-  /**
-   *用户组筛选改变
-   *
-   * @param {string[]} value
-   * @memberof UserManageUserComponent
-   */
-  filter_user_group_change(value: string): void {
-    this.list_of_search_group = value;
-    this.search();
-  }
-  /**
- *用户组筛选改变
- *
- * @param {string[]} value
- * @memberof UserManageUserComponent
- */
-  is_test_user_change(value: string): void {
-    this.list_of_search_is_test = value;
-    this.search();
-  }
+
   /**
    *根据匹配条件搜索
    *
    * @param {*} [page]
    * @memberof UserManageUserComponent
    */
-  search(page?): void {
+  public search(page?): void {
+    this.page_index = 1;
+    this.parent_set = [];
+    this.get_user_manage_list();
+  }
+  /**
+   *
+   * 寻找上级
+   * @memberof UserManageUserComponent
+   */
 
-    let option = {};//筛选条件
-    if (this.list_of_search_is_test && this.list_of_search_is_test != '1000') {
-      option['is_tester'] = Number(this.list_of_search_is_test);
+  public find_child(id, index?) {
+    if (index>=0){
+      this.parent_set.length = (index + 1);
+    }else{
+      this.parent_set=[];
     }
-    if (this.list_of_search_group && this.list_of_search_group != '1000') {
-      option['type'] = this.list_of_search_group;
+    this.reset_search_data();
+  
+    this.searchData.parent_id = id ? id : '';
+    this.searchData.parent_name = id ? '1' : '';
+    this.get_user_manage_list();
+  }
+ /**
+  *重置搜索表单
+  *
+  * @memberof UserManageUserComponent
+  */
+ public reset_search_data(){
+  this.searchData = {
+    pageIndex: 1,
+    pageSize: 15,
+    id: '',
+    is_tester: '',
+    type: '',
+    username: '',
+    parent_id: '',
+    parent_name: '',
+  };
+  }
+  /**
+   *查看上级
+   *
+   * @param {*} item
+   * @memberof UserManageUserComponent
+   */
+  public search_team_top(item) {
+    if(item.parent_id===0){
+      this.modalService.info({
+        nzTitle: '温馨提示！',
+        nzContent: '该用户无上级！'
+      });
+      return;
     }
-    if (this.searchValue) {
-      option['username'] = this.searchValue;
+    this.parent_set = [];
+    if (item.parent_username) {
+      let name_array = item.parent_username.split(',');
+      let id_array = item.rid.split('|');
+      name_array.forEach((item, index) => {
+        this.parent_set.push({
+          id: id_array[index],
+          name: item
+        })
+      });
+      this.parent_set.splice(this.parent_set.length - 1, 1);
     }
-    if (this.start_time) {
-      option['start_time'] = this.start_time;
+    this.reset_search_data();
+    this.searchData.parent_id = item.parent_id;
+    this.searchData.parent_name = '1';
+    this.get_user_manage_list();
+  }
+  /**
+   * 查看下级
+   */
+  public search_team(item) {
+    this.parent_set = [];
+    if (item.parent_username) {
+      let name_array = item.parent_username.split(',');
+      let id_array = item.rid.split('|');
+      name_array.forEach((item, index) => {
+        this.parent_set.push({
+          id: id_array[index],
+          name: item
+        })
+      });
     }
-    if (this.end_time) {
-      option['end_time'] = this.end_time;
-    }
-
-    this.get_user_manage_list(page ? page : 1, option);
+    this.reset_search_data();
+    this.searchData.parent_id = item.id;
+    this.searchData.parent_name = '1';
+    this.get_user_manage_list();
   }
 
 }

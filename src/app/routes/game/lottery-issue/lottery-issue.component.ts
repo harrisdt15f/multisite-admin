@@ -263,8 +263,6 @@ export class GameLotteryIssueComponent implements OnInit {
   update_form() {
     this.create_lottery_obj = {};
     this.create_form.reset();
-
-
     for (const key in this.create_form.controls) {
       this.create_form.controls[key].markAsPristine();
       this.create_form.controls[key].updateValueAndValidity();
