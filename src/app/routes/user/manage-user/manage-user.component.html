@@ -57,7 +57,7 @@
     <section class="select-lottery" *ngIf="parent_set.length > 0">
         <a href="javascript:;" class="a-link" (click)="find_child('',-1)">根目录</a>
         <ng-container *ngFor="let item of parent_set;let i=index ">
-          >> <a href="javascript:;" class="a-link" (click)="find_child(item.id,i)">{{item.name}}{{item.id}}</a>
+          >> <a href="javascript:;" class="a-link" (click)="find_child(item.id,i)">{{item.name}}</a>
         </ng-container>
       </section>
     <nz-table #nzTable [nzLoadingDelay]='100' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
@@ -66,7 +66,8 @@
       <thead>
         <tr>
           <th nzShowExpand></th>
-          <th nzCustomFilter>用户名</th>
+          <th >用户ID</th>
+          <th >用户名</th>
           <th>账户余额</th>
           <th>冻结金额</th>
           <th>用户层级</th>
@@ -84,6 +85,7 @@
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
             <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
+            <td>{{ data.id }}</td>
             <td>{{ data.username }}</td>
             <td>{{ data.account.balance }}</td>
             <td>{{ data.account.frozen }}</td>

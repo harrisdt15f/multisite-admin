@@ -396,7 +396,7 @@ export class GameLotteryIssueComponent implements OnInit {
     this.search();
     if (this.lotteries_tabs[this.tab_index].value != 10086) {
       this.get_lotteries_list();
-      this.encode_splitter = this.lotteries_tabs[this.tab_index].encode_splitter === null ? '' : this.lotteries_tabs[this.tab_index].encode_splitter;
+      // this.encode_splitter = this.lotteries_tabs[this.tab_index].encode_splitter === null ? '' : this.lotteries_tabs[this.tab_index].encode_splitter;
     }
   }
   /**
