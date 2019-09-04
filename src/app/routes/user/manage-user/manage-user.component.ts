@@ -276,17 +276,8 @@ export class UserManageUserComponent implements OnInit {
     });
   }
   /**重置搜做参数 */
-  resetSearch() {
-    this.searchData = {
-      pageIndex: 1,
-      pageSize: 15,
-      is_tester: '',
-      parent_name: '',
-      type: '',
-      id: '',
-      username: '',
-      parent_id: ''
-    };
+  resetSearch() {    
+    this.reset_search_data();
     this.page_index = 1;
     this.get_user_manage_list();
   }
@@ -604,10 +595,6 @@ export class UserManageUserComponent implements OnInit {
         this.listOfData = res.data;
         this.listOfDisplayData = [...this.listOfData['data']];
         if (res.data.parent_username) {
-
-
-
-
         }
       } else {
         this.is_load_list = false;
@@ -624,7 +611,7 @@ export class UserManageUserComponent implements OnInit {
    * @param {*} [page]
    * @memberof UserManageUserComponent
    */
-  public search(page?): void {
+  public search(): void {
     this.page_index = 1;
     this.parent_set = [];
     this.get_user_manage_list();

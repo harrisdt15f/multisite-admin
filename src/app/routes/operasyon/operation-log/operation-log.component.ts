@@ -3,12 +3,24 @@ import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 import { UserManageService } from 'app/service/user-manage.service';
 import { startOfMonth } from 'date-fns';
+import { Utils } from 'config/utils.config';
+import { ToolService } from 'tool/tool.service';
 @Component({
   selector: 'app-log-operation-log',
   templateUrl: './operation-log.component.html',
   styleUrls: ['./operation-log.component.less']
 })
 export class LogOperationLogComponent implements OnInit {
+  //-----------条件筛选参数---------------
+  // 搜索对象
+  public searchData = {
+    pageIndex: 1,
+    pageSize: Utils.page_size,
+    origin: '',
+    admin_name: '',
+    ip: '',
+    os: ''
+  };
   //----------------筛选相关
   public ranges1 = {
     "今日": [new Date(), new Date()],
@@ -18,10 +30,6 @@ export class LogOperationLogComponent implements OnInit {
   public is_visible_city: boolean;
   public start_time: string;
   public end_time: string;
-  public search_origin: string;
-  public search_ip_ad: string;
-  public search_admin_name: string;
-  public search_os: string;
   // public searchValue = '';
   //----------内容
 
@@ -39,6 +47,7 @@ export class LogOperationLogComponent implements OnInit {
   // public sortValue: string | null = null;
   constructor(
     private http: _HttpClient,
+    public utilsService: ToolService,
     private userManageService: UserManageService,
     private message: NzMessageService
   ) { }
@@ -106,59 +115,36 @@ export class LogOperationLogComponent implements OnInit {
     }
   }
 
-
-  /**
-   *取消搜索
-   *
-   * @memberof UserPassportCheckComponent
-   */
-  reset(type?): void {
-    switch (type) {
-      case 'origin':
-        this.search_origin = '';
-        break;
-      case 'ip':
-        this.search_ip_ad = '';
-        break;
-      case 'name':
-        this.search_admin_name = '';
-        break;
-      case 'os':
-        this.search_os = '';
-        break;
-    }
-    this.search();
-  }
   /**
    *搜索数组
    *
    * @memberof UserPassportCheckComponent
    */
-  search(page?): void {
-    let option = {};//筛选条件
-
-
-    if (this.search_origin) {
-      option['origin'] = this.search_origin;
-    }
-    if (this.search_ip_ad) {
-      option['ip'] = this.search_ip_ad;
-    }
-    if (this.search_admin_name) {
-      option['admin_name'] = this.search_admin_name;
-    }
-    if (this.search_os) {
-      option['os'] = this.search_os;
-    }
-    if (this.start_time) {
-      option['start_time'] = this.start_time;
-    }
-    if (this.end_time) {
-      option['end_time'] = this.end_time;
-    }
-
-    this.get_log_list(page ? page : 1, option);
-
+  search(): void {
+    this.page_index = 1;
+    this.get_log_list();
+  }
+    /**
+   * 重置搜索参数 
+   * */
+  public resetSearch() {
+    this.reset_search_data();
+    this.get_log_list();
+  }
+  /**
+   * 重置搜索参数对象 
+   * */
+  public reset_search_data() {
+    this.start_time='';
+    this.end_time='';
+    this.searchData = {
+      pageIndex: 1,
+      pageSize: Utils.page_size,
+      origin: '',
+      admin_name: '',
+      ip: '',
+      os: ''
+    };
   }
   /**
   *改变页数
@@ -167,7 +153,8 @@ export class LogOperationLogComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   chang_page_index(item) {
-    this.search(item);
+    this.page_index = item;
+    this.search();
   }
   /*
   *
@@ -175,18 +162,21 @@ export class LogOperationLogComponent implements OnInit {
   *
   * @memberof UserManageUserComponent
   */
-  get_log_list(page_index, option?) {
+  get_log_list() {
     this.is_load_list = true;
-    this.userManageService.get_log_list(page_index, option).subscribe((res: any) => {
+    let option: any = {};
+    if (this.searchData.admin_name) option.admin_name = this.searchData.admin_name;
+    if (this.searchData.origin) option.origin = this.searchData.origin;
+    if (this.searchData.ip) option.ip = this.searchData.ip;
+    if (this.searchData.os) option.os = this.searchData.os;
+    if (this.start_time) option.start_time = this.start_time;
+    if (this.end_time) option.end_time = this.end_time;
+    this.userManageService.get_log_list(this.searchData.pageSize, option).subscribe((res: any) => {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
         this.list_of_aply_data = res.data['data'];
-        // this.list_of_aply_data.forEach((item)=>{
-        //   this.userManageService.get_country_by_ip(item.ip).subscribe((res: any) => {
 
-        //   });
-        // });
 
       } else {
         this.is_load_list = false;

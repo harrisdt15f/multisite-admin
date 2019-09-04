@@ -19,11 +19,11 @@ export class GameLotteryIssueComponent implements OnInit {
   public list_of_aply_data: Array<any> = [];
   public list_total: number;
   public up_time: any;
-  public list_of_search_status: string;
+
   public is_loading_enco: boolean;
   public is_load_list: boolean;
   public is_visible_input: boolean;//显示手动录号弹框
-  public searchValue = '';
+
   public choise_lottery = '0';
   public previous_number = '0';
   public note_value: string;
@@ -448,41 +448,15 @@ export class GameLotteryIssueComponent implements OnInit {
     })
   }
 
-  /**
-   *取消搜索
-   *
-   * @memberof UserPassportCheckComponent
-   */
-  reset(): void {
-    this.searchValue = '';
-    this.search();
-  }
-  /**
-*状态筛选改变
-*
-* @param {string[]} value
-* @memberof UserManageUserComponent
-*/
-  is_status_change(value: string): void {
-    this.list_of_search_status = value;
-    this.search();
-  }
+
+
+/**
+ * 搜索奖期
+ */
   search_lotteries() {
     this.search();
   }
-  /**
-*点击提交，驳回申请
-*
-* @param {*} type
-* @memberof UserManageUserComponent
-*/
-  // edit_check_passport(data, type) {
-  //   this.is_edit_check = true;
-  //   this.submit_passport_lodding = false;
-  //   this.note_value = '';
-  //   this.edit_check_obj = data;
-  //   this.edit_check_obj['type'] = type;
-  // }
+
   /**
    * 获取当前系列的所有玩法
    */
@@ -507,12 +481,6 @@ export class GameLotteryIssueComponent implements OnInit {
       }
     })
   }
-  public getWeek(data: any) {
-    // 
-    console.log()
-    console.log(data)
-
-  }
   /**
    *搜索数组
    *
@@ -520,17 +488,12 @@ export class GameLotteryIssueComponent implements OnInit {
    */
   search(page?): void {
     let option = {};//筛选条件
-    if (this.list_of_search_status && this.list_of_search_status != '1000') {
-      option['status'] = this.list_of_search_status;
-    }
-    if (this.searchValue) {
-      option['username'] = this.searchValue;
-    }
+
     if (this.search_number) {
       option['issue'] = this.search_number;
     }
-    if (this.searchTime) {
-      option['time_condtions'] = JSON.stringify([['created_at', '>=', Utils.formatTime(this.searchTime[0])], ['created_at', '<=', Utils.formatTime(this.searchTime[1])]])
+    if (this.searchTime&&this.searchTime.length>0) {
+      option['time_condtions'] = JSON.stringify([['end_time', '>=',new Date(this.searchTime[0]).getTime()], ['end_time', '<=',new Date(this.searchTime[1]).getTime() ]])
     }
     this.get_issue_list(page ? page : 1, option);
   }

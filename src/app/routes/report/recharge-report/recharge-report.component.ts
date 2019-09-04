@@ -84,6 +84,7 @@ export class ReportRechargeReportComponent implements OnInit {
             '平台订单号':item.company_order_num,
             '金额(元)':item.amount,
             '充值类型':item.deposit_mode===1?'人工充值':'自动充值',
+            '是否测试账号':item.is_tester===1?'是':'否',
             '充值状态':this.reportService.transform(item.status),
             '创建时间':item.created_at,
             '更新时间':item.updated_at,

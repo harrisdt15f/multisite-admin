@@ -1,126 +1,122 @@
-<page-header  [action]="action"  >
-    <ng-template #action>
-        <button (click)='download_report()' style='width:150px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-        class="ant-btn__block mb-sm">
-        <i *ngIf='!is_down_load' nz-icon nzType="cloud-download" nzTheme="outline"></i>
-        <i *ngIf='is_down_load'  nz-icon nzType="loading" nzTheme="outline"></i>
-        <span>导出表格</span>
-      </button>
-        <button (click)='search()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-        class="ant-btn__block mb-sm">
-        <i nz-icon nzType="redo" nzTheme="outline"></i>
-        <span>刷新</span>
-      </button>
-    </ng-template>
-  </page-header>
+<page-header [action]="action">
+  <ng-template #action>
+    <button (click)='download_report()' style='width:150px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+      class="ant-btn__block mb-sm">
+      <i *ngIf='!is_down_load' nz-icon nzType="cloud-download" nzTheme="outline"></i>
+      <i *ngIf='is_down_load' nz-icon nzType="loading" nzTheme="outline"></i>
+      <span>导出表格</span>
+    </button>
+  </ng-template>
+</page-header>
 <nz-layout>
-<nz-content>
+  <nz-content>
+    <section class="select-lottery">
+      <span>
+        <span>投注用户名:</span>
+        <input nz-input nzSize="small" placeholder="用户昵称" [(ngModel)]="searchData.username"
+          class="select-lottery-input" />
+      </span>
+      <span>
+        <span>奖期号:</span>
+        <input nz-input nzSize="small" placeholder="奖期号" [(ngModel)]="searchData.issue" class="select-lottery-input" />
+      </span>
+      <span>
+        <span>测试人员:</span>
+        <nz-select nzSize="small" style="width: 120px;" [(ngModel)]="searchData.is_tester" nzAllowClear
+          nzPlaceHolder="是否测试用户">
+          <nz-option nzValue="" nzLabel="全部"></nz-option>
+          <nz-option nzValue="1" nzLabel="是"></nz-option>
+          <nz-option nzValue="0" nzLabel="否"></nz-option>
+        </nz-select>
+      </span>
+      <span>
+        <span>开奖状态:</span>
+        <nz-select nzSize="small" style="width: 120px;" [(ngModel)]="searchData.status" nzAllowClear
+          nzPlaceHolder="开奖状态">
+          <nz-option nzValue="" nzLabel="全部"></nz-option>
+          <nz-option nzValue="0" nzLabel="待开奖"></nz-option>
+          <nz-option nzValue="1" nzLabel="已撤销"></nz-option>
+          <nz-option nzValue="2" nzLabel="未中奖"></nz-option>
+          <nz-option nzValue="3" nzLabel="已中奖"></nz-option>
+          <nz-option nzValue="4" nzLabel="已派奖"></nz-option>
+        </nz-select>
+      </span>
+      <span>
 
-<nz-table #nzTable [nzScroll]='{x:"3200px", y: "500px" }' [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
-  [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
-  [nzTotal]='list_total'>
-  <thead>
-    <tr>
-      <th nzWidth="100px">彩种</th>
-     
-      <th nzWidth="150px" nzCustomFilter> 
-        奖期号
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown2>
-                <i nz-icon nzType="search" class="ant-table-filter-icon"
-                  [class.ant-table-filter-open]="dropdown2.nzVisible" nz-dropdown></i>
-  
-                <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索订单号" [(ngModel)]="search_issue" />
-                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                    搜索
-                  </button>
-                  <button nz-button nzSize="small" (click)="reset_num()">取消</button>
-                </div>
-              </nz-dropdown>
-      </th>
-      <th nzWidth="100px"> 投注号码</th>
-      <th nzWidth="100px">倍数</th>
-      <th nzWidth="100px">元角模式</th>
-      <th nzWidth="150px">单注投注额</th>
-      <th nzWidth="150px">总投注额</th> 
-      <th nzWidth="150px">中奖金额 </th>
-      <th nzWidth="200px" nzCustomFilter>
-          用户名称
-          <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-              <i nz-icon nzType="search" class="ant-table-filter-icon"
-                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-  
-              <div class="search-box">
-                <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
-                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                  搜索
-                </button>
-                <button nz-button nzSize="small" (click)="reset()">取消</button>
-              </div>
-            </nz-dropdown>
-        </th>
-      <th nzWidth="200px" nzShowFilter [nzFilters]="is_tester" 
-      [nzFilterMultiple]='false' (nzFilterChange)="filter_deposit_mode_change($event)">是否测试用户</th>
-      <th nzWidth="200px" nzShowFilter [nzFilters]="status" 
-      [nzFilterMultiple]='false' (nzFilterChange)="filter_status_change($event)">开奖状态
-     </th>
-  
-      <th nzWidth="200px">奖金组</th>
-
-
-
-      <th nzWidth="200px">开奖号码 </th>
- 
-      <th nzWidth="200px">系列</th>
-    
-      <th nzWidth="200px">玩法ID</th>
-      <th nzWidth="200px">玩法</th>
-      <th nzWidth="200px">ip</th>
-      <th nzWidth="200px">ip层级</th>
-      <th nzWidth="200px">设备类型</th>
-
-    </tr>
-  </thead>
-
-  <tbody>
-    <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
-    <tr class='table_tr' *ngFor="let data of list_of_aply_data" >
-      <td style='width: 100px'>{{data.lottery_sign}}</td>
-      <td style='width: 150px'>{{ data.issue }}</td>
-      <td  style='width: 100px'>{{data.bet_number}}</td>
-      <td  style='width: 100px'>{{data.times}}</td>
-      <td  style='width: 100px'> {{data.mode|unit}}</td>
-      <td style='width: 150px'>{{ data.price}}</td>
-      <td style='width: 150px'>{{data.total_cost}}</td>
-      <td style='width: 150px'>{{data.bonus}}</td>
-      <td>{{ data.username}}</td>
-      <td>{{data.is_tester==1?'是':'否'}}</td>
-      <td>{{ data.status|userBet }}</td>
-      <td>{{ data.bet_prize_group }}</td>
-  
-      <td>{{data.open_number}}</td>
-    
-      <td>{{data.series_id}}</td>
-   
-      <td>{{data.method_sign}}</td>
-      <td>{{data.method_name}}</td>
-      <td>{{data.ip}}</td>
-      <td>{{data.proxy_ip}}</td>
-      <td>{{data.bet_from}}</td>
-
-
-
+        <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
+            type="search"></i>搜索</button>&nbsp;&nbsp;
+        <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon
+            type="sync"></i>重置</button>
+      </span>
+    </section>
+    <nz-table #nzTable nzBordered [nzScroll]='{x:"1872px", y: "500px" }' [nzLoadingDelay]='500'
+      (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+      [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzWidth="80px">ID</th>
+          <th nzWidth="80px">彩种</th>
+          <th nzWidth="130px">奖期号</th>
+          <th nzWidth="100px"> 投注号码</th>
+          <th nzWidth="80px">倍数</th>
+          <th nzWidth="80px">模式</th>
+          <th nzWidth="120px">单注投注额</th>
+          <th nzWidth="100px">总投注额</th>
+          <th nzWidth="100px">中奖金额 </th>
+          <th nzWidth="100px">用户名称</th>
+          <th nzWidth="80px">测试</th>
+          <th nzWidth="80px">状态</th>
+          <th nzWidth="100px">奖金组</th>
+          <th nzWidth="100px">开奖号码 </th>
+          <th nzWidth="80px">系列</th>
+          <th nzWidth="80px">玩法ID</th>
+          <th nzWidth="80px">玩法</th>
+          <th nzWidth="100px">ip</th>
+          <th nzWidth="100px">ip层级</th>
+          <th nzWidth="100px">设备类型</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
+        <tr class='table_tr' *ngFor="let data of list_of_aply_data">
+          <td style='width: 80px'>{{data.id}}</td>
+          <td style='width: 80px'>{{data.lottery_sign}}</td>
+          <td style='width: 130px' class='home-change-color' (click)='utilsService.show_modal_text(data.issue)'>
+            {{ data.issue }}</td>
+          <td style='width: 100px' class='home-change-color' (click)='utilsService.show_modal_text(data.bet_number)'>
+            {{data.bet_number}}</td>
+          <td style='width: 80px'>{{data.times}}</td>
+          <td style='width: 80px'> {{data.mode|unit}}</td>
+          <td style='width: 120px'>{{ data.price}}</td>
+          <td style='width: 100px'>{{data.total_cost}}</td>
+          <td style='width: 100px'>{{data.bonus}}</td>
+          <td style='width: 100px'>{{ data.username}}</td>
+          <td style='width: 80px'>{{data.is_tester==1?'是':'否'}}</td>
+          <td style='width: 80px'>{{ data.status|userBet }}</td>
+          <td style='width: 100px'>{{ data.bet_prize_group }}</td>
+          <td style='width: 100px'>{{data.open_number}}</td>
+          <td style='width: 80px'>{{data.series_id}}</td>
+          <td style='width: 80px'>{{data.method_sign}}</td>
+          <td style='width: 80px'>{{data.method_name}}</td>
+          <td style='width: 100px' class='home-change-color' (click)='utilsService.show_modal_text(data.ip)'>{{data.ip}}
+          </td>
+          <td style='width: 100px' class='home-change-color' (click)='utilsService.show_modal_text(data.proxy_ip)'>
+            {{data.proxy_ip}}</td>
+          <td style='width: 100px'>{{data.bet_from}}</td>
 
 
 
 
 
-    </tr>
 
-    <!-- </ng-template> -->
 
-  </tbody>
-</nz-table>
 
-</nz-content>
+        </tr>
+
+        <!-- </ng-template> -->
+
+      </tbody>
+    </nz-table>
+
+  </nz-content>
 </nz-layout>

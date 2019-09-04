@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NzModalService } from 'ng-zorro-antd';
 // import { type } from 'os';
 // import ClipboardJS from './clipboard.min.js';
 
@@ -37,8 +38,14 @@ export class ToolService {
     }
   };
 
-  constructor() { }
-
+  constructor(    public modalService: NzModalService,) { }
+  public show_modal_text(text:string){
+    this.modalService.info({
+      nzTitle: '内容展示',
+      nzContent: text
+    });
+  
+  }
   // 复制粘贴
   public copy(copy: any, txt: any) {
     // var _this = this

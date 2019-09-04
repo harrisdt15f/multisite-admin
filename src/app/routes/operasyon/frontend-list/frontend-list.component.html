@@ -2,84 +2,55 @@
 
 <nz-layout>
   <nz-content>
-      <div nz-row style="margin:20px">
-          <div nz-col nzSpan="9">
-            <span>注册时间：</span>
-            <nz-range-picker nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" ngModel (ngModelChange)="on_change_time($event)">
-            </nz-range-picker>
-          </div>
-  
-        </div>
-    <nz-table [nzScroll]='{x:"3400px", y: "500px" }' #nzTable [nzLoadingDelay]='500'
+    <section class="select-lottery">
+      <span>
+        <span>操作用户:</span>
+        <input nz-input nzSize="small" placeholder="操作用户" [(ngModel)]="searchData.username"
+          class="select-lottery-input" />
+      </span>
+      <span>
+        <span>访问域名:</span>
+        <input nz-input nzSize="small" placeholder="访问域名" [(ngModel)]="searchData.origin"
+          class="select-lottery-input" />
+      </span>
+      <span>
+        <span>访问IP:</span>
+        <input nz-input nzSize="small" placeholder="访问IP" [(ngModel)]="searchData.ip" class="select-lottery-input" />
+      </span>
+      <span>
+        <span>操作系统:</span>
+        <input nz-input nzSize="small" placeholder="操作系统" [(ngModel)]="searchData.os" class="select-lottery-input" />
+      </span>
+      <span>
+        <span>注册时间:</span>
+        <nz-range-picker [(ngModel)]="start_time"  nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" ngModel (ngModelChange)="on_change_time($event)">
+        </nz-range-picker>
+      </span>
+      <span>
+
+        <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
+            type="search"></i>搜索</button>&nbsp;&nbsp;
+        <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon
+            type="sync"></i>重置</button>
+      </span>
+    </section>
+
+    <nz-table nzBordered  [nzScroll]='{x:"2851px", y: "500px" }' #nzTable [nzLoadingDelay]='500'
       (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
       [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
       <thead>
         <tr>
-          <th nzCustomFilter nzWidth="200px">
-            访问域名
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-                <i nz-icon nzType="search" class="ant-table-filter-icon"
-                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-  
-                <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_origin" />
-                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                    搜索
-                  </button>
-                  <button nz-button nzSize="small" (click)="reset('origin')">取消</button>
-                </div>
-              </nz-dropdown>
-          </th>
-          <th nzCustomFilter nzWidth="200px"> 
-            访问Ip
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-                <i nz-icon nzType="search" class="ant-table-filter-icon"
-                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-  
-                <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_ip_ad" />
-                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                    搜索
-                  </button>
-                  <button nz-button nzSize="small" (click)="reset('ip')">取消</button>
-                </div>
-              </nz-dropdown>
-          </th>
-          <th nzWidth="200px">Ip层级</th>
-          <th nzCustomFilter nzWidth="200px">用户
-              <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-                  <i nz-icon nzType="search" class="ant-table-filter-icon"
-                    [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-    
-                  <div class="search-box">
-                    <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_user_name" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                      搜索
-                    </button>
-                    <button nz-button nzSize="small" (click)="reset('name')">取消</button>
-                  </div>
-                </nz-dropdown>
-          </th>
+          <th  nzWidth="200px">访问域名</th>
+          <th  nzWidth="150px">访问Ip</th>
+          <th nzWidth="150px">Ip层级</th>
+          <th  nzWidth="100px">用户</th>
           <th nzWidth="200px">系统语言</th>
-          <th nzWidth="200px">浏览器内核</th>
-          <th nzCustomFilter nzWidth="200px">操作系统
-              <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-                  <i nz-icon nzType="search" class="ant-table-filter-icon"
-                    [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-    
-                  <div class="search-box">
-                    <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="search_os" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                      搜索
-                    </button>
-                    <button nz-button nzSize="small" (click)="reset('os')">取消</button>
-                  </div>
-                </nz-dropdown>
-          </th>
-          <th nzWidth="200px">操作系统版本</th>
-          <th nzWidth="200px">浏览器</th>
+          <th nzWidth="150px">浏览器内核</th>
+          <th  nzWidth="150px">操作系统</th>
+          <th nzWidth="150px">操作系统版本</th>
+          <th nzWidth="100px">浏览器</th>
           <th nzWidth="200px">浏览器版本</th>
-          <th nzWidth="200px">设备类型</th>
+          <th nzWidth="100px">设备类型</th>
           <th nzWidth="200px">浏览器详细信息</th>
           <th nzWidth="200px">请求参数</th>
           <th nzWidth="200px">路由访问详情</th>
@@ -92,20 +63,23 @@
 
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr class='table_tr'>
-            <td>{{ data.origin|| '无'}}</td>
-            <td class='hover-change'  (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
-            <td (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
-            <td>{{ data.username || '无'}}</td>
+            <td class='home-change-color' (click)='utilsService.show_modal_text(data.origin)'>{{ data.origin|| '无'}}</td>
+            <td style='width:150px' class='hover-change' (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
+            <td  style='width:150px'  class='home-change-color' (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
+            <td  style='width:100px' >{{ data.username || '无'}}</td>
             <td>{{ data.lang|| '无'}}</td>
-            <td>{{ data.device|| '无' }}</td>
-            <td>{{ data.os|| '无' }}</td>
-            <td>{{ data.os_version || '无'}}</td>
-            <td>{{ data.browser|| '无' }}</td>
+            <td style='width:150px'>{{ data.device|| '无' }}</td>
+            <td style='width:150px'>{{ data.os|| '无' }}</td>
+            <td style='width:150px'>{{ data.os_version || '无'}}</td>
+            <td  style='width:100px'>{{ data.browser|| '无' }}</td>
             <td>{{ data.bs_version || '无'}}</td>
-            <td>{{ data.device_type|equipmentType}}</td>
-            <td class='ellipsis' (click)='show_content(data.user_agent,"string")'>{{ data.user_agent || '无'}}</td>
-            <td class='ellipsis' (click)='show_content(data.inputs,"object")'>{{ data.inputs || '无'}}</td>
-            <td class='ellipsis' (click)='show_content(data.route,"object")'>{{ data.route|| '无' }}</td>
+            <td style='width:100px'>{{ data.device_type|equipmentType}}</td>
+            <td class='ellipsis' class='home-change-color' (click)='show_content(data.user_agent,"string")'>
+              {{ data.user_agent || '无'}}</td>
+            <td class='ellipsis' class='home-change-color' (click)='show_content(data.inputs,"object")'>
+              {{ data.inputs || '无'}}</td>
+            <td class='ellipsis' class='home-change-color' (click)='show_content(data.route,"object")'>
+              {{ data.route|| '无' }}</td>
             <td>{{ data.created_at|| '无' }}</td>
             <td>{{ data.menu_label|| '无' }}</td>
             <td>{{ data.menu_path|| '无' }}</td>
@@ -125,7 +99,7 @@
       </pre>
     </nz-drawer>
     <!-- 查看ip对话框 -->
-    <nz-modal [(nzVisible)]="is_visible_city" (nzOnCancel)="is_visible_city=false" [nzFooter]='null' nzTitle="城市信息" >
+    <nz-modal [(nzVisible)]="is_visible_city" (nzOnCancel)="is_visible_city=false" [nzFooter]='null' nzTitle="城市信息">
       <p>IP:{{city_obj['ip']}}</p>
       <p>城市:{{city_obj['city']}}</p>
       <p>地区:{{city_obj['county']||city_obj['country']}}</p>

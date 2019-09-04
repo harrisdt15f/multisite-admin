@@ -304,7 +304,7 @@ export class OperasyonPageModelComponent implements OnInit {
       this.managerService.add_hot_lotteries(data).subscribe((res: any) => {
         this.modal_lodding = false;
         if (res && res.success) {
-          this.get_lotteries_notice();
+          this.get_lotteries();
           this.message.success('添加热门彩票成功', {
             nzDuration: 2500,
           });
