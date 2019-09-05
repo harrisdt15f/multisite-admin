@@ -248,30 +248,25 @@
           <div class='box-title'>创建管理员</div>
           <form nz-form [formGroup]="managerCreateForm">
             <nz-form-item>
-              <nz-form-label nzRequired>名称</nz-form-label>
-              <nz-form-control nzHasFeedback>
-                <input nz-input maxlength='13' [(ngModel)]="create_manager_obj['name']" formControlName="manager_name"
-                  placeholder="请输入要创建的管理员名称！" />
-                <nz-form-explain *ngIf="
-                            (managerCreateForm.get('manager_name')?.dirty && managerCreateForm.get('manager_name')?.errors) ||
-                            managerCreateForm.get('manager_name')?.pending
-                          ">
+              <nz-form-label nzFor="manager_name" [nzSm]="6" [nzXs]="24" nzRequired>名称</nz-form-label>
+              <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input [(ngModel)]="create_manager_obj['name']" placeholder="管理员名称" nz-input type="text"
+                  id="manager_name" formControlName="manager_name" />
+                <nz-form-explain
+                  *ngIf="managerCreateForm.get('manager_name')?.dirty && managerCreateForm.get('manager_name')?.errors">
                   <ng-container *ngIf="managerCreateForm.get('manager_name')?.hasError('required')">
-                    请输入要创建的管理员名!
+                    请输入要创建的管理员名称!
                   </ng-container>
-                  <ng-container *ngIf="managerCreateForm.get('manager_name')?.hasError('duplicated')">
-                    该用户名已被使用!
-                  </ng-container>
-                  <ng-container *ngIf="managerCreateForm.get('manager_name')?.pending">
-                    Validating...
+                  <ng-container *ngIf="managerCreateForm.get('manager_name')?.hasError('pattern')">
+                    请输入6-18位英文，数字组合!
                   </ng-container>
                 </nz-form-explain>
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzRequired>邮箱</nz-form-label>
-              <nz-form-control nzHasFeedback>
-                <input maxlength='30' type='text' nz-input [(ngModel)]="create_manager_obj['email']"
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="email" nzRequired>邮箱</nz-form-label>
+              <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input maxlength='30' type='text' nz-input [(ngModel)]="create_manager_obj['email']" id="email"
                   formControlName="email" placeholder="email" />
                 <nz-form-explain
                   *ngIf="managerCreateForm.get('email')?.dirty && managerCreateForm.get('email')?.errors">
@@ -285,20 +280,31 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzFor="password" nzRequired>密码</nz-form-label>
-              <nz-form-control>
-                <input nz-input maxlength='15' type="password" id="password" formControlName="password"
-                  [(ngModel)]="create_manager_obj['password']" (ngModelChange)="updateConfirmValidator()" />
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24">
+                <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
+                  <input nz-input formControlName="password" [(ngModel)]="create_manager_obj['password']"
+                    (ngModelChange)="updateConfirmValidator()" [type]="passwordVisible ? 'text' : 'password'"
+                    id="password" />
+                </nz-input-group>
                 <nz-form-explain
                   *ngIf="managerCreateForm.get('password')?.dirty && managerCreateForm.get('password')?.errors">
-                  请输入密码!</nz-form-explain>
+                  <ng-container *ngIf="managerCreateForm.get('password')?.hasError('required')">
+                    请输入要管理员密码!
+                  </ng-container>
+                  <ng-container *ngIf="managerCreateForm.get('password')?.hasError('pattern')">
+                    请输入6-18位英文，数字组合!
+                  </ng-container>
+                </nz-form-explain>
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzFor="checkPassword" nzRequired>重复密码</nz-form-label>
-              <nz-form-control>
-                <input maxlength='15' nz-input [(ngModel)]="create_manager_obj['c_password']" type="password"
-                  formControlName="checkPassword" id="checkPassword" />
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>重复密码</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24">
+                <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
+                  <input maxlength='15' nz-input [(ngModel)]="create_manager_obj['c_password']"
+                    [type]="passwordVisible ? 'text' : 'password'" formControlName="checkPassword" id="checkPassword" />
+                </nz-input-group>
                 <nz-form-explain
                   *ngIf="managerCreateForm.get('checkPassword')?.dirty && managerCreateForm.get('checkPassword')?.errors">
                   <ng-container *ngIf="managerCreateForm.get('checkPassword')?.hasError('required')">
@@ -311,9 +317,9 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-label nzFor="manager_group" nzRequired>选择分组</nz-form-label>
-              <nz-form-control>
-                <nz-select id="checkPassword" formControlName="manager_group" style="width: 100%;"
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="manager_group" nzRequired>选择分组</nz-form-label>
+              <nz-form-control [nzSm]="14" [nzXs]="24">
+                <nz-select id="manager_group" formControlName="manager_group" style="width: 100%;"
                   [nzDropdownStyle]='select_style' nzShowSearch nzAllowClear nzPlaceHolder="选择分组"
                   [(ngModel)]="create_manager_obj['group_id']">
                   <nz-option *ngFor="let item of group_list_total ; let i=index" [nzLabel]="item.group_name"
@@ -328,7 +334,7 @@
               </nz-form-control>
             </nz-form-item>
             <nz-form-item>
-              <nz-form-control>
+              <nz-form-control [nzSpan]="14" [nzOffset]="6">
                 <div class=''>
                   <button (click)='remove_edit_mnager()' nz-button nzType="default">取消</button>
                   <button nzType="primary" [disabled]="!managerCreateForm.valid" *ngIf='!is_edit_manager' nz-button
@@ -348,3 +354,6 @@
     </nz-content>
   </nz-layout>
 </div>
+<ng-template #prefixTemplate>
+  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+</ng-template>

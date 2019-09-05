@@ -5,6 +5,7 @@ import { ManagerService } from 'app/service/manager.service';
 import { Injectable, Injector } from '@angular/core';
 import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
 import { AUTO_STYLE } from '@angular/animations';
+import { Utils } from 'config/utils.config';
 import {
   FormGroup,
   Validators,
@@ -26,6 +27,7 @@ import { Observer, Observable } from 'rxjs';
 })
 export class ManagerManagerCharacterComponent implements OnInit {
   public groupForm: FormGroup;
+  public passwordVisible = false;
   public managerCreateForm: FormGroup;
   public change_group: FormGroup;
   public change_passports: FormGroup;
@@ -88,10 +90,10 @@ export class ManagerManagerCharacterComponent implements OnInit {
     });
     //创建管理员验证
     this.managerCreateForm = this.fb.group({
-      manager_name: [null, [Validators.required]],
+      manager_name: [null, [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
       manager_group: [null, [Validators.required]],
       email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
     });
     //换分组
@@ -558,7 +560,6 @@ export class ManagerManagerCharacterComponent implements OnInit {
 
   isEmail(str_data) {
     str_data = str_data || String(this);
-
     return /^([a-zA-Z0-9_-]{1,16})@([a-zA-Z0-9]{1,9})(\.[a-zA-Z0-9]{1,9}){0,3}(\.(?:com|net|org|edu|gov|mil|cn|us)){1,4}$/.test(
       str_data,
     );

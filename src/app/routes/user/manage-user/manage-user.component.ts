@@ -98,7 +98,7 @@ export class UserManageUserComponent implements OnInit {
     //重制密码表单验证
     this.change_passport_apply = this.fb.group({
       apply_note: [null],
-      password: [null, [Validators.required]],
+      password: [null, [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
       check_password: [null, [Validators.required, this.confirmation_passport]],
 
     });

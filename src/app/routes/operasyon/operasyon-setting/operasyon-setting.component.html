@@ -142,15 +142,10 @@
               <ng-container *ngIf="create_form.get('sign')?.hasError('required')">
                 键值不能为空!
               </ng-container>
-              <ng-container *ngIf="create_form.get('sign')?.hasError('sign')">
+              <ng-container *ngIf="create_form.get('sign')?.hasError('pattern')">
                 请输入2-32位英文字符加下划线组合
               </ng-container>
-              <ng-container *ngIf="create_form.get('sign')?.hasError('maxlength')">
-                  键值最大32个字符!
-              </ng-container>
-              <ng-container *ngIf="create_form.get('sign')?.hasError('minlength')">
-                  键值最少2个字符!
-              </ng-container>
+  
             </nz-form-explain>
           </nz-form-control>
         </nz-form-item>

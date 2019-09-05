@@ -72,11 +72,13 @@
           <th>冻结金额</th>
           <th>用户层级</th>
           <th>上下级转账</th>
+          <th>下级人数</th>
+       
           <th>身份</th>
           <th>奖金组</th>
           <th>冻结</th>
           <th>是否测试用户</th>
-          <th>账户激活时间</th>
+
           <th>最后登录时间</th>
           <th>创建时间</th>
         </tr>
@@ -91,11 +93,12 @@
             <td>{{ data.account.frozen }}</td>
             <td>{{ data.level_deep }}</td>
             <td>{{ data.age }}</td>
+            <td>{{ data.total_members }}</td>
             <td>{{ data.type | levelDeep:data.type}}</td>
             <td>{{ data.prize_group }}</td>
             <td>{{ data.frozen_type | frozenType:data.frozen_type }}</td>
             <td>{{ data.is_tester==1?'是':'否' }}</td>
-            <td>{{ data.register_time }}</td>
+          
             <td>{{ data.last_login_time }}</td>
             <td>{{ data.created_at }}</td>
           </tr>
@@ -148,9 +151,14 @@
             <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
               <input [(ngModel)]="change_passport_obj['password']" maxlength='15' nz-input type="password" id="password"
                 formControlName="password" (ngModelChange)="update_confirm_check_password()" />
-              <nz-form-explain
-                *ngIf="change_passport_apply.get('password')?.dirty && change_passport_apply.get('password')?.errors">
-                请输入密码!</nz-form-explain>
+                <nz-form-explain *ngIf="change_passport_apply.get('password')?.dirty && change_passport_apply.get('password')?.errors">
+                    <ng-container *ngIf="change_passport_apply.get('password')?.hasError('required')">
+                      请输入密码!
+                    </ng-container>
+                    <ng-container *ngIf="change_passport_apply.get('password')?.hasError('pattern')">
+                      请输入6-18位英文，数字组合!
+                    </ng-container>
+                  </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <!-- 确认密码 -->

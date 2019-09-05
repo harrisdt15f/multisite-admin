@@ -63,6 +63,18 @@ export class Utils {
   ) {
 
   }
+  /**
+   * 正则表达式
+   *  */
+  static RegExString = {
+    //2-32  位数字，英，下划线，组合
+    'reg_ex_1': '[\u9fa5A-Za-z0-9-\_]{2,32}$',
+    //6-18  位英文，数字组合
+    'reg_ex_2': '[0-9A-Za-z]{6,16}$',
+
+  };
+
+
 
   /**
    *httpIri

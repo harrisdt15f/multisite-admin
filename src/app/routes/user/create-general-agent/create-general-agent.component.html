@@ -6,19 +6,19 @@
       <div *ngIf='is_Loading' class='lodding-box'>
         <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
       </div>
-            <!--用户类型-->
-            <nz-form-item>
-                <nz-form-label nzFor="type" [nzSm]="6" [nzXs]="24" nzRequired>用户类型</nz-form-label>
-                <nz-form-control [nzSm]="14" [nzXs]="24">
-        
-                  <nz-radio-group id="type" [(ngModel)]="create_user_obj['type']" formControlName="type">
-                    <label nz-radio nzValue='1'>直属</label>
-                    <label nz-radio nzValue='2'>代理</label>
-                    <label nz-radio nzValue='3'>会员</label>
-                  </nz-radio-group>
-                </nz-form-control>
-        
-              </nz-form-item>
+      <!--用户类型-->
+      <nz-form-item>
+        <nz-form-label nzFor="type" [nzSm]="6" [nzXs]="24" nzRequired>用户类型</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+
+          <nz-radio-group id="type" [(ngModel)]="create_user_obj['type']" formControlName="type">
+            <label nz-radio nzValue='1'>直属</label>
+            <label nz-radio nzValue='2'>代理</label>
+            <label nz-radio nzValue='3'>会员</label>
+          </nz-radio-group>
+        </nz-form-control>
+
+      </nz-form-item>
       <!-- 用户名 -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="username" nzRequired>用户名</nz-form-label>
@@ -26,12 +26,11 @@
           <input minLength='16' [(ngModel)]="create_user_obj['username']" nz-input type="text" id="username"
             formControlName="username" />
           <nz-form-explain *ngIf="create_user_form.get('username')?.dirty && create_user_form.get('username')?.errors">
-
             <ng-container *ngIf="create_user_form.get('username')?.hasError('required')">
               请输入要创建的用户名!
             </ng-container>
-            <ng-container *ngIf="create_user_form.get('username')?.hasError('maxlength')">
-              用户名最大十六个字符!
+            <ng-container *ngIf="create_user_form.get('username')?.hasError('pattern')">
+              请输入6-18位英文，数字组合!
             </ng-container>
           </nz-form-explain>
         </nz-form-control>
@@ -40,17 +39,16 @@
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-          <input [(ngModel)]="create_user_obj['password']" nz-input type="password" id="password"
-            formControlName="password" (ngModelChange)="update_confirm_check_password()" />
+          <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
+            <input [(ngModel)]="create_user_obj['password']" nz-input id="password" formControlName="password"
+              (ngModelChange)="update_confirm_check_password()" [type]="passwordVisible ? 'text' : 'password'" />
+          </nz-input-group>
           <nz-form-explain *ngIf="create_user_form.get('password')?.dirty && create_user_form.get('password')?.errors">
             <ng-container *ngIf="create_user_form.get('password')?.hasError('required')">
               请输入密码!
             </ng-container>
-            <ng-container *ngIf="create_user_form.get('password')?.hasError('maxlength')">
-              密码不能超过16位!
-            </ng-container>
-            <ng-container *ngIf="create_user_form.get('password')['errors']['minlength']">
-              请输入6位以上密码!
+            <ng-container *ngIf="create_user_form.get('password')?.hasError('pattern')">
+              请输入6-18位英文，数字组合!
             </ng-container>
           </nz-form-explain>
         </nz-form-control>
@@ -59,7 +57,10 @@
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="check_password" nzRequired>确认密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-          <input maxlength='15' nz-input type="password" formControlName="check_password" id="check_password" />
+            <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
+                <input [type]="passwordVisible ? 'text' : 'password'" maxlength='15' nz-input formControlName="check_password" id="check_password" />
+              </nz-input-group>
+ 
           <nz-form-explain
             *ngIf="create_user_form.get('check_password')?.dirty && create_user_form.get('check_password')?.errors">
             <ng-container *ngIf="create_user_form.get('check_password')?.hasError('required')">
@@ -75,19 +76,26 @@
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fund_password" nzRequired>资金密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-          <input [(ngModel)]="create_user_obj['fund_password']" maxlength='15' nz-input type="password"
-            id="fund_password" formControlName="fund_password" (ngModelChange)="update_confirm_check_fund_password()" />
-          <nz-form-explain
-            *ngIf="create_user_form.get('fund_password')?.dirty && create_user_form.get('fund_password')?.errors">
-            请输入资金密码!</nz-form-explain>
+            <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
+                  <input [(ngModel)]="create_user_obj['fund_password']" maxlength='15' nz-input [type]="passwordVisible ? 'text' : 'password'" id="fund_password" formControlName="fund_password" (ngModelChange)="update_confirm_check_fund_password()" />
+              </nz-input-group>
+          <nz-form-explain *ngIf="create_user_form.get('fund_password')?.dirty && create_user_form.get('fund_password')?.errors">
+            <ng-container *ngIf="create_user_form.get('fund_password')?.hasError('required')">
+              请输入资金密码!
+            </ng-container>
+            <ng-container *ngIf="create_user_form.get('fund_password')?.hasError('pattern')">
+              请输入6-18位英文，数字组合!
+            </ng-container>
+          </nz-form-explain>
         </nz-form-control>
       </nz-form-item>
       <!-- 确认资金密码 -->
       <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="check_fund_password" nzRequired>确认资金密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-          <input maxlength='15' nz-input type="password" formControlName="check_fund_password"
-            id="check_fund_password" />
+            <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
+                <input maxlength='15' nz-input  formControlName="check_fund_password" [type]="passwordVisible ? 'text' : 'password'" id="check_fund_password" />
+            </nz-input-group>
           <nz-form-explain
             *ngIf="create_user_form.get('check_fund_password')?.dirty && create_user_form.get('check_fund_password')?.errors">
             <ng-container *ngIf="create_user_form.get('check_fund_password')?.hasError('required')">
@@ -108,28 +116,23 @@
               <nz-slider [nzMin]="min_prize_group" [nzMax]="max_prize_group" formControlName="prize_group"
                 id="prize_group" [(ngModel)]="create_user_obj['prize_group']"></nz-slider>
             </nz-col>
-
             <div nz-col nzSpan="4">
               <nz-input-number [nzMin]="min_prize_group" [nzMax]="max_prize_group" formControlName="prize_group"
                 [ngStyle]="{ marginLeft: '16px' }" [(ngModel)]="create_user_obj['prize_group']"></nz-input-number>
             </div>
           </nz-row>
         </nz-form-control>
-
       </nz-form-item>
       <!-- 是否测试 -->
       <nz-form-item>
         <nz-form-label nzFor="is_tester" [nzSm]="6" [nzXs]="24" nzRequired>是否测试账号</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-
           <nz-radio-group id="is_tester" [(ngModel)]="create_user_obj['is_tester']" formControlName="is_tester">
             <label nz-radio nzValue='0'>否</label>
             <label nz-radio nzValue='1'>是</label>
           </nz-radio-group>
         </nz-form-control>
-
       </nz-form-item>
-
       <nz-form-item nz-row style="margin-bottom:8px;">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
           <button [disabled]="!create_user_form.valid" nz-button nzType="primary">创建</button>
@@ -138,3 +141,7 @@
     </form>
   </nz-content>
 </nz-layout>
+
+<ng-template #prefixTemplate>
+  <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></i>
+</ng-template>

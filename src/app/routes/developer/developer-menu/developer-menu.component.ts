@@ -526,11 +526,15 @@ export class DeveloperDeveloperMenuComponent implements OnInit {
       }
     })
   }
+  /**
+   * 点击添加路由
+   */
   add_route(data) {
     this.is_show_edit_route = true;
+    this.modal_type='create';
     this.edit_menu_obj = data;
-
   }
+
 
 
   /**

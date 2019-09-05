@@ -22,6 +22,7 @@ import { BetInfoService } from 'app/provider/bet-info/bet-info.service';
 })
 export class UserCreateGeneralAgentComponent implements OnInit {
 public  create_user_form: FormGroup;
+public passwordVisible = false;
 public  create_user_obj: object=new create_user_obj();
 public  max_prize_group: number;
 public  is_Loading: boolean;
@@ -152,10 +153,10 @@ create_user(): void {
     this.get_prize_group_value();
 
     this.create_user_form = this.fb.group({
-      username: [null, [Validators.required,Validators.maxLength(16)]],
-      password: [null, [Validators.required,Validators.minLength(6),Validators.maxLength(16)]],
+      username: [null, [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
+      password: [null, [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
       check_password: [null, [Validators.required, this.confirmation_passport]],
-      fund_password: [null, [Validators.required]],
+      fund_password: [null, [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
       type: [null, [Validators.required]],
       prize_group: [null, [Validators.required]],
       is_tester: [null],

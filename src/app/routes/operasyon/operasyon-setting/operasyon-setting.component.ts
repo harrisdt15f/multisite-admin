@@ -4,6 +4,7 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { UserManageService } from 'app/service/user-manage.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { settings } from 'cluster';
+import { Utils } from 'config/utils.config';
 @Component({
   selector: 'app-operasyon-operasyon-setting',
   templateUrl: './operasyon-setting.component.html',
@@ -38,7 +39,7 @@ export class OperasyonOperasyonSettingComponent implements OnInit {
     this.get_system_setting_list();
     this.create_form = this.fb.group({
       name: [null, [Validators.required,Validators.maxLength(32),Validators.minLength(2)]],
-      sign: [null,[this.confirmValidator,Validators.maxLength(32),Validators.minLength(2)]],
+      sign: [null,[Validators.required,Validators.pattern(Utils.RegExString.reg_ex_1)]],
       description: [null, [Validators.required]],
       value: [null, [this.confirmationValidator]],
 
@@ -50,14 +51,7 @@ export class OperasyonOperasyonSettingComponent implements OnInit {
     }
     return {};
   };
-  confirmValidator = (control: FormControl): { [s: string]: boolean } => {
-    if (!control.value) {
-      return { required: true };
-    } else if (/.*[\u4e00-\u9fa5]+.*$/.test(control.value)||/[0-9]/.test(control.value)) {
-      return { sign: true, error: true };
-    }
-    return {};
-  };
+
   /**
    *创建子设置
    *
