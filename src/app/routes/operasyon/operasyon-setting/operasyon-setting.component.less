@@ -1,14 +1,29 @@
-.table_tr>td {
-  display: inline-block;
-  width: 200px;
-  overflow: hidden;
-  height: 100px;
+@import '../../../../styles/theme';
+@import '../../../../styles.less';
+.search-box {
+  padding: 8px;
 }
 
-.table_tr {
-  max-height: 100px;
-  overflow: hidden;
+.search-box input {
+  width: 188px;
+  margin-bottom: 8px;
+  display: block;
 }
+.hover-change{
+  cursor: pointer;
+}
+.hover-change:hover{
+  color: @primary-color
+}
+
+.search-box button {
+  width: 90px;
+}
+
+.search-button {
+  margin-right: 8px;
+}
+
 
 pre {
   outline: 1px solid #ccc;

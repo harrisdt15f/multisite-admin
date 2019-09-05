@@ -38,7 +38,7 @@
     <nz-table nzBordered  [nzScroll]='{x:"2851px", y: "500px" }' #nzTable [nzLoadingDelay]='500'
       (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
       [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='15' [nzTotal]='list_total'>
-      <thead>
+      <thead  class="ant-table-thead">
         <tr>
           <th  nzWidth="200px">访问域名</th>
           <th  nzWidth="150px">访问Ip</th>
@@ -59,25 +59,25 @@
           <th nzWidth="200px">菜单地址</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody  class="ant-table-tbody">
 
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr class='table_tr'>
             <td class='home-change-color' (click)='utilsService.show_modal_text(data.origin)'>{{ data.origin|| '无'}}</td>
-            <td style='width:150px' class='hover-change' (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
-            <td  style='width:150px'  class='home-change-color' (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
-            <td  style='width:100px' >{{ data.admin_name || '无'}}</td>
+            <td  class='hover-change' (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
+            <td    class='home-change-color' (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
+            <td   >{{ data.admin_name || '无'}}</td>
             <td>{{ data.lang|| '无'}}</td>
-            <td style='width:150px'>{{ data.device|| '无' }}</td>
-            <td style='width:150px'>{{ data.os|| '无' }}</td>
-            <td style='width:150px'>{{ data.os_version || '无'}}</td>
-            <td  style='width:100px'>{{ data.browser|| '无' }}</td>
+            <td >{{ data.device|| '无' }}</td>
+            <td >{{ data.os|| '无' }}</td>
+            <td >{{ data.os_version || '无'}}</td>
+            <td  >{{ data.browser|| '无' }}</td>
             <td>{{ data.bs_version || '无'}}</td>
-            <td style='width:100px'>{{ data.device_type|equipmentType}}</td>
+            <td >{{ data.device_type|equipmentType}}</td>
             <td class='ellipsis' class='home-change-color' (click)='show_content(data.user_agent,"string")'>
-              {{ data.user_agent || '无'}}</td>
+              <span style='width: 200px'>{{ data.user_agent || '无'}}</span></td>
             <td class='ellipsis' class='home-change-color' (click)='show_content(data.inputs,"object")'>
-              {{ data.inputs || '无'}}</td>
+              <span style='width: 200px'>{{ data.inputs || '无'}}</span></td>
             <td class='ellipsis' class='home-change-color' (click)='show_content(data.route,"object")'>
               {{ data.route|| '无' }}</td>
             <td>{{ data.created_at|| '无' }}</td>
