@@ -154,7 +154,7 @@ export class LogOperationLogComponent implements OnInit {
   */
   chang_page_index(item) {
     this.page_index = item;
-    this.search();
+    this.get_log_list();
   }
   /*
   *

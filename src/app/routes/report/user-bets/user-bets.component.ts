@@ -161,7 +161,7 @@ export class ReportUserBetsComponent implements OnInit {
   */
   public chang_page_index(item) {
     this.page_index = item;
-    this.search();
+    this.get_userbet_list();
   }
 
 }

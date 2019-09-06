@@ -23,11 +23,11 @@
       </span>
       <span>
         <span>注册时间:</span>
-        <nz-range-picker [(ngModel)]="start_time"  nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" ngModel (ngModelChange)="on_change_time($event)">
+        <nz-range-picker [(ngModel)]="start_time" nzFormat="yyyy/MM/dd" [nzRanges]="ranges1" ngModel
+          (ngModelChange)="on_change_time($event)">
         </nz-range-picker>
       </span>
       <span>
-
         <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
             type="search"></i>搜索</button>&nbsp;&nbsp;
         <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon
@@ -35,18 +35,18 @@
       </span>
     </section>
 
-    <nz-table nzBordered  [nzScroll]='{x:"2851px", y: "500px" }' #nzTable [nzLoadingDelay]='500'
+    <nz-table nzBordered [nzScroll]='{x:"2851px", y: "500px" }' #nzTable [nzLoadingDelay]='500'
       (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
       [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='15' [nzTotal]='list_total'>
-      <thead  class="ant-table-thead">
+      <thead class="ant-table-thead">
         <tr>
-          <th  nzWidth="200px">访问域名</th>
-          <th  nzWidth="150px">访问Ip</th>
+          <th nzWidth="200px">访问域名</th>
+          <th nzWidth="150px">访问Ip</th>
           <th nzWidth="150px">Ip层级</th>
-          <th  nzWidth="100px">管理员</th>
+          <th nzWidth="100px">管理员</th>
           <th nzWidth="200px">系统语言</th>
           <th nzWidth="150px">浏览器内核</th>
-          <th  nzWidth="150px">操作系统</th>
+          <th nzWidth="150px">操作系统</th>
           <th nzWidth="150px">操作系统版本</th>
           <th nzWidth="100px">浏览器</th>
           <th nzWidth="200px">浏览器版本</th>
@@ -59,27 +59,28 @@
           <th nzWidth="200px">菜单地址</th>
         </tr>
       </thead>
-      <tbody  class="ant-table-tbody">
+      <tbody class="ant-table-tbody">
 
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr class='table_tr'>
-            <td class='home-change-color' (click)='utilsService.show_modal_text(data.origin)'>{{ data.origin|| '无'}}</td>
-            <td  class='hover-change' (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
-            <td    class='home-change-color' (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
-            <td   >{{ data.admin_name || '无'}}</td>
+            <td class='home-change-color' (click)='utilsService.show_modal_text(data.origin)'>{{ data.origin|| '无'}}
+            </td>
+            <td class='hover-change' (click)='search_ip(data.ip)'>{{ data.ip|| '无' }}</td>
+            <td class='home-change-color' (click)='show_content(data.ips,"object")'>{{ data.ips || '无'}}</td>
+            <td>{{ data.admin_name || '无'}}</td>
             <td>{{ data.lang|| '无'}}</td>
-            <td >{{ data.device|| '无' }}</td>
-            <td >{{ data.os|| '无' }}</td>
-            <td >{{ data.os_version || '无'}}</td>
-            <td  >{{ data.browser|| '无' }}</td>
+            <td>{{ data.device|| '无' }}</td>
+            <td>{{ data.os|| '无' }}</td>
+            <td>{{ data.os_version || '无'}}</td>
+            <td>{{ data.browser|| '无' }}</td>
             <td>{{ data.bs_version || '无'}}</td>
-            <td >{{ data.device_type|equipmentType}}</td>
+            <td>{{ data.device_type|equipmentType}}</td>
             <td class='ellipsis' class='home-change-color' (click)='show_content(data.user_agent,"string")'>
               <span style='width: 200px'>{{ data.user_agent || '无'}}</span></td>
             <td class='ellipsis' class='home-change-color' (click)='show_content(data.inputs,"object")'>
               <span style='width: 200px'>{{ data.inputs || '无'}}</span></td>
             <td class='ellipsis' class='home-change-color' (click)='show_content(data.route,"object")'>
-                <span style='width: 200px'>{{ data.route|| '无' }}</span>
+              <span style='width: 200px'>{{ data.route|| '无' }}</span>
             </td>
             <td>{{ data.created_at|| '无' }}</td>
             <td>{{ data.menu_label|| '无' }}</td>
