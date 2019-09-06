@@ -346,22 +346,24 @@
           </form>
         </div>
       </nz-drawer>
-
       <!-- 删除组警告提示 -->
       <nz-modal [nzOkLoading]="is_loading_delete" [(nzVisible)]="is_visible_delete_modal" nzTitle="重要提示！"
         (nzOnCancel)="delete_group_submit_cancel()" (nzOnOk)="delete_group_submit()">
         <p>删除组后，组下面所有成员也会被一起删除！确认要继续删除该组吗？</p>
       </nz-modal>
       <!-- 多个管理员搜索结果弹框 -->
-      <nz-modal nzFooter=false [(nzVisible)]="searchUser.show" nzTitle="多个搜索结果，请选择！" (nzOnCancel)="searchUser.show=false">
-        <nz-list [nzDataSource]="searchUser.data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'" >
+      <nz-modal [nzFooter]='modalFooter' [(nzVisible)]="searchUser.show" nzTitle="多个搜索结果，请选择！" (nzOnCancel)="searchUser.show=false">
+        <nz-list [nzDataSource]="searchUser.data" [nzRenderItem]="item" [nzItemLayout]="'horizontal'">
           <ng-template #item let-item>
             <nz-list-item [nzActions]="[editAction]">
-                <ng-template #editAction><a (click)="jumpGroup(item)">查看详情</a></ng-template>
+              <ng-template #editAction><a (click)="jumpGroup(item)">查看详情</a></ng-template>
               <nz-list-item-meta [nzTitle]="item.name" [nzDescription]="item.email"></nz-list-item-meta>
             </nz-list-item>
           </ng-template>
         </nz-list>
+        <ng-template #modalFooter>
+            <button nz-button nzType="default" (click)="searchUser.show=false">取消</button>
+          </ng-template>
       </nz-modal>
     </nz-content>
   </nz-layout>
