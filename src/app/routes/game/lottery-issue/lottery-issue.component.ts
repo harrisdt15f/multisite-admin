@@ -39,6 +39,7 @@ export class GameLotteryIssueComponent implements OnInit {
   // 搜索的时间
   public searchTime = null;
 
+
   //-------------弹框参数
   public code_value: string;
   public visible_modal = false;
@@ -53,6 +54,16 @@ export class GameLotteryIssueComponent implements OnInit {
   public is_lodding_modal: boolean;
   public is_loading_edit_time: boolean;
   public input_number_obj: object = {};//录号弹框对象
+  // 删除奖期参数
+  public deleteLotteriesData = {
+    type: '',
+    id: [],
+    lottery: '',
+    day: ''
+  };
+  public isAllDisplayDataChecked = false;
+  public isIndeterminate = false;
+  public mapOfCheckedId: { [key: string]: boolean } = {};
   constructor(
     private http: _HttpClient,
     private gameService: GameService,
@@ -96,6 +107,7 @@ export class GameLotteryIssueComponent implements OnInit {
     }, 10000)
 
   }
+
   /**
    * 点击重新派奖
    */
@@ -117,9 +129,99 @@ export class GameLotteryIssueComponent implements OnInit {
       }
     })
   }
-  // 选采种变化
+  /**
+   * 全选
+   */
+  refreshStatus(): void {
+    this.isAllDisplayDataChecked = this.list_of_aply_data.every(item => this.mapOfCheckedId[item.id]);
+    this.isIndeterminate = this.list_of_aply_data.some(item => this.mapOfCheckedId[item.id]) && !this.isAllDisplayDataChecked;
+    console.log(this.mapOfCheckedId);
+    console.log(this.isIndeterminate);
+  }
+  /**
+   * 表格全选
+   */
+  checkAll(value: boolean): void {
+    this.list_of_aply_data.forEach(item => (this.mapOfCheckedId[item.id] = value));
+    this.refreshStatus();
+  }
+  /**
+   * 选采种变化
+   */
   change_lotteries() {
     this.previous_number = '1';
+  }
+  /**
+   * 删除奖期时间选择
+   */
+  onChangePickTime(time) {
+
+  }
+  /**
+ * 删除奖期
+ */
+  deleteLotteries() {
+    let option: any = {
+      type: this.deleteLotteriesData.type,
+    };
+    if (!this.deleteLotteriesData.type) {
+      this.modalService.error({
+        nzTitle: '温馨提示！',
+        nzContent: '请选择要删除的奖期类型！'
+      });
+      return;
+    } else if (this.deleteLotteriesData.type === '1') {
+      option.id = []
+      for (let x in this.mapOfCheckedId) {
+        if (this.mapOfCheckedId[x]) {
+          option.id.push(x);
+        }
+      }
+    } else if (this.deleteLotteriesData.type === '2') {
+      if (this.deleteLotteriesData.day && this.choise_lottery !== '0') {
+        option.lottery = this.choise_lottery;
+        option.day = Utils.changeDateNumber(this.deleteLotteriesData.day);
+      } else if (this.choise_lottery == '0') {
+        this.modalService.error({
+          nzTitle: '温馨提示！',
+          nzContent: '请先选择彩种！'
+        });
+        return;
+      } else if (!this.deleteLotteriesData.day) {
+        this.modalService.error({
+          nzTitle: '温馨提示！',
+          nzContent: '请先选择要删除奖期的时间！'
+        });
+        return;
+      }
+    }
+    this.gameService.deleteLotteriesLssues(option).subscribe((res: any) => {
+      if (res && res.success) {
+        this.search_lotteries();
+        this.checkAll(false);
+        this.message.success('删除奖期成功！', {
+          nzDuration: 10000,
+        });
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    })
+  }
+  /**
+   * 切换删除奖期类型
+   */
+  changeDeletLotType(type) {
+    switch (type) {
+      case '1':
+        this.deleteLotteriesData.day = '';
+        break;
+      case '2':
+        this.checkAll(false);
+        break;
+    }
+
   }
 
   /**
@@ -185,8 +287,8 @@ export class GameLotteryIssueComponent implements OnInit {
    * @param issu_obj 
    */
   check_code_rule(type?) {
-    let code=this.code_value;
-    let issu_obj:any= this.input_number_obj;
+    let code = this.code_value;
+    let issu_obj: any = this.input_number_obj;
     let status = true;
     let split_icon = this.encode_splitter[this.input_number_obj['obj'].lottery.series_id];
     let code_array = code.split(split_icon);
@@ -200,18 +302,18 @@ export class GameLotteryIssueComponent implements OnInit {
         }
       });
     }
-    if(!status){
+    if (!status) {
       const modal = this.modalService.error({
         nzTitle: '录号格式错误！',
         nzContent: '请检查是否符合规则:' + this.code_rule
       });
-    }else if(!type&&status){
+    } else if (!type && status) {
       const modal = this.modalService.success({
         nzTitle: '录号格式正确！！'
       });
     }
     return status;
- 
+
   }
 
 
@@ -450,9 +552,9 @@ export class GameLotteryIssueComponent implements OnInit {
 
 
 
-/**
- * 搜索奖期
- */
+  /**
+   * 搜索奖期
+   */
   search_lotteries() {
     this.search();
   }
@@ -492,8 +594,8 @@ export class GameLotteryIssueComponent implements OnInit {
     if (this.search_number) {
       option['issue'] = this.search_number;
     }
-    if (this.searchTime&&this.searchTime.length>0) {
-      option['time_condtions'] = JSON.stringify([['end_time', '>=',new Date(this.searchTime[0]).getTime()], ['end_time', '<=',new Date(this.searchTime[1]).getTime() ]])
+    if (this.searchTime && this.searchTime.length > 0) {
+      option['time_condtions'] = JSON.stringify([['end_time', '>=', new Date(this.searchTime[0]).getTime()], ['end_time', '<=', new Date(this.searchTime[1]).getTime()]])
     }
     this.get_issue_list(page ? page : 1, option);
   }

@@ -12,8 +12,9 @@ export class DateChangePipe implements PipeTransform {
    * @memberof BetStatusPipe
    */
   transform(value: number) {
+    if (!value || value === 0) return 0;
     let status: string;
-    var unixTimestamp = new Date( value*1000 ) ;
+    let unixTimestamp = new Date(value * 1000);
     status = unixTimestamp.toLocaleString();
     return status;
   }

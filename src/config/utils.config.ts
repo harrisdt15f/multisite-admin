@@ -208,7 +208,14 @@ export class Utils {
     } else if (type == 'time') {
       Str = date.getFullYear() + '-' + mouth + '-' + day + ' ' + hour + ':' + minute + ':' + second;
     }
-
+    return Str;
+  }
+  static changeDateNumber(time) {
+    let date = new Date(time);
+    let mouth = (date.getMonth() + 1) < 10 ? '0' + ((date.getMonth() + 1)) : (date.getMonth() + 1);
+    let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    let Str;
+    Str = String(date.getFullYear()) + mouth + day;
     return Str;
   }
 
