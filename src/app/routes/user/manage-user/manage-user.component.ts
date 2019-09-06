@@ -98,9 +98,8 @@ export class UserManageUserComponent implements OnInit {
     //重制密码表单验证
     this.change_passport_apply = this.fb.group({
       apply_note: [null],
-      password: [null, [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
+      password: [null, [Validators.required, Validators.pattern(Utils.RegExString.reg_ex_2)]],
       check_password: [null, [Validators.required, this.confirmation_passport]],
-
     });
     //冻结设置表单验证
     this.freeze_form = this.fb.group({
@@ -276,7 +275,7 @@ export class UserManageUserComponent implements OnInit {
     });
   }
   /**重置搜做参数 */
-  resetSearch() {    
+  resetSearch() {
     this.reset_search_data();
     this.page_index = 1;
     this.get_user_manage_list();
@@ -578,7 +577,9 @@ export class UserManageUserComponent implements OnInit {
   get_user_manage_list() {
     this.is_load_list = true;
     let option: any = {
-      parent_name: 1
+      parent_name: 1,
+      total_members: 1,
+      parent_info: 1
     };
     if (this.searchData.id) option.id = this.searchData.id;
     if (this.searchData.username) option.username = this.searchData.username;
@@ -623,33 +624,33 @@ export class UserManageUserComponent implements OnInit {
    */
 
   public find_child(id, index?) {
-    if (index>=0){
+    if (index >= 0) {
       this.parent_set.length = (index + 1);
-    }else{
-      this.parent_set=[];
+    } else {
+      this.parent_set = [];
     }
     this.reset_search_data();
-  
+
     this.searchData.parent_id = id ? id : '';
     this.searchData.parent_name = id ? '1' : '';
     this.get_user_manage_list();
   }
- /**
-  *重置搜索表单
-  *
-  * @memberof UserManageUserComponent
-  */
- public reset_search_data(){
-  this.searchData = {
-    pageIndex: 1,
-    pageSize: 15,
-    id: '',
-    is_tester: '',
-    type: '',
-    username: '',
-    parent_id: '',
-    parent_name: '',
-  };
+  /**
+   *重置搜索表单
+   *
+   * @memberof UserManageUserComponent
+   */
+  public reset_search_data() {
+    this.searchData = {
+      pageIndex: 1,
+      pageSize: 15,
+      id: '',
+      is_tester: '',
+      type: '',
+      username: '',
+      parent_id: '',
+      parent_name: '',
+    };
   }
   /**
    *查看上级
@@ -658,7 +659,7 @@ export class UserManageUserComponent implements OnInit {
    * @memberof UserManageUserComponent
    */
   public search_team_top(item) {
-    if(item.parent_id===0){
+    if (item.parent_id === 0) {
       this.modalService.info({
         nzTitle: '温馨提示！',
         nzContent: '该用户无上级！'

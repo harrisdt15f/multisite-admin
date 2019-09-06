@@ -3,7 +3,7 @@ import { _HttpClient } from '@delon/theme';
 import { StartupService } from '@core/startup/startup.service';
 import { ManagerService } from 'app/service/manager.service';
 import { Injectable, Injector } from '@angular/core';
-import { NzMessageService, NzNotificationService } from 'ng-zorro-antd';
+import { NzMessageService, NzNotificationService, NzModalService } from 'ng-zorro-antd';
 import { AUTO_STYLE } from '@angular/animations';
 import { Utils } from 'config/utils.config';
 import {
@@ -35,40 +35,46 @@ export class ManagerManagerCharacterComponent implements OnInit {
   //组--------------------
   public edit_group_obj: object = {
     edit_group_obj: [],
-  }; //当前编辑的组对象
-  public menu_tree_value: string[] = []; //选择菜单input值
-  public menu_nodes = []; //菜单数组
-  public group_list: Array<any> = []; //显示的组列表
-  public group_list_total: Array<any> = []; //组列表总数
-  public is_edit_group = false; //创建/编辑组
+  }; // 当前编辑的组对象
+  public menu_tree_value: string[] = []; // 选择菜单input值
+  public menu_nodes = []; // 菜单数组
+  public group_list: Array<any> = []; // 显示的组列表
+  public group_list_total: Array<any> = []; // 组列表总数
+  public is_edit_group = false; // 创建/编辑组
   // public show_type: string;
-  public is_super_manage: boolean;//是否超级管理员组
-  public is_loading_group = false; //加载图标
-  public group_page_index: number = 1; //组列表当前页
-  public is_up_member: boolean; //团队中成员列表加载按钮是否显示
+  public is_super_manage: boolean; // 是否超级管理员组
+  public is_loading_group = false; // 加载图标
+  public group_page_index: number = 1; // 组列表当前页
+  public is_up_member: boolean; // 团队中成员列表加载按钮是否显示
   public select_style = {
     'max-height': '400px',
     overflow: 'auto',
   };
   //-----------弹框
-
   public group_modal_lodding: boolean;
   public is_loading_delete: boolean;
   public modal_lodding: boolean;
   public is_visible_delete_modal: boolean;
   public move_group_name: string;
   public delet_group: object = {};
-
   //管理员-------------------------
   public is_edit_manager = false; //创建/编辑组
   public create_manager_obj: object = new create_manager_obj(); //创建的菜单对象
   public manager_page_index: number = 1; //加载图标
   public is_edit_manage_modal: boolean;
+  // 搜索的用户
+  public searchUser = {
+    is_losding: false,
+    show: false,
+    search_name: '',
+    data: []
+  };
   constructor(
     private http: _HttpClient,
     private startupService: StartupService,
     private managerService: ManagerService,
     private message: NzMessageService,
+    private modalService: NzModalService,
     private injector: Injector,
     private fb: FormBuilder,
   ) { }
@@ -80,27 +86,26 @@ export class ManagerManagerCharacterComponent implements OnInit {
     setTimeout(() => {
       this.menu_nodes = this.startupService.menu_list;
     }, 3000);
-    //获取组
+    // 获取组
     this.get_group();
-
-    //创建，修改组验证
+    // 创建，修改组验证
     this.groupForm = this.fb.group({
       group_name: [null, [Validators.required]],
       menu: [null, [Validators.required]],
     });
-    //创建管理员验证
+    // 创建管理员验证
     this.managerCreateForm = this.fb.group({
-      manager_name: [null, [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
+      manager_name: [null, [Validators.required, Validators.pattern(Utils.RegExString.reg_ex_2)]],
       manager_group: [null, [Validators.required]],
       email: ['', [Validators.email, Validators.required]],
-      password: ['', [Validators.required,Validators.pattern(Utils.RegExString.reg_ex_2)]],
+      password: ['', [Validators.required, Validators.pattern(Utils.RegExString.reg_ex_2)]],
       checkPassword: [null, [Validators.required, this.confirmationValidator]],
     });
-    //换分组
+    // 换分组
     this.change_group = this.fb.group({
       group_id: [null, [Validators.required]],
     });
-    //换密码
+    // 换密码
     this.change_passports = this.fb.group({
       passport: [null, [Validators.required]],
     });
@@ -141,9 +146,51 @@ export class ManagerManagerCharacterComponent implements OnInit {
     }
     return {};
   };
+  /**
+   * 搜索用户
+   */
+  searchManage() {
+    this.searchUser.is_losding = true;
+    let option = {
+      email: this.searchUser.search_name
+    };
+    this.managerService.search_user(option).subscribe((res: any) => {
+      this.searchUser.is_losding = false;
+      if (res && res.success) {
+        const userResult = res.data.data;
+        if (userResult.length === 0) {
+          this.modalService.info({
+            nzTitle: '温馨提示！',
+            nzContent: '查无此管理员'
+          });
+        } else if (userResult.length === 1) {
+          const user = userResult[0];
+          this.jumpGroup(user);
+        } else if (userResult.length > 1) {
+          this.searchUser.show = true;
+          this.searchUser.data = userResult;
+        }
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
+        });
+      }
+    });
+  }
+  /**
+   * 跳转组对应的用户
+   */
+  jumpGroup(user) {
+    this.searchUser.show=false;
+    this.group_list.forEach((item) => {
+      if (item.id === user.group_id) {
+        this.edit_group(item, user.id);
+      }
+    });
+  }
 
   /**
-   *点击添加组按钮
+   * 点击添加组按钮
    * @memberof ManagerManagerCharacterComponent
    */
   add_group() {
@@ -205,15 +252,16 @@ export class ManagerManagerCharacterComponent implements OnInit {
           role.push(Number(menu_obj[item].pid));
         }
         //如果是父级元素，则把子全都加入
+        // tslint:disable-next-line: forin
         for (let key in menu_obj[item].child) {
           role.push(Number(key));
           if (menu_obj[item].child[key].child) {
+            // tslint:disable-next-line: forin
             for (let x in menu_obj[item].child[key].child) {
               role.push(Number(x));
             }
           }
         }
-
       }
     });
     return Array.from(new Set(role));
@@ -246,14 +294,14 @@ export class ManagerManagerCharacterComponent implements OnInit {
    * @param {*} item
    * @memberof ManagerManagerCharacterComponent
    */
-  edit_group(item) {
+  edit_group(item, userId?) {
     this.group_list.forEach((data, index) => {
       data.is_edit = false;
     });
     item.is_edit = true;
     this.is_edit_group = true;
     this.edit_group_obj = item;
-    this.get_member_list(item);
+    this.get_member_list(item, userId);
     if (item.role != '*') {
       this.is_super_manage = false;
       this.menu_tree_value = []
@@ -275,7 +323,7 @@ export class ManagerManagerCharacterComponent implements OnInit {
    *
    * @memberof ManagerManagerCharacterComponent
    */
-  get_member_list(item) {
+  get_member_list(item, userId?) {
     this.edit_group_obj['member_list'] = [];
     let option = {
       id: item.id,
@@ -284,6 +332,13 @@ export class ManagerManagerCharacterComponent implements OnInit {
     this.managerService.get_member_list(option).subscribe((res: any) => {
       if (res && res.success) {
         item.member_list = res.data;
+        if (userId) {
+          item.member_list.forEach((item) => {
+            if (item.id === userId) {
+              this.edit_manager(item);
+            }
+          });
+        }
         this.is_up_member = false;
       } else {
         this.message.error(res.message, {

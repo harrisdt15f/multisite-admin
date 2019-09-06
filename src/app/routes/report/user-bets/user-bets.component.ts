@@ -163,6 +163,5 @@ export class ReportUserBetsComponent implements OnInit {
     this.page_index = item;
     this.get_userbet_list();
   }
-
 }
 
