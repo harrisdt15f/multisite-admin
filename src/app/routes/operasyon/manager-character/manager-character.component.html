@@ -218,7 +218,7 @@
                 <nz-form-item>
                   <nz-form-label nzRequired>新密码</nz-form-label>
                   <nz-form-control nzHasFeedback>
-                    <input maxlength='15' nz-input [(ngModel)]="create_manager_obj['new_password']" type="password"
+                    <input maxlength='18' nz-input [(ngModel)]="create_manager_obj['new_password']" type="password"
                       formControlName="passport" placeholder="请输入新密码" />
                     <nz-form-explain
                       *ngIf="change_passports.get('passport')?.dirty && change_passports.get('passport')?.errors">
@@ -303,7 +303,7 @@
               <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>重复密码</nz-form-label>
               <nz-form-control nzHasFeedback [nzSm]="14" [nzXs]="24">
                 <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
-                  <input maxlength='15' nz-input [(ngModel)]="create_manager_obj['c_password']"
+                  <input  nz-input [(ngModel)]="create_manager_obj['c_password']"
                     [type]="passwordVisible ? 'text' : 'password'" formControlName="checkPassword" id="checkPassword" />
                 </nz-input-group>
                 <nz-form-explain

@@ -58,7 +58,7 @@
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="check_password" nzRequired>确认密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
             <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
-                <input [type]="passwordVisible ? 'text' : 'password'" maxlength='15' nz-input formControlName="check_password" id="check_password" />
+                <input [type]="passwordVisible ? 'text' : 'password'"  nz-input formControlName="check_password" id="check_password" />
               </nz-input-group>
  
           <nz-form-explain
@@ -77,7 +77,7 @@
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="fund_password" nzRequired>资金密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
             <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
-                  <input [(ngModel)]="create_user_obj['fund_password']" maxlength='15' nz-input [type]="passwordVisible ? 'text' : 'password'" id="fund_password" formControlName="fund_password" (ngModelChange)="update_confirm_check_fund_password()" />
+                  <input [(ngModel)]="create_user_obj['fund_password']"  nz-input [type]="passwordVisible ? 'text' : 'password'" id="fund_password" formControlName="fund_password" (ngModelChange)="update_confirm_check_fund_password()" />
               </nz-input-group>
           <nz-form-explain *ngIf="create_user_form.get('fund_password')?.dirty && create_user_form.get('fund_password')?.errors">
             <ng-container *ngIf="create_user_form.get('fund_password')?.hasError('required')">
@@ -94,7 +94,7 @@
         <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="check_fund_password" nzRequired>确认资金密码</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
             <nz-input-group style="width: 100%" [nzPrefix]="prefixTemplate">
-                <input maxlength='15' nz-input  formControlName="check_fund_password" [type]="passwordVisible ? 'text' : 'password'" id="check_fund_password" />
+                <input nz-input  formControlName="check_fund_password" [type]="passwordVisible ? 'text' : 'password'" id="check_fund_password" />
             </nz-input-group>
           <nz-form-explain
             *ngIf="create_user_form.get('check_fund_password')?.dirty && create_user_form.get('check_fund_password')?.errors">
