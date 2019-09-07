@@ -593,9 +593,21 @@ export class UserManageUserComponent implements OnInit {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
-        this.listOfData = res.data;
-        this.listOfDisplayData = [...this.listOfData['data']];
-        if (res.data.parent_username) {
+
+        if ((typeof res.data) === 'object' && !(res.data instanceof Array)) {
+          this.listOfDisplayData = [];
+          this.listOfData = res.data;
+          for (let x in res.data.data) {
+            if (x === 'parentInfo') {
+
+            } else {
+              this.listOfDisplayData.push(res.data.data[x]);
+            }
+          }
+
+        } else {
+          this.listOfData = res.data;
+          this.listOfDisplayData = [...this.listOfData['data']];
         }
       } else {
         this.is_load_list = false;

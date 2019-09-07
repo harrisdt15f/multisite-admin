@@ -86,7 +86,7 @@
           <tr>
             <td nzShowExpand [(nzExpand)]="mapOfExpandData[data.id]"></td>
             <td>{{ data.id }}</td>
-            <td>{{ data.username }}</td>
+            <td (click)='search_team(data)' class='hover-change'>{{ data.username }}</td>
             <td>{{ data.account.balance }}</td>
             <td>{{ data.account.frozen }}</td>
             <td>{{ data.level_deep }}</td>
