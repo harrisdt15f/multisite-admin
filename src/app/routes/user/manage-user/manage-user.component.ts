@@ -63,7 +63,7 @@ export class UserManageUserComponent implements OnInit {
     recharge: '充值记录历史',
     permission: '权限冻结历史'
   };
-
+  public create_form: FormGroup;//表单对象
   //---------------冻结权限功能参数
   public permission_type: string;
   public modal_lodding: boolean;
@@ -106,6 +106,9 @@ export class UserManageUserComponent implements OnInit {
       username: [null, [Validators.required]],
       frozen_type: [null, [Validators.required]],
       comment: [null]
+    });
+    this.create_form= this.fb.group({
+      recharge_num: [null, [Validators.required, Validators.pattern(Utils.RegExString.reg_ex_3)]],
     });
     //监听，在打开此路由情况下，创建用户刷新
     this.user_manager_sub = this.betInfoProvider.get_user_manager_update().subscribe(data => {

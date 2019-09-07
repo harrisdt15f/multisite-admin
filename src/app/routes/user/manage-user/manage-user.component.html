@@ -291,9 +291,23 @@
 
       <nz-modal [nzOkLoading]="isOkLoading" [nzMaskClosable]='true' [(nzVisible)]="is_show_recharge_num"
         [nzTitle]="amount_type=='add'?'人工充值':'人工扣减'" (nzOnCancel)="cancel_recharge_num()" (nzOnOk)="ok_recharge()">
-        <nz-input-group nzAddOnAfter="元">
-          <input type="text" (keyup)="account_check()" placeholder="请输入金额" nz-input [(ngModel)]="recharge_num" />
-        </nz-input-group>
+        <form nz-form [formGroup]="create_form" >
+          <nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="recharge_num" nzRequired>密码</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+              <input [(ngModel)]="recharge_num" placeholder="请输入金额"  nz-input type="recharge_num" id="recharge_num"
+                formControlName="recharge_num" (ngModelChange)="update_confirm_check_password()" />
+                <nz-form-explain *ngIf="create_form.get('recharge_num')?.dirty && create_form.get('recharge_num')?.errors">
+                    <ng-container *ngIf="create_form.get('recharge_num')?.hasError('required')">
+                      金额!
+                    </ng-container>
+                    <ng-container *ngIf="create_form.get('recharge_num')?.hasError('pattern')">
+                      金额只能小数点少于两位的数字!
+                    </ng-container>
+                  </nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
         <div *ngIf='amount_type=="add"' style='margin-top: 30px'>
           <input type="text" placeholder="备注：确认人工充值" nz-input [(ngModel)]="apply_note" />
         </div>

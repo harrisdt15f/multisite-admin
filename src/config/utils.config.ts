@@ -71,6 +71,8 @@ export class Utils {
     'reg_ex_1': '[\u9fa5A-Za-z0-9-\_]{2,32}$',
     //6-18  位英文，数字组合
     'reg_ex_2': '[0-9A-Za-z]{6,18}$',
+    //整数或者小数点后两位
+    'reg_ex_3': '[0-9]+([.]{1}[0-9]{1,2})?$',
 
   };
 
@@ -134,8 +136,8 @@ export class Utils {
    */
   static account_check(value, max_num?) {
     //正整数，小于最大限额
-    let prize = Number(value);
-    prize = parseInt(String(prize));
+    let prize = Math.floor(Number(value) * 100) / 100;
+    // prize = parseInt(String(prize));
     if (max_num && prize > max_num) {
       prize = max_num;
     }
