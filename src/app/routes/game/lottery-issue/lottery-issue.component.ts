@@ -595,7 +595,7 @@ export class GameLotteryIssueComponent implements OnInit {
       option['issue'] = this.search_number;
     }
     if (this.searchTime && this.searchTime.length > 0) {
-      option['time_condtions'] = JSON.stringify([['end_time', '>=', new Date(this.searchTime[0]).getTime()], ['end_time', '<=', new Date(this.searchTime[1]).getTime()]])
+      option['time_condtions'] = JSON.stringify([['end_time', '>=', parseInt(String(new Date(this.searchTime[0]).getTime()/1000))], ['end_time', '<=', parseInt(String(new Date(this.searchTime[1]).getTime()/1000))]])
     }
     this.get_issue_list(page ? page : 1, option);
   }
