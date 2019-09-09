@@ -52,8 +52,9 @@
     <nz-table #nzTable nzSize="middle" nzBordered [nzScroll]='{x:"1630px", y: "500px" }' [nzLoadingDelay]='500'
       (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
       [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
-      <thead  class="ant-table-thead">
+      <thead class="ant-table-thead">
         <tr>
+          <th nzWidth=90px>用户名称</th>
           <th nzWidth="80px">ID</th>
           <th nzWidth="80px">彩种</th>
           <th nzWidth="160px">奖期号</th>
@@ -64,11 +65,9 @@
           <th nzWidth="150px">单注投注额</th>
           <th nzWidth=90px>总投注额</th>
           <th nzWidth=90px>中奖金额 </th>
-          <th nzWidth=90px>用户名称</th>
           <th nzWidth="80px">测试</th>
           <th nzWidth="80px">状态</th>
           <th nzWidth=90px>奖金组</th>
-        
           <th nzWidth="80px">系列</th>
           <th nzWidth="80px">玩法ID</th>
           <th nzWidth="80px">玩法</th>
@@ -77,40 +76,41 @@
           <th nzWidth=90px>设备类型</th>
         </tr>
       </thead>
-      <tbody  class="ant-table-tbody">
+      <tbody class="ant-table-tbody">
         <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
         <tr class='table_tr' *ngFor="let data of list_of_aply_data">
-          <td >{{data.id}}</td>
-          <td >{{data.lottery_sign}}</td>
+          <td>{{ data.username}}</td>
+          <td>{{data.id}}</td>
+          <td>{{data.lottery_sign}}</td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.issue)'>
-            <span>{{ data.issue }}</span>
+            <span style='width: 160px'>{{ data.issue }}</span>
           </td>
-          <td  class='home-change-color' (click)='utilsService.show_modal_text(data.bet_number)'>
-            <span>{{data.bet_number}}</span>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.bet_number)'>
+            <span style='width: 150px'>{{data.bet_number}}</span>
           </td>
-          <td  class='home-change-color' (click)='utilsService.show_modal_text(data.open_number)'>
-            <span>{{data.open_number}}</span>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.open_number)'>
+            <span style='width: 90px'>{{data.open_number}}</span>
           </td>
-          <td >{{data.times}}</td>
-          <td > {{data.mode|unit}}</td>
-          <td >{{ data.price}}</td>
-          <td >{{data.total_cost}}</td>
-          <td >{{data.bonus}}</td>
-          <td >{{ data.username}}</td>
-          <td >{{data.is_tester==1?'是':'否'}}</td>
-          <td >{{ data.status|userBet }}</td>
-          <td >{{ data.bet_prize_group }}</td>
-        
-          <td >{{data.series_id}}</td>
-          <td >{{data.method_sign}}</td>
-          <td >{{data.method_name}}</td>
-          <td  class='home-change-color' (click)='utilsService.show_modal_text(data.ip)'>
+          <td>{{data.times}}</td>
+          <td> {{data.mode|unit}}</td>
+          <td>{{ data.price}}</td>
+          <td>{{data.total_cost}}</td>
+          <td>{{data.bonus}}</td>
+
+          <td>{{data.is_tester==1?'是':'否'}}</td>
+          <td>{{ data.status|userBet }}</td>
+          <td>{{ data.bet_prize_group }}</td>
+
+          <td>{{data.series_id}}</td>
+          <td>{{data.method_sign}}</td>
+          <td>{{data.method_name}}</td>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.ip)'>
             <span style='width: 90px'>{{data.ip}}</span>
           </td>
-          <td  class='home-change-color' (click)='utilsService.show_modal_text(data.proxy_ip)'>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.proxy_ip)'>
             <span style='width: 90px'>{{data.proxy_ip}}</span>
           </td>
-          <td >{{data.bet_from}}</td>
+          <td>{{data.bet_from}}</td>
         </tr>
 
         <!-- </ng-template> -->

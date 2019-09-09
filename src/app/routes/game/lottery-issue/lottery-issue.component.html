@@ -11,44 +11,47 @@
     <nz-skeleton *ngIf='lotteries_tabs.length===0' [nzParagraph]="{ rows: 15 }" [nzActive]="true"></nz-skeleton>
     <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
       <nz-tab *ngFor="let tab of lotteries_tabs" [nzTitle]="tab.label">
-        <span *ngIf='tab_index!==0'>
-          <span style='display: inline-block;margin-left:20px'>筛选彩种：</span>
-          <nz-select style='width:150px;margin-left:20px' (ngModelChange)='change_lotteries($event)' nzShowSearch
-            nzAllowClear [(ngModel)]="choise_lottery" placeholder="筛选彩种">
-            <nz-option nzLabel="不选择" nzValue="0"></nz-option>
-            <nz-option *ngFor='let item of lotteries_list' [nzLabel]="item.title" [nzValue]="item.id"></nz-option>
-          </nz-select>
-        </span>
-        <span>
-          <span style='display: inline-block;margin-left:20px'>奖期号：</span>
-          <!-- <input nz-input placeholder="筛选奖期号" [(ngModel)]="search_number" /> -->
-          <nz-input-group [nzSuffix]="suffixTemplate">
-            <input style='width:150px;' type="text" nz-input [(ngModel)]="search_number" placeholder="筛选奖期号" />
-          </nz-input-group>
-        </span>
-        <span>
-          <span style='display: inline-block;margin-left:20px'>时间：</span>
-          <nz-range-picker [(ngModel)]="searchTime" nzShowTime></nz-range-picker>
-        </span>
-        <span *ngIf='choise_lottery&&choise_lottery!="0"'>
-          <span style='display: inline-block;margin-left:20px'>筛选历史期数：</span>
-          <nz-select style='width:100px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="previous_number"
-            placeholder="选择查看的最近期数">
-            <nz-option nzLabel="不选择" nzValue="0"></nz-option>
-            <nz-option nzLabel="1" nzValue="1"></nz-option>
-            <nz-option nzLabel="2" nzValue="2"></nz-option>
-            <nz-option nzLabel="3" nzValue="3"></nz-option>
-            <nz-option nzLabel="4" nzValue="4"></nz-option>
-            <nz-option nzLabel="5" nzValue="5"></nz-option>
-            <nz-option nzLabel="6" nzValue="6"></nz-option>
-            <nz-option nzLabel="7" nzValue="7"></nz-option>
-            <nz-option nzLabel="8" nzValue="8"></nz-option>
-            <nz-option nzLabel="9" nzValue="9"></nz-option>
-            <nz-option nzLabel="10" nzValue="10"></nz-option>
-          </nz-select>
-        </span>
-        <button style='margin-left: 20px' (click)='search_lotteries()' nz-button nzType="primary">搜索</button>
-        <section *ngIf='tab.value!="10086"' class="select-lottery">
+        <section class="select-lottery">
+            <span *ngIf='tab_index!==0'>
+                <span style='display: inline-block;margin-left:20px'>筛选彩种：</span>
+                <nz-select style='width:150px;margin-left:20px' (ngModelChange)='change_lotteries($event)' nzShowSearch
+                  nzAllowClear [(ngModel)]="choise_lottery" placeholder="筛选彩种">
+                  <nz-option nzLabel="不选择" nzValue="0"></nz-option>
+                  <nz-option *ngFor='let item of lotteries_list' [nzLabel]="item.title" [nzValue]="item.id"></nz-option>
+                </nz-select>
+              </span>
+              <span>
+                <span style='display: inline-block;margin-left:20px'>奖期号：</span>
+                <!-- <input nz-input placeholder="筛选奖期号" [(ngModel)]="search_number" /> -->
+                <nz-input-group [nzSuffix]="suffixTemplate">
+                  <input style='width:150px;' type="text" nz-input [(ngModel)]="search_number" placeholder="筛选奖期号" />
+                </nz-input-group>
+              </span>
+              <span>
+                <span style='display: inline-block;margin-left:20px'>时间：</span>
+                <nz-range-picker [(ngModel)]="searchTime" nzShowTime></nz-range-picker>
+              </span>
+              <span *ngIf='choise_lottery&&choise_lottery!="0"'>
+                <span style='display: inline-block;margin-left:20px'>筛选历史期数：</span>
+                <nz-select style='width:100px;margin-left:20px' nzShowSearch nzAllowClear [(ngModel)]="previous_number"
+                  placeholder="选择查看的最近期数">
+                  <nz-option nzLabel="不选择" nzValue="0"></nz-option>
+                  <nz-option nzLabel="1" nzValue="1"></nz-option>
+                  <nz-option nzLabel="2" nzValue="2"></nz-option>
+                  <nz-option nzLabel="3" nzValue="3"></nz-option>
+                  <nz-option nzLabel="4" nzValue="4"></nz-option>
+                  <nz-option nzLabel="5" nzValue="5"></nz-option>
+                  <nz-option nzLabel="6" nzValue="6"></nz-option>
+                  <nz-option nzLabel="7" nzValue="7"></nz-option>
+                  <nz-option nzLabel="8" nzValue="8"></nz-option>
+                  <nz-option nzLabel="9" nzValue="9"></nz-option>
+                  <nz-option nzLabel="10" nzValue="10"></nz-option>
+                </nz-select>
+              </span>
+              <button style='margin-left: 20px' (click)='search_lotteries()' nz-button nzType="primary">搜索</button>
+        </section>
+
+        <section style='padding-top: 0' *ngIf='tab.value!="10086"' class="select-lottery">
           <span>
             <button class="select-lottery-input" nz-button (click)="show_create_lottery()" [nzType]="'primary'">
               <i nz-icon nzType="plus"></i>
@@ -73,35 +76,32 @@
             </button>
           </span>
         </section>
-        <nz-table [nzScroll]='{x:"4500px", y: "450px" }' #nzTable [nzLoadingDelay]='500'
+        <nz-table nzSize='middle'  [nzScroll]='{x:"2530px", y: "450px" }' #nzTable [nzLoadingDelay]='500'
           (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
           [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
           <thead class="ant-table-thead">
             <tr>
-              <th nzWidth="100px" nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
-              <th nzWidth="100px">彩种ID</th>
-              <th nzWidth="150px">彩种名称</th>
-              <th nzWidth="150px"> 奖期</th>
-              <th nzWidth="200px">开始时间</th>
-              <th nzWidth="200px">结束时间</th>
-              <th nzWidth="200px">官方开奖时间</th>
-              <th nzWidth="200px">中奖号码</th>
-              <th nzWidth="200px">手动录号</th>
-              <th nzWidth="200px">重新派奖</th>
-              <th nzWidth="200px">允许录号时间</th>
-              <th nzWidth="200px">已录号状态</th>
-              <th nzWidth="200px">计奖状态</th>
-              <th nzWidth="200px">派奖状态</th>
-              <th nzWidth="200px">返点状态</th>
-              <th nzWidth="200px">追号状态</th>
-              <th nzWidth="200px">录号时间</th>
-              <th nzWidth="200px">计奖时间</th>
-              <th nzWidth="200px">派奖时间</th>
-              <th nzWidth="200px">返点结算时间</th>
-              <th nzWidth="200px">追号时间</th>
-              <th nzWidth="200px">录号者</th>
-              <th nzWidth="200px">创建时间</th>
-              <th nzWidth="200px">更新时间</th>
+              <th nzWidth="50px" nzShowCheckbox [(nzChecked)]="isAllDisplayDataChecked" [nzIndeterminate]="isIndeterminate" (nzCheckedChange)="checkAll($event)"></th>
+              <th nzWidth="80px">彩种ID</th>
+              <th nzWidth="100px">彩种名称</th>
+              <th nzWidth="100px"> 奖期</th>
+              <th nzWidth="100px">开始时间</th>
+              <th nzWidth="100px">结束时间</th>
+              <th nzWidth="100px">官方开奖时间</th>
+              <th nzWidth="150px">中奖号码</th>
+              <th nzWidth="100px">手动录号</th>
+              <th nzWidth="100px">重新派奖</th>
+              <th nzWidth="150px">录号者</th>
+              <th nzWidth="100px">允许录号时间</th>
+              <th nzWidth="100px">已录号状态</th>
+              <th nzWidth="150px">计奖状态</th>
+              <th nzWidth="150px">派奖状态</th>
+              <th nzWidth="150px">返点状态</th>
+              <th nzWidth="150px">追号状态</th>
+  
+            
+              <th nzWidth="150px">创建时间</th>
+              <th nzWidth="150px">更新时间</th>
             </tr>
           </thead>
           <tbody class="ant-table-tbody">
@@ -116,22 +116,20 @@
                 <td>{{ data.official_open_time| dateChange }}</td>
                 <td>{{ data.official_code }}</td>
                 <td><button [disabled]='data.official_code' nzSize="small" (click)='input_number(data)' nz-button
-                    nzType="primary">录号</button></td>
+                    nzType="primary">录号</button>
+                </td>
                 <td>
                   <button [nzLoading]="is_loading_enco" [disabled]="!(data['status_encode']===1)" nzSize="small"
-                    (click)='calculate_encode_again(data)' nz-button nzType="primary">重新派奖</button></td>
+                    (click)='calculate_encode_again(data)' nz-button nzType="primary">重新派奖</button>
+                </td>
+                <td>{{ data.encode_username }}</td>
                 <td>{{ data.allow_encode_time| dateChange }}</td>
                 <td>{{ data.status_encode }}</td>
                 <td>{{ data.status_calculated }}</td>
                 <td>{{ data.status_prize }}</td>
                 <td>{{ data.status_commission }}</td>
                 <td>{{ data.status_trace }}</td>
-                <td>{{ data.encode_time| dateChange }}</td>
-                <td>{{ data.calculated_time| dateChange }}</td>
-                <td>{{ data.prize_time| dateChange }}</td>
-                <td>{{ data.commission_time | dateChange}}</td>
-                <td>{{ data.trace_time | dateChange}}</td>
-                <td>{{ data.encode_username }}</td>
+   
                 <td>{{ data.created_at }}</td>
                 <td>{{ data.updated_at }}</td>
 

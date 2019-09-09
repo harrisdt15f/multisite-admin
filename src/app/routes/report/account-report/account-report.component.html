@@ -3,50 +3,68 @@
     <button (click)='download_report()' style='width:150px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
       class="ant-btn__block mb-sm">
       <i *ngIf='!is_down_load' nz-icon nzType="cloud-download" nzTheme="outline"></i>
-      <i *ngIf='is_down_load'  nz-icon nzType="loading" nzTheme="outline"></i>
+      <i *ngIf='is_down_load' nz-icon nzType="loading" nzTheme="outline"></i>
       <span>导出表格</span>
-    </button>
-    <button (click)='search()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-      class="ant-btn__block mb-sm">
-      <i nz-icon nzType="redo" nzTheme="outline"></i>
-      <span>刷新</span>
     </button>
   </ng-template>
 </page-header>
 <nz-layout>
   <nz-content>
-    <div class='account-select'>
+    <div>
+      <div style='padding-top: 20px' nz-row nzGutter="16">
+        <div nz-col nzSpan="20">
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6" >用户名</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                  <input nz-input nzSize="small" placeholder="用户昵称" [(ngModel)]="searchData.username"  />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6" >账变类型</nz-form-label>
+              <nz-form-control  [nzSpan]="18">
+                <nz-select nzSize="small" style="width: 100%;"   [(ngModel)]="searchData.type_sign" nzShowSearch
+                  nzPlaceHolder="账变类型筛选">
+                  <nz-option nzValue="" nzLabel="不限"></nz-option>
+                  <nz-option *ngFor="let o of type_sign_list" [nzValue]="o.sign" [nzLabel]="o.name"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="6" >出入账类型</nz-form-label>
+                <nz-form-control  [nzSpan]="18">
+                  <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.in_out" nzShowSearch nzPlaceHolder="出入账类型">
+                    <nz-option nzValue="" nzLabel="不限"></nz-option>
+                    <nz-option nzValue="1" nzLabel="增加金额"></nz-option>
+                    <nz-option nzValue="2" nzLabel="减少金额"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+        </div>
+        <div nz-col nzSpan="4">
+          <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
+              type="search"></i>搜索</button>&nbsp;&nbsp;
+          <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon
+              type="sync"></i>重置</button>
+        </div>
 
-      <nz-select style="width: 100%;" (ngModelChange)="account_type_change($event)" [(ngModel)]="account_type"
-        nzShowSearch nzPlaceHolder="账变类型筛选">
-        <nz-option nzValue="1000" nzLabel="不限"></nz-option>
-        <nz-option *ngFor="let o of account_type_list" [nzValue]="o.sign" [nzLabel]="o.name"></nz-option>
-      </nz-select>
+
+      </div>
     </div>
-
     <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
       [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
       [nzTotal]='list_total'>
       <thead>
         <tr>
-          <th nzCustomFilter>
-            用户名称
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-              <i nz-icon nzType="search" class="ant-table-filter-icon"
-                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-
-              <div class="search-box">
-                <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
-                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                  搜索
-                </button>
-                <button nz-button nzSize="small" (click)="reset()">取消</button>
-              </div>
-            </nz-dropdown>
-          </th>
+          <th>用户名称</th>
           <th>金额(元)</th>
-          <th nzShowFilter [nzFilters]="in_out" [nzFilterMultiple]='false'
-            (nzFilterChange)="filter_status_change($event)">出入账类型</th>
+          <th>余额(元)</th>
+          <th>出入账类型</th>
           <th>账变类型</th>
           <th>创建时间</th>
         </tr>
@@ -56,6 +74,7 @@
         <tr *ngFor="let data of list_of_aply_data">
           <td>{{ data.username}}</td>
           <td>{{ data.amount }}</td>
+          <td>{{ data.balance }}</td>
           <td>
             <span *ngIf='data.in_out==1' class='ant-badge-status-dot ant-badge-status-success padding-box'></span>
             <span *ngIf='data.in_out==2' class='ant-badge-status-dot ant-badge-status-error padding-box'></span>
