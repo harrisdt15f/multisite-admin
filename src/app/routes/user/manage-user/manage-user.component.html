@@ -307,10 +307,16 @@
                   </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
+          <nz-form-item *ngIf='amount_type=="add"'>
+              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="apply_note" >备注</nz-form-label>
+              <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                <input [(ngModel)]="apply_note" placeholder="备注：确认人工充值" nz-input type="apply_note" id="apply_note"
+                  formControlName="apply_note"  />
+      
+              </nz-form-control>
+            </nz-form-item>
         </form>
-        <div *ngIf='amount_type=="add"' style='margin-top: 30px'>
-          <input type="text" placeholder="备注：确认人工充值" nz-input [(ngModel)]="apply_note" />
-        </div>
+
 
       </nz-modal>
     </div>

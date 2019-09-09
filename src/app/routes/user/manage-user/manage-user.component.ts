@@ -109,6 +109,7 @@ export class UserManageUserComponent implements OnInit {
     });
     this.create_form= this.fb.group({
       recharge_num: [null, [Validators.required, Validators.pattern(Utils.RegExString.reg_ex_3)]],
+      apply_note: [null]
     });
     //监听，在打开此路由情况下，创建用户刷新
     this.user_manager_sub = this.betInfoProvider.get_user_manager_update().subscribe(data => {
