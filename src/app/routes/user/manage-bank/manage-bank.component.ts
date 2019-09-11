@@ -7,11 +7,13 @@ import { ApiService } from '../../../../api/api.service';
   styleUrls: ['manage-bank.component.less']
 })
 export class ManageBankComponent implements OnInit {
+  // 搜索对象
+
   public pages = {
     page_size: 20,
     page: 1,
     total: 0
-  }
+  };
   public listData = {
     bank_name: null,
     branch: null,
@@ -20,10 +22,10 @@ export class ManageBankComponent implements OnInit {
     card_number: null,
     bank_sign: null,
     status: null
-  }
+  };
   public searchs = {
     show: true
-  }
+  };
   public dataList = [];
   public dataLoading = false;
 
@@ -57,8 +59,8 @@ export class ManageBankComponent implements OnInit {
       page_size: this.pages.page_size,
       page: this.pages.page,
       total: this.pages.total
-    }
-    for(const k of Object.keys(this.listData)) {
+    };
+    for (const k of Object.keys(this.listData)) {
       if (this.listData[k]) {
         data[k] = this.listData[k];
       }
@@ -68,10 +70,15 @@ export class ManageBankComponent implements OnInit {
         this.pages.total = response['data']['total'];
         this.dataList = response['data']['data'];
       }
-    })
+    });
+  }
+  research() {
+    this.pages.page_size = 1;
+    this.search();
   }
   // 取消搜索
   reset() {
+    this.pages.page_size = 1;
     this.listData = {
       bank_name: null,
       branch: null,
@@ -80,6 +87,7 @@ export class ManageBankComponent implements OnInit {
       card_number: null,
       bank_sign: null,
       status: null
-    }
+    };
+    this.search();
   }
 }
