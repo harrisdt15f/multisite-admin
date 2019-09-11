@@ -43,7 +43,7 @@ export class StartupService {
     private httpClient: HttpClient,
     private injector: Injector,
   ) {
-    iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
+
     this.serviceHttpIri = Utils.GethttpIri();
   }
 
@@ -92,7 +92,6 @@ export class StartupService {
   private getMenulist(list, item) {
     // tslint:disable-next-line: forin
     for (let key in item) {
-<<<<<<< HEAD
       if (item[key].display) {
         let obj: any = {
           key: key,
@@ -112,26 +111,6 @@ export class StartupService {
         }
       }
     }
-=======
-      let obj: any = {
-        key: key,
-        text: item[key].label,
-        i18n: item[key].en_name,
-        icon: item[key].icon,
-        link: item[key].route,
-      };
-      // 添加路由白名单，防止手动跳转     
-      Utils.acl_route_list.push(item[key].route);
-      this.menu_obj[key] = item[key];
-      list.push(obj);
-      if (item[key].child) {
-        obj.children = [];
-        this.getMenulist(obj.children, item[key].child);
-        this.menu_obj[key].is_parent = true;
-      }
-    }
-
->>>>>>> 73be19e0be212284fb0699c0b491ff30c40bbf40
   }
   /**
    * 得到创建组中的菜单树
