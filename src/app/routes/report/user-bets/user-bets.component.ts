@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
-
 import { FormBuilder } from '@angular/forms';
 import { ReportService } from 'app/service/report.service';
 import { ExcelService } from 'app/service/excel.service';
@@ -21,6 +20,17 @@ export class ReportUserBetsComponent implements OnInit {
     pageIndex: 1,
     pageSize: 15,
     username: '',
+    get_sub: false,
+    serial_number: '',
+    end_time: '',
+    start_time: '',
+    page_size: '100',
+    time_condtions: '',
+    series_id: '',
+    method_sign: '',
+    ip: '',
+    mode: '',
+    times: '',
     is_tester: '',
     issue: '',
     status: '',
@@ -43,7 +53,6 @@ export class ReportUserBetsComponent implements OnInit {
 
   ngOnInit() {
     this.get_userbet_list();
-
   }
   /**
  * 导出表格
@@ -61,7 +70,7 @@ export class ReportUserBetsComponent implements OnInit {
       if (res && res.success) {
         res.data['data'].forEach((item) => {
           data.push({
-            'ID': item.id,
+            '注单编号': item.serial_number,
             '用户名称': item.username,
             '奖期号': item.issue,
             '是否测试用户': item.is_tester,
@@ -92,9 +101,19 @@ export class ReportUserBetsComponent implements OnInit {
           nzDuration: 10000,
         });
       }
-    })
+    });
 
   }
+   /**
+    *
+    *
+    * @param {Date} result
+    * @memberof ReportUserBetsComponent
+    */
+   onChange(result: Date): void {
+      this.searchData.start_time =Utils.change_date(result[0], 'time');
+      this.searchData.end_time =Utils.change_date(result[1], 'time');
+    }
 
 
   /**
@@ -106,11 +125,22 @@ export class ReportUserBetsComponent implements OnInit {
   public get_userbet_list() {
     this.is_load_list = true;
     let option: any = {};
-    if (this.searchData.username) option.username = this.searchData.username;
+    if (this.searchData.username) {
+      option.username = this.searchData.username;
+      option.get_sub = this.searchData.get_sub?1:0;
+    }
     if (this.searchData.is_tester) option.is_tester = this.searchData.is_tester;
     if (this.searchData.status) option.status = this.searchData.status;
     if (this.searchData.issue) option.issue = this.searchData.issue;
-    this.reportService.get_user_bets_report(Utils.page_size, this.page_index, option).subscribe((res: any) => {
+    if (this.searchData.mode) option.mode = this.searchData.mode;
+    if (this.searchData.ip) option.ip = this.searchData.ip;
+    if (this.searchData.series_id) option.series_id = this.searchData.series_id;
+    if (this.searchData.serial_number) option.serial_number = this.searchData.serial_number;
+    if (this.searchData.method_sign) option.method_sign = this.searchData.method_sign;
+    if (this.searchData.start_time&&this.searchData.end_time) {
+      option.time_condtions = Utils.getTimeString(this.searchData.start_time,this.searchData.end_time);
+    }
+    this.reportService.get_user_bets_report(this.searchData.page_size, this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
@@ -148,6 +178,17 @@ export class ReportUserBetsComponent implements OnInit {
       pageIndex: 1,
       pageSize: 15,
       username: '',
+      end_time: '',
+      page_size: '100',
+      start_time: '',
+      times: '',
+      get_sub: false,
+      serial_number: '',
+      time_condtions: '',
+      series_id: '',
+      method_sign: '',
+      ip: '',
+      mode: '',
       is_tester: '',
       issue: '',
       status: '',

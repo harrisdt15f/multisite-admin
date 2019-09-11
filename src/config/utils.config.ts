@@ -193,6 +193,29 @@ export class Utils {
       pic_name: pic_name.substring(0, pic_name.length - 1),
     }
   }
+  /**
+   *转化时间为参数需要格式
+   *
+   * @static
+   * @param {*} start_time
+   * @param {*} end_time
+   * @returns
+   * @memberof Utils
+   */
+  static getTimeString(start_time,end_time){
+    let array = []
+    if (start_time) {
+      array.push(["created_at", ">=", start_time]);
+ 
+    }
+    if (end_time) {
+      array.push(["created_at", "<=", end_time]);
+   
+    }
+    if(array.length>0){
+      return JSON.stringify(array);
+    }
+  }
 
   /**
    * GmT转时间格式 

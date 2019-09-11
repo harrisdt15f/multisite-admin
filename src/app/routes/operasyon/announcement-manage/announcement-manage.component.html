@@ -1,7 +1,7 @@
 <page-header [action]="action">
   <ng-template #action>
-      <button (click)='get_announcement_list(1)' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-      class="ant-btn__block mb-sm">
+    <button (click)='get_announcement_list(1)' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock
+      [nzType]="'dashed'" class="ant-btn__block mb-sm">
       <i nz-icon nzType="redo" nzTheme="outline"></i>
       <span>刷新</span>
     </button>
@@ -9,113 +9,135 @@
 </page-header>
 
 <nz-layout>
-<nz-content>
-   <!-- <nz-skeleton [nzActive]="true"></nz-skeleton> -->
-   <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
+  <nz-content>
+    <!-- <nz-skeleton [nzActive]="true"></nz-skeleton> -->
+    <nz-tabset (nzSelectedIndexChange)='change_index($event)' [nzTabPosition]="'top'" [nzType]="'card'">
       <nz-tab *ngFor="let tab of page_tabs" [nzTitle]="tab.title">
-         <button (click)='add_announcement()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm" style="width: 200px;">
-            <i nz-icon nzType="upload" nzTheme="outline"></i>
-            <span>{{ notice.list.type === 1 ? '添加公告' : '添加站内信' }}</span>
-          </button>
-          <nz-table #nzTable [nzLoadingDelay]='500'
-          (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
-          [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
+        <button (click)='add_announcement()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm"
+          style="width: 200px;">
+          <i nz-icon nzType="upload" nzTheme="outline"></i>
+          <span>{{ notice.list.type === 1 ? '添加公告' : '添加站内信' }}</span>
+        </button>
+        <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)'
+          [nzLoading]='is_load_list' [(nzPageIndex)]='page_index' [nzFrontPagination]='false'
+          [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
           <thead>
             <tr>
               <th>标题</th>
+              <th>简介</th>
               <th>内容</th>
               <th *ngIf="notice.list.type === 1">开始时间</th>
               <th *ngIf="notice.list.type === 1">结束时间</th>
               <th>操作</th>
             </tr>
-          </thead>    
+          </thead>
           <tbody cdkDropList (cdkDropListDropped)="drop_announcement($event)">
             <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
-              <tr *ngFor="let data of list_of_aply_data" cdkDrag>
-                <td>
-                    <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
-                </td>
-                <td>
-                  <div class='ellipsis' style='width:400px;white-space: inherit;' [innerHTML]='data.content.content'></div>
-                </td>
-                <td *ngIf="notice.list.type === 1">{{ data.start_time }}</td>
-                <td *ngIf="notice.list.type === 1">{{ data.end_time }}</td>
-                <td>
-                  <a (click)='edit_announcement(data)'>编辑</a>
-                  <nz-divider nzType="vertical"></nz-divider>
-                  <a nz-popconfirm nzTitle="确认删除吗?" nzOkText="删除" nzCancelText="取消"
+            <tr *ngFor="let data of list_of_aply_data" cdkDrag>
+              <td>
+                <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
+              </td>
+              <td class='home-change-color' (click)='utilsService.show_modal_text(data.introduction)'>
+                <span class='ellipsis' style='width:200px;'>{{ data.introduction}}</span>
+              </td>
+              <td>
+                <div class='ellipsis' style='width:400px;white-space: inherit;' [innerHTML]='data.content.content'>
+                </div>
+              </td>
+              <td *ngIf="notice.list.type === 1">{{ data.start_time }}</td>
+              <td *ngIf="notice.list.type === 1">{{ data.end_time }}</td>
+              <td>
+                <a (click)='edit_announcement(data)'>编辑</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a nz-popconfirm nzTitle="确认删除吗?" nzOkText="删除" nzCancelText="取消"
                   (nzOnConfirm)="delete_announcement(data)">删除</a>
-                </td>
-              </tr>
+              </td>
+            </tr>
           </tbody>
         </nz-table>
       </nz-tab>
     </nz-tabset>
-  <!-- 操作历史弹框 -->
-  <nz-drawer nzWidth='600px' [nzVisible]="if_show_modal" nzPlacement="right" [nzTitle]="nzTitle"
-    (nzOnClose)="if_show_modal = false">
-    <!-- <div [innerHTML]='show_text'></div> -->
-    <!-- <pre [innerHTML]='show_text'>
+    <!-- 操作历史弹框 -->
+    <nz-drawer nzWidth='600px' [nzVisible]="if_show_modal" nzPlacement="right" [nzTitle]="nzTitle"
+      (nzOnClose)="if_show_modal = false">
+      <!-- <div [innerHTML]='show_text'></div> -->
+      <!-- <pre [innerHTML]='show_text'>
 
     </pre> -->
-    <form nz-form [formGroup]="create_form" >
+      <form nz-form [formGroup]="create_form">
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
         </div>
+  
         <nz-form-item>
-          <nz-form-label nzFor="title" nzRequired [nzSm]="4" [nzXs]="24">标题</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
-            <input maxlength='16' id="title" type="text" formControlName="title" nz-input placeholder="标题"
-              [(ngModel)]="edit_announcement_obj['title']" />
-            <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
-              请输入标题!</nz-form-explain>
-          </nz-form-control>
-        </nz-form-item>      
-            <nz-form-item>
-              <nz-form-label nzFor="content" nzRequired [nzSm]="4" [nzXs]="24">内容</nz-form-label>
-              <nz-form-control   nzHasFeedback [nzSm]="20" [nzXs]="23">
-                  <ueditor #full  id="content" formControlName="content" [(ngModel)]="edit_announcement_obj['content']" 
-                  [config]="{ wordCount: true }"
-                  [loadingTip]="'加载中……'"
-        
-                  (onReady)="_ready($event)"
-                  (onDestroy)="_destroy()"
-                  (ngModelChange)="_change($event)"></ueditor>
-                <nz-form-explain *ngIf="create_form.get('content')?.dirty && create_form.get('content')?.errors">
-                  请输入内容!</nz-form-explain>
+            <nz-form-label nzFor="title" nzRequired [nzSm]="4" [nzXs]="24">标题</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+              <input id="title" type="text" formControlName="title" nz-input placeholder="标题"
+                [(ngModel)]="edit_announcement_obj['title']" />
+              <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+                请输入标题!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item> 
+          <nz-form-item>
+              <nz-form-label nzFor="introduction" nzRequired [nzSm]="4" [nzXs]="24">简介</nz-form-label>
+              <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+                <input id="introduction" type="text" formControlName="introduction" nz-input placeholder="简介"
+                  [(ngModel)]="edit_announcement_obj['introduction']" />
+                <nz-form-explain *ngIf="create_form.get('introduction')?.dirty && create_form.get('introduction')?.errors">
+                  请输入简介!</nz-form-explain>
               </nz-form-control>
             </nz-form-item>
-            <ng-container *ngIf="notice.list.type === 1">
-              <nz-form-item >
-                <nz-form-label nzFor="start_time" nzRequired [nzSm]="6" [nzXs]="24">开始时间</nz-form-label>
-                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-                  <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['start_time']" id="start_time"
-                    formControlName="start_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择开始时间"
-                    (ngModelChange)="on_change_start($event)" (nzOnOk)="on_ok_start($event)"></nz-date-picker>
-                  <nz-form-explain *ngIf="create_form.get('start_time')?.dirty && create_form.get('start_time')?.errors">
-                    请输入的开始时间!</nz-form-explain>
-                </nz-form-control>
-              </nz-form-item>
-
-      
-              <nz-form-item >
-                <nz-form-label nzFor="end_time" nzRequired [nzSm]="6" [nzXs]="24">结束时间</nz-form-label>
-                <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-                  <nz-date-picker  [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['end_time']" id="end_time"
-                    formControlName="end_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择结束时间"
-                    (ngModelChange)="on_change_end($event)" (nzOnOk)="on_ok_end($event)"></nz-date-picker>
-                  <nz-form-explain *ngIf="create_form.get('end_time')?.dirty && create_form.get('end_time')?.errors">
-                    请输入公告的结束时间!</nz-form-explain>
-                </nz-form-control>
-              </nz-form-item>
-          </ng-container>
+        <nz-form-item>
+          <nz-form-label nzFor="content" nzRequired [nzSm]="4" [nzXs]="24">内容</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+            <ueditor #full id="content" formControlName="content" [(ngModel)]="edit_announcement_obj['content']"
+              [config]="{ wordCount: true }" [loadingTip]="'加载中……'" (onReady)="_ready($event)" (onDestroy)="_destroy()"
+              (ngModelChange)="_change($event)"></ueditor>
+            <nz-form-explain *ngIf="create_form.get('content')?.dirty && create_form.get('content')?.errors">
+              请输入内容!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <ng-container *ngIf="notice.list.type === 1">
+          <nz-form-item>
+            <nz-form-label nzFor="start_time" nzRequired [nzSm]="6" [nzXs]="24">开始时间</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+              <nz-date-picker [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['start_time']"
+                id="start_time" formControlName="start_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss"
+                nzPlaceHolder="选择开始时间" (ngModelChange)="on_change_start($event)" (nzOnOk)="on_ok_start($event)">
+              </nz-date-picker>
+              <nz-form-explain *ngIf="create_form.get('start_time')?.dirty && create_form.get('start_time')?.errors">
+                请输入的开始时间!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-label nzFor="end_time" nzRequired [nzSm]="6" [nzXs]="24">结束时间</nz-form-label>
+            <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+              <nz-date-picker [nzStyle]='{width:"300px"}' [(ngModel)]="edit_announcement_obj['end_time']" id="end_time"
+                formControlName="end_time" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择结束时间"
+                (ngModelChange)="on_change_end($event)" (nzOnOk)="on_ok_end($event)"></nz-date-picker>
+              <nz-form-explain *ngIf="create_form.get('end_time')?.dirty && create_form.get('end_time')?.errors">
+                请输入公告的结束时间!</nz-form-explain>
+            </nz-form-control>
+          </nz-form-item>
+        </ng-container>
+        <nz-form-item>
+          <nz-form-label nzFor="status" nzRequired [nzSm]="3" [nzXs]="24">是否开启</nz-form-label>
+          <nz-form-control [nzSm]="21" [nzXs]="23">
+              <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_announcement_obj['status']">
+                  <label nz-radio nzValue="1">是</label>
+                  <label nz-radio nzValue="0">否</label>
+              </nz-radio-group>
+              <nz-form-explain *ngIf="create_form.get('status')?.dirty && create_form.get('status')?.errors">
+                  是否父级菜单!</nz-form-explain>
+          </nz-form-control>
+      </nz-form-item>
         <nz-form-item nz-row style="margin-bottom:8px;">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button *ngIf='modal_type==="create"' (click)="submit_activity()" nz-button nzType="primary">确认创建</button>
-            <button *ngIf='modal_type==="edit"' (click)="submit_activity()" nz-button nzType="primary">确认修改</button>
+            <button *ngIf='modal_type==="create"' [disabled]="!create_form.valid"  (click)="submit_activity()" nz-button nzType="primary">确认创建</button>
+            <button *ngIf='modal_type==="edit"' [disabled]="!create_form.valid"  (click)="submit_activity()" nz-button nzType="primary">确认修改</button>
           </nz-form-control>
         </nz-form-item>
       </form>
-  </nz-drawer>
-</nz-content>
+    </nz-drawer>
+  </nz-content>
 </nz-layout>
