@@ -11,7 +11,6 @@ import { TitleService } from '@delon/theme';
 import { VERSION as VERSION_ALAIN } from '@delon/theme';
 import { VERSION as VERSION_ZORRO, NzModalService } from 'ng-zorro-antd';
 import { Utils } from 'config/utils.config';
-
 @Component({
   selector: 'app-root',
   template: `
