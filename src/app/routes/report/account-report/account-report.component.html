@@ -1,10 +1,16 @@
 <page-header [action]="action">
   <ng-template #action>
-    <button (click)='download_report()' style='width:150px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
-      class="ant-btn__block mb-sm">
+      <button (click)='download_report_all()' style='width:100px;margin: 4px 10px 0 8px;float:right' nz-button nzBlock
+      [nzType]="'dashed'" class="ant-btn__block mb-sm">
+      <i *ngIf='!is_down_load_all' nz-icon nzType="cloud-download" nzTheme="outline"></i>
+      <i *ngIf='is_down_load_all' nz-icon nzType="loading" nzTheme="outline"></i>
+      <span>导出所有</span>
+    </button>
+    <button (click)='download_report()' style='width:100px;margin: 4px 10px 0 8px;float:right' nz-button nzBlock
+      [nzType]="'dashed'" class="ant-btn__block mb-sm">
       <i *ngIf='!is_down_load' nz-icon nzType="cloud-download" nzTheme="outline"></i>
       <i *ngIf='is_down_load' nz-icon nzType="loading" nzTheme="outline"></i>
-      <span>导出表格</span>
+      <span>导出当页</span>
     </button>
   </ng-template>
 </page-header>
@@ -45,6 +51,18 @@
                 </nz-form-control>
               </nz-form-item>
             </div>
+            <div nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="8">每页条数</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                    <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.pageSize" nzAllowClear>
+                      <nz-option nzValue='20' nzLabel="20"></nz-option>
+                      <nz-option nzValue='50' nzLabel="50"></nz-option>
+                      <nz-option nzValue='100' nzLabel="100"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
         </div>
         <div nz-col nzSpan="4">
           <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
@@ -56,17 +74,17 @@
 
       </div>
     </div>
-    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
-      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+    <nz-table [nzScroll]='{ y: "450px" }'  #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='searchData.pageSize'
       [nzTotal]='list_total'>
       <thead>
         <tr>
-          <th>用户名称</th>
-          <th>金额(元)</th>
-          <th>余额(元)</th>
-          <th>出入账类型</th>
-          <th>账变类型</th>
-          <th>创建时间</th>
+          <th nzWidth="15%">用户名称</th>
+          <th nzWidth="15%">金额(元)</th>
+          <th nzWidth="15%">余额(元)</th>
+          <th nzWidth="15%">出入账类型</th>
+          <th nzWidth="20%">账变类型</th>
+          <th nzWidth="20%">创建时间</th>
         </tr>
       </thead>
       <tbody>

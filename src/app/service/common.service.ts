@@ -23,6 +23,24 @@ export class CommonService {
       this.serviceHttpIri = Utils.GethttpIri();
       window['upload_iri'] = this.serviceHttpIri + this.imgURL;
   }
+
+
+    /**
+*获取注单列表
+*
+* @memberof PersonalService
+*/
+public getAllLotteriesList() {
+  let token = this.tokenService.get().token;
+  let headers = new HttpHeaders({
+    Accept: 'application/json',
+    Authorization: `Bearer ${token}`,
+  });
+  const href = '/api/lotteries/all-lotteries-list';
+  return this.get(href, { headers: headers });
+}
+
+
   public post(url: string, data?: Object, options?: Object): Observable<any> {
     let token = this.tokenService.get().token;
     let headers = {};

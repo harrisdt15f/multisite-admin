@@ -1,34 +1,65 @@
 <page-header></page-header>
 <nz-layout>
   <nz-content>
-    <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
-      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      <div>
+          <div style='padding-top: 20px' nz-row nzGutter="16">
+            <div nz-col nzSpan="20">
+              <div nz-col nzSpan="6">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="6" >申请人</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                      <input nz-input nzSize="small" placeholder="申请人" [(ngModel)]="searchData.username"  />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="6">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="6" >状态</nz-form-label>
+                  <nz-form-control  [nzSpan]="18">
+                    <nz-select nzSize="small" style="width: 100%;"   [(ngModel)]="searchData.status" nzShowSearch
+                      nzPlaceHolder="状态">
+                      <nz-option nzValue="" nzLabel="不限"></nz-option>
+                      <nz-option nzValue="0" nzLabel="待审核"></nz-option>
+                      <nz-option nzValue="1" nzLabel="审核通过"></nz-option>
+                      <nz-option nzValue="2" nzLabel="审核拒绝"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="4">
+                  <nz-form-item>
+                    <nz-form-label [nzSpan]="8">每页条数</nz-form-label>
+                    <nz-form-control [nzSpan]="16">
+                      <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.pageSize" nzAllowClear>
+                        <nz-option nzValue='20' nzLabel="20"></nz-option>
+                        <nz-option nzValue='50' nzLabel="50"></nz-option>
+                        <nz-option nzValue='100' nzLabel="100"></nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+            </div>
+            <div nz-col nzSpan="4">
+              <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
+                  type="search"></i>搜索</button>&nbsp;&nbsp;
+              <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon
+                  type="sync"></i>重置</button>
+            </div>
+          </div>
+        </div>
+    <nz-table  [nzScroll]='{ y: "450px" }'  #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='searchData.pageSize'
       [nzTotal]='list_total'>
       <thead>
         <tr>
-          <th nzCustomFilter>
-            申请人
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
-              <i nz-icon nzType="search" class="ant-table-filter-icon"
-                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
-
-              <div class="search-box">
-                <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="searchValue" />
-                <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                  搜索
-                </button>
-                <button nz-button nzSize="small" (click)="reset()">取消</button>
-              </div>
-            </nz-dropdown>
-          </th>
-          <th>提交申请人</th>
-          <th>审核人</th>
-          <th>申请人备注</th>
-          <th nzShowFilter [nzFilters]="status_type" [nzFilterMultiple]='false'
-            (nzFilterChange)="is_status_change($event)">状态</th>
-          <th>创建时间</th>
-          <th>最近操作时间</th>
-          <th>操作</th>
+          <th nzWidth="10%">申请人</th>
+          <th nzWidth="10%">提交申请人</th>
+          <th nzWidth="10%">审核人</th>
+          <th nzWidth="15%">申请人备注</th>
+          <th nzWidth="10%">状态</th>
+          <th nzWidth="15%">创建时间</th>
+          <th nzWidth="15%">最近操作时间</th>
+          <th nzWidth="15%">操作</th>
         </tr>
       </thead>
       <tbody>

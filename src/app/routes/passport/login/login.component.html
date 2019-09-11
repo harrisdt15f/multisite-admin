@@ -1,6 +1,6 @@
 <nz-spin [nzDelay]="500" [nzSpinning]="is_login_spinning">
   <form nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
-  <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">
+  <nz-tabset [nzAnimated]="false" class="tabs" >
     <nz-tab [nzTitle]="'app.login.tab-login-credentials' | translate">
       <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
       <nz-form-item>
@@ -30,7 +30,7 @@
       <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | translate }}</label>
     </nz-col>
     <nz-col [nzSpan]="12" class="text-right">
-      <a class="forgot" (click)="msg.error('请找欧阳锋')">{{ 'app.login.forgot-password' | translate }}</a>
+      <a class="forgot" (click)="msg.error('请联系管理员提交更改密码！')">{{ 'app.login.forgot-password' | translate }}</a>
     </nz-col>
   </nz-form-item>
   <nz-form-item >
@@ -41,10 +41,4 @@
 </form>
 </nz-spin>
 
-<!-- <div class="other">
-  {{ 'app.login.sign-in-with' | translate }}
-  <i nz-tooltip="in fact Auth0 via window" (click)="open('auth0', 'window')" nz-icon type="alipay-circle" class="icon"></i>
-  <i nz-tooltip="in fact Github via redirect" (click)="open('github')" nz-icon type="taobao-circle" class="icon"></i>
-  <i (click)="open('weibo', 'window')" nz-icon type="weibo-circle" class="icon"></i>
-  <a class="register" routerLink="/passport/register">{{ 'app.login.signup' | translate }}</a>
-</div> -->
+

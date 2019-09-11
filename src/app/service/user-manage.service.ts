@@ -184,8 +184,7 @@ get_country_by_ip(ip) {
  * @returns
  * @memberof UserManageService
  */
-  get_passport_aply_list(page_index, data?) {
-    let page_size = 20;
+  get_passport_aply_list(page_size,page_index, data?) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
@@ -237,8 +236,7 @@ get_country_by_ip(ip) {
   * @returns
   * @memberof UserManageService
   */
-  get_prize_passport_aply_list(page_index, data?) {
-    let page_size = 20;
+  get_prize_passport_aply_list(page_size,page_index, data?) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',

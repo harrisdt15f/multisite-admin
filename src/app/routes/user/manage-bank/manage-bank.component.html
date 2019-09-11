@@ -1,6 +1,6 @@
-<page-header [action]="action" >
+<page-header [action]="action">
   <ng-template #action>
-      <button (click)='getList()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
+    <button (click)='getList()' style='width:100px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
       class="ant-btn__block mb-sm">
       <i nz-icon nzType="redo" nzTheme="outline"></i>
       <span>刷新</span>
@@ -9,109 +9,101 @@
 </page-header>
 <nz-layout>
   <nz-content style='background-color: white'>
-      <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='changPage()' [nzLoading]='dataLoading'
+    <div>
+      <div style='padding-top: 20px' nz-row nzGutter="16">
+        <div nz-col nzSpan="20">
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6">用户名称</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <input nz-input nzSize="small" placeholder="用户名称" [(ngModel)]="listData.username" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6">开户银行</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <input nz-input nzSize="small" placeholder="开户银行" [(ngModel)]="listData.bank_name" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6">开户支行</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <input nz-input nzSize="small" placeholder="开户支行" [(ngModel)]="listData.branch" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6">银行卡号</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <input nz-input nzSize="small" placeholder="银行卡号" [(ngModel)]="listData.card_number" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6">标识</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <input nz-input nzSize="small" placeholder="标识" [(ngModel)]="listData.bank_sign" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="6">银行卡户名</nz-form-label>
+              <nz-form-control [nzSpan]="18">
+                <input nz-input nzSize="small" placeholder="银行卡户名" [(ngModel)]="listData.owner_name" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-col nzSpan="4">
+          <button nz-button nzType="primary" class="select-search" (click)="research()"><i nz-icon
+              type="search"></i>搜索</button>&nbsp;&nbsp;
+          <button nz-button nzType="primary" class="select-reset" (click)="reset()"><i nz-icon
+              type="sync"></i>重置</button>
+        </div>
+      </div>
+
+    </div>
+    <nz-table [nzScroll]='{ y: "450px" }' #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='changPage()' [nzLoading]='dataLoading'
       [(nzPageIndex)]='pages.page' [nzFrontPagination]='false' [nzData]="dataList" [nzPageSize]='pages.page_size'
       [nzTotal]='pages.total'>
       <thead>
         <tr>
-          <th>ID</th>
-          <th nzCustomFilter>
-            <span class="search">开户银行</span>
-            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" (nzVisibleChange)="reset()" nzTableFilter #dropdown2>
-                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
-                <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索银行" [(ngModel)]="listData.bank_name" />
-                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                    搜索
-                  </button>
-                  <!-- <button nz-button nzSize="small" (click)="reset()">取消</button> -->
-                </div>
-              </nz-dropdown>
-          </th>
-          <th nzCustomFilter>
-            <span class="search">开户支行</span>
-            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" (nzVisibleChange)="reset()" (nzVisibleChange)="reset()" nzTableFilter #dropdown3>
-                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
-                <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索支行" [(ngModel)]="listData.branch" />
-                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                    搜索
-                  </button>
-                  <!-- <button nz-button nzSize="small" (click)="reset()">取消</button> -->
-                </div>
-              </nz-dropdown>
-          </th>
-          <th nzCustomFilter>
-            <span class="search">银行卡号</span>
-            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()" nzTableFilter #dropdown4>
-                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
-                <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索卡号" [(ngModel)]="listData.card_number" />
-                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                    搜索
-                  </button>
-                </div>
-              </nz-dropdown>
-          </th>
-          <th nzCustomFilter>
-              <span class="search">标识</span>
-              <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()" nzTableFilter #dropdown5>
-                  <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
-                  <div class="search-box">
-                    <input type="text" nz-input placeholder="搜索银行" [(ngModel)]="listData.bank_sign" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                      搜索
-                    </button>
-                  </div>
-                </nz-dropdown>
-          </th>
-          <th nzCustomFilter>
-            <span class="search">用户名称</span> 
-            <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()" nzTableFilter #dropdown6>
-                <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
-                <div class="search-box">
-                  <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="listData.username" />
-                  <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                    搜索
-                  </button>
-                </div>
-              </nz-dropdown>
-          </th>
-          <th nzCustomFilter>
-            <span class="search">银行卡户名</span>
-              <nz-dropdown class="down" nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="true" (nzVisibleChange)="reset()"  nzTableFilter #dropdown7>
-                  <i nz-icon nzType="search" class="ant-table-filter-icon" nz-dropdown></i>
-                  <div class="search-box">
-                    <input type="text" nz-input placeholder="搜索户名" [(ngModel)]="listData.owner_name" />
-                    <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
-                      搜索
-                    </button>
-                  </div>
-                </nz-dropdown>
-          </th>
-          <th>
-            状态
-          </th>
-          <th>创建时间</th>
+          <th nzWidth="10%">用户名称</th>
+          <th nzWidth="5%">ID</th>
+          <th nzWidth="10%">开户银行</th>
+          <th nzWidth="15%">开户支行</th>
+          <th nzWidth="20%"> 银行卡号</th>
+          <th nzWidth="10%">标识</th>
+          <th nzWidth="10%">银行卡户名 </th>
+          <th nzWidth="10%">状态</th>
+          <th nzWidth="10%">创建时间</th>
         </tr>
       </thead>
       <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
+            <td>{{ data.username}}</td>
             <td>{{ data.id }}</td>
             <td>{{ data.bank_name }}</td>
             <td>{{ data.branch }}</td>
             <td>{{ data.card_number }}</td>
             <td>{{ data.bank_sign }}</td>
-            <td>{{ data.username}}</td>
             <td>{{ data.owner_name }}</td>
             <td>
               <ng-container *ngIf="data.status; else elseTemplate">
-                  开启
-                </ng-container>
-                <ng-template #elseTemplate>
-                    关闭
-                </ng-template>
+                开启
+              </ng-container>
+              <ng-template #elseTemplate>
+                关闭
+              </ng-template>
             </td>
             <td>{{ data.created_at }}</td>
           </tr>

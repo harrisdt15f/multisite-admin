@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { ReportService } from 'app/service/report.service';
 import { ExcelService } from 'app/service/excel.service';
@@ -15,7 +15,7 @@ export class ReportAccountReportComponent implements OnInit {
   // 搜索对象
   public searchData = {
     pageIndex: 1,
-    pageSize: 15,
+    pageSize: '100',
     id: '',
     is_tester: '',
     username: '',
@@ -28,14 +28,18 @@ export class ReportAccountReportComponent implements OnInit {
   public type_sign_list: Array<any> = [];
   public list_total: number;
   public is_load_list: boolean;
+
+  // -------导出报表参数
+  public logList: Array<any> = [];
   public is_down_load: boolean;
-
-
+  public is_down_load_all: boolean;
+  public nowOption = {};
 
 
   constructor(
     private http: _HttpClient,
     private reportService: ReportService,
+    private modalService: NzModalService,
     private fb: FormBuilder,
     private excelService: ExcelService,
     private message: NzMessageService
@@ -59,7 +63,7 @@ export class ReportAccountReportComponent implements OnInit {
   public reset_search_data() {
     this.searchData = {
       pageIndex: 1,
-      pageSize: 15,
+      pageSize: '100',
       id: '',
       is_tester: '',
       username: '',
@@ -67,43 +71,7 @@ export class ReportAccountReportComponent implements OnInit {
       type_sign: ''
     };
   }
-  /**
-   * 导出表格
-   */
-  download_report() {
-    let option = {};//筛选条件
-    // if (this.choise_status && this.choise_status != '1000') {
-    //   option['in_out'] = this.choise_status;
-    // }
-    // if (this.searchValue) {
-    //   option['username'] = this.searchValue;
-    // }
-    // if(this.type_sign&&this.type_sign!=''&&this.type_sign!='1000'){
-    //   option['type_sign'] = this.type_sign;
-    // }
-    let data = [];
-    this.is_down_load = true;
-    this.reportService.get_account_report(this.list_total, 1, option).subscribe((res: any) => {
-      this.is_down_load = false;
-      if (res && res.success) {
-        res.data['data'].forEach((item) => {
-          data.push({
-            '用户名称': item.username,
-            '金额(元)': item.amount,
-            '出入账类型': item.in_out === 1 ? '增加金额' : '减少金额',
-            '账变类型': item.type_name,
-            '创建时间': item.created_at
-          });
-        });
-        this.excelService.exportAsExcelFile(data, '账变记录');
-      } else {
-        this.message.error(res.message, {
-          nzDuration: 10000,
-        });
-      }
-    });
-
-  }
+ 
 
   /**
    * 获取所有账变类型
@@ -132,14 +100,13 @@ export class ReportAccountReportComponent implements OnInit {
     if (this.searchData.username) option.username = this.searchData.username;
     if (this.searchData.type_sign) option.type_sign = this.searchData.type_sign;
     if (this.searchData.in_out) option.in_out = this.searchData.in_out;
-    this.reportService.get_account_report(Utils.page_size, this.page_index, option).subscribe((res: any) => {
+    this.nowOption = option;
+    this.reportService.get_account_report(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
         this.list_of_aply_data = res.data['data'];
-
       } else {
-
         this.message.error(res.message, {
           nzDuration: 10000,
         });
@@ -166,4 +133,89 @@ export class ReportAccountReportComponent implements OnInit {
     this.get_account_list();
   }
 
+/**
+ * 导出表格
+ */
+download_report() {
+  this.logList = [];
+  this.pushLogList(this.list_of_aply_data);
+  this.excelService.exportAsExcelFile(this.logList, '玩家账变报表');
 }
+/**
+*点击导出所有
+*
+* @memberof PlayerListComponent
+*/
+public download_report_all() {
+  let page_number = Math.ceil(Number(this.list_total) / Number(this.searchData.pageSize));
+  this.logList = [];
+  this.is_down_load_all = true;
+  this.report_list(1, page_number);
+}
+/**
+ 循环便利导出所有
+ *
+ * @param {*} now_page
+ * @param {*} total_page
+ * @memberof PlayerListComponent
+ */
+report_list(now_page, total_page) {
+  this.submit_list_service(this.nowOption, (page) => {
+    if (page < total_page) {
+      this.message.create('success', `成功导出第 ${page} 页，共${total_page}页！`);
+      this.report_list(page + 1, total_page);
+    } else {
+      setTimeout(() => {
+        this.is_down_load_all = false;
+        const modal = this.modalService.success({
+          nzTitle: '温馨提示',
+          nzContent: '导出成功 !'
+        });
+      }, 1000);
+      this.excelService.exportAsExcelFile(this.logList, '用户报表');
+    }
+  }, now_page);
+
+}
+/*
+*调用查询并回调
+*
+* @param {*} option
+* @param {*} callback
+* @param {*} [now_page]
+* @memberof PlayerListComponent
+*/
+public submit_list_service(option, callback, now_page?) {
+  this.reportService.get_account_report(this.searchData.pageSize, now_page, option).subscribe((res: any) => {
+    if (res && res.success) {
+      this.pushLogList(res.data['data']);
+      callback(now_page);
+    } else {
+      this.message.error(res.message, {
+        nzDuration: 10000,
+      });
+    }
+  });
+}
+
+/**
+ *获取数据push给打印数组
+ *
+ * @param {*} data_list
+ * @memberof ReportRechargeReportComponent
+ */
+pushLogList(data_list) {
+  data_list.forEach((item) => {
+    this.logList.push({
+      '用户名称': item.username,
+      '金额(元)': item.amount,
+      '余额(元)': item.balance,
+      '出入账类型': item.in_out === 1 ? '增加金额' : '减少金额',
+      '账变类型': item.type_name,
+      '创建时间': item.created_at
+    });
+  });
+}
+}
+
+

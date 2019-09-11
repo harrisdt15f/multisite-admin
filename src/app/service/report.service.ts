@@ -10,13 +10,13 @@ import { CommonService } from './common.service';
 })
 export class ReportService {
   serviceHttpIri: string;
-  
+
 
   constructor(
     private http: HttpClient,
     private commonService: CommonService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
-    ) {
+  ) {
     this.serviceHttpIri = Utils.GethttpIri();
   }
   transform(value: number) {
@@ -32,21 +32,21 @@ export class ReportService {
     }
     return status;
   }
-   /**
-   *获取用户帐变报表
-   *
-   * @memberof PersonalService
-   */
+  /**
+  *获取用户帐变报表
+  *
+  * @memberof PersonalService
+  */
   get_account_type() {
-      let token = this.tokenService.get().token;
-      let headers = new HttpHeaders({
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      });
-   
-      const href =  '/api/reportManagement/account_change_type'; 
-      return this.commonService.get(href, { headers: headers });
-    }
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const href = '/api/reportManagement/account_change_type';
+    return this.commonService.get(href, { headers: headers });
+  }
 
 
 
@@ -55,77 +55,74 @@ export class ReportService {
    *
    * @memberof PersonalService
    */
-  get_account_report(page_size,page_index, data?) {
-      let token = this.tokenService.get().token;
-      let headers = new HttpHeaders({
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      });
-      var option={}
-      
-    
-      if (data) {
-  
-        if (data.username) {
-          data.query_conditions =JSON.stringify( { "username": "LIKE" });
-        }
-  
-        option=data;
-       
-      }
-      const href =  '/api/reportManagement/user-account-change?page_size='+ page_size + '&page=' + page_index; ;
-      return this.commonService.post(href,option, { headers: headers });
-    }
-    /**
-   *获取用户充值报表
-   *
-   * @memberof PersonalService
-   */
-  get_recharge_report(page_size,page_index, data?) {
-      let token = this.tokenService.get().token;
-      let headers = new HttpHeaders({
-        Accept: 'application/json',
-        Authorization: `Bearer ${token}`,
-      });
-      var option={}
-      
-      if (data) {
-  
-        if (data.user_name) {
-          data.query_conditions =JSON.stringify( { "user_name": "LIKE" });
-        }
-        option=data;
-       
-      }
-      const href =  '/api/reportManagement/user-recharge-history?page_size='+ page_size + '&page=' + page_index; ;
-      return this.commonService.post(href,option, { headers: headers });
-  }
-
-      /**
-   *获取注单列表
-   *
-   * @memberof PersonalService
-   */
-  get_user_bets_report(page_size,page_index, data?) {
+  get_account_report(page_size, page_index, data?) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    var option={}
-    
+    var option = {}
+
+
+    if (data) {
+
+      if (data.username) {
+        data.query_conditions = JSON.stringify({ "username": "LIKE" });
+      }
+
+      option = data;
+
+    }
+    const href = '/api/reportManagement/user-account-change?page_size=' + page_size + '&page=' + page_index;;
+    return this.commonService.post(href, option, { headers: headers });
+  }
+  /**
+ *获取用户充值报表
+ *
+ * @memberof PersonalService
+ */
+  get_recharge_report(page_size, page_index, data?) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    var option = {};
+    if (data) {
+      if (data.user_name) {
+        data.query_conditions = JSON.stringify({ "user_name": "LIKE" });
+      }
+      option = data;
+    }
+    const href = '/api/reportManagement/user-recharge-history?page_size=' + page_size + '&page=' + page_index;;
+    return this.commonService.post(href, option, { headers: headers });
+  }
+
+  /**
+*获取注单列表
+*
+* @memberof PersonalService
+*/
+  get_user_bets_report(page_size, page_index, data?) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    var option = {}
+
     if (data) {
 
       if (data.user_name) {
-        data.query_conditions =JSON.stringify( { "user_name": "LIKE" });
+        data.query_conditions = JSON.stringify({ "user_name": "LIKE" });
       }
-      option=data;
-     
+      option = data;
+
     }
-    const href =  '/api/reportManagement/user-bets?page_size='+ page_size + '&page=' + page_index; ;
-    return this.commonService.post(href,option, { headers: headers });
-}
-  
+    const href = '/api/reportManagement/user-bets?page_size=' + page_size + '&page=' + page_index;;
+    return this.commonService.post(href, option, { headers: headers });
+  }
+
 
 
 }

@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm run color-less && ng serve -o --port 8200",
+    "start": "ng serve -o --port 8200 --host 192.168.254.202",
     "build": "npm run color-less && ng build --prod --build-optimizer",
     "test": "ng test",
     "lint": "npm run lint:ts && npm run lint:style",

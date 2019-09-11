@@ -10,13 +10,20 @@ import { UserManageService } from 'app/service/user-manage.service';
   styleUrls: ['./passport-check.component.less']
 })
 export class UserPassportCheckComponent implements OnInit {
+    // 搜索对象
+    public searchData = {
+      pageIndex: 1,
+      pageSize: '100',
+      status: '',
+      username: '',
+    };
   public page_index = 1;
   public list_of_data: object = {};
   public list_of_aply_data: Array<any> = [];
   public list_total: number;
-  public list_of_search_status: string;
+
   public is_load_list: boolean;
-  public searchValue = '';
+
   public note_value: string;
   public sortName: string | null = null;
   public sortValue: string | null = null;
@@ -37,27 +44,28 @@ export class UserPassportCheckComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.get_passport_aply_list(1);
+    this.get_passport_aply_list();
   }
-  /**
-   *取消搜索
-   *
-   * @memberof UserPassportCheckComponent
+   /**
+   * 重置搜做参数
    */
-  reset(): void {
-    this.searchValue = '';
-    this.search();
+  resetSearch() {
+    this.reset_search_data();
+    this.page_index = 1;
+    this.get_passport_aply_list();
   }
   /**
-*状态筛选改变
-*
-* @param {string[]} value
-* @memberof UserManageUserComponent
-*/
-  is_status_change(value: string): void {
-    this.list_of_search_status = value;
-    this.search();
+   * 重置搜索表单
+   */
+  public reset_search_data() {
+    this.searchData = {
+      pageIndex: 1,
+    pageSize: '100',
+    status: '',
+    username: '',
+    };
   }
+
   /**
 *点击提交，驳回申请
 *
@@ -76,18 +84,9 @@ export class UserPassportCheckComponent implements OnInit {
    *
    * @memberof UserPassportCheckComponent
    */
-  search(page?): void {
-    let option = {};//筛选条件
-    if (this.list_of_search_status && this.list_of_search_status != '1000') {
-      option['status'] = this.list_of_search_status;
-    }
-    // if(this.list_of_search_group&&this.list_of_search_group!='1000'){
-    //   option['type']=this.list_of_search_group;
-    // }
-    if (this.searchValue) {
-      option['username'] = this.searchValue;
-    }
-    this.get_passport_aply_list(page?page:1, option);
+  search() {
+    this.page_index = 1;
+    this.get_passport_aply_list();
   }
   /**
   *改变页数
@@ -96,7 +95,8 @@ export class UserPassportCheckComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   chang_page_index(item) {
-    this.search(item);
+    this.page_index = item;
+    this.get_passport_aply_list();
   }
   /*
 *
@@ -104,15 +104,17 @@ export class UserPassportCheckComponent implements OnInit {
 *
 * @memberof UserManageUserComponent
 */
-  get_passport_aply_list(page_index, data?) {
+  get_passport_aply_list() {
     this.is_load_list = true;
-    this.userManageService.get_passport_aply_list(page_index, data).subscribe((res: any) => {
+    let option: any = {};
+    if (this.searchData.username) option.username = this.searchData.username;
+    if (this.searchData.status) option.status = this.searchData.status;
+    this.userManageService.get_passport_aply_list(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
-        this.page_index=page_index;
+
         this.list_total = res.data.total;
         this.is_load_list = false;
-        this.list_of_data = res.data;
-        this.list_of_aply_data = [...this.list_of_data['data']];
+        this.list_of_aply_data = res.data.data ;
 
       } else {
         this.is_load_list = false;
@@ -140,8 +142,7 @@ export class UserPassportCheckComponent implements OnInit {
       if (res && res.success) {
         this.note_value = '';
         this.is_edit_check = false;
-        this.get_passport_aply_list(this.page_index);
-
+        this.get_passport_aply_list();
         this.message.success('提交审核结果成功', {
           nzDuration: 10000,
         });

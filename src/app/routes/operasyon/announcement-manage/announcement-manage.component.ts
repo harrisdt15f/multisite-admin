@@ -7,7 +7,8 @@ import { UEditorComponent } from 'ngx-ueditor';
 import { until } from 'protractor';
 import { Utils } from 'config/utils.config';
 import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
-declare let window:any;
+import { ToolService } from 'tool/tool.service';
+declare let window: any;
 @Component({
   selector: 'app-operasyon-announcement-manage',
   templateUrl: './announcement-manage.component.html',
@@ -22,11 +23,10 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   public list_of_data: object = {};
   public list_of_aply_data: Array<any> = [];
   public list_total: number;
-  public nzTitle = ''; 
-
+  public nzTitle = '';
   public page_tabs = [
-    {title: '平台公告'},
-    {title: '站内信'},
+    { title: '平台公告' },
+    { title: '站内信' },
   ];
   // 公告
   public notice = {
@@ -39,14 +39,9 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
       page_size: 20,
       page: 1
     }
-  }
-
+  };
   public is_load_list: boolean;
-
   public show_text: string;
-  // public searchValue = '';
-  // public sortName: string | null = null;
-  // public sortValue: string | null = null;
   //--------------弹框参数
   public if_show_modal: boolean;
   public modal_type: string = '®create';
@@ -57,12 +52,12 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   };//显示加载图标
   public announcement_type_list: Array<any> = [
     {
-      title:'平台公告',
-      id:1
+      title: '平台公告',
+      id: 1
     },
     {
-      title:'站内信公告',
-      id:2
+      title: '站内信公告',
+      id: 2
     }
   ];//公告分类列表
   public html_content: string = '';
@@ -70,6 +65,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     private http: _HttpClient,
     private userManageService: UserManageService,
     private fb: FormBuilder,
+    public utilsService: ToolService,
     private message: NzMessageService
   ) {
     this.serviceHttpIri = Utils.GethttpIri();
@@ -78,6 +74,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   ngOnInit() {
     this.create_form = this.fb.group({
       title: [null, [Validators.required]],
+      introduction: [null, [Validators.required]],
       content: [null, [Validators.required]],
       type: [null],
       start_time: [null, [Validators.required]],
@@ -96,10 +93,10 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     let option = {
       id: this.edit_announcement_obj['id'],
       title: this.edit_announcement_obj['title'],
-      status: this.edit_announcement_obj['status'],
+      status: this.edit_announcement_obj['status'] ? '1' : '0',
+      introduction: this.edit_announcement_obj['introduction'],
       type: this.notice.list.type
     };
-
     let img_obj = Utils.get_img_iri(this.edit_announcement_obj['content'], 'remove');
     option['content'] = img_obj.content;
     if (img_obj.pic_path.length > 0 && img_obj.pic_name.length > 0) {
@@ -119,7 +116,6 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     } else if (this.modal_type == 'edit') {
       this.edit_announcement_submit(option);
     }
-
   }
   /**
    *调用添加
@@ -135,23 +131,20 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
         this.message.success('添加成功', {
           nzDuration: 10000,
         });
-
         this.if_show_modal = false;
-
       } else {
-
         this.message.error(res.message, {
           nzDuration: 10000,
         });
       }
-    })
+    });
   }
 
-    /**
-   *开始时间变化
-   *
-   * @memberof OperasyonActivityListComponent
-   */
+  /**
+ *开始时间变化
+ *
+ * @memberof OperasyonActivityListComponent
+ */
   on_change_start(item) { }
   /**
  *开始时间确定
@@ -216,7 +209,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
         let data = res.data.data;
         this.list_total = res.data.total;
         this.is_load_list = false;
-        for(const k of data) {
+        for (const k of data) {
           k['content'] = Utils.get_img_iri(k['content'], 'add');
         }
         console.log(data)
@@ -261,18 +254,18 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
         front_sort: old_array[first_index].sort,
         rearways_id: this.list_of_aply_data[last_index].id,
         rearways_sort: old_array[last_index].sort
-      }
-      // this.is_load_list = true;
-      // this.userManageService.sort_announcement(option).subscribe((res: any) => {
-      //   this.is_load_list = false;
-      //   if (res && res.success) {
-      //     this.get_announcement_list();
-      //   } else {
-      //     this.message.error(res.message, {
-      //       nzDuration: 10000,
-      //     });
-      //   }
-      // })
+      };
+      this.is_load_list = true;
+      this.userManageService.sort_announcement(option).subscribe((res: any) => {
+        this.is_load_list = false;
+        if (res && res.success) {
+          this.get_announcement_list();
+        } else {
+          this.message.error(res.message, {
+            nzDuration: 10000,
+          });
+        }
+      });
     }
   }
   /**
@@ -290,7 +283,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     }
     // this.update_form();
     this.edit_announcement_obj = JSON.parse(JSON.stringify(data));
-    this.edit_announcement_obj['status']=String(this.edit_announcement_obj['status']);
+    this.edit_announcement_obj['status'] = String(this.edit_announcement_obj['status']);
     this.edit_announcement_obj['content'] = data.content.content;
     if (data.start_time) {
       this.edit_announcement_obj['start_time'] = new Date(data.start_time);
@@ -337,7 +330,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     } else {
       this.notice.list.type = 2;
     }
-   this.get_announcement_list();
+    this.get_announcement_list();
   }
   public _ready(e) { }
   public _destroy() { }
