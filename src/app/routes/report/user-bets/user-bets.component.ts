@@ -73,8 +73,7 @@ export class ReportUserBetsComponent implements OnInit {
     this.searchData.start_time = Utils.change_date(result[0], 'time');
     this.searchData.end_time = Utils.change_date(result[1], 'time');
   }
-
-
+ 
   /**
    *获取注单列表
    *
