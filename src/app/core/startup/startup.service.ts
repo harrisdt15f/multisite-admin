@@ -15,9 +15,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { I18NService } from '../i18n/i18n.service';
 
 import { NzIconService } from 'ng-zorro-antd';
-import { ICONS_AUTO } from '../../../style-icons-auto';
+
 import { ICONS } from '../../../style-icons';
 import { Utils } from 'config/utils.config';
+import { ICONS_AUTO } from 'style-icons-auto';
 
 /**
  * 用于应用启动时
@@ -88,71 +89,33 @@ export class StartupService {
   /**
    * 获得菜单列表
    */
-  private getMenulist(item) {
-    Utils.acl_route_list = [];
-    let menuList = [
-      {
-        text: '菜单',
-        i18n: 'menu_total',
-        children: [],
-      },
-    ];
-    console.log(item)
+  private getMenulist(list, item) {
+    // tslint:disable-next-line: forin
     for (let key in item) {
-      let obj = {
+      let obj: any = {
         key: key,
         text: item[key].label,
         i18n: item[key].en_name,
         icon: item[key].icon,
-        children: [],
+        link: item[key].route,
       };
+      // 添加路由白名单，防止手动跳转     
+      Utils.acl_route_list.push(item[key].route);
       this.menu_obj[key] = item[key];
-
+      list.push(obj);
       if (item[key].child) {
-        this.menu_obj[key].is_parent=true;
-        for (let x in item[key].child) {
-          this.menu_obj[x] = item[key].child[x];
-          let second_obj = {
-            key: x,
-            text: item[key].child[x].label,
-            i18n: item[key].child[x].en_name,
-            link: item[key].child[x].route,
-            children: [],
-          };
-
-          if (item[key].child[x].child) {
-            this.menu_obj[x].is_parent=true;
-            for (let y in item[key].child[x].child) {
-              this.menu_obj[y] = item[key].child[x].child[y];
-              if (item[key].child[x].child[y].display === 1) {
-                second_obj.children.push({
-                  key: y,
-                  text: item[key].child[x].child[y].label,
-                  i18n: item[key].child[x].child[y].en_name,
-                  link: item[key].child[x].child[y].route,
-                })
-              }
-              Utils.acl_route_list.push(item[key].child[x].child[y].route);
-              Utils.acl_id_list.push(y);
-            }
-          }
-          if (item[key].child[x].display === 1) {
-            obj.children.push(second_obj);
-            Utils.acl_route_list.push(item[key].child[x].route)
-            Utils.acl_id_list.push(x)
-          }
-
-        }
+        obj.children = [];
+        this.getMenulist(obj.children, item[key].child);
+        this.menu_obj[key].is_parent = true;
       }
-      menuList[0].children.push(obj);
     }
-    console.log(menuList);
-    return menuList;
+
   }
   /**
    * 得到创建组中的菜单树
    */
   getMenueTree(item, list) {
+    // tslint:disable-next-line: forin
     for (let key in item) {
       let obj = {
         key: Number(key),
@@ -163,10 +126,11 @@ export class StartupService {
         display: item[key].display,
         pid: item[key].pid
       };
+
       if (item[key].child) {
-        obj['is_parent']=true;
-        obj['children']=[];
-        this.getMenueTree(item[key].child,obj['children']);
+        obj['is_parent'] = true;
+        obj['children'] = [];
+        this.getMenueTree(item[key].child, obj['children']);
       }
       list.push(obj);
     }
@@ -189,7 +153,15 @@ export class StartupService {
       if (user && user.token) {
         this.get_all_menu().subscribe((r: any) => {
           if (r && r.success) {
-            this.menu = this.getMenulist(r.data);
+            this.menu = [
+              {
+                text: '功能菜单',
+                i18n: 'menu_total',
+                children: [],
+              },
+            ];
+            Utils.acl_route_list = []; //菜单权限数组，防止路由跳转没有的权限
+            this.getMenulist(this.menu[0].children, r.data); // 渲染菜单树
             this.menu_list = [];
             this.getMenueTree(r.data, this.menu_list);//添加组用的菜单格式
             this.viaHttp(resolve, reject, headers);
