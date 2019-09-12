@@ -18,6 +18,7 @@ export class ReportAccountReportComponent implements OnInit {
     pageSize: '100',
     id: '',
     is_tester: '',
+    get_sub: 0,
     username: '',
     in_out: '',
     type_sign: ''
@@ -62,6 +63,7 @@ export class ReportAccountReportComponent implements OnInit {
    */
   public reset_search_data() {
     this.searchData = {
+      get_sub: 0,
       pageIndex: 1,
       pageSize: '100',
       id: '',
@@ -100,6 +102,7 @@ export class ReportAccountReportComponent implements OnInit {
     if (this.searchData.username) option.username = this.searchData.username;
     if (this.searchData.type_sign) option.type_sign = this.searchData.type_sign;
     if (this.searchData.in_out) option.in_out = this.searchData.in_out;
+    option.get_sub = this.searchData.get_sub ? 1 : 0;
     this.nowOption = option;
     this.reportService.get_account_report(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {

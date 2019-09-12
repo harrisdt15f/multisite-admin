@@ -85,8 +85,8 @@ export class ReportUserBetsComponent implements OnInit {
     let option: any = {};
     if (this.searchData.username) {
       option.username = this.searchData.username;
-      option.get_sub = this.searchData.get_sub ? 1 : 0;
     }
+    option.get_sub = this.searchData.get_sub ? 1 : 0;
     if (this.searchData.is_tester) option.is_tester = this.searchData.is_tester;
     if (this.searchData.status) option.status = this.searchData.status;
     if (this.searchData.issue) option.issue = this.searchData.issue;

@@ -86,8 +86,8 @@ export class ReportRechargeReportComponent implements OnInit {
     let option: any = {};
     if (this.searchData.user_name) {
       option.user_name = this.searchData.user_name;
-      option.get_sub = this.searchData.get_sub ? 1 : 0;
     }
+    option.get_sub = this.searchData.get_sub ? 1 : 0;
     if (this.searchData.is_tester) option.is_tester = this.searchData.is_tester;
     if (this.searchData.status) option.status = this.searchData.status;
     if (this.searchData.deposit_mode) option.deposit_mode = this.searchData.deposit_mode;
