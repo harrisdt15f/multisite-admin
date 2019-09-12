@@ -5,6 +5,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { ReportService } from 'app/service/report.service';
 import { ExcelService } from 'app/service/excel.service';
 import { Utils } from 'config/utils.config';
+import { ToolService } from 'tool/tool.service';
+
 
 @Component({
   selector: 'app-report-account-report',
@@ -18,6 +20,8 @@ export class ReportAccountReportComponent implements OnInit {
     pageSize: '100',
     id: '',
     is_tester: '',
+    ip: '',
+    mode: '',
     get_sub: 0,
     username: '',
     in_out: '',
@@ -41,6 +45,7 @@ export class ReportAccountReportComponent implements OnInit {
     private http: _HttpClient,
     private reportService: ReportService,
     private modalService: NzModalService,
+    public utilsService: ToolService,
     private fb: FormBuilder,
     private excelService: ExcelService,
     private message: NzMessageService
@@ -68,6 +73,8 @@ export class ReportAccountReportComponent implements OnInit {
       pageSize: '100',
       id: '',
       is_tester: '',
+      mode: '',
+      ip: '',
       username: '',
       in_out: '',
       type_sign: ''
@@ -101,7 +108,10 @@ export class ReportAccountReportComponent implements OnInit {
     let option: any = {};
     if (this.searchData.username) option.username = this.searchData.username;
     if (this.searchData.type_sign) option.type_sign = this.searchData.type_sign;
-    if (this.searchData.in_out) option.in_out = this.searchData.in_out;
+    if (this.searchData.in_out) option.in_out = Number(this.searchData.in_out);
+    if (this.searchData.ip) option.ip = this.searchData.ip;
+    if (this.searchData.mode) option.mode = this.searchData.mode;
+    if (this.searchData.is_tester) option.is_tester = this.searchData.is_tester;
     option.get_sub = this.searchData.get_sub ? 1 : 0;
     this.nowOption = option;
     this.reportService.get_account_report(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {

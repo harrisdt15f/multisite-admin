@@ -37,8 +37,8 @@
               <td>
                 <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
               </td>
-              <td class='home-change-color' (click)='utilsService.show_modal_text(data.introduction)'>
-                <span class='ellipsis' style='width:200px;'>{{ data.introduction}}</span>
+              <td class='home-change-color' (click)='utilsService.show_modal_text(data.describe)'>
+                <span class='ellipsis' style='width:200px;'>{{ data.describe}}</span>
               </td>
               <td>
                 <div class='ellipsis' style='width:400px;white-space: inherit;' [innerHTML]='data.content.content'>
@@ -79,11 +79,11 @@
             </nz-form-control>
           </nz-form-item> 
           <nz-form-item>
-              <nz-form-label nzFor="introduction" nzRequired [nzSm]="4" [nzXs]="24">简介</nz-form-label>
+              <nz-form-label nzFor="describe" nzRequired [nzSm]="4" [nzXs]="24">简介</nz-form-label>
               <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
-                <input id="introduction" type="text" formControlName="introduction" nz-input placeholder="简介"
-                  [(ngModel)]="edit_announcement_obj['introduction']" />
-                <nz-form-explain *ngIf="create_form.get('introduction')?.dirty && create_form.get('introduction')?.errors">
+                <input id="describe" type="text" formControlName="describe" nz-input placeholder="简介"
+                  [(ngModel)]="edit_announcement_obj['describe']" />
+                <nz-form-explain *ngIf="create_form.get('describe')?.dirty && create_form.get('describe')?.errors">
                   请输入简介!</nz-form-explain>
               </nz-form-control>
             </nz-form-item>

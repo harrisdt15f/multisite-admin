@@ -74,7 +74,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   ngOnInit() {
     this.create_form = this.fb.group({
       title: [null, [Validators.required]],
-      introduction: [null, [Validators.required]],
+      describe: [null, [Validators.required]],
       content: [null, [Validators.required]],
       type: [null],
       start_time: [null, [Validators.required]],
@@ -94,7 +94,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
       id: this.edit_announcement_obj['id'],
       title: this.edit_announcement_obj['title'],
       status: this.edit_announcement_obj['status'] ? '1' : '0',
-      introduction: this.edit_announcement_obj['introduction'],
+      describe: this.edit_announcement_obj['describe'],
       type: this.notice.list.type
     };
     let img_obj = Utils.get_img_iri(this.edit_announcement_obj['content'], 'remove');
