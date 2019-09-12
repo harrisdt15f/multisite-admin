@@ -148,12 +148,7 @@ export class ReportUserBetsComponent implements OnInit {
       }
     });
   }
-  /**
-   * 更高采种选项
-   */
-  onChanges() {
 
-  }
   /**
    *搜索数组
    *

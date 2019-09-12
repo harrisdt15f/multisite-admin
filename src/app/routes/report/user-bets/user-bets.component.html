@@ -102,8 +102,7 @@
             <nz-form-item>
               <nz-form-label [nzSpan]="8">游戏玩法</nz-form-label>
               <nz-form-control [nzSpan]="16">
-                <nz-cascader nzSize="small" [nzOptions]="LotteriesOptions" placeholder="彩种ID"
-                  [(ngModel)]="searchData.lottery_sign" [nzShowSearch]="true" (ngModelChange)="onChanges($event)">
+                <nz-cascader nzSize="small" [nzOptions]="LotteriesOptions" placeholder="彩种ID" [(ngModel)]="searchData.lottery_sign" [nzShowSearch]="true" >
                 </nz-cascader>
               </nz-form-control>
             </nz-form-item>
