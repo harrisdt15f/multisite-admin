@@ -13,6 +13,7 @@ import { UserRechargeComponent } from './recharge/recharge.component';
 import { UserRechargeCheckComponent } from './recharge-check/recharge-check.component';
 import { UserAccountTypeComponent } from './account-type/account-type.component';
 import { ManageBankComponent } from './manage-bank/manage-bank.component';
+import { UserWithdrawListComponent } from './withdraw-list/withdraw-list.component';
 
 const COMPONENTS = [
   UserCreateGeneralAgentComponent,
@@ -24,7 +25,8 @@ const COMPONENTS = [
   UserRechargeComponent,
   UserRechargeCheckComponent,
   UserAccountTypeComponent,
-  ManageBankComponent];
+  ManageBankComponent,
+  UserWithdrawListComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({

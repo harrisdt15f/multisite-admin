@@ -42,6 +42,7 @@ export class GameGameTypeComponent implements OnInit {
   public modal_type: string = 'create';
   public min_prize_group: string;
   public max_prize_group: string = 'create';
+  public serviceHttpIri: string ;
   public modal_lodding: boolean;
   public create_form_lottery: FormGroup;//表单对象
   public create_form_rule: FormGroup;//表单对象
@@ -94,6 +95,7 @@ export class GameGameTypeComponent implements OnInit {
     private gameService: GameService,
     private message: NzMessageService
   ) {
+    this.serviceHttpIri=Utils.GethttpIri()
     
    }
 

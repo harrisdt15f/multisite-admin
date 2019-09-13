@@ -64,7 +64,8 @@
           </span>
           <span>
             <nz-select (ngModelChange)="changeDeletLotType($event)" nzSize="small" style="width: 120px;"
-              [(ngModel)]="deleteLotteriesData.type" nzAllowClear nzPlaceHolder="删除奖期选项">
+              [(ngModel)]="deleteLotteriesData.type" nzAllowClear placeHolder="删除奖期选项">
+              <nz-option nzValue="" nzLabel="删除奖期选项"></nz-option>
               <nz-option nzValue="2" nzLabel="按日期删除"></nz-option>
               <nz-option nzValue="1" nzLabel="按选择ID删除"></nz-option>
             </nz-select>

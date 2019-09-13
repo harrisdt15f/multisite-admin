@@ -89,13 +89,12 @@
   "menu_total": "功能菜单",
   "permission.setting": "账户权限设置",
   "game.type": "彩种信息",
- 
   "manager.character": "管理员角色",
   "change.passport": "修改密码",
-
   "user.manage": "用户管理",
   "manage.user": "管理用户",
   "create.general.agent": "创建用户",
+  "withdraw.list": "提现列表",
   "passport.check": "密码审核",
   "bank.check": "银行卡",
   "capital.passport.check": "资金密码审核",

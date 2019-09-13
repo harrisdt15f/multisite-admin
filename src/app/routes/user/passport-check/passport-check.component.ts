@@ -152,7 +152,6 @@ export class UserPassportCheckComponent implements OnInit {
           nzDuration: 10000,
         });
       }
-    })
+    });
   }
-
 }

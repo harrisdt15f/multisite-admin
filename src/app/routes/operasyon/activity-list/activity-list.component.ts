@@ -7,7 +7,6 @@ import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { until } from 'protractor';
 import { Utils } from 'config/utils.config';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-
 @Component({
   selector: 'app-operasyon-activity-list',
   templateUrl: './activity-list.component.html',
@@ -324,7 +323,7 @@ export class OperasyonActivityListComponent implements OnInit {
         this.list_total = res.data.total;
         this.is_load_list = false;
         this.list_of_data = res.data;
-        this.list_of_aply_data = [...this.list_of_data['data']];
+        this.list_of_aply_data = res.data.data;
 
       } else {
         this.is_load_list = false;

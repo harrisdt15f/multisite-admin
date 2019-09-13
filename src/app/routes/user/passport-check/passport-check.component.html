@@ -50,7 +50,7 @@
     <nz-table [nzScroll]='{ y: "450px" }' #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
       [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data"  [nzPageSize]='searchData.pageSize'
       [nzTotal]='list_total'>
-      <thead>
+      <thead class="ant-table-thead">
         <tr>
           <th nzWidth="10%">申请人</th>
           <th nzWidth="10%">提交申请人</th>
@@ -62,7 +62,7 @@
           <th nzWidth="15%">操作</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="ant-table-tbody">
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
             <td>

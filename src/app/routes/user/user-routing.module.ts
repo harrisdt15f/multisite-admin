@@ -10,6 +10,7 @@ import { UserRechargeComponent } from './recharge/recharge.component';
 import { UserRechargeCheckComponent } from './recharge-check/recharge-check.component';
 import { UserAccountTypeComponent } from './account-type/account-type.component';
 import { ManageBankComponent } from './manage-bank/manage-bank.component';
+import { UserWithdrawListComponent } from './withdraw-list/withdraw-list.component';
 
 const routes: Routes = [
   { path: 'create-general-agent', component: UserCreateGeneralAgentComponent },
@@ -22,7 +23,8 @@ const routes: Routes = [
   { path: 'recharge-check', component: UserRechargeCheckComponent },
   { path: 'account-type', component: UserAccountTypeComponent },
   { path: 'manage-bank', component: ManageBankComponent }
-]
+,
+  { path: 'withdraw-list', component: UserWithdrawListComponent }]
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

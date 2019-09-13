@@ -27,7 +27,7 @@ export class UserManageService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href =  '/api/log/get-address?ip='+ip;
+    const href = '/api/log/get-address?ip=' + ip;
     return this.commonService.get(href, { headers: headers });
   }
 
@@ -41,7 +41,7 @@ export class UserManageService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href =  '/api/user-handle/create-user?';
+    const href = '/api/user-handle/create-user?';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -56,7 +56,7 @@ export class UserManageService {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href =  '/api/user-handle/prizegroup?';
+    const href = '/api/user-handle/prizegroup?';
     return this.commonService.get(href, { headers: headers });
   }
   /**
@@ -74,36 +74,36 @@ export class UserManageService {
     });
     if (data) {
       if (data.username) {
-        data.query_conditions =JSON.stringify( { "username": "LIKE" });
+        data.query_conditions = JSON.stringify({ "username": "LIKE" });
       }
       this.change_time(data);
     }
-    const href =  '/api/user-handle/users-info?page_size=' + page_size + '&page=' + page_index;
+    const href = '/api/user-handle/users-info?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, data, { headers: headers });
   }
-/**
-*获取前台日志操作列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_frontend_log_list(page_index, data?) {
-  let page_size = Utils.page_size;
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  if (data.username) {
-    data.query_conditions =JSON.stringify( { "username": "LIKE" });
-  }
-  if (data) {
-    this.change_time(data);
-  }
+  /**
+  *获取前台日志操作列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  get_frontend_log_list(page_index, data?) {
+    let page_size = Utils.page_size;
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    if (data.username) {
+      data.query_conditions = JSON.stringify({ "username": "LIKE" });
+    }
+    if (data) {
+      this.change_time(data);
+    }
 
-  const href =  '/api/log/frontend-list?page_size=' + page_size + '&page=' + page_index;
-  return this.commonService.post(href, data, { headers: headers });
-}
+    const href = '/api/log/frontend-list?page_size=' + page_size + '&page=' + page_index;
+    return this.commonService.post(href, data, { headers: headers });
+  }
 
   /**
 *获取日志操作列表
@@ -114,8 +114,8 @@ get_frontend_log_list(page_index, data?) {
   get_log_list(page_index, data?) {
     let page_size = Utils.page_size;
     let token = this.tokenService.get().token;
-     if (data.admin_name) {
-      data.query_conditions =JSON.stringify( { "admin_name": "LIKE" });
+    if (data.admin_name) {
+      data.query_conditions = JSON.stringify({ "admin_name": "LIKE" });
     }
     let headers = new HttpHeaders({
       Accept: 'application/json',
@@ -125,27 +125,27 @@ get_frontend_log_list(page_index, data?) {
       this.change_time(data);
     }
 
-    const href =  '/api/log/list?page_size=' + page_size + '&page=' + page_index;
+    const href = '/api/log/list?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, data, { headers: headers });
   }
-   /**
+  /**
 *获取ip所在地
 *
 * @returns
 * @memberof UserManageService
 */
-get_country_by_ip(ip) {
-  let page_size = 20;
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
+  get_country_by_ip(ip) {
+    let page_size = 20;
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
 
 
-  const href = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip='+ip;
-  return this.commonService.get(href, { headers: headers });
-}
+    const href = 'http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=json&ip=' + ip;
+    return this.commonService.get(href, { headers: headers });
+  }
   /**
    *提交修改密码申请
    *
@@ -159,7 +159,7 @@ get_country_by_ip(ip) {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href =  '/api/user-handle/reset-password?';
+    const href = '/api/user-handle/reset-password?';
     return this.commonService.post(href, data, { headers: headers });
   }
   /**
@@ -175,8 +175,26 @@ get_country_by_ip(ip) {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href =  '/api/user-handle/reset-fund-password?';
+    const href = '/api/user-handle/reset-fund-password?';
     return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+*获取提现列表
+*
+* @returns
+* @memberof UserManageService
+*/
+  get_withdraw_check_list(page_size, page_index, data?) {
+    let token = this.tokenService.get().token;
+    var option = {};
+    if (data) {
+      if (data.username) {
+        data.query_conditions = JSON.stringify({ "username": "LIKE" });
+      }
+      option = data;
+    }
+    const href = '/api/withdraw-check/withdraw-list?page_size=' + page_size + '&page=' + page_index;
+    return this.commonService.post(href, option);
   }
   /**
  *获取提交用户修改密码申请列表
@@ -184,20 +202,17 @@ get_country_by_ip(ip) {
  * @returns
  * @memberof UserManageService
  */
-  get_passport_aply_list(page_size,page_index, data?) {
+  get_passport_aply_list(page_size, page_index, data?) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    var option={};
-
+    var option = {};
     if (data) {
-
       if (data.username) {
-        data.query_conditions =JSON.stringify( { "username": "LIKE" });
+        data.query_conditions = JSON.stringify({ "username": "LIKE" });
       }
-
       let array = []
       if (data.start_time) {
         array.push(["created_at", ">=", data.start_time]);
@@ -207,28 +222,25 @@ get_country_by_ip(ip) {
         array.push(["created_at", "<=", data.end_time]);
         delete data.end_time;
       }
-      if(array.length>0){
-         data.time_condtions = JSON.stringify(array);
+      if (array.length > 0) {
+        data.time_condtions = JSON.stringify(array);
       }
-      option=data;
-     
+      option = data;
     }
-    option['type']=1
-
-    const href =  '/api/user-handle/reset-password-list?page_size=' + page_size + '&page=' + page_index;
+    option['type'] = 1
+    const href = '/api/user-handle/reset-password-list?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
   /**
    * 提交审核登录结果
    */
   submit_pass_result(data) {
-
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    const href =  '/api/user-handle/audit-applied-password?';
+    const href = '/api/user-handle/audit-applied-password?';
     return this.commonService.post(href, data, { headers: headers });
   }
   /*获取提交用户修改资金密码申请列表
@@ -236,19 +248,17 @@ get_country_by_ip(ip) {
   * @returns
   * @memberof UserManageService
   */
-  get_prize_passport_aply_list(page_size,page_index, data?) {
+  get_prize_passport_aply_list(page_size, page_index, data?) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    var option={}
-    
-  
+    var option = {};
     if (data) {
 
       if (data.username) {
-        data.query_conditions =JSON.stringify( { "username": "LIKE" });
+        data.query_conditions = JSON.stringify({ "username": "LIKE" });
       }
 
       let array = []
@@ -260,14 +270,14 @@ get_country_by_ip(ip) {
         array.push(["created_at", "<=", data.end_time]);
         delete data.end_time;
       }
-      if(array.length>0){
-         data.time_condtions = JSON.stringify(array);
+      if (array.length > 0) {
+        data.time_condtions = JSON.stringify(array);
       }
-      option=data;
-     
+      option = data;
+
     }
-    option['type']=2
-    const href =  '/api/user-handle/reset-fund-password-list?&page_size=' + page_size + '&page=' + page_index;
+    option['type'] = 2
+    const href = '/api/user-handle/reset-fund-password-list?&page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
   /**
@@ -277,255 +287,255 @@ get_country_by_ip(ip) {
    * @returns
    * @memberof UserManageService
    */
-  submit_freeze(data){
+  submit_freeze(data) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
 
-    const href =  '/api/user-handle/deactivate';
+    const href = '/api/user-handle/deactivate';
     return this.commonService.post(href, data, { headers: headers });
   }
-    /**
-   *查看权限设置历史
-   *
-   * @param {*} data
-   * @returns
-   * @memberof UserManageService
-   */
-  submit_freeze_history(data){
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-
-    const href =  '/api/user-handle/deactivated-detail';
-    return this.commonService.post(href, data, { headers: headers });
-  }
-      /**
-   *查看账变记录
-   *
-   * @param {*} data
-   * @returns
-   * @memberof UserManageService
-   */
-  user_account_change(data){
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-
-    const href =  '/api/user-handle/user_account_change';
-    return this.commonService.post(href, data, { headers: headers });
-  }
-      /**
-   *查看充值记录
-   *
-   * @param {*} data
-   * @returns
-   * @memberof UserManageService
-   */
-  user_recharge_history(data){
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-
-    const href =  '/api/user-handle/user_recharge_history';
-    return this.commonService.post(href, data, { headers: headers });
-  }
-    /**
-*获取系统配置
-*
-* @returns
-* @memberof UserManageService
-*/
-get_system_setting_list(page_index?, data?) {
-  let page_size = 20;
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/partner-sys-configures/detail';
-  return this.commonService.get(href, { headers: headers });
-}
-    /**
-*添加系统配置
-*
-* @returns
-* @memberof UserManageService
-*/
-create_system_setting_list( data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/partner-sys-configures/add';
-  return this.commonService.post(href,data, { headers: headers });
-}
-/**
-*修改系统配置
-*
-* @returns
-* @memberof UserManageService
-*/
-edit_system_setting_list( data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/partner-sys-configures/edit';
-  return this.commonService.post(href,data, { headers: headers });
-}
-    /**
-*删除系统配置
-*
-* @returns
-* @memberof UserManageService
-*/
-delete_system_setting_list( data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/partner-sys-configures/delete';
-  return this.commonService.post(href,data, { headers: headers });
-}
-/**
-*切换启用状态
-*
-* @returns
-* @memberof UserManageService
-*/
-change_status( data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/partner-sys-configures/switch';
-  return this.commonService.post(href,data, { headers: headers });
-}
-/**
- * 修改城市信息
-*
-* @returns
-* @memberof UserManageService
-*/
-edit_city_msg(data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/region/edit';
-  return this.commonService.post(href,data, { headers: headers });
-}
-/**
- * 添加城市信息
-*
-* @returns
-* @memberof UserManageService
-*/
-add_city_msg(data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/region/add';
-  return this.commonService.post(href,data, { headers: headers });
-}
-
-/**
-h获取城市列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_city_list() {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/region/detail';
-  return this.commonService.get(href, { headers: headers });
-}
-/**
-h获取镇列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_city_last_list(data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/region/get_town';
-  return this.commonService.post(href,data, { headers: headers });
-}
-/**
- *编辑活动类型
+  /**
+ *查看权限设置历史
  *
  * @param {*} data
  * @returns
  * @memberof UserManageService
  */
-edit_activity_type(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/activity/edit-actype';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *获得活动类型列表
- *
- * @memberof UserManageService
- */
-get_activity_type_list(){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/activity/type';
-  return this.commonService.get(href, { headers: headers });
-}
-
-/**
- * 获取活动列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_activity_list(page_index,data?) {
-  let page_size = 20;
+  submit_freeze_history(data) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    var option={}
-    
-  
+
+    const href = '/api/user-handle/deactivated-detail';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+*查看账变记录
+*
+* @param {*} data
+* @returns
+* @memberof UserManageService
+*/
+  user_account_change(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const href = '/api/user-handle/user_account_change';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+*查看充值记录
+*
+* @param {*} data
+* @returns
+* @memberof UserManageService
+*/
+  user_recharge_history(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const href = '/api/user-handle/user_recharge_history';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+*获取系统配置
+*
+* @returns
+* @memberof UserManageService
+*/
+  get_system_setting_list(page_index?, data?) {
+    let page_size = 20;
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/partner-sys-configures/detail';
+    return this.commonService.get(href, { headers: headers });
+  }
+  /**
+*添加系统配置
+*
+* @returns
+* @memberof UserManageService
+*/
+  create_system_setting_list(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/partner-sys-configures/add';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+  *修改系统配置
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  edit_system_setting_list(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/partner-sys-configures/edit';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+*删除系统配置
+*
+* @returns
+* @memberof UserManageService
+*/
+  delete_system_setting_list(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/partner-sys-configures/delete';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+  *切换启用状态
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  change_status(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/partner-sys-configures/switch';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   * 修改城市信息
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  edit_city_msg(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/region/edit';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   * 添加城市信息
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  add_city_msg(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/region/add';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+
+  /**
+  h获取城市列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  get_city_list() {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/region/detail';
+    return this.commonService.get(href, { headers: headers });
+  }
+  /**
+  h获取镇列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  get_city_last_list(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/region/get_town';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *编辑活动类型
+   *
+   * @param {*} data
+   * @returns
+   * @memberof UserManageService
+   */
+  edit_activity_type(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/activity/edit-actype';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *获得活动类型列表
+   *
+   * @memberof UserManageService
+   */
+  get_activity_type_list() {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/activity/type';
+    return this.commonService.get(href, { headers: headers });
+  }
+
+  /**
+   * 获取活动列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  get_activity_list(page_index, data?) {
+    let page_size = 20;
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    var option = {}
+
+
     if (data) {
 
       if (data.title) {
-        data.query_conditions =JSON.stringify( { "title": "LIKE" });
+        data.query_conditions = JSON.stringify({ "title": "LIKE" });
       }
 
       let array = []
@@ -537,190 +547,190 @@ get_activity_list(page_index,data?) {
         array.push(["created_at", "<=", data.end_time]);
         delete data.end_time;
       }
-      if(array.length>0){
-         data.time_condtions = JSON.stringify(array);
+      if (array.length > 0) {
+        data.time_condtions = JSON.stringify(array);
       }
-      option=data;
-     
+      option = data;
+
     }
-   
-    const href =  '/api/activity/detail?&page_size=' + page_size + '&page=' + page_index;
+
+    const href = '/api/activity/detail?&page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
-}
-/**
- *添加活动类型列表
- *
- * @memberof UserManageService
- */
-add_activity(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/activity/add';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *修改活动类型列表
- *
- * @memberof UserManageService
- */
-edit_activity(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/activity/edit';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *删除活动类型列表
- *
- * @memberof UserManageService
- */
-delete_activity(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/activity/delete';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
-*获取分类管理数据列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_category_manage_list(page_index?, data?) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/content/category';
-  return this.commonService.get(href, { headers: headers });
-}
+  }
+  /**
+   *添加活动类型列表
+   *
+   * @memberof UserManageService
+   */
+  add_activity(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/activity/add';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *修改活动类型列表
+   *
+   * @memberof UserManageService
+   */
+  edit_activity(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/activity/edit';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *删除活动类型列表
+   *
+   * @memberof UserManageService
+   */
+  delete_activity(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/activity/delete';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+  *获取分类管理数据列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  get_category_manage_list(page_index?, data?) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/content/category';
+    return this.commonService.get(href, { headers: headers });
+  }
   /**
 *获取文章类型
 *
 * @returns
 * @memberof UserManageService
 */
-get_article_type() {
+  get_article_type() {
 
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
 
-  const href =  '/api/content/category-select' ;
-  return this.commonService.get(href, { headers: headers });
-}
+    const href = '/api/content/category-select';
+    return this.commonService.get(href, { headers: headers });
+  }
   /**
 *获取文章列表列表
 *
 * @returns
 * @memberof UserManageService
 */
-get_article_list(page_index, data?) {
-let page_size='20';
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/content/detail?page_size='+ page_size + '&page=' + page_index; ;
-  return this.commonService.post(href,{}, { headers: headers });
-}
-/**
- *给文章排序
- *
- * @memberof UserManageService
- */
-sort_article(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
-  });
-  const href =  '/api/content/sort-articles' ;
-  return this.commonService.post(href,data, { headers: headers });
-}
-/**
- *给活动排序
- *
- * @memberof UserManageService
- */
-sort_activity(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
-  });
-  const href =  '/api/activity/sort' ;
-  return this.commonService.post(href,data, { headers: headers });
-}
+  get_article_list(page_index, data?) {
+    let page_size = '20';
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/content/detail?page_size=' + page_size + '&page=' + page_index;;
+    return this.commonService.post(href, {}, { headers: headers });
+  }
+  /**
+   *给文章排序
+   *
+   * @memberof UserManageService
+   */
+  sort_article(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+    const href = '/api/content/sort-articles';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *给活动排序
+   *
+   * @memberof UserManageService
+   */
+  sort_activity(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+    const href = '/api/activity/sort';
+    return this.commonService.post(href, data, { headers: headers });
+  }
 
-/*给文章排序
-*
-* @memberof UserManageService
-*/
-top_articles(data){
- let token = this.tokenService.get().token;
- let headers = new HttpHeaders({
-   Accept: 'application/json',
-   Authorization: `Bearer ${token}`
- });
- const href =  '/api/content/top-articles' ;
- return this.commonService.post(href,data, { headers: headers });
-}
-/**
- *添加活动类型列表
- *
- * @memberof UserManageService
- */
-add_article(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/content/add-articles';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *修改活动类型列表
- *
- * @memberof UserManageService
- */
-edit_article(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/content/edit-articles';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *删除活动类型列表
- *
- * @memberof UserManageService
- */
-delete_article(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/content/delete-articles';
-  return this.commonService.post(href, data,{ headers: headers });
-}
+  /*给文章排序
+  *
+  * @memberof UserManageService
+  */
+  top_articles(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+    const href = '/api/content/top-articles';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *添加活动类型列表
+   *
+   * @memberof UserManageService
+   */
+  add_article(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/content/add-articles';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *修改活动类型列表
+   *
+   * @memberof UserManageService
+   */
+  edit_article(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/content/edit-articles';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *删除活动类型列表
+   *
+   * @memberof UserManageService
+   */
+  delete_article(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/content/delete-articles';
+    return this.commonService.post(href, data, { headers: headers });
+  }
 
 
   /**
@@ -729,267 +739,156 @@ delete_article(data){
 * @returns
 * @memberof UserManageService
 */
-get_bank_list(page_index, data?) {
-  let page_size='20';
+  get_bank_list(page_index, data?) {
+    let page_size = '20';
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    var option={}
-    
-  
+    var option = {}
+
+
     if (data) {
 
       if (data.title) {
-        data.query_conditions =JSON.stringify( { "title": "LIKE" });
+        data.query_conditions = JSON.stringify({ "title": "LIKE" });
       }
-      option=data;
-     
+      option = data;
+
     }
-    const href =  '/api/bank/detail?page_size='+ page_size + '&page=' + page_index; ;
-    return this.commonService.post(href,option, { headers: headers });
+    const href = '/api/bank/detail?page_size=' + page_size + '&page=' + page_index;;
+    return this.commonService.post(href, option, { headers: headers });
   }
-
-/**
- *添加银行
- *
- * @memberof UserManageService
- */
-add_bank(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/bank/add-bank';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *修改银行
- *
- * @memberof UserManageService
- */
-edit_bank(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/bank/edit-bank';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *删除银行
- *
- * @memberof UserManageService
- */
-delete_bank(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/bank/delete-bank';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-  /**
-*获取管理员列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_quota_history(data) {
-  let page_size='20';
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-
-    const href =  '/api/fundOperation/fund-change-log';
-    return this.commonService.post(href,data, { headers: headers });
-  }
-
-
 
   /**
-*获取管理员列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_quota_list(page_index, data?) {
-  let page_size='20';
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-    var option={}
-    
-  
-    if (data) {
-
-      if (data.name) {
-        data.query_conditions =JSON.stringify( { "name": "LIKE" });
-      }
-      option=data;
-     
-    }
-    const href =  '/api/fundOperation/admins?page_size='+ page_size + '&page=' + page_index; ;
-    return this.commonService.post(href,option, { headers: headers });
-  }
-
-/**
- *设置每日额度
- *
- * @memberof UserManageService
- */
-set_day_quota(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/fundOperation/every-day-fund';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *给管理员增加额度额度
- *
- * @memberof UserManageService
- */
-add_manage_quota(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/fundOperation/add-fund';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-
-
-
- /**
-  时间参数处理
-  *
-  * @param {*} data
-  * @memberof UserManageService
-  */
- change_time(data){
-
-  let array = []
-  if (data.start_time) {
-    array.push(["created_at", ">=", data.start_time]);
-    delete data.start_time;
-  }
-  if (data.end_time) {
-    array.push(["created_at", "<=", data.end_time]);
-    delete data.end_time;
-  }
-  if(array.length>0){
-     data.time_condtions = JSON.stringify(array);
-  }
-}
-
-
-  /**
-*获取人工充值列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_recharge_list(page_index, data?) {
-  let page_size='20';
-    let token = this.tokenService.get().token;
-    let headers = new HttpHeaders({
-      Accept: 'application/json',
-      Authorization: `Bearer ${token}`,
-    });
-    var option={}
-    
-  
-    if (data) {
-
-      if (data.username) {
-        data.query_conditions =JSON.stringify( { "username": "LIKE" });
-      }
-      option=data;
-     
-    }
-    const href =  '/api/artificialRecharge/users?page_size='+ page_size + '&page=' + page_index; ;
-    return this.commonService.post(href,option, { headers: headers });
-  }
-/**
- *人工充值
- *
- * @memberof UserManageService
- */
-add_recharge_quota(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/artificialRecharge/add';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-/**
- *人工扣减
- *
- * @memberof UserManageService
- */
-reduce_quota(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/user-handle/deduction_balance';
-  return this.commonService.post(href, data,{ headers: headers });
-}
-  /**
-   * 提交审核充值结果
+   *添加银行
+   *
+   * @memberof UserManageService
    */
-  submit_recharge_result(data,type) {
-
+  add_bank(data) {
     let token = this.tokenService.get().token;
     let headers = new HttpHeaders({
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     });
-    let href ='';
-    if(type==1){
-       href =  '/api/recharge-check/audit-success?';
-    }else if(type==2){
-       href =  '/api/recharge-check/audit-failure?';
-    }
-  
+    const href = '/api/bank/add-bank';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *修改银行
+   *
+   * @memberof UserManageService
+   */
+  edit_bank(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/bank/edit-bank';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *删除银行
+   *
+   * @memberof UserManageService
+   */
+  delete_bank(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/bank/delete-bank';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+*获取管理员列表
+*
+* @returns
+* @memberof UserManageService
+*/
+  get_quota_history(data) {
+    let page_size = '20';
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const href = '/api/fundOperation/fund-change-log';
     return this.commonService.post(href, data, { headers: headers });
   }
 
+
+
   /**
- *充值审核列表
- *
- * @returns
- * @memberof UserManageService
- */
-get_recharge_check_list(page_index, data?) {
-  let page_size = 20;
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  var option={};
+*获取管理员列表
+*
+* @returns
+* @memberof UserManageService
+*/
+  get_quota_list(page_index, data?) {
+    let page_size = '20';
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    var option = {}
 
-  if (data) {
 
-    if (data.user_name) {
-      data.query_conditions =JSON.stringify( { "user_name": "LIKE" });
+    if (data) {
+
+      if (data.name) {
+        data.query_conditions = JSON.stringify({ "name": "LIKE" });
+      }
+      option = data;
+
     }
+    const href = '/api/fundOperation/admins?page_size=' + page_size + '&page=' + page_index;;
+    return this.commonService.post(href, option, { headers: headers });
+  }
+
+  /**
+   *设置每日额度
+   *
+   * @memberof UserManageService
+   */
+  set_day_quota(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/fundOperation/every-day-fund';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *给管理员增加额度额度
+   *
+   * @memberof UserManageService
+   */
+  add_manage_quota(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/fundOperation/add-fund';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+
+
+
+  /**
+   时间参数处理
+   *
+   * @param {*} data
+   * @memberof UserManageService
+   */
+  change_time(data) {
 
     let array = []
     if (data.start_time) {
@@ -1000,158 +899,269 @@ get_recharge_check_list(page_index, data?) {
       array.push(["created_at", "<=", data.end_time]);
       delete data.end_time;
     }
-    if(array.length>0){
-       data.time_condtions = JSON.stringify(array);
+    if (array.length > 0) {
+      data.time_condtions = JSON.stringify(array);
     }
-    option=data;
-   
   }
 
-  const href =  '/api/recharge-check/detail?page_size=' + page_size + '&page=' + page_index;
-  return this.commonService.post(href, option, { headers: headers });
-}
 
-/**
-*获取账变类型列表
+  /**
+*获取人工充值列表
 *
 * @returns
 * @memberof UserManageService
 */
-get_account_list(page_index?, data?) {
-  let page_size='20';
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
+  get_recharge_list(page_index, data?) {
+    let page_size = '20';
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    var option = {}
 
-  const href =  '/api/accountChangeType/detail?page_size='+ page_size + '&page=' + page_index; ;
 
-  return this.commonService.post(href,  {}, { headers: headers });
-}
-/**
-*帐变类型时需要的字段列表
-*
-* @returns
-* @memberof UserManageService
-*/
-get_param_list() {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/accountChangeType/param-list';
-  return this.commonService.get(href, { headers: headers });
-}
+    if (data) {
 
-/**
-*获取账变类型列表
-*
-* @returns
-* @memberof UserManageService
-*/
-add_account_type(data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/accountChangeType/add';
-  return this.commonService.post(href,data, { headers: headers });
-}
-/**
-*编辑账变类型列表
-*
-* @returns
-* @memberof UserManageService
-*/
-edit_account_type(data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/accountChangeType/edit';
-  return this.commonService.post(href,data, { headers: headers });
-}/**
+      if (data.username) {
+        data.query_conditions = JSON.stringify({ "username": "LIKE" });
+      }
+      option = data;
+
+    }
+    const href = '/api/artificialRecharge/users?page_size=' + page_size + '&page=' + page_index;;
+    return this.commonService.post(href, option, { headers: headers });
+  }
+  /**
+   *人工充值
+   *
+   * @memberof UserManageService
+   */
+  add_recharge_quota(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/artificialRecharge/add';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *人工扣减
+   *
+   * @memberof UserManageService
+   */
+  reduce_quota(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/user-handle/deduction_balance';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   * 提交审核充值结果
+   */
+  submit_recharge_result(data, type) {
+
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    let href = '';
+    if (type == 1) {
+      href = '/api/recharge-check/audit-success?';
+    } else if (type == 2) {
+      href = '/api/recharge-check/audit-failure?';
+    }
+
+    return this.commonService.post(href, data, { headers: headers });
+  }
+
+  /**
+ *充值审核列表
+ *
+ * @returns
+ * @memberof UserManageService
+ */
+  get_recharge_check_list(page_index, data?) {
+    let page_size = 20;
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    var option = {};
+
+    if (data) {
+
+      if (data.user_name) {
+        data.query_conditions = JSON.stringify({ "user_name": "LIKE" });
+      }
+
+      let array = []
+      if (data.start_time) {
+        array.push(["created_at", ">=", data.start_time]);
+        delete data.start_time;
+      }
+      if (data.end_time) {
+        array.push(["created_at", "<=", data.end_time]);
+        delete data.end_time;
+      }
+      if (array.length > 0) {
+        data.time_condtions = JSON.stringify(array);
+      }
+      option = data;
+
+    }
+
+    const href = '/api/recharge-check/detail?page_size=' + page_size + '&page=' + page_index;
+    return this.commonService.post(href, option, { headers: headers });
+  }
+
+  /**
+  *获取账变类型列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  get_account_list(page_index?, data?) {
+    let page_size = '20';
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+
+    const href = '/api/accountChangeType/detail?page_size=' + page_size + '&page=' + page_index;;
+
+    return this.commonService.post(href, {}, { headers: headers });
+  }
+  /**
+  *帐变类型时需要的字段列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  get_param_list() {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/accountChangeType/param-list';
+    return this.commonService.get(href, { headers: headers });
+  }
+
+  /**
+  *获取账变类型列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  add_account_type(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/accountChangeType/add';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+  *编辑账变类型列表
+  *
+  * @returns
+  * @memberof UserManageService
+  */
+  edit_account_type(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/accountChangeType/edit';
+    return this.commonService.post(href, data, { headers: headers });
+  }/**
 *删除账变类型列表
 *
 * @returns
 * @memberof UserManageService
 */
-delete_account_type(data) {
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`,
-  });
-  const href =  '/api/accountChangeType/delete';
-  return this.commonService.post(href,data, { headers: headers });
-}
+  delete_account_type(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/accountChangeType/delete';
+    return this.commonService.post(href, data, { headers: headers });
+  }
 
-/*公告列表
-*
-* @memberof UserManageService
-*/
-get_announcement(data: any){
-  return this.commonService.post('/api/notice/detail', data);
- }
+  /*公告列表
+  *
+  * @memberof UserManageService
+  */
+  get_announcement(data: any) {
+    return this.commonService.post('/api/notice/detail', data);
+  }
 
-/*给公告排序
-*
-* @memberof UserManageService
-*/
-sort_announcement(data){
-  let token = this.tokenService.get().token;
-  let headers = new HttpHeaders({
-    Accept: 'application/json',
-    Authorization: `Bearer ${token}`
-  });
-  const href =  '/api/notice/sort' ;
-  return this.commonService.post(href,data, { headers: headers });
- }
- /**
-  *添加公告
+  /*给公告排序
   *
   * @memberof UserManageService
   */
- add_announcement(data){
-   let token = this.tokenService.get().token;
-   let headers = new HttpHeaders({
-     Accept: 'application/json',
-     Authorization: `Bearer ${token}`,
-   });
-   const href =  '/api/notice/add';
-   return this.commonService.post(href, data,{ headers: headers });
- }
- /**
-  *修改公告
-  *
-  * @memberof UserManageService
-  */
- edit_announcement(data){
-   let token = this.tokenService.get().token;
-   let headers = new HttpHeaders({
-     Accept: 'application/json',
-     Authorization: `Bearer ${token}`,
-   });
-   const href =  '/api/notice/edit';
-   return this.commonService.post(href, data,{ headers: headers });
- }
- /**
-  *删除公告
-  *
-  * @memberof UserManageService
-  */
- delete_announcement(data){
-   let token = this.tokenService.get().token;
-   let headers = new HttpHeaders({
-     Accept: 'application/json',
-     Authorization: `Bearer ${token}`,
-   });
-   const href =  '/api/notice/delete';
-   return this.commonService.post(href, data,{ headers: headers });
- }
+  sort_announcement(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`
+    });
+    const href = '/api/notice/sort';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *添加公告
+   *
+   * @memberof UserManageService
+   */
+  add_announcement(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/notice/add';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *修改公告
+   *
+   * @memberof UserManageService
+   */
+  edit_announcement(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/notice/edit';
+    return this.commonService.post(href, data, { headers: headers });
+  }
+  /**
+   *删除公告
+   *
+   * @memberof UserManageService
+   */
+  delete_announcement(data) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    const href = '/api/notice/delete';
+    return this.commonService.post(href, data, { headers: headers });
+  }
 
 }

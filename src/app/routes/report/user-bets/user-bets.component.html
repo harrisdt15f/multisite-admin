@@ -70,7 +70,6 @@
                   <nz-option nzValue="0" nzLabel="待开奖"></nz-option>
                   <nz-option nzValue="1" nzLabel="已撤销"></nz-option>
                   <nz-option nzValue="2" nzLabel="未中奖"></nz-option>
-                  <nz-option nzValue="3" nzLabel="已中奖"></nz-option>
                   <nz-option nzValue="4" nzLabel="已派奖"></nz-option>
                 </nz-select>
               </nz-form-control>
@@ -157,7 +156,6 @@
           <th nzWidth=90px>用户名称</th>
           <th nzWidth="80px">测试</th>
           <th nzWidth="80px">彩种</th>
-          <th nzWidth="80px">系列</th>
           <th nzWidth="80px">玩法</th>
           <th nzWidth="160px">奖期号</th>
           <th nzWidth="150px"> 投注号码</th>
@@ -167,6 +165,8 @@
           <th nzWidth="150px">单注投注额</th>
           <th nzWidth=90px>总投注额</th>
           <th nzWidth=90px>中奖金额 </th>
+          <th nzWidth=90px>中奖倍数 </th>
+          <th nzWidth=90px>投注注数 </th>
           <th nzWidth="80px">状态</th>
           <th nzWidth=90px>奖金组</th>
           <th nzWidth=90px>ip</th>
@@ -184,13 +184,13 @@
           <td>{{ data.username}}</td>
           <td>{{data.is_tester==1?'是':'否'}}</td>
           <td>{{data.lottery_sign}}</td>
-          <td>{{data.series_id}}</td>
+     
           <td>{{data.method_name}}</td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.issue)'>
             <span style='width: 160px'>{{ data.issue }}</span>
           </td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.bet_number)'>
-            <span style='width: 150px'>{{data.bet_number}}</span>
+            <span style='width: 150px'>{{data.bet_number|betNumber}}</span>
           </td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.open_number)'>
             <span style='width: 90px'>{{data.open_number}}</span>
@@ -200,6 +200,8 @@
           <td>{{ data.price}}</td>
           <td>{{data.total_cost}}</td>
           <td>{{data.bonus}}</td>
+          <td></td>
+          <td></td>
           <td>{{ data.status|userBet }}</td>
           <td>{{ data.bet_prize_group }}</td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.ip)'>

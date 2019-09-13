@@ -39,7 +39,7 @@
                 <td>{{ data.cn_name}}</td>
                 <td>{{ data.en_name}}</td>
                 <td>
-                    <img [src]='Api.serviceHttpIri + data.icon_path'/>
+                    <img [src]='serviceHttpIri + data.icon_path'/>
                 </td>
                 <td>{{ data.series_id}}</td>
                 <td>{{ data.is_fast==1?'是':'否'}}</td>
@@ -156,9 +156,11 @@
           <nz-form-label nzFor="lottery_type" nzRequired [nzSm]="9" [nzXs]="24">icon</nz-form-label>
           <nz-form-control [nzSm]="15" [nzXs]="23" style='width:310px;'>
               <input style='display: none' (change)='updateFire_lot($event)' type="file" id="pic_5" />
+
               <button (click)='updateFireChange()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
                   <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传（最大宽:80, 最大高:80）</span>
               </button>
+
              <img style='max-width:100px' id="cropedBigImg" src=''>
           </nz-form-control>
         </nz-form-item>

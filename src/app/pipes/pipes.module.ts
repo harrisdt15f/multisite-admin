@@ -11,6 +11,7 @@ import { PayTypePipe } from './pay-type.pipe';
 import { RechargeStatusPipe } from './recharge-status';
 import { UserBetPipe } from './user-bet.pipe';
 import { NnitPipe } from './unit.pipe';
+import { BetNumber } from './bet_number_change.pip';
 
 @NgModule({
     declarations:
@@ -26,6 +27,7 @@ import { NnitPipe } from './unit.pipe';
             EquipmentTypePipe,
             DateChangePipe,
             RechargeStatusPipe,
+            BetNumber,
             CheckStatusPipe
         ],
     imports: [],
@@ -38,6 +40,7 @@ import { NnitPipe } from './unit.pipe';
             RechargeStatusPipe,
             ValidModesPipe,
             EquipmentTypePipe,
+            BetNumber,
             DateChangePipe,
             PayTypePipe,
             IssueTypePipe,
