@@ -50,24 +50,26 @@
       </span>
       <span>
 
-        <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon type="search"></i>搜索</button>&nbsp;&nbsp;
-        <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon type="sync"></i>重置</button>
+        <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
+            type="search"></i>搜索</button>&nbsp;&nbsp;
+        <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon
+            type="sync"></i>重置</button>
       </span>
     </section>
     <section class="select-lottery" *ngIf="parent_set.length > 0">
-        <a href="javascript:;" class="a-link" (click)="find_child('',-1)">根目录</a>
-        <ng-container *ngFor="let item of parent_set;let i=index ">
-          >> <a href="javascript:;" class="a-link" (click)="find_child(item.id,i)">{{item.name}}</a>
-        </ng-container>
-      </section>
+      <a href="javascript:;" class="a-link" (click)="find_child('',-1)">根目录</a>
+      <ng-container *ngFor="let item of parent_set;let i=index ">
+        >> <a href="javascript:;" class="a-link" (click)="find_child(item.id,i)">{{item.name}}</a>
+      </ng-container>
+    </section>
     <nz-table #nzTable [nzLoadingDelay]='100' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
       [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="listOfDisplayData" [nzPageSize]='20'
       [nzTotal]='list_total'>
       <thead>
         <tr>
           <th nzShowExpand></th>
-          <th >用户ID</th>
-          <th >用户名</th>
+          <th>用户ID</th>
+          <th>用户名</th>
           <th>账户余额</th>
           <th>冻结金额</th>
           <th>用户层级</th>
@@ -96,7 +98,7 @@
             <td>{{ data.prize_group }}</td>
             <td>{{ data.frozen_type | frozenType:data.frozen_type }}</td>
             <td>{{ data.is_tester==1?'是':'否' }}</td>
-          
+
             <td>{{ data.last_login_time }}</td>
             <td>{{ data.created_at }}</td>
           </tr>
@@ -106,28 +108,28 @@
               <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">上下级转账</button></span>
               <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">日工资比例</button></span>
               <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">下级</button></span> -->
-              <span class='list_btn'><button (click)='person_amount(data,"add")' nz-button [nzSize]='"small"'
-                  nzType="primary">充值</button></span>
-              <span class='list_btn'><button (click)='person_amount(data,"reduce")' nz-button [nzSize]='"small"'
-                  nzType="primary">扣减</button></span>
+              <span *ngIf='btn_acl.is_show_recharge' class='list_btn'><button (click)='person_amount(data,"add")'
+                  nz-button [nzSize]='"small"' nzType="primary">充值</button></span>
+              <span *ngIf='btn_acl.is_show_reduce' class='list_btn'><button (click)='person_amount(data,"reduce")'
+                  nz-button [nzSize]='"small"' nzType="primary">扣减</button></span>
               <!-- <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">查看</button></span> -->
-              <span class='list_btn'><button (click)='edit_change_passport(data,"prize")' nz-button [nzSize]='"small"'
+              <span *ngIf='btn_acl.is_show_reset_fund_pwd' class='list_btn'><button
+                  (click)='edit_change_passport(data,"prize")' nz-button [nzSize]='"small"'
                   nzType="primary">重置资金密码</button></span>
-              <span class='list_btn'><button (click)='edit_change_passport(data,"login")' nz-button [nzSize]='"small"'
+              <span *ngIf='btn_acl.is_show_reset_pwd' class='list_btn'><button
+                  (click)='edit_change_passport(data,"login")' nz-button [nzSize]='"small"'
                   nzType="primary">重置登录密码</button></span>
               <!-- <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">银行卡</button></span> -->
-              <span class='list_btn'><button (click)='setting_permission(data)' nz-button [nzSize]='"small"'
-                  nzType="primary">冻结权限设置</button></span>
-              <span class='list_btn'><button (click)='get_permission_history(data)' nz-button [nzSize]='"small"'
-                  nzType="primary">权限操作历史</button></span>
-              <span class='list_btn'><button (click)='user_account_change(data)' nz-button [nzSize]='"small"'
-                  nzType="primary">账变记录</button></span>
-              <span class='list_btn'><button (click)='user_recharge_history(data)' nz-button [nzSize]='"small"'
-                  nzType="primary">充值记录</button></span>
-                  <span class='list_btn'><button (click)='search_team_top(data)' nz-button [nzSize]='"small"'
-                    nzType="primary">查看直属上级</button></span>
-                  <span class='list_btn'><button (click)='search_team(data)' nz-button [nzSize]='"small"'
-                    nzType="primary">查看直属下级</button></span>
+              <span *ngIf='btn_acl.is_show_permission' class='list_btn'><button (click)='setting_permission(data)'
+                  nz-button [nzSize]='"small"' nzType="primary">冻结权限设置</button></span>
+              <span *ngIf='btn_acl.is_show_history' class='list_btn'><button (click)='get_permission_history(data)'
+                  nz-button [nzSize]='"small"' nzType="primary">权限操作历史</button></span>
+              <span *ngIf='btn_acl.is_show_account_change' class='list_btn'><button (click)='user_account_change(data)'
+                  nz-button [nzSize]='"small"' nzType="primary">账变记录</button></span>
+              <span *ngIf='btn_acl.is_show_recharge_list' class='list_btn'><button (click)='user_recharge_history(data)'
+                  nz-button [nzSize]='"small"' nzType="primary">充值记录</button></span>
+              <span *ngIf='btn_acl.is_show_check_parent' class='list_btn'><button (click)='search_team(data)' nz-button
+                  [nzSize]='"small"' nzType="primary">查看直属</button></span>
               <!-- <span class='list_btn'><button nz-button [nzSize]='"small"' nzType="primary">分红比例</button></span> -->
 
             </td>
@@ -149,21 +151,22 @@
             <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
               <input [(ngModel)]="change_passport_obj['password']" nz-input type="password" id="password"
                 formControlName="password" (ngModelChange)="update_confirm_check_password()" />
-                <nz-form-explain *ngIf="change_passport_apply.get('password')?.dirty && change_passport_apply.get('password')?.errors">
-                    <ng-container *ngIf="change_passport_apply.get('password')?.hasError('required')">
-                      请输入密码!
-                    </ng-container>
-                    <ng-container *ngIf="change_passport_apply.get('password')?.hasError('pattern')">
-                      请输入6-18位英文，数字组合!
-                    </ng-container>
-                  </nz-form-explain>
+              <nz-form-explain
+                *ngIf="change_passport_apply.get('password')?.dirty && change_passport_apply.get('password')?.errors">
+                <ng-container *ngIf="change_passport_apply.get('password')?.hasError('required')">
+                  请输入密码!
+                </ng-container>
+                <ng-container *ngIf="change_passport_apply.get('password')?.hasError('pattern')">
+                  请输入6-18位英文，数字组合!
+                </ng-container>
+              </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <!-- 确认密码 -->
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="check_password" nzRequired>确认密码</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-              <input  nz-input type="password" formControlName="check_password" id="check_password" />
+              <input nz-input type="password" formControlName="check_password" id="check_password" />
               <nz-form-explain
                 *ngIf="change_passport_apply.get('check_password')?.dirty && change_passport_apply.get('check_password')?.errors">
                 <ng-container *ngIf="change_passport_apply.get('check_password')?.hasError('required')">
@@ -291,30 +294,31 @@
 
       <nz-modal [nzOkLoading]="isOkLoading" [nzMaskClosable]='true' [(nzVisible)]="is_show_recharge_num"
         [nzTitle]="amount_type=='add'?'人工充值':'人工扣减'" (nzOnCancel)="cancel_recharge_num()" (nzOnOk)="ok_recharge()">
-        <form nz-form [formGroup]="create_form" >
+        <form nz-form [formGroup]="create_form">
           <nz-form-item>
             <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="recharge_num" nzRequired>密码</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-              <input [(ngModel)]="recharge_num" placeholder="请输入金额"  nz-input type="recharge_num" id="recharge_num"
+              <input [(ngModel)]="recharge_num" placeholder="请输入金额" nz-input type="recharge_num" id="recharge_num"
                 formControlName="recharge_num" (ngModelChange)="update_confirm_check_password()" />
-                <nz-form-explain *ngIf="create_form.get('recharge_num')?.dirty && create_form.get('recharge_num')?.errors">
-                    <ng-container *ngIf="create_form.get('recharge_num')?.hasError('required')">
-                      金额!
-                    </ng-container>
-                    <ng-container *ngIf="create_form.get('recharge_num')?.hasError('pattern')">
-                      金额只能小数点少于两位的数字!
-                    </ng-container>
-                  </nz-form-explain>
+              <nz-form-explain
+                *ngIf="create_form.get('recharge_num')?.dirty && create_form.get('recharge_num')?.errors">
+                <ng-container *ngIf="create_form.get('recharge_num')?.hasError('required')">
+                  金额!
+                </ng-container>
+                <ng-container *ngIf="create_form.get('recharge_num')?.hasError('pattern')">
+                  金额只能小数点少于两位的数字!
+                </ng-container>
+              </nz-form-explain>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item *ngIf='amount_type=="add"'>
-              <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="apply_note" >备注</nz-form-label>
-              <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
-                <input [(ngModel)]="apply_note" placeholder="备注：确认人工充值" nz-input type="apply_note" id="apply_note"
-                  formControlName="apply_note"  />
-      
-              </nz-form-control>
-            </nz-form-item>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="apply_note">备注</nz-form-label>
+            <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+              <input [(ngModel)]="apply_note" placeholder="备注：确认人工充值" nz-input type="apply_note" id="apply_note"
+                formControlName="apply_note" />
+
+            </nz-form-control>
+          </nz-form-item>
         </form>
 
 
