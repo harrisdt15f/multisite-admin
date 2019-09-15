@@ -702,6 +702,7 @@ export class UserManageUserComponent implements OnInit {
    * 查看下级
    */
   public search_team(item) {
+    if (!this.btn_acl.is_show_check_parent) return;
     this.parent_set = [];
     if (item.parent_username) {
       let name_array = item.parent_username.split(',');

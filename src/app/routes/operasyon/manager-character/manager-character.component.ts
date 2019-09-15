@@ -181,7 +181,7 @@ export class ManagerManagerCharacterComponent implements OnInit {
    * 跳转组对应的用户
    */
   jumpGroup(user) {
-    this.searchUser.show=false;
+    this.searchUser.show = false;
     this.group_list.forEach((item) => {
       if (item.id === user.group_id) {
         this.edit_group(item, user.id);
@@ -304,16 +304,16 @@ export class ManagerManagerCharacterComponent implements OnInit {
     this.get_member_list(item, userId);
     if (item.role != '*') {
       this.is_super_manage = false;
-      this.menu_tree_value = []
+      this.menu_tree_value = [];
       JSON.parse(item.role).forEach((item) => {
-        if (!this.startupService.menu_obj[item].is_parent) {
+        if ((this.startupService.menu_obj[item]) && (!this.startupService.menu_obj[item].is_parent)) {
           this.menu_tree_value.push(item);
         }
       });
 
     } else {
       this.is_super_manage = true;
-      this.menu_tree_value = []
+      this.menu_tree_value = [];
     }
 
   }
