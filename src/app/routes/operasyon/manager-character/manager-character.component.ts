@@ -248,9 +248,10 @@ export class ManagerManagerCharacterComponent implements OnInit {
       role.push(item);
       if (menu_obj[item]) {
         //有父级加入父级
-        if (menu_obj[item].pid && menu_obj[item].pid != 0) {
-          role.push(Number(menu_obj[item].pid));
-        }
+        this.pushRole(role,item);
+        // if (menu_obj[item].pid && menu_obj[item].pid != 0) {
+        //   role.push(Number(menu_obj[item].pid));
+        // }
         //如果是父级元素，则把子全都加入
         // tslint:disable-next-line: forin
         for (let key in menu_obj[item].child) {
@@ -265,6 +266,14 @@ export class ManagerManagerCharacterComponent implements OnInit {
       }
     });
     return Array.from(new Set(role));
+  }
+  public pushRole(role, id) {
+    let menu_obj = this.startupService.menu_obj;
+    // 有父级加入父级
+    if (menu_obj[id].pid && menu_obj[id].pid !== 0) {
+      role.push(Number(menu_obj[id].pid));
+      this.pushRole(role,menu_obj[id].pid);
+    }
   }
 
   /**
