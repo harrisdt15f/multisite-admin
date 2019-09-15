@@ -92,12 +92,11 @@ export class StartupService {
   private getMenulist(list, item) {
     // tslint:disable-next-line: forin
     for (let key in item) {
-      // 添加路由白名单，防止手动跳转   
-
+      this.menu_obj[key] = item[key];
+      // 添加路由白名单，防止手动跳转
       if (item[key].display) {
-      
         if (item[key].en_name !== 'isbtn') {
-            Utils.acl_route_list.push(item[key].route);
+          Utils.acl_route_list.push(item[key].route);
           let obj: any = {
             key: key,
             text: item[key].label,
@@ -105,16 +104,14 @@ export class StartupService {
             icon: item[key].icon,
             link: item[key].route,
           };
-          // 添加路由白名单，防止手动跳转     
-
-          this.menu_obj[key] = item[key];
           list.push(obj);
           if (item[key].child) {
             obj.children = [];
             this.getMenulist(obj.children, item[key].child);
             this.menu_obj[key].is_parent = true;
           }
-        }else{
+        } else {
+          // 添加路由白名单，防止手动跳转
           Utils.acl_btn_list.push(item[key].route);
         }
 
