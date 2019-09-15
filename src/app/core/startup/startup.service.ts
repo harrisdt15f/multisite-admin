@@ -92,23 +92,32 @@ export class StartupService {
   private getMenulist(list, item) {
     // tslint:disable-next-line: forin
     for (let key in item) {
+      // 添加路由白名单，防止手动跳转   
+
       if (item[key].display) {
-        let obj: any = {
-          key: key,
-          text: item[key].label,
-          i18n: item[key].en_name,
-          icon: item[key].icon,
-          link: item[key].route,
-        };
-        // 添加路由白名单，防止手动跳转     
-        Utils.acl_route_list.push(item[key].route);
-        this.menu_obj[key] = item[key];
-        list.push(obj);
-        if (item[key].child) {
-          obj.children = [];
-          this.getMenulist(obj.children, item[key].child);
-          this.menu_obj[key].is_parent = true;
+      
+        if (item[key].en_name !== 'isbtn') {
+            Utils.acl_route_list.push(item[key].route);
+          let obj: any = {
+            key: key,
+            text: item[key].label,
+            i18n: item[key].en_name,
+            icon: item[key].icon,
+            link: item[key].route,
+          };
+          // 添加路由白名单，防止手动跳转     
+
+          this.menu_obj[key] = item[key];
+          list.push(obj);
+          if (item[key].child) {
+            obj.children = [];
+            this.getMenulist(obj.children, item[key].child);
+            this.menu_obj[key].is_parent = true;
+          }
+        }else{
+          Utils.acl_btn_list.push(item[key].route);
         }
+
       }
     }
   }
@@ -162,6 +171,7 @@ export class StartupService {
               },
             ];
             Utils.acl_route_list = []; //菜单权限数组，防止路由跳转没有的权限
+            Utils.acl_btn_list = []; //按钮权限数组
             this.getMenulist(this.menu[0].children, r.data); // 渲染菜单树
             this.menu_list = [];
             this.getMenueTree(r.data, this.menu_list);//添加组用的菜单格式

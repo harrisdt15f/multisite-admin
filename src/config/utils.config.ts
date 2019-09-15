@@ -7,6 +7,7 @@ export class Utils {
   static image_upload_iri_help: string = '/api/sys/upload';
   static image_upload_iri_announcement: string;
   static acl_route_list: Array<any> = [];
+  static acl_btn_list: Array<any> = [];
   static acl_id_list: Array<any> = [];
   static white_route: Array<any> = [
     '/personal/personal_center',

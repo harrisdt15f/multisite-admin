@@ -77,21 +77,22 @@
       <thead>
         <tr>
           <th nzWidth="10%">用户名称</th>
-          <th nzWidth="5%">ID</th>
+          <th nzWidth="10%">开户省市</th>
           <th nzWidth="10%">开户银行</th>
           <th nzWidth="15%">开户支行</th>
-          <th nzWidth="20%"> 银行卡号</th>
+          <th nzWidth="15%"> 银行卡号</th>
           <th nzWidth="10%">标识</th>
           <th nzWidth="10%">银行卡户名 </th>
-          <th nzWidth="10%">状态</th>
+          <th nzWidth="5%">状态</th>
           <th nzWidth="10%">创建时间</th>
+          <th nzWidth="5%">操作</th>
         </tr>
       </thead>
       <tbody>
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
             <td>{{ data.username}}</td>
-            <td>{{ data.id }}</td>
+
             <td>{{ data.bank_name }}</td>
             <td>{{ data.branch }}</td>
             <td>{{ data.card_number }}</td>

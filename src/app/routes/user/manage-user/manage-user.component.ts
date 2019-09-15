@@ -38,7 +38,7 @@ export class UserManageUserComponent implements OnInit {
   public sortValue: string | null = null;
   public mapOfExpandData: { [key: string]: boolean } = {};
   public change_passport_obj: object = {};
-  public listOfData: object = {};
+
   public listOfDisplayData = [];
   public history_list = [];//权限操作历史列表
   public page_index = 1;
@@ -79,6 +79,17 @@ export class UserManageUserComponent implements OnInit {
   public apply_note: string;
   public user_manager_sub: Subscription;
   public parent_set = [];
+  public btn_acl = {
+    is_show_recharge: false,
+    is_show_reduce: false,
+    is_show_permission: false,
+    is_show_reset_pwd: false,
+    is_show_reset_fund_pwd: false,
+    is_show_history: false,
+    is_show_account_change: false,
+    is_show_recharge_list: false,
+    is_show_check_parent: false,
+  };
   constructor(
     private http: _HttpClient,
     private fb: FormBuilder,
@@ -89,6 +100,8 @@ export class UserManageUserComponent implements OnInit {
     private injector: Injector,
     private message: NzMessageService
   ) {
+    console.log(Utils.acl_btn_list);
+    this.check_btn_acl();
 
   }
 
@@ -107,7 +120,7 @@ export class UserManageUserComponent implements OnInit {
       frozen_type: [null, [Validators.required]],
       comment: [null]
     });
-    this.create_form= this.fb.group({
+    this.create_form = this.fb.group({
       recharge_num: [null, [Validators.required, Validators.pattern(Utils.RegExString.reg_ex_3)]],
       apply_note: [null]
     });
@@ -119,6 +132,24 @@ export class UserManageUserComponent implements OnInit {
       }
     });
   }
+  /**
+   * 验证所有按钮权限
+   */
+  public check_btn_acl() {
+    let arry = Utils.acl_btn_list;
+    this.btn_acl = {
+      is_show_recharge: arry.indexOf('/manage/recharge') >= 0,
+      is_show_reduce: arry.indexOf('/manage/reduce') >= 0,
+      is_show_permission: arry.indexOf('/manage/permission-setting') >= 0,
+      is_show_reset_pwd: arry.indexOf('/manage/reset-password') >= 0,
+      is_show_reset_fund_pwd: arry.indexOf('/manage/reset-fund-password') >= 0,
+      is_show_history: arry.indexOf('/manage/history') >= 0,
+      is_show_account_change: arry.indexOf('/manage/account-change') >= 0,
+      is_show_recharge_list: arry.indexOf('/manage/echarge-list') >= 0,
+      is_show_check_parent: arry.indexOf('/manage/check-parent') >= 0,
+    };
+  }
+
   /**
    * 初始化时间
    */
@@ -597,10 +628,8 @@ export class UserManageUserComponent implements OnInit {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
-
         if ((typeof res.data) === 'object' && !(res.data instanceof Array)) {
           this.listOfDisplayData = [];
-          this.listOfData = res.data;
           for (let x in res.data.data) {
             if (x === 'parentInfo') {
 
@@ -610,8 +639,8 @@ export class UserManageUserComponent implements OnInit {
           }
 
         } else {
-          this.listOfData = res.data;
-          this.listOfDisplayData = [...this.listOfData['data']];
+
+          this.listOfDisplayData = res.data.data;
         }
       } else {
         this.is_load_list = false;
@@ -668,37 +697,7 @@ export class UserManageUserComponent implements OnInit {
       parent_name: '',
     };
   }
-  /**
-   *查看上级
-   *
-   * @param {*} item
-   * @memberof UserManageUserComponent
-   */
-  public search_team_top(item) {
-    if (item.parent_id === 0) {
-      this.modalService.info({
-        nzTitle: '温馨提示！',
-        nzContent: '该用户无上级！'
-      });
-      return;
-    }
-    this.parent_set = [];
-    if (item.parent_username) {
-      let name_array = item.parent_username.split(',');
-      let id_array = item.rid.split('|');
-      name_array.forEach((item, index) => {
-        this.parent_set.push({
-          id: id_array[index],
-          name: item
-        })
-      });
-      this.parent_set.splice(this.parent_set.length - 1, 1);
-    }
-    this.reset_search_data();
-    this.searchData.parent_id = item.parent_id;
-    this.searchData.parent_name = '1';
-    this.get_user_manage_list();
-  }
+
   /**
    * 查看下级
    */
@@ -711,7 +710,7 @@ export class UserManageUserComponent implements OnInit {
         this.parent_set.push({
           id: id_array[index],
           name: item
-        })
+        });
       });
     }
     this.reset_search_data();

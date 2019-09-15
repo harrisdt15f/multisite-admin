@@ -93,13 +93,14 @@
             <nz-radio-group id="type" formControlName="type" [(ngModel)]="edit_bannar_obj['type']">
               <label nz-radio nzValue='1'>内部</label>
               <label nz-radio nzValue='2'>活动</label>
+              <label nz-radio nzValue='3'>外部活动</label>
             </nz-radio-group>
             <nz-form-explain *ngIf="create_form.get('type')?.dirty && create_form.get('type')?.errors">
               请选择!</nz-form-explain>
           </nz-form-control>
         </nz-form-item>
 
-        <nz-form-item *ngIf="edit_bannar_obj['type']=='1'">
+        <nz-form-item *ngIf="edit_bannar_obj['type']=='1'||edit_bannar_obj['type']=='3'">
           <nz-form-label nzFor="redirect_url" nzRequired [nzSm]="6" [nzXs]="24">跳转地址</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
             <input id="redirect_url" type="text" formControlName="redirect_url" nz-input placeholder="内容"

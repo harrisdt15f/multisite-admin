@@ -37,6 +37,12 @@ export class ManageBankComponent implements OnInit {
     // 获取列表
     this.getList();
   }
+    /**
+   * 删除银行卡
+   */
+  delete_banck(item) {
+
+  }
 
   // 获取列表
   public getList() {

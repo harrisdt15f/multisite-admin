@@ -79,9 +79,9 @@
             <td *ngIf='data.status!=0'></td>
             <td *ngIf='data.status==0'>
          
-                <a (click)='edit_check_passport(data,"pass")'>通过申请</a>
+                <a (click)='edit_check_withdraw(data,"pass")'>通过申请</a>
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)='edit_check_passport(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
+                <a (click)='edit_check_withdraw(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
             
 
             </td>
@@ -99,9 +99,9 @@
           <input placeholder="审核人已确认" [(ngModel)]="note_value" nz-input name="email" type="email" id="email">
         </nz-form-control>
       </nz-form-item>
-      <button [nzLoading]="submit_passport_lodding" *ngIf="edit_check_obj['type']=='pass'" (click)='submit_pass()'
+      <button [nzLoading]="submit_withdraw_lodding" *ngIf="edit_check_obj['type']=='pass'" (click)='submit_pass()'
         nzType="primary" nz-button nzBlock>通过审核</button>
-      <button [nzLoading]="submit_passport_lodding" *ngIf="edit_check_obj['type']=='no_pass'" (click)='submit_pass()'
+      <button [nzLoading]="submit_withdraw_lodding" *ngIf="edit_check_obj['type']=='no_pass'" (click)='submit_pass()'
         nzType="primary" nz-button nzBlock>拒绝通过审核</button>
     </nz-drawer>
   </nz-content>

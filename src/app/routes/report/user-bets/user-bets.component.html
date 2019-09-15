@@ -17,9 +17,10 @@
 <nz-layout>
   <nz-content>
     <div>
+
       <div style='padding-top: 20px' nz-row nzGutter="16">
         <div nz-col nzSpan="20">
-          <div nz-col nzSpan="4">
+          <div nz-col nzSpan="5">
             <nz-form-item>
               <nz-form-label [nzSpan]="8">注单编号</nz-form-label>
               <nz-form-control [nzSpan]="16">
@@ -27,19 +28,18 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzSpan="8">
+          <div nz-col nzSpan="10">
             <nz-form-item>
-              <nz-form-label [nzSpan]="8">用户名</nz-form-label>
-              <nz-form-control [nzSpan]="10">
+              <nz-form-label nz-col [nzSpan]="4">用户名</nz-form-label>
+              <nz-form-control nz-col [nzSpan]="14">
                 <input nz-input nzSize="small" placeholder="用户名" [(ngModel)]="searchData.username" />
               </nz-form-control>
-              <nz-form-control [nzSpan]="6">
-                <span class='get-sub-title'>查下级</span>
-                <label nz-checkbox [(ngModel)]="searchData.get_sub"></label>
+              <nz-form-control style=' max-height: 40px' [nzSpan]="6">
+                <label nz-checkbox [(ngModel)]="searchData.get_sub">查下级</label>
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzSpan="4">
+          <div nz-col nzSpan="5">
             <nz-form-item>
               <nz-form-label [nzSpan]="8">奖期号</nz-form-label>
               <nz-form-control [nzSpan]="16">
@@ -60,7 +60,7 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzSpan="4">
+          <div nz-col nzSpan="5">
             <nz-form-item>
               <nz-form-label [nzSpan]="8">开奖状态</nz-form-label>
               <nz-form-control [nzSpan]="16">
@@ -75,7 +75,7 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzSpan="4">
+          <div nz-col nzSpan="5">
             <nz-form-item>
               <nz-form-label [nzSpan]="8">元角模式</nz-form-label>
               <nz-form-control [nzSpan]="16">
@@ -89,7 +89,7 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzSpan="4">
+          <div nz-col nzSpan="5">
             <nz-form-item>
               <nz-form-label [nzSpan]="8">IP</nz-form-label>
               <nz-form-control [nzSpan]="16">
@@ -97,11 +97,12 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzSpan="4">
+          <div nz-col nzSpan="5">
             <nz-form-item>
               <nz-form-label [nzSpan]="8">游戏玩法</nz-form-label>
               <nz-form-control [nzSpan]="16">
-                <nz-cascader nzSize="small" [nzOptions]="LotteriesOptions" placeholder="彩种ID" [(ngModel)]="searchData.lottery_sign" [nzShowSearch]="true" >
+                <nz-cascader nzSize="small" [nzOptions]="LotteriesOptions" placeholder="彩种ID"
+                  [(ngModel)]="searchData.lottery_sign" [nzShowSearch]="true">
                 </nz-cascader>
               </nz-form-control>
             </nz-form-item>
@@ -114,7 +115,7 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-          <div nz-col nzSpan="4">
+          <div nz-col nzSpan="5">
             <nz-form-item>
               <nz-form-label [nzSpan]="8">每页条数</nz-form-label>
               <nz-form-control [nzSpan]="16">
@@ -184,7 +185,7 @@
           <td>{{ data.username}}</td>
           <td>{{data.is_tester==1?'是':'否'}}</td>
           <td>{{data.lottery_sign}}</td>
-     
+
           <td>{{data.method_name}}</td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.issue)'>
             <span style='width: 160px'>{{ data.issue }}</span>
