@@ -12,11 +12,13 @@ import { RechargeStatusPipe } from './recharge-status';
 import { UserBetPipe } from './user-bet.pipe';
 import { NnitPipe } from './unit.pipe';
 import { BetNumber } from './bet_number_change.pip';
+import { IfTimeEndPipe } from './if-time-end.pip';
 
 @NgModule({
     declarations:
         [
             LevelDeepPipe,
+            IfTimeEndPipe,
             NnitPipe,
             UserBetPipe,
             FrozenTypePipe,
@@ -36,6 +38,7 @@ import { BetNumber } from './bet_number_change.pip';
             NnitPipe,
             UserBetPipe,
             LevelDeepPipe,
+            IfTimeEndPipe,
             FrozenTypePipe,
             RechargeStatusPipe,
             ValidModesPipe,

@@ -43,7 +43,7 @@
               </thead>
               <tbody cdkDropList (cdkDropListDropped)="drop_activity($event)">
                 <ng-template ngFor let-data [ngForOf]="nzTable.data">
-                  <tr>
+                  <tr cdkDrag>
                     <td>{{ data.title}}</td>
              
                     <td>

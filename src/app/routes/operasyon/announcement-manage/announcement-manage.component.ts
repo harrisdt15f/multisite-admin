@@ -230,7 +230,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
         for (const k of data) {
           k['content'] = Utils.get_img_iri(k['content'], 'add');
         }
-        console.log(data)
+        console.log(data);
         this.list_of_aply_data = data;
       } else {
 
@@ -238,7 +238,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
           nzDuration: 10000,
         });
       }
-    })
+    });
   }
   /**
    *点击添加公告

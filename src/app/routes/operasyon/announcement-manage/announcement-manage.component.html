@@ -18,36 +18,37 @@
           <i nz-icon nzType="upload" nzTheme="outline"></i>
           <span>{{ notice.list.type === 1 ? '添加公告' : '添加站内信' }}</span>
         </button>
-        <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)'
-          [nzLoading]='is_load_list' [(nzPageIndex)]='page_index' [nzFrontPagination]='false'
-          [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
+        <nz-table [nzScroll]="{ y: '400px' }" #nzTable [nzLoadingDelay]='500'
+          (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
+          [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20' [nzTotal]='list_total'>
           <thead>
             <tr>
-              <th>标题</th>
-              <th >简介</th>
-              <th>内容</th>
-              <th *ngIf="notice.list.type === 1">开始时间</th>
-              <th *ngIf="notice.list.type === 1">结束时间</th>
-              <th >状态</th>
-              <th>操作</th>
+              <th nzWidth="15%">标题</th>
+              <th nzWidth="15%">简介</th>
+              <th nzWidth="20%">内容</th>
+              <th nzWidth="10%" *ngIf="notice.list.type === 1">开始时间</th>
+              <th nzWidth="10%" *ngIf="notice.list.type === 1">结束时间</th>
+              <th nzWidth="10%">状态</th>
+              <th nzWidth="10%"  *ngIf="notice.list.type === 1">过期状态</th>
+              <th nzWidth="10%">操作</th>
             </tr>
           </thead>
           <tbody cdkDropList (cdkDropListDropped)="drop_announcement($event)">
             <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
             <tr *ngFor="let data of list_of_aply_data" cdkDrag>
               <td>
-                <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
+                <div>{{ data.title}}</div>
               </td>
-              <td  class='home-change-color' (click)='utilsService.show_modal_text(data.describe)'>
-                <span class='ellipsis' style='width:200px;'>{{ data.describe}}</span>
+              <td class='home-change-color' (click)='utilsService.show_modal_text(data.describe)'>
+                <span>{{ data.describe}}</span>
               </td>
               <td>
-                <div class='ellipsis' style='width:400px;white-space: inherit;' [innerHTML]='data.content.content'>
+                <div   [innerHTML]='data.content.content'>
                 </div>
               </td>
               <td *ngIf="notice.list.type === 1">{{ data.start_time }}</td>
               <td *ngIf="notice.list.type === 1">{{ data.end_time }}</td>
-              <td >
+              <td>
                 <ng-container *ngIf="data.status; else elseTemplate">
                   <i style="color: green;" nz-icon nzType="check" nzTheme="outline"></i>
                 </ng-container>
@@ -55,6 +56,9 @@
                   <i style="color: red;" nz-icon nzType="close" nzTheme="outline"></i>
 
                 </ng-template>
+              </td>
+              <td  *ngIf="notice.list.type === 1">
+                {{data |ifTimeEnd:data }}
               </td>
               <td>
                 <a (click)='edit_announcement(data)'>编辑</a>
@@ -88,7 +92,7 @@
               请输入标题!</nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item >
+        <nz-form-item>
           <nz-form-label nzFor="describe" nzRequired [nzSm]="4" [nzXs]="24">简介</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
             <input id="describe" type="text" formControlName="describe" nz-input placeholder="简介"
@@ -130,9 +134,9 @@
             </nz-form-control>
           </nz-form-item>
         </ng-container>
-        <nz-form-item >
-          <nz-form-label nzFor="status" nzRequired [nzSm]="3" [nzXs]="24">是否开启</nz-form-label>
-          <nz-form-control [nzSm]="21" [nzXs]="23">
+        <nz-form-item>
+          <nz-form-label nzFor="status" nzRequired [nzSm]="6" [nzXs]="24">是否开启</nz-form-label>
+          <nz-form-control [nzSm]="15" [nzXs]="23">
             <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_announcement_obj['status']">
               <label nz-radio nzValue="1">是</label>
               <label nz-radio nzValue="0">否</label>

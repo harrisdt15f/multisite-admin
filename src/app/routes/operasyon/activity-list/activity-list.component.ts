@@ -105,6 +105,7 @@ export class OperasyonActivityListComponent implements OnInit {
       let option = {
         sort_type: event.previousIndex > event.currentIndex ? 1 : 2,
         front_id: this.list_of_aply_data[first_index].id,
+        type: this.activity.list.type,
         front_sort: old_array[first_index].sort,
         rearways_id: this.list_of_aply_data[last_index].id,
         rearways_sort: old_array[last_index].sort
