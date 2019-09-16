@@ -24,10 +24,11 @@
           <thead>
             <tr>
               <th>标题</th>
-              <th>简介</th>
+              <th >简介</th>
               <th>内容</th>
               <th *ngIf="notice.list.type === 1">开始时间</th>
               <th *ngIf="notice.list.type === 1">结束时间</th>
+              <th >状态</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -37,7 +38,7 @@
               <td>
                 <div class='ellipsis' style='width:200px;'>{{ data.title}}</div>
               </td>
-              <td class='home-change-color' (click)='utilsService.show_modal_text(data.describe)'>
+              <td  class='home-change-color' (click)='utilsService.show_modal_text(data.describe)'>
                 <span class='ellipsis' style='width:200px;'>{{ data.describe}}</span>
               </td>
               <td>
@@ -46,6 +47,15 @@
               </td>
               <td *ngIf="notice.list.type === 1">{{ data.start_time }}</td>
               <td *ngIf="notice.list.type === 1">{{ data.end_time }}</td>
+              <td >
+                <ng-container *ngIf="data.status; else elseTemplate">
+                  <i style="color: green;" nz-icon nzType="check" nzTheme="outline"></i>
+                </ng-container>
+                <ng-template #elseTemplate>
+                  <i style="color: red;" nz-icon nzType="close" nzTheme="outline"></i>
+
+                </ng-template>
+              </td>
               <td>
                 <a (click)='edit_announcement(data)'>编辑</a>
                 <nz-divider nzType="vertical"></nz-divider>
@@ -68,25 +78,25 @@
         <div *ngIf='modal_lodding' class='lodding-box'>
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
         </div>
-  
+
         <nz-form-item>
-            <nz-form-label nzFor="title" nzRequired [nzSm]="4" [nzXs]="24">标题</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
-              <input id="title" type="text" formControlName="title" nz-input placeholder="标题"
-                [(ngModel)]="edit_announcement_obj['title']" />
-              <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
-                请输入标题!</nz-form-explain>
-            </nz-form-control>
-          </nz-form-item> 
-          <nz-form-item>
-              <nz-form-label nzFor="describe" nzRequired [nzSm]="4" [nzXs]="24">简介</nz-form-label>
-              <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
-                <input id="describe" type="text" formControlName="describe" nz-input placeholder="简介"
-                  [(ngModel)]="edit_announcement_obj['describe']" />
-                <nz-form-explain *ngIf="create_form.get('describe')?.dirty && create_form.get('describe')?.errors">
-                  请输入简介!</nz-form-explain>
-              </nz-form-control>
-            </nz-form-item>
+          <nz-form-label nzFor="title" nzRequired [nzSm]="4" [nzXs]="24">标题</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+            <input id="title" type="text" formControlName="title" nz-input placeholder="标题"
+              [(ngModel)]="edit_announcement_obj['title']" />
+            <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
+              请输入标题!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item >
+          <nz-form-label nzFor="describe" nzRequired [nzSm]="4" [nzXs]="24">简介</nz-form-label>
+          <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
+            <input id="describe" type="text" formControlName="describe" nz-input placeholder="简介"
+              [(ngModel)]="edit_announcement_obj['describe']" />
+            <nz-form-explain *ngIf="create_form.get('describe')?.dirty && create_form.get('describe')?.errors">
+              请输入简介!</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
         <nz-form-item>
           <nz-form-label nzFor="content" nzRequired [nzSm]="4" [nzXs]="24">内容</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="20" [nzXs]="23">
@@ -120,21 +130,23 @@
             </nz-form-control>
           </nz-form-item>
         </ng-container>
-        <nz-form-item>
+        <nz-form-item >
           <nz-form-label nzFor="status" nzRequired [nzSm]="3" [nzXs]="24">是否开启</nz-form-label>
           <nz-form-control [nzSm]="21" [nzXs]="23">
-              <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_announcement_obj['status']">
-                  <label nz-radio nzValue="1">是</label>
-                  <label nz-radio nzValue="0">否</label>
-              </nz-radio-group>
-              <nz-form-explain *ngIf="create_form.get('status')?.dirty && create_form.get('status')?.errors">
-                  是否父级菜单!</nz-form-explain>
+            <nz-radio-group id="status" formControlName="status" [(ngModel)]="edit_announcement_obj['status']">
+              <label nz-radio nzValue="1">是</label>
+              <label nz-radio nzValue="0">否</label>
+            </nz-radio-group>
+            <nz-form-explain *ngIf="create_form.get('status')?.dirty && create_form.get('status')?.errors">
+              是否父级菜单!</nz-form-explain>
           </nz-form-control>
-      </nz-form-item>
+        </nz-form-item>
         <nz-form-item nz-row style="margin-bottom:8px;">
           <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button *ngIf='modal_type==="create"' [disabled]="!create_form.valid"  (click)="submit_activity()" nz-button nzType="primary">确认创建</button>
-            <button *ngIf='modal_type==="edit"' [disabled]="!create_form.valid"  (click)="submit_activity()" nz-button nzType="primary">确认修改</button>
+            <button *ngIf='modal_type==="create"' [disabled]="!create_form.valid" (click)="submit_activity()" nz-button
+              nzType="primary">确认创建</button>
+            <button *ngIf='modal_type==="edit"' [disabled]="!create_form.valid" (click)="submit_activity()" nz-button
+              nzType="primary">确认修改</button>
           </nz-form-control>
         </nz-form-item>
       </form>

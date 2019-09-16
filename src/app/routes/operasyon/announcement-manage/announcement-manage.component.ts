@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd';
 import { UserManageService } from 'app/service/user-manage.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UEditorComponent } from 'ngx-ueditor';
 import { until } from 'protractor';
 import { Utils } from 'config/utils.config';
@@ -33,6 +33,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     list: {
       title: null,
       content: null,
+      describe: '',
       type: 1,
       start_time: null,
       end_time: null,
@@ -77,12 +78,29 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
       describe: [null, [Validators.required]],
       content: [null, [Validators.required]],
       type: [null],
-      start_time: [null, [Validators.required]],
+      start_time: [null, [this.confirmationValidator]],
       status: [null, [Validators.required]],
-      end_time: [null, [Validators.required]]
+      end_time: [null, [this.confirmationValidator]]
     });
-    // this.get_announcement_type();
     this.get_announcement_list();
+  }
+  /**
+   * 表单验证
+   */
+  confirmationValidator = (control: FormControl): { [s: string]: boolean } => {
+    if (this.notice.list.type === 2) {
+      return {};
+    } else if (!control.value) {
+      return { required: true };
+    }
+    return {};
+  }
+
+  /**
+   * 切换公告开关
+   */
+  public change_is_open_btn() {
+
   }
   /**
    *提交
@@ -93,8 +111,8 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
     let option = {
       id: this.edit_announcement_obj['id'],
       title: this.edit_announcement_obj['title'],
-      status: this.edit_announcement_obj['status'] ? '1' : '0',
-      describe: this.edit_announcement_obj['describe'],
+      status: this.edit_announcement_obj['status']?this.edit_announcement_obj['status']:'0',
+      describe: this.notice.list.type==1 ? this.edit_announcement_obj['describe'] : '1',
       type: this.notice.list.type
     };
     let img_obj = Utils.get_img_iri(this.edit_announcement_obj['content'], 'remove');
@@ -174,7 +192,7 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
         this.if_show_modal = false;
         this.get_announcement_list();
         this.update_form();
-        this.message.success('修改公告成功', {
+        this.message.success('修改成功', {
           nzDuration: 10000,
         });
 
@@ -325,11 +343,13 @@ export class OperasyonAnnouncementManageComponent implements OnInit {
   }
   // 切换公告
   public change_index(e: any) {
+    
     if (!e) {
       this.notice.list.type = 1;
     } else {
       this.notice.list.type = 2;
     }
+    this.update_form();
     this.get_announcement_list();
   }
   public _ready(e) { }
