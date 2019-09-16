@@ -455,7 +455,7 @@ export class UserManageUserComponent implements OnInit {
             nzDuration: 10000,
           });
         }
-      })
+      });
     } else if (this.modal_type == 'prize') {
       this.userManageService.submit_change_prize_passport_apply(option).subscribe((res: any) => {
         this.modal_lodding = false;
@@ -519,7 +519,7 @@ export class UserManageUserComponent implements OnInit {
       return { confirm: true, error: true };
     }
     return {};
-  };
+  }
 
   reset(): void {
 
