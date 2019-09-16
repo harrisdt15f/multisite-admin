@@ -52,7 +52,6 @@
               </nz-form-control>
             </nz-form-item>
           </div>
-
           <div nz-col nzSpan="6">
             <nz-form-item>
               <nz-form-label [nzSpan]="6">银行卡户名</nz-form-label>
@@ -61,6 +60,17 @@
               </nz-form-control>
             </nz-form-item>
           </div>
+          <div nz-col nzSpan="6">
+              <nz-form-item>
+                <nz-form-label [nzSpan]="6">开启状态</nz-form-label>
+                <nz-form-control [nzSpan]="18">
+                    <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="listData.status"  nzPlaceHolder="选择状态">
+                    <nz-option nzValue="1" nzLabel="开启"></nz-option>
+                    <nz-option nzValue="0" nzLabel="关闭"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
         </div>
         <div nz-col nzSpan="4">
           <button nz-button nzType="primary" class="select-search" (click)="research()"><i nz-icon
@@ -71,9 +81,9 @@
       </div>
 
     </div>
-    <nz-table [nzScroll]='{ y: "450px" }' #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='changPage()' [nzLoading]='dataLoading'
-      [(nzPageIndex)]='pages.page' [nzFrontPagination]='false' [nzData]="dataList" [nzPageSize]='pages.page_size'
-      [nzTotal]='pages.total'>
+    <nz-table [nzScroll]='{ y: "450px" }' #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='changPage($event)'
+      [nzLoading]='pages.dataLoading' [(nzPageIndex)]='pages.page' [nzFrontPagination]='false' [nzData]="dataList"
+      [nzPageSize]='pages.page_size' [nzTotal]='pages.total'>
       <thead>
         <tr>
           <th nzWidth="10%">用户名称</th>
@@ -92,7 +102,7 @@
         <ng-template ngFor let-data [ngForOf]="nzTable.data">
           <tr>
             <td>{{ data.username}}</td>
-
+            <td>{{ data.province.region_name}}|{{ data.city.region_name}}</td>
             <td>{{ data.bank_name }}</td>
             <td>{{ data.branch }}</td>
             <td>{{ data.card_number }}</td>
@@ -107,6 +117,12 @@
               </ng-template>
             </td>
             <td>{{ data.created_at }}</td>
+            <td>
+              <a nz-popconfirm nzTitle="确认删除这个银行卡吗吗?" nzOkText="删除" nzCancelText="取消" (nzOnConfirm)="delete_banck(data)">
+                <button nz-button [nzSize]='"small"' nzType="danger">删除</button>
+              </a>
+
+            </td>
           </tr>
         </ng-template>
       </tbody>

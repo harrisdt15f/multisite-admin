@@ -33,29 +33,33 @@ export class ApiService {
   /** ========================== 玩家管理 ======================== */
 
   // 银行卡查询
-  public noticeDetail(data: any): any{
-    return this.commonService.post('/api/user-handle/bank-card-list', data)
+  public noticeDetail(data: any): any {
+    return this.commonService.post('/api/user-handle/bank-card-list', data);
+  }
+  // 删除银行卡
+  public deleteBank(data: any): any {
+    return this.commonService.post('/api/user-handle/delete-bank-card', data);
   }
 
   // 上传图片
-  public uploadPic(data: any): any{
-    return this.commonService.post(this.commonService.imgURL, data)
+  public uploadPic(data: any): any {
+    return this.commonService.post(this.commonService.imgURL, data);
   }
   /** ========================== 游戏管理 ======================== */
   // 彩种系列 列表
-  public lotterySeriesList(data: any): any{
-    return this.commonService.get('/api/lottery-series/detail', data)
+  public lotterySeriesList(data: any): any {
+    return this.commonService.get('/api/lottery-series/detail', data);
   }
   // 彩种系列 添加
-  public lotterySeriesAdd(data: any): any{
-    return this.commonService.post('/api/lottery-series/add', data)
+  public lotterySeriesAdd(data: any): any {
+    return this.commonService.post('/api/lottery-series/add', data);
   }
   // 彩种系列 编辑
-  public lotterySeriesEdit(data: any): any{
-    return this.commonService.post('/api/lottery-series/edit', data)
+  public lotterySeriesEdit(data: any): any {
+    return this.commonService.post('/api/lottery-series/edit', data);
   }
   // 彩种系列 删除
-  public lotterySeriesDelete(data: any): any{
-    return this.commonService.post('/api/lottery-series/delete', data)
+  public lotterySeriesDelete(data: any): any {
+    return this.commonService.post('/api/lottery-series/delete', data);
   }
 }

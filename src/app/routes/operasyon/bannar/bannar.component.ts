@@ -402,7 +402,7 @@ export class OperasyonBannarComponent implements OnInit {
     if (this.edit_bannar_obj['id']) {
       op.append('id', this.edit_bannar_obj['id']);
     }
-    if (this.edit_bannar_obj['type'] == 1) {
+    if (this.edit_bannar_obj['type'] == 1||this.edit_bannar_obj['type'] == 3) {
       op.append('redirect_url', this.edit_bannar_obj['redirect_url']);
     }
     if (this.edit_bannar_obj['type'] == 2) {

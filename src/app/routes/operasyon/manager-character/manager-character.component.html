@@ -78,7 +78,6 @@
                   <nz-form-label nzRequired>添加组的权限</nz-form-label>
                   <nz-form-control nzHasFeedback>
                     <input *ngIf='is_super_manage' disabled="true" nz-input value='超级管理员组拥有所有权限' />
-
                     <nz-tree-select *ngIf='!is_super_manage' style="width: 100%" formControlName="menu"
                       [nzDropdownStyle]='select_style' class='manager-tree' [nzNodes]="menu_nodes" nzShowSearch
                       nzCheckable nzPlaceHolder="选择添加的菜单" [(ngModel)]="menu_tree_value"
