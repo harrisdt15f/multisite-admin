@@ -58,7 +58,7 @@
                 </ng-template>
               </td>
               <td  *ngIf="notice.list.type === 1">
-                {{data |ifTimeEnd:data }}
+                <span [innerHTML]='data|ifTimeEnd'></span>
               </td>
               <td>
                 <a (click)='edit_announcement(data)'>编辑</a>

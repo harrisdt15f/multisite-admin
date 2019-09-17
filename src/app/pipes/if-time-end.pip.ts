@@ -13,11 +13,11 @@ export class IfTimeEndPipe implements PipeTransform {
         let endTime = new Date(data.end_time).getTime();
         let time = new Date().getTime();
         if (time > endTime) {
-            result = '已结束';
+            result = "<span class='red-color'>已结束</span>";
         } else if (time < startTime) {
-            result = '未开始';
+            result = "<span >未开始</span>";
         } else {
-            result = '进行中';
+            result = "<span class='green-color'>进行中</span>";
         }
         return result;
 

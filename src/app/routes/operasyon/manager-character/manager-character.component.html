@@ -6,7 +6,7 @@
         <div nz-row class='manager-character'>
           <div nz-col nzSpan="8" class='manager-character-list'>
             <div class='box-title' nz-row nzGutter="16" nzType="flex">
-              <span nz-col nzSpan="6">组列表</span>
+              <span nz-col nzSpan="6">{{ '组列表' | translate }}</span>
               <div nz-col nzSpan="18">
                 <div nz-row nzGutter="16" nzType="flex" nzJustify="end">
                   <div nz-col nzSpan="18"><input [(ngModel)]='searchUser.search_name' nz-input
@@ -23,7 +23,7 @@
               <div nz-row [ngStyle]="{'background-color':item.is_edit? '#ffeae6' : 'white' }"
                 *ngFor="let item of group_list ; let i=index" class="scene-obj">
                 <div (click)="edit_group(item)" nz-col nzSpan="18">
-                  <div>{{item.group_name}}</div>
+                  <div>{{item.group_name | translate}}</div>
                   <div>{{item.created_at}}</div>
                 </div>
                 <div nz-col nzSpan="6" class="process-data-button">
