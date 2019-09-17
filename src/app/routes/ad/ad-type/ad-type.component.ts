@@ -20,7 +20,7 @@ export class AdAdTypeComponent implements OnInit {
   public l_size: number;
   public w_size: number;
   public size: number;
-  @ViewChild('myInput') input;
+  @ViewChild('myInput',{static: false}) input;
 
 
   mapOfExpandData: { [key: string]: boolean } = {};

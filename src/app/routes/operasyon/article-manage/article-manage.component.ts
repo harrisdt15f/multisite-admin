@@ -13,7 +13,7 @@ import { moveItemInArray, CdkDragDrop } from '@angular/cdk/drag-drop';
   styleUrls: ['./article-manage.component.less']
 })
 export class OperasyonArticleManageComponent implements OnInit {
-  @ViewChild('full')
+  @ViewChild('full',{static: false})
   full: UEditorComponent;
   html: string;
   public page_index = 1;

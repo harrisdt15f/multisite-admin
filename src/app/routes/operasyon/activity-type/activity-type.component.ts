@@ -19,7 +19,7 @@ export class OperasyonActivityTypeComponent implements OnInit {
   public l_size: string;
   public w_size: string;
   public size: string;
-  @ViewChild('myInput') input;
+  @ViewChild('myInput',{static: false}) input;
 
 
   mapOfExpandData: { [key: string]: boolean } = {};

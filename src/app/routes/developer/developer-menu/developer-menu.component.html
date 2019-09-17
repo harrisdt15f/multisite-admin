@@ -8,7 +8,7 @@
       </div>
       <div class='menu_box_content'>
         <button (click)='add_parent_menu()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加一级菜单</span>
+          <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加一级菜单</span>
         </button>
         <nz-spin *ngIf='is_loading_tree' style="text-align: center;" nzSimple></nz-spin>
         <nz-empty *ngIf='!edit_menu_nodes||edit_menu_nodes.length<=0'></nz-empty>
@@ -37,7 +37,7 @@
               </span>
               <span [class.active]="activedNode?.key === node.key" *ngIf="node.isLeaf"
                 (contextmenu)="contextMenu($event, contextTemplate)">
-                <!-- <i nz-icon type="file"></i> -->
+                <!-- <i nz-icon nzType="file"></i> -->
                 <span class="file-name">{{ node.title }}</span>
                 <span class="folder-desc">
 
@@ -255,7 +255,7 @@
     </form>
   </nz-modal>
   <ng-template #suffixIcon>
-    <i nz-icon type="search"></i>
+    <i nz-icon nzType="search"></i>
   </ng-template>
 
 </nz-content>

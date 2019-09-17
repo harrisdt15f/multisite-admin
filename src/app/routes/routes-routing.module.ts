@@ -26,16 +26,16 @@ const routes: Routes = [
     canActivateChild: [ ACLGuard ],
     children: [
       { path: '', redirectTo: 'operasyon', pathMatch: 'full' },
-      { path: 'website', loadChildren: './website-manage/website-manage.module#WebsiteManageModule' },
-      { path: 'operasyon', loadChildren: './operasyon/operasyon.module#OperasyonModule' },
-      { path: 'manage', loadChildren: './user/user.module#UserModule' },
-      { path: 'game', loadChildren: './game/game.module#GameModule' },
-      { path: 'developer', loadChildren: './developer/developer.module#DeveloperModule' },
-      { path: 'personal', loadChildren: './personal/personal.module#PersonalModule' },
-      { path: 'ad-manage', loadChildren: './ad/ad.module#AdModule' },
-      { path: 'report', loadChildren: './report/report.module#ReportModule' },
-      { path: 'log', loadChildren: './log/log.module#LogModule' },
-      { path: 'exception', loadChildren: './exception/exception.module#ExceptionModule' },
+      { path: 'website', loadChildren: () => import('./website-manage/website-manage.module').then(m => m.WebsiteManageModule) },
+      { path: 'operasyon', loadChildren: () => import('./operasyon/operasyon.module').then(m => m.OperasyonModule) },
+      { path: 'manage', loadChildren: () => import('./user/user.module').then(m => m.UserModule) },
+      { path: 'game', loadChildren: () => import('./game/game.module').then(m => m.GameModule) },
+      { path: 'developer', loadChildren: () => import('./developer/developer.module').then(m => m.DeveloperModule) },
+      { path: 'personal', loadChildren: () => import('./personal/personal.module').then(m => m.PersonalModule) },
+      { path: 'ad-manage', loadChildren: () => import('./ad/ad.module').then(m => m.AdModule) },
+      { path: 'report', loadChildren: () => import('./report/report.module').then(m => m.ReportModule) },
+      { path: 'log', loadChildren: () => import('./log/log.module').then(m => m.LogModule) },
+      { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
 
       // 业务子模块
       // { path: 'widgets', loadChildren: './widgets/widgets.module#WebsiteManageModule' }

@@ -11,7 +11,7 @@
   <nz-content style='background-color: white'>
         <button (click)='add_lottery(0)' style='width:300px;margin: 30px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
           class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加系列</span>
+          <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加系列</span>
         </button>
       <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='changPage()' [nzLoading]='dataLoading'
       [(nzPageIndex)]='pages.page' [nzFrontPagination]='false' [nzData]="dataList" [nzPageSize]='pages.page_size'

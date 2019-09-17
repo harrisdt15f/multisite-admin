@@ -155,7 +155,7 @@
 
         <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
           class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加热门彩票</span>
+          <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加热门彩票</span>
         </button>
         <nz-empty *ngIf='!list_of_aply_data||list_of_aply_data.length==0'></nz-empty>
         <div *ngIf='list_of_aply_data&&list_of_aply_data.length>0' style='margin-top: 50px;position: relative;'>
@@ -174,7 +174,7 @@
               </ng-template>
 
               <ng-template #actionEdit>
-                <i nz-icon type="edit" (click)='edit_lotteries(data,1)'></i>
+                <i nz-icon nzType="edit" (click)='edit_lotteries(data,1)'></i>
               </ng-template>
               <ng-template #actionDelet>
 
@@ -241,7 +241,7 @@
 
         <button (click)='add_lotteries()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
           class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加热门玩法</span>
+          <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加热门玩法</span>
         </button>
         <nz-empty *ngIf='!list_of_aply_data_two||list_of_aply_data_two.length==0'></nz-empty>
         <div *ngIf='list_of_aply_data_two&&list_of_aply_data_two.length>0' style='margin-top: 50px;position: relative;'>
@@ -260,7 +260,7 @@
               </ng-template>
 
               <ng-template #actionEdit>
-                <i nz-icon type="edit" (click)='edit_lotteries(data,2)'></i>
+                <i nz-icon nzType="edit" (click)='edit_lotteries(data,2)'></i>
               </ng-template>
               <ng-template #actionDelet>
 
@@ -322,7 +322,7 @@
 
         <button (click)='add_lottery_notic()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
           class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加开奖公告</span>
+          <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加开奖公告</span>
         </button>
         <nz-empty *ngIf='!list_of_aply_data_notice||list_of_aply_data_notice.length==0'></nz-empty>
         <nz-table #nzTable [nzLoadingDelay]='500' [(nzPageIndex)]='page_index'
@@ -366,7 +366,7 @@
               </nz-card>
 
               <ng-template #actionEdit>
-                <i nz-icon type="edit" (click)='edit_lotteries_notice(data,1)'></i>
+                <i nz-icon nzType="edit" (click)='edit_lotteries_notice(data,1)'></i>
               </ng-template>
               <ng-template #actionDelet>
                 <i nz-popconfirm nzTitle="确认删除这个开奖公告吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close"

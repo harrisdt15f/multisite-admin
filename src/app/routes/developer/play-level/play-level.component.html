@@ -11,7 +11,7 @@
     <nz-content>
         <button (click)='add_play_level()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
             class="ant-btn__block mb-sm">
-            <i class="anticon anticon-plus"></i><span>添加玩法中奖等级</span>
+            <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加玩法中奖等级</span>
         </button>
         <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
             [nzFrontPagination]='true' [nzData]="listOfDisplayData" [nzPageSize]='8'>
@@ -20,10 +20,10 @@
                     <th nzShowExpand></th>
                     <th nzCustomFilter>
                         玩法ID
-                        <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter
+                        <nz-dropdown-menu nzTrigger="click" nzPlacement="bottomRight"  nzTableFilter
                             #dropdown>
                             <i nz-icon nzType="search" class="ant-table-filter-icon"
-                                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+                                 nz-dropdown></i>
                             <div class="search-box">
                                 <input type="text" nz-input placeholder="搜索id" [(ngModel)]="searchValue" />
                                 <button nz-button nzSize="small" nzType="primary" (click)="search()"
@@ -32,7 +32,7 @@
                                 </button>
                                 <button nz-button nzSize="small" (click)="reset()">重置</button>
                             </div>
-                        </nz-dropdown>
+                        </nz-dropdown-menu>
                     </th>
                     <th>操作</th>
 

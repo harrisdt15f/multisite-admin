@@ -4,7 +4,7 @@
   <nz-content>
     <button (click)='add_bank()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
       class="ant-btn__block mb-sm">
-      <i class="anticon anticon-plus"></i><span>添加银行</span>
+      <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加银行</span>
     </button>
     <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
       [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
@@ -13,9 +13,9 @@
         <tr>
           <th nzCustomFilter>
             名称
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <nz-dropdown-menu nzTrigger="click" nzPlacement="bottomRight"  nzTableFilter #dropdown>
                 <i nz-icon nzType="search" class="ant-table-filter-icon"
-                  [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+                   nz-dropdown-menu></i>
   
                 <div class="search-box">
                   <input type="text" nz-input placeholder="搜索名称" [(ngModel)]="searchValue" />
@@ -24,7 +24,7 @@
                   </button>
                   <button nz-button nzSize="small" (click)="reset()">取消</button>
                 </div>
-              </nz-dropdown>
+              </nz-dropdown-menu>
 
           </th>
           <th> 编码</th>

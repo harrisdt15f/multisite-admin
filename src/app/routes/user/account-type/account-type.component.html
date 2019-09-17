@@ -11,7 +11,7 @@
   <nz-content>
       <button (click)='add_account()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
       class="ant-btn__block mb-sm">
-      <i class="anticon anticon-plus"></i><span>添加账变类型</span>
+      <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加账变类型</span>
     </button>
     <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
     [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'

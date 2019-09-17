@@ -9,7 +9,6 @@ import { Utils } from 'config/utils.config';
 import { CommonService } from 'app/service/common.service';
 import { type } from 'os';
 // import { Utils } from 'config/utils.config';
-
 @Component({
   selector: 'app-report-user-bets',
   templateUrl: './user-bets.component.html',
@@ -41,12 +40,13 @@ export class ReportUserBetsComponent implements OnInit {
   public LotteriesOptions: Array<any> = [];
   public list_total: number;
   public is_load_list: boolean;
+  public visibleModal: boolean;
   public show_text: string;
-    // -------导出报表参数
-    public logList: Array<any> = [];
-    public is_down_load: boolean;
-    public is_down_load_all: boolean;
-    public nowOption = {};
+  // -------导出报表参数
+  public logList: Array<any> = [];
+  public is_down_load: boolean;
+  public is_down_load_all: boolean;
+  public nowOption = {};
   constructor(
     private http: _HttpClient,
     private reportService: ReportService,
@@ -73,7 +73,7 @@ export class ReportUserBetsComponent implements OnInit {
     this.searchData.start_time = Utils.change_date(result[0], 'time');
     this.searchData.end_time = Utils.change_date(result[1], 'time');
   }
- 
+
   /**
    *获取注单列表
    *
@@ -157,7 +157,13 @@ export class ReportUserBetsComponent implements OnInit {
   public search(): void {
     this.page_index = 1;
     this.get_userbet_list();
-
+  }
+  /**
+   * 显示投注号码
+   */
+  public showBetNum(num) {
+    let newString = num.split('&').join(',').split('|').join('&nbsp;&nbsp;|&nbsp;&nbsp;');
+    this.utilsService.show_modal_text(newString);
   }
   /**
    * 重置搜索参数 
@@ -165,6 +171,13 @@ export class ReportUserBetsComponent implements OnInit {
   public resetSearch() {
     this.reset_search_data();
     this.get_userbet_list();
+  }
+  /**
+   * 查看注单详情
+   */
+  public showDetail() {
+    this.visibleModal = true;
+
   }
   /**
    * 重置搜索参数对象 
@@ -200,102 +213,102 @@ export class ReportUserBetsComponent implements OnInit {
     this.get_userbet_list();
   }
 
- /**
- * 导出表格
- */
-download_report() {
-  this.logList = [];
-  this.pushLogList(this.list_of_aply_data);
-  this.excelService.exportAsExcelFile(this.logList, '玩家注单报表');
-}
-/**
-*点击导出所有
-*
-* @memberof PlayerListComponent
-*/
-public download_report_all() {
-  let page_number = Math.ceil(Number(this.list_total) / Number(this.searchData.pageSize));
-  this.logList = [];
-  this.is_down_load_all = true;
-  this.report_list(1, page_number);
-}
-/**
- 循环便利导出所有
- *
- * @param {*} now_page
- * @param {*} total_page
- * @memberof PlayerListComponent
- */
-report_list(now_page, total_page) {
-  this.submit_list_service(this.nowOption, (page) => {
-    if (page < total_page) {
-      this.message.create('success', `成功导出第 ${page} 页，共${total_page}页！`);
-      this.report_list(page + 1, total_page);
-    } else {
-      setTimeout(() => {
-        this.is_down_load_all = false;
-        const modal = this.modalService.success({
-          nzTitle: '温馨提示',
-          nzContent: '导出成功 !'
+  /**
+  * 导出表格
+  */
+  download_report() {
+    this.logList = [];
+    this.pushLogList(this.list_of_aply_data);
+    this.excelService.exportAsExcelFile(this.logList, '玩家注单报表');
+  }
+  /**
+  *点击导出所有
+  *
+  * @memberof PlayerListComponent
+  */
+  public download_report_all() {
+    let page_number = Math.ceil(Number(this.list_total) / Number(this.searchData.pageSize));
+    this.logList = [];
+    this.is_down_load_all = true;
+    this.report_list(1, page_number);
+  }
+  /**
+   循环便利导出所有
+   *
+   * @param {*} now_page
+   * @param {*} total_page
+   * @memberof PlayerListComponent
+   */
+  report_list(now_page, total_page) {
+    this.submit_list_service(this.nowOption, (page) => {
+      if (page < total_page) {
+        this.message.create('success', `成功导出第 ${page} 页，共${total_page}页！`);
+        this.report_list(page + 1, total_page);
+      } else {
+        setTimeout(() => {
+          this.is_down_load_all = false;
+          const modal = this.modalService.success({
+            nzTitle: '温馨提示',
+            nzContent: '导出成功 !'
+          });
+        }, 1000);
+        this.excelService.exportAsExcelFile(this.logList, '用户报表');
+      }
+    }, now_page);
+
+  }
+  /*
+  *调用查询并回调
+  *
+  * @param {*} option
+  * @param {*} callback
+  * @param {*} [now_page]
+  * @memberof PlayerListComponent
+  */
+  public submit_list_service(option, callback, now_page?) {
+    this.reportService.get_user_bets_report(this.searchData.pageSize, now_page, option).subscribe((res: any) => {
+      if (res && res.success) {
+        this.pushLogList(res.data['data']);
+        callback(now_page);
+      } else {
+        this.message.error(res.message, {
+          nzDuration: 10000,
         });
-      }, 1000);
-      this.excelService.exportAsExcelFile(this.logList, '用户报表');
-    }
-  }, now_page);
-
-}
-/*
-*调用查询并回调
-*
-* @param {*} option
-* @param {*} callback
-* @param {*} [now_page]
-* @memberof PlayerListComponent
-*/
-public submit_list_service(option, callback, now_page?) {
-  this.reportService.get_user_bets_report(this.searchData.pageSize, now_page, option).subscribe((res: any) => {
-    if (res && res.success) {
-      this.pushLogList(res.data['data']);
-      callback(now_page);
-    } else {
-      this.message.error(res.message, {
-        nzDuration: 10000,
-      });
-    }
-  });
-}
-
-/**
- *获取数据push给打印数组
- *
- * @param {*} data_list
- * @memberof ReportRechargeReportComponent
- */
-pushLogList(data_list) {
-  data_list.forEach((item) => {
-    this.logList.push({
-      '注单编号': item.serial_number,
-      '用户名称': item.username,
-      '奖期号': item.issue,
-      '是否测试用户': item.is_tester,
-      '开奖状态': item.status,
-      '奖金组': item.bet_prize_group,
-      '单注投注额': item.price,
-      '倍数': item.times,
-      '总投注额': item.total_cost,
-      '单位': item.mode,
-      '投注号码': item.bet_number,
-      '开奖号码': item.open_number,
-      '中奖金额': item.bonus,
-      '系列': item.series_id,
-      '彩种': item.lottery_sign,
-      '玩法': item.method_sign,
-      '玩法ID': item.method_name,
-      'ip': item.ip,
-      'ip层级': item.proxy_ip,
-      '设备类型': item.bet_from,
+      }
     });
-  });
-}
+  }
+
+  /**
+   *获取数据push给打印数组
+   *
+   * @param {*} data_list
+   * @memberof ReportRechargeReportComponent
+   */
+  pushLogList(data_list) {
+    data_list.forEach((item) => {
+      this.logList.push({
+        '注单编号': item.serial_number,
+        '用户名称': item.username,
+        '奖期号': item.issue,
+        '是否测试用户': item.is_tester,
+        '开奖状态': item.status,
+        '奖金组': item.bet_prize_group,
+        '单注投注额': item.price,
+        '倍数': item.times,
+        '总投注额': item.total_cost,
+        '单位': item.mode,
+        '投注号码': item.bet_number,
+        '开奖号码': item.open_number,
+        '中奖金额': item.bonus,
+        '系列': item.series_id,
+        '彩种': item.lottery_sign,
+        '玩法': item.method_sign,
+        '玩法ID': item.method_name,
+        'ip': item.ip,
+        'ip层级': item.proxy_ip,
+        '设备类型': item.bet_from,
+      });
+    });
+  }
 }
 

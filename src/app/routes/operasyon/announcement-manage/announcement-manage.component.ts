@@ -15,7 +15,7 @@ declare let window: any;
   styleUrls: ['./announcement-manage.component.less'],
 })
 export class OperasyonAnnouncementManageComponent implements OnInit {
-  @ViewChild('full')
+  @ViewChild('full',{static: false})
   full: UEditorComponent;
   html: string;
   public serviceHttpIri: string;

@@ -16,9 +16,9 @@
         <tr>
           <th nzCustomFilter>
             玩家用户名
-            <nz-dropdown nzTrigger="click" nzPlacement="bottomRight" [nzClickHide]="false" nzTableFilter #dropdown>
+            <nz-dropdown-menu nzTrigger="click" nzPlacement="bottomRight"  nzTableFilter #dropdown>
               <i nz-icon nzType="search" class="ant-table-filter-icon"
-                [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+                 nz-dropdown></i>
 
               <div class="search-box">
                 <input type="text" nz-input placeholder="搜索用户名" [(ngModel)]="searchValue" />
@@ -27,7 +27,7 @@
                 </button>
                 <button nz-button nzSize="small" (click)="reset()">取消</button>
               </div>
-            </nz-dropdown>
+            </nz-dropdown-menu>
           </th>
           <th>操作管理员</th>
           <th>操作管理员ID</th>

@@ -16,7 +16,7 @@
               </div>
             </div>
             <button (click)='add_group()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
-              <i class="anticon anticon-plus"></i><span>添加</span>
+              <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加</span>
             </button>
             <nz-spin *ngIf='is_loading_group' style="text-align: center;" nzSimple></nz-spin>
             <div style="max-height: 500px;overflow: auto;">
@@ -100,7 +100,7 @@
                     <span style='width:150px;display: inline-block'>
                       <button (click)='add_mnager(edit_group_obj["id"])' nz-button nzBlock [nzType]="'dashed'"
                         class="ant-btn__block mb-sm">
-                        <i class="anticon anticon-plus"></i><span>添加</span>
+                        <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加</span>
                       </button>
                     </span>
 

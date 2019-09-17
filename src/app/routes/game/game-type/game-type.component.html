@@ -7,7 +7,7 @@
       <nz-tab *ngFor="let tab of lotteries_tabs" [nzTitle]="tab.label">
         <button (click)='add_lottery()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
           class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加彩种</span>
+          <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加彩种</span>
         </button>
         <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
           [nzFrontPagination]='true' [nzData]="list_of_aply_data" [nzPageSize]='9'>

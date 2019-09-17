@@ -4,7 +4,7 @@
     <nz-content>
         <button (click)='create_helper("parent")' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock
             [nzType]="'dashed'" class="ant-btn__block mb-sm">
-            <i class="anticon anticon-plus"></i><span>创建一级帮助中心标题</span>
+            <i nz-icon nzType="plus" nzTheme="outline"></i><span>创建一级帮助中心标题</span>
         </button>
         <nz-table #nzTable [nzLoadingDelay]='500' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
             [nzFrontPagination]='true' [nzData]="list_of_data" [nzPageSize]='8'>

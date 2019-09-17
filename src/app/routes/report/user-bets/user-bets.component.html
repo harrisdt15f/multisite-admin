@@ -152,25 +152,26 @@
       [nzTotal]='list_total'>
       <thead class="ant-table-thead">
         <tr>
-          <th nzWidth="80px">注单编号</th>
-          <th nzWidth="80px">追号编号</th>
+          <th nzWidth="70px">注单编号</th>
+          <th nzWidth="70px">追号编号</th>
           <th nzWidth=90px>用户名称</th>
-          <th nzWidth="80px">测试</th>
-          <th nzWidth="80px">彩种</th>
-          <th nzWidth="80px">玩法</th>
-          <th nzWidth="160px">奖期号</th>
-          <th nzWidth="150px"> 投注号码</th>
+          <th nzWidth="70px">测试</th>
+          <th nzWidth="70px">彩种</th>
+          <th nzWidth="70px">玩法</th>
+          <th nzWidth="120px">奖期号</th>
+          <th nzWidth="120px"> 投注号码</th>
           <th nzWidth=90px>开奖号码 </th>
-          <th nzWidth="80px">倍数</th>
-          <th nzWidth="80px">模式</th>
-          <th nzWidth="150px">单注投注额</th>
-          <th nzWidth=90px>总投注额</th>
-          <th nzWidth=90px>中奖金额 </th>
-          <th nzWidth=90px>中奖倍数 </th>
-          <th nzWidth=90px>投注注数 </th>
-          <th nzWidth="80px">状态</th>
-          <th nzWidth=90px>奖金组</th>
-          <th nzWidth=90px>ip</th>
+          <th nzWidth="70px">倍数</th>
+          <th nzWidth="70px">模式</th>
+          <th nzWidth="70px">单注投注额</th>
+          <th nzWidth=70px>总投注额</th>
+          <th nzWidth=70px>中奖金额 </th>
+          <th nzWidth=70px>中奖倍数 </th>
+          <th nzWidth=70px>投注注数 </th>
+          <th nzWidth="70px">状态</th>
+          <th nzWidth=70px>奖金组</th>
+          <th nzWidth=70px>ip</th>
+          <th nzWidth=70px>操作</th>
 
 
         </tr>
@@ -178,44 +179,87 @@
       <tbody class="ant-table-tbody">
         <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
         <tr class='table_tr' *ngFor="let data of list_of_aply_data">
-          <td>{{data.serial_number}}</td>
-          <td class='home-change-color' (click)='utilsService.show_modal_text(data.issue)'>
-            <span style='width:80px'>{{data.trace_number}}</span>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.serial_number)'>
+            <span style='width:70px'>{{data.serial_number}}</span>
           </td>
-          <td>{{ data.username}}</td>
-          <td>{{data.is_tester==1?'是':'否'}}</td>
-          <td>{{data.lottery_sign}}</td>
-
-          <td>{{data.method_name}}</td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.issue)'>
-            <span style='width: 160px'>{{ data.issue }}</span>
+            <span style='width:70px'>{{data.trace_number}}</span>
           </td>
-          <td class='home-change-color' (click)='utilsService.show_modal_text(data.bet_number)'>
-            <span style='width: 150px'>{{data.bet_number|betNumber}}</span>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.username)'>
+            <span style='width:90px'>{{data.username}}</span>
+          </td>
+          <td><span >{{data.is_tester==1?'是':'否'}}</span></td>
+          <td><span >{{data.lottery_sign}}</span></td>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.method_name)'>
+            <span style='width:70px'>{{data.method_name}}</span>
+          </td>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.issue)'>
+            <span style='width: 120px'>{{ data.issue }}</span>
+          </td>
+          <td class='home-change-color' (click)='showBetNum(data.bet_number)'>
+            <span style='width: 120px'>{{data.bet_number|betNumber}}</span>
           </td>
           <td class='home-change-color' (click)='utilsService.show_modal_text(data.open_number)'>
             <span style='width: 90px'>{{data.open_number}}</span>
           </td>
-          <td>{{data.times}}</td>
-          <td> {{data.mode|unit}}</td>
-          <td>{{ data.price}}</td>
-          <td>{{data.total_cost}}</td>
-          <td>{{data.bonus}}</td>
-          <td></td>
-          <td></td>
-          <td>{{ data.status|userBet }}</td>
-          <td>{{ data.bet_prize_group }}</td>
-          <td class='home-change-color' (click)='utilsService.show_modal_text(data.ip)'>
-            <span style='width: 90px'>{{data.ip}}</span>
+          <td> <span >{{data.times}}</span></td>
+          <td><span >{{data.mode|unit}}</span></td>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.price)'>
+            <span style='width:70px'>{{data.price}}</span>
           </td>
-
-
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.total_cost)'>
+            <span style='width:70px'>{{data.total_cost}}</span>
+          </td>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.bonus)'>
+            <span style='width:70px'>{{data.bonus}}</span>
+          </td>
+          <td><span ></span></td>
+          <td><span></span></td>
+          <td> <span style='width:70px'>{{ data.status|userBet }}</span></td>
+          <td><span style='width:70px'>{{ data.bet_prize_group }}</span></td>
+          <td class='home-change-color' (click)='utilsService.show_modal_text(data.ip)'>
+            <span style='width: 70px'>{{data.ip}}</span>
+          </td>
+          <td>
+            <button (click)='showDetail(data)' nz-button [nzSize]='"small"' nzType="primary">查看</button>
+          </td>
         </tr>
-
-        <!-- </ng-template> -->
-
       </tbody>
     </nz-table>
-
+    <nz-drawer nzWidth='600px' [nzVisible]="visibleModal" nzPlacement="right" nzTitle="注单详情"
+      (nzOnClose)="visibleModal=false">
+      <div>
+          <nz-descriptions nzTitle="User Info" nzBordered nzLayout="vertical">
+              <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Billing Mode">Prepaid</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Order Time">
+                2018-04-24 18:00:00
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">
+                2018-04-24 18:00:00 To 2019-04-24 18:00:00
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Status" [nzSpan]="3">
+                <nz-badge nzStatus="processing" nzText="Running"></nz-badge>
+              </nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Negotiated Amount">$80.00</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Discount">$20.00</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Official Receipts">$60.00</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="Config Info">
+                Data disk type: MongoDB
+                <br />
+                Database version: 3.4
+                <br />
+                Package: dds.mongo.mid
+                <br />
+                Storage space: 10 GB
+                <br />
+                Replication_factor:3
+                <br />
+                Region: East China 1<br />
+              </nz-descriptions-item>
+            </nz-descriptions>
+      </div>
+    </nz-drawer>
   </nz-content>
 </nz-layout>

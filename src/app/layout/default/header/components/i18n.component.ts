@@ -2,19 +2,18 @@ import { Component, Inject, Input, ChangeDetectionStrategy } from '@angular/core
 import { DOCUMENT } from '@angular/common';
 import { SettingsService, ALAIN_I18N_TOKEN } from '@delon/theme';
 import { InputBoolean } from '@delon/util';
-
 import { I18NService } from '@core';
 
 @Component({
   selector: 'header-i18n',
   template: `
-  <nz-dropdown nzPlacement="bottomRight">
-    <div *ngIf="showLangText" nz-dropdown>
-      <i nz-icon type="global"></i>
-      {{ 'menu.lang' | translate}}
-      <i nz-icon type="down"></i>
-    </div>
-    <i *ngIf="!showLangText" nz-dropdown nz-icon type="global"></i>
+  <div  nz-dropdown [nzDropdownMenu]="menu" *ngIf="showLangText" nz-dropdown>
+  <i nz-icon nzType="global"></i>
+  {{ 'menu.lang' | translate}}
+  <i nz-icon nzType="down"></i>
+</div>
+  <nz-dropdown-menu #menu="nzDropdownMenu" nzPlacement="bottomLeft">
+    <i *ngIf="!showLangText" nz-dropdown nz-icon nzType="global"></i>
     <ul nz-menu>
       <li nz-menu-item *ngFor="let item of langs" [nzSelected]="item.code === curLangCode"
         (click)="change(item.code)">
@@ -22,8 +21,7 @@ import { I18NService } from '@core';
           {{item.text}}
       </li>
     </ul>
-  </nz-dropdown>
-  `,
+  </nz-dropdown-menu>`,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderI18nComponent {

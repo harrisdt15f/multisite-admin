@@ -18,7 +18,7 @@
       <nz-tab *ngFor="let tab of page_tabs" [nzTitle]="tab.title">
         <button (click)='add_bannar()' style='width:300px;margin: 8px 0 0 8px' nz-button nzBlock [nzType]="'dashed'"
           class="ant-btn__block mb-sm">
-          <i class="anticon anticon-plus"></i><span>添加{{ banner.list.type === '1' ? '电脑端' : '移动端' }}轮播图</span>
+          <i nz-icon nzType="plus" nzTheme="outline"></i><span>添加{{ banner.list.type === '1' ? '电脑端' : '移动端' }}轮播图</span>
         </button>
         <nz-empty *ngIf='!list_of_aply_data||list_of_aply_data.length==0'></nz-empty>
         <div *ngIf='list_of_aply_data&&list_of_aply_data.length>0' style='margin-top: 50px;position: relative;'>
@@ -39,7 +39,7 @@
                   nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
               </ng-template>
               <ng-template #actionEdit>
-                <i nz-icon type="edit" (click)='edit_bannar(data)'></i>
+                <i nz-icon nzType="edit" (click)='edit_bannar(data)'></i>
               </ng-template>
               <ng-template #actionDelet>
                 <i nz-popconfirm nzTitle="确认删除这个轮播吗吗?" nzOkText="确定" nzCancelText="取消" nz-icon nzType="close"
