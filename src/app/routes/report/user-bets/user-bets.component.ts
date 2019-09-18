@@ -30,12 +30,13 @@ export class ReportUserBetsComponent implements OnInit {
     method_sign: '',
     ip: '',
     mode: '',
-    times: '',
+    price: '',
     is_tester: '',
     issue: '',
     status: '',
   };
   public page_index = 1;
+  public checkBetData: Object = {};
   public list_of_aply_data: Array<any> = [];
   public LotteriesOptions: Array<any> = [];
   public list_total: number;
@@ -91,7 +92,7 @@ export class ReportUserBetsComponent implements OnInit {
     if (this.searchData.status) option.status = this.searchData.status;
     if (this.searchData.issue) option.issue = this.searchData.issue;
     if (this.searchData.mode) option.mode = this.searchData.mode;
-    if (this.searchData.times) option.times = this.searchData.times;
+    if (this.searchData.price) option.price = this.searchData.price;
     if (this.searchData.ip) option.ip = this.searchData.ip;
     if (this.searchData.lottery_sign && this.searchData.lottery_sign.length > 0) {
       option.lottery_sign = this.searchData.lottery_sign[1];
@@ -175,8 +176,9 @@ export class ReportUserBetsComponent implements OnInit {
   /**
    * 查看注单详情
    */
-  public showDetail() {
+  public showDetail(data) {
     this.visibleModal = true;
+    this.checkBetData = data;
 
   }
   /**
@@ -189,7 +191,7 @@ export class ReportUserBetsComponent implements OnInit {
       username: '',
       end_time: '',
       start_time: '',
-      times: '',
+      price: '',
       get_sub: false,
       serial_number: '',
       time_condtions: '',

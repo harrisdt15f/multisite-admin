@@ -296,7 +296,7 @@
         [nzTitle]="amount_type=='add'?'人工充值':'人工扣减'" (nzOnCancel)="cancel_recharge_num()" (nzOnOk)="ok_recharge()">
         <form nz-form [formGroup]="create_form">
           <nz-form-item>
-            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="recharge_num" nzRequired>密码</nz-form-label>
+            <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="recharge_num" nzRequired>金额</nz-form-label>
             <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
               <input [(ngModel)]="recharge_num" placeholder="请输入金额" nz-input type="recharge_num" id="recharge_num"
                 formControlName="recharge_num" (ngModelChange)="update_confirm_check_password()" />

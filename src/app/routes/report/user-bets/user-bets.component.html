@@ -109,9 +109,14 @@
           </div>
           <div nz-col nzSpan="4">
             <nz-form-item>
-              <nz-form-label [nzSpan]="8">倍数</nz-form-label>
+              <nz-form-label [nzSpan]="8">投注模式</nz-form-label>
               <nz-form-control [nzSpan]="16">
-                <input nz-input nzSize="small" placeholder="倍数" [(ngModel)]="searchData.times" />
+                  <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.price" nzAllowClear
+                  nzPlaceHolder="开奖状态">
+                  <nz-option nzValue="" nzLabel="全部"></nz-option>
+                  <nz-option nzValue="1.0000" nzLabel="1元模式"></nz-option>
+                  <nz-option nzValue="2.0000" nzLabel="2元模式"></nz-option>
+                </nz-select>
               </nz-form-control>
             </nz-form-item>
           </div>
@@ -145,7 +150,6 @@
         </div>
       </div>
     </div>
-
     <nz-table #nzTable nzSize="middle" nzBordered [nzScroll]='{x:"1630px", y: "500px" }' [nzLoadingDelay]='500'
       (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list' [(nzPageIndex)]='page_index'
       [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='searchData.pageSize'
@@ -163,7 +167,7 @@
           <th nzWidth=90px>开奖号码 </th>
           <th nzWidth="70px">倍数</th>
           <th nzWidth="70px">模式</th>
-          <th nzWidth="70px">单注投注额</th>
+          <th nzWidth="70px">投注模式</th>
           <th nzWidth=70px>总投注额</th>
           <th nzWidth=70px>中奖金额 </th>
           <th nzWidth=70px>中奖倍数 </th>
@@ -172,8 +176,6 @@
           <th nzWidth=70px>奖金组</th>
           <th nzWidth=70px>ip</th>
           <th nzWidth=70px>操作</th>
-
-
         </tr>
       </thead>
       <tbody class="ant-table-tbody">
@@ -229,35 +231,27 @@
     <nz-drawer nzWidth='600px' [nzVisible]="visibleModal" nzPlacement="right" nzTitle="注单详情"
       (nzOnClose)="visibleModal=false">
       <div>
-          <nz-descriptions nzTitle="User Info" nzBordered nzLayout="vertical">
-              <nz-descriptions-item nzTitle="Product">Cloud Database</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Billing Mode">Prepaid</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Automatic Renewal">YES</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Order Time">
-                2018-04-24 18:00:00
-              </nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Usage Time" [nzSpan]="2">
-                2018-04-24 18:00:00 To 2019-04-24 18:00:00
-              </nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Status" [nzSpan]="3">
-                <nz-badge nzStatus="processing" nzText="Running"></nz-badge>
-              </nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Negotiated Amount">$80.00</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Discount">$20.00</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Official Receipts">$60.00</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="Config Info">
-                Data disk type: MongoDB
-                <br />
-                Database version: 3.4
-                <br />
-                Package: dds.mongo.mid
-                <br />
-                Storage space: 10 GB
-                <br />
-                Replication_factor:3
-                <br />
-                Region: East China 1<br />
-              </nz-descriptions-item>
+          <nz-descriptions  nzBordered nzLayout="vertical">
+              <nz-descriptions-item nzTitle="用户名称">{{checkBetData['username']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="注单编号" [nzSpan]="2">{{checkBetData['serial_number']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="追号编号" >{{checkBetData['trace_number']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="彩种">{{checkBetData['lottery_sign']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="玩法">{{checkBetData['method_name']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="是否测试">{{checkBetData['is_tester']==1?'是':'否'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="奖期号">{{checkBetData['issue']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="投注号码">{{checkBetData['bet_number']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="开奖号码" [nzSpan]="2">{{checkBetData['open_number']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="倍数" >{{checkBetData['times']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="元角模式" >{{checkBetData['mode']|unit}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="投注模式" >{{checkBetData['price']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="总投注额" >{{checkBetData['total_cost']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="中奖金额" >{{checkBetData['bonus']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="中奖倍数" ></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="中奖注数" ></nz-descriptions-item>
+              <nz-descriptions-item nzTitle="状态" >{{checkBetData['open_number']|userBet}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="奖金组" >{{checkBetData['bet_prize_group']}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="IP地址" >{{checkBetData['ip']}}</nz-descriptions-item>
+        
             </nz-descriptions>
       </div>
     </nz-drawer>
