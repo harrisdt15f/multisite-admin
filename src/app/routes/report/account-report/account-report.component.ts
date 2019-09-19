@@ -236,7 +236,7 @@ pushLogList(data_list) {
       '用户名称': item['username'],
       '金额(元)': item['amount'],
       '余额(元)': item['balance'],
-      '出入账类型': item.in_out === 1 ? '增加金额' : '减少金额',
+      '出入账类型': item['in_out'] === 1 ? '增加金额' : '减少金额',
       '账变类型': item['type_name'],
       '创建时间': item['created_at']
     });

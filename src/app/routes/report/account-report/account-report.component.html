@@ -189,7 +189,7 @@
           <td>注单编号</td> ：<td>{{ check_data_list['serial_number'] }}</td>
       </tr>
       <tr>
-          <td>管理员</td> ：<td>{{ check_data_list.admin?check_data_list['admin']['name']:'' }}</td>
+          <td>管理员</td> ：<td>{{ check_data_list['admin']?check_data_list['admin']['name']:'' }}</td>
       </tr>
       <tr>
           <td>创建时间</td> ：<td>{{check_data_list['created_at']}}</td>
@@ -201,4 +201,4 @@
           <td>备注</td> ：<td>0</td>
       </tr>
   </tbody>
-</nz-drawer>>
+</nz-drawer>
