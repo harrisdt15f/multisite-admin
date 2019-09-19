@@ -101,8 +101,8 @@
           <nz-spin nzSimple style="text-align: center;margin-top: 45%"></nz-spin>
         </div>
         <nz-form-item>
-          <nz-form-label nzFor="is_time_interval" nzRequired [nzSm]="9" [nzXs]="24">活动是否永久</nz-form-label>
-          <nz-form-control [nzSm]="15" [nzXs]="23">
+          <nz-form-label nzFor="is_time_interval" nzRequired [nzSm]="6" [nzXs]="24">活动是否永久</nz-form-label>
+          <nz-form-control [nzSm]="18" [nzXs]="23">
             <nz-radio-group id="is_time_interval" formControlName="is_time_interval"
               [(ngModel)]="edit_activity_obj['is_time_interval']">
               <label nz-radio nzValue='0'>是</label>
@@ -115,7 +115,7 @@
         </nz-form-item>
         <nz-form-item>
           <nz-form-label nzFor="title" nzRequired [nzSm]="6" [nzXs]="24">名称</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
             <input maxlength='16' id="title" type="text" formControlName="title" nz-input placeholder="标题"
               [(ngModel)]="edit_activity_obj['title']" />
             <nz-form-explain *ngIf="create_form.get('title')?.dirty && create_form.get('title')?.errors">
@@ -134,7 +134,7 @@
         </nz-form-item> -->
         <nz-form-item>
           <nz-form-label nzFor="content" nzRequired [nzSm]="6" [nzXs]="24">内容</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
             <ueditor #full id="content" formControlName="content" [(ngModel)]="edit_activity_obj['content']"
               [config]="{ wordCount: true }" [loadingTip]="'加载中……'" (onReady)="_ready($event)" (onDestroy)="_destroy()"
               (ngModelChange)="_change($event)"></ueditor>
@@ -144,7 +144,7 @@
         </nz-form-item>
         <nz-form-item *ngIf="activity.list.type==='1'">
           <nz-form-label nzFor="pic" nzRequired [nzSm]="6" [nzXs]="24">活动图片</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
             <button (click)='click_update()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
               <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传</span>
             </button>
@@ -153,7 +153,7 @@
         </nz-form-item>
         <nz-form-item>
             <nz-form-label nzFor="pic" nzRequired [nzSm]="6" [nzXs]="24">标题展示图片</nz-form-label>
-            <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+            <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
               <button (click)='click_update2()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">
                 <i nz-icon nzType="upload" nzTheme="outline"></i><span>点击上传</span>
               </button>
@@ -176,7 +176,7 @@
             </nz-form-item>
         <nz-form-item *ngIf="edit_activity_obj['is_redirect'] === '1'">
           <nz-form-label nzFor="redirect_url" [nzSm]="6" [nzXs]="24">跳转地址</nz-form-label>
-          <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
+          <nz-form-control nzHasFeedback [nzSm]="18" [nzXs]="23">
             <input id="redirect_url"  type="text" formControlName="redirect_url" nz-input placeholder="内容"
               [(ngModel)]="edit_activity_obj['redirect_url']" />
             <nz-form-explain *ngIf="create_form.get('redirect_url')?.dirty && create_form.get('redirect_url')?.errors">

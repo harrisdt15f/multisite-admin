@@ -241,20 +241,21 @@ export class OperasyonActivityListComponent implements OnInit {
 * @memberof UserManageUserComponent
 */
   edit_activity(data) {
+
     this.modal_lodding = false;
     // this.update_form();//刷新表单
     this.modal_type = 'edit';
     this.is_edit_activity = true;
     this.file_iri = Utils.httpIri + data.pic_path;
     this.file_obj = null;
-    let {type}=this.activity['list'];
-    type==='1' && document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
+    let {type} = this.activity['list'];
+    type === '1' && document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
 
     this.note_value = '';
     this.edit_activity_obj = {
       "id": data['id'],
       "title": data['title'],
-
+      "is_redirect": data['is_redirect'],
       "content": data['content'],
       "status": String(data['status']),
       "redirect_url": data['redirect_url'],
@@ -278,8 +279,8 @@ export class OperasyonActivityListComponent implements OnInit {
     this.file_iri = null;
     this.file_obj = null;
     this.edit_activity_obj = {};
-    let {type}=this.activity['list'];
-    type==='1' && document.getElementById('cropedBigImg').removeAttribute('src');
+    let {type} = this.activity['list'];
+    type === '1' && document.getElementById('cropedBigImg').removeAttribute('src');
     this.create_form.reset();
     for (const key in this.create_form.controls) {
       this.create_form.controls[key].markAsPristine();
