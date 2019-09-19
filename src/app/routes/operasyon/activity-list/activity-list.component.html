@@ -135,9 +135,9 @@
         <nz-form-item>
           <nz-form-label nzFor="content" nzRequired [nzSm]="6" [nzXs]="24">内容</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
-            <input id="content" type="text" formControlName="content" nz-input placeholder="内容"
-              [(ngModel)]="edit_activity_obj['content']" />
-
+            <ueditor #full id="content" formControlName="content" [(ngModel)]="edit_activity_obj['content']"
+              [config]="{ wordCount: true }" [loadingTip]="'加载中……'" (onReady)="_ready($event)" (onDestroy)="_destroy()"
+              (ngModelChange)="_change($event)"></ueditor>
             <nz-form-explain *ngIf="create_form.get('content')?.dirty && create_form.get('content')?.errors">
               请输入要创建的活动内容!</nz-form-explain>
           </nz-form-control>

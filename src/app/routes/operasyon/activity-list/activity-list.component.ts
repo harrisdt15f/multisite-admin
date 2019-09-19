@@ -7,6 +7,7 @@ import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms'
 import { until } from 'protractor';
 import { Utils } from 'config/utils.config';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { UEditorComponent } from 'ngx-ueditor';
 @Component({
   selector: 'app-operasyon-activity-list',
   templateUrl: './activity-list.component.html',
@@ -14,7 +15,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 })
 export class OperasyonActivityListComponent implements OnInit {
 
-
+  full: UEditorComponent;
   public page_index = 1;
   public list_of_data: object = {};
   public list_of_aply_data: Array<any> = [];
@@ -436,5 +437,8 @@ export class OperasyonActivityListComponent implements OnInit {
     }
 
   }
+  public _ready(e) { }
+  public _destroy() { }
+  public _change(e) { }
 
 }
