@@ -30,7 +30,7 @@
                   </th>
               
                   <th>内容</th>
-                  <th>活动图片</th>
+                  <th *ngIf="activity.list.type==='1'">活动图片</th>
                   <th>标题展示图片</th>
                   <th nzShowFilter [nzFilters]="status_type" [nzFilterMultiple]='false'
                     (nzFilterChange)="is_status_change($event)">状态</th>
@@ -51,7 +51,7 @@
                             {{ data.content }}
                           </div>
                     </td>
-                    <td>
+                    <td *ngIf="activity.list.type==='1'">
                       <div class='ellipsis' style='width:100px;display: inline-block;'>
                         <img (click)='show_modal_img(serviceHttpIri+data.pic_path)' style='max-width:100px;cursor:pointer' [src]='serviceHttpIri + data.pic_path'>
                         <img>
@@ -142,7 +142,7 @@
               请输入要创建的活动内容!</nz-form-explain>
           </nz-form-control>
         </nz-form-item>
-        <nz-form-item>
+        <nz-form-item *ngIf="activity.list.type==='1'">
           <nz-form-label nzFor="pic" nzRequired [nzSm]="6" [nzXs]="24">活动图片</nz-form-label>
           <nz-form-control nzHasFeedback [nzSm]="15" [nzXs]="23">
             <button (click)='click_update()' nz-button nzBlock [nzType]="'dashed'" class="ant-btn__block mb-sm">

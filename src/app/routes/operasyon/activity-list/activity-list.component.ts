@@ -246,7 +246,8 @@ export class OperasyonActivityListComponent implements OnInit {
     this.is_edit_activity = true;
     this.file_iri = Utils.httpIri + data.pic_path;
     this.file_obj = null;
-    document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
+    let {type}=this.activity['list'];
+    type==='1' && document.getElementById('cropedBigImg').setAttribute('src', this.file_iri);
 
     this.note_value = '';
     this.edit_activity_obj = {
@@ -276,7 +277,8 @@ export class OperasyonActivityListComponent implements OnInit {
     this.file_iri = null;
     this.file_obj = null;
     this.edit_activity_obj = {};
-    document.getElementById('cropedBigImg').removeAttribute('src');
+    let {type}=this.activity['list'];
+    type==='1' && document.getElementById('cropedBigImg').removeAttribute('src');
     this.create_form.reset();
     for (const key in this.create_form.controls) {
       this.create_form.controls[key].markAsPristine();
