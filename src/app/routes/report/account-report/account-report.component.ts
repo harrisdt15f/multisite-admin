@@ -15,7 +15,7 @@ import { ToolService } from 'tool/tool.service';
 })
 export class ReportAccountReportComponent implements OnInit {
   // 搜索对象
-  public searchData = {
+  public searchData: any = {
     pageIndex: 1,
     pageSize: '100',
     id: '',
