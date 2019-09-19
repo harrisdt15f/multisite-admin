@@ -250,14 +250,13 @@ get_quota_list(page_index,data?) {
   this.userManageService.get_quota_list(page_index,data).subscribe((res: any) => {
     if (res && res.success) {
       this.page_index = page_index
-      this.list_total = res.data.total;
+      this.list_total = res['data']['admin_user']['total'];
       this.is_load_list = false;
       this.list_of_aply_data = [];
       this.data_prize_string = res.data.dailyFundLimit;
       for(let x in res.data.admin_user['data']){
         this.list_of_aply_data.push(res.data.admin_user['data'][x]);
       }
-      console.log(this.list_of_aply_data);
       
       
       let aply_data = this.list_of_aply_data,
@@ -265,7 +264,9 @@ get_quota_list(page_index,data?) {
       pageSize = Math.ceil(length/8);
       this.list_of_aply_page['length'] = pageSize;
       
-      this.list_of_aply_data_again = aply_data.slice(0,8);
+      
+      // this.list_of_aply_data_again = aply_data.slice(0,8);
+      this.list_of_aply_data_again = aply_data;
     } else {
 
       this.message.error(res.message, {
@@ -278,7 +279,7 @@ get_quota_list(page_index,data?) {
 /**
  * 资金管理页数切换
  */
-change_aply_page($event){
+public change_aply_page($event){
 
   let type=$event['toElement'],
   {dataset}=type,
@@ -296,9 +297,9 @@ change_aply_page($event){
     pageCount=type['innerText'];
 
   }
-
   let setPage=(pageCount-1)*8;
   this.list_of_aply_data_again = aply_data.slice(setPage,setPage+8);
+  this.list_of_aply_data_again = aply_data;
   this.list_of_aply_page_now = pageCount;
 
 }
