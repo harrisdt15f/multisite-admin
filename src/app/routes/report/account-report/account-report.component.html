@@ -125,6 +125,7 @@
           <th nzWidth="8%">创建时间</th>
           <th nzWidth="7%">IP</th>
           <th nzWidth="8%">备注</th>
+          <th nzWidth="8%">操作</th>
         </tr>
       </thead>
       <tbody class="ant-table-tbody">
@@ -149,9 +150,55 @@
           <td>{{data.created_at}}</td>
           <td>{{ data.ip }}</td>
           <td>0</td>
+          <td (click)="check_data(data)">查看</td>
         </tr>
       </tbody>
     </nz-table>
 
   </nz-content>
 </nz-layout>
+
+<nz-drawer nzWidth='300px' [nzVisible]="check_data_pop" nzPlacement="right"
+[nzTitle]="'详细信息'" (nzOnClose)="check_data_pop = false">
+  <tbody class="check-data-list">
+      <tr>
+          <td>用户名称</td> ：<td>{{ check_data_list.username}}</td>  
+      </tr>
+      <tr>
+          <td>出入账类型</td> ：<td>{{ check_data_list.in_out===1?'增加金额':'减少金额' }}</td>
+      </tr>
+      <tr>
+          <td>上级ID</td> ： <td>{{ check_data_list.parent_id }}</td>
+      </tr>
+      <tr>
+          <td>游戏</td> ：<td>{{ check_data_list.lottery_id }}</td>
+      </tr>
+      <tr>
+          <td>账变类型</td> ：<td>{{ check_data_list.type_name }}</td>
+      </tr>
+      <tr>
+          <td>是否测试</td> ：<td>{{ check_data_list.is_tester==1?'是':'否' }}</td>
+      </tr>
+      <tr>
+          <td>金额(元)</td> ：<td>{{ check_data_list.amount }}</td>
+      </tr>
+      <tr>
+          <td>余额(元)</td> ：<td>{{ check_data_list.balance }}</td>
+      </tr>
+      <tr>
+          <td>注单编号</td> ：<td>{{ check_data_list.serial_number }}</td>
+      </tr>
+      <tr>
+          <td>管理员</td> ：<td>{{ check_data_list.admin?check_data_list.admin.name:'' }}</td>
+      </tr>
+      <tr>
+          <td>创建时间</td> ：<td>{{check_data_list.created_at}}</td>
+      </tr>
+      <tr>
+          <td>IP</td> ： <td>{{ check_data_list.ip }}</td>
+      </tr>
+      <tr>
+          <td>备注</td> ：<td>0</td>
+      </tr>
+  </tbody>
+</nz-drawer>>
