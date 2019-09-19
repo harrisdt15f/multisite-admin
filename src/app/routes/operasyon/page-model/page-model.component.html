@@ -45,20 +45,6 @@
               </ng-template>
             </nz-list-item-meta>
           </nz-list-item>
-          <nz-list-item [nzActions]="[notice]">
-            <ng-template #notice>
-              <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['notice'].status==1"
-                (ngModelChange)="change_open_base($event,home_page_type['notice'])" nzCheckedChildren="开"
-                nzUnCheckedChildren="关"></nz-switch>
-              <a (click)='edit_base_msg("notice")'>修改</a>
-            </ng-template>
-            <nz-list-item-meta nzTitle="公告条数" [nzDescription]="noticeDesc">
-              <ng-template #noticeDesc>
-                首页显示公告条数：<span *ngIf="home_page_type['notice']" class="text-green">{{home_page_type['notice'].show_num}}
-                  条</span>
-              </ng-template>
-            </nz-list-item-meta>
-          </nz-list-item>
           <nz-list-item [nzActions]="[banner]">
             <ng-template #banner>
               <nz-switch nzSize="small" class='switch-base' [ngModel]="home_page_type['banner'].status==1"
