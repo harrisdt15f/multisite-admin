@@ -440,8 +440,8 @@ export class GameLotteryIssueComponent implements OnInit {
       "lottery_id": this.create_lottery_obj['lottery_id'],
       "start_time": start_time,
       "end_time": end_time,
-      "start_issue": ''
-
+      "start_issue": '' ,
+      'create_lottery_obj': '*'
     };
     this.modal_lodding = true;
 
