@@ -44,6 +44,10 @@ public end_time: string;
 public start_time: string;
 public now_date=[new Date(), new Date()];
 
+// 额度管理页数
+public list_of_aply_page: Array<any> = [];
+public list_of_aply_data_again: Array<any> = [];
+public list_of_aply_page_now: number = 0;
 
 constructor(
   private http: _HttpClient,
@@ -254,6 +258,14 @@ get_quota_list(page_index,data?) {
         this.list_of_aply_data.push(res.data.admin_user['data'][x]);
       }
       console.log(this.list_of_aply_data);
+      
+      
+      let aply_data = this.list_of_aply_data,
+      {length} = aply_data,
+      pageSize = Math.ceil(length/8);
+      this.list_of_aply_page['length'] = pageSize;
+      
+      this.list_of_aply_data_again = aply_data.slice(0,8);
     } else {
 
       this.message.error(res.message, {
@@ -263,6 +275,33 @@ get_quota_list(page_index,data?) {
   })
 }
 
+/**
+ * 资金管理页数切换
+ */
+change_aply_page($event){
+
+  let type=$event['toElement'],
+  {dataset}=type,
+  pageCount=this.list_of_aply_page_now,
+  aply_data = this.list_of_aply_data,
+  {innerText}=type;
+
+  if( !(innerText>0)){
+
+    (innerText=='<' && pageCount>1) && pageCount--;
+    (innerText=='>' && pageCount<this.list_of_aply_page['length']) && pageCount++;
+
+  }else if(innerText>0){
+
+    pageCount=type['innerText'];
+
+  }
+
+  let setPage=(pageCount-1)*8;
+  this.list_of_aply_data_again = aply_data.slice(setPage,setPage+8);
+  this.list_of_aply_page_now = pageCount;
+
+}
 
 
 /**

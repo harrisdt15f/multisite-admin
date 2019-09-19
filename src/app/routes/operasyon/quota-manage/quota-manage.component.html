@@ -10,7 +10,7 @@
   <nz-content>
 
     <nz-table #nzTable [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)' [nzLoading]='is_load_list'
-      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data" [nzPageSize]='20'
+      [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_aply_data_again" [nzPageSize]='20'
       [nzTotal]='list_total'>
       <thead>
         <tr>
@@ -42,7 +42,7 @@
 
       <tbody>
 
-        <tr *ngFor="let data of list_of_aply_data">
+        <tr *ngFor="let data of list_of_aply_data_again">
           <td>{{ data.name}}</td>
           <td>{{ data.email }}</td>
           <td>{{ data.group_id }}</td>
@@ -59,6 +59,13 @@
         </tr>
 
       </tbody>
+      <tfoot>
+        <ul (click)='change_aply_page($event)' class="tab-box">
+          <li class="tab-page cut">&lt;</li>
+          <li *ngFor="let data of list_of_aply_page; let i = index" [class]='i+1 == list_of_aply_page_now ? "tab-page active":"tab-page"  '>{{i+1}}</li>
+          <li class="tab-page add">&gt;</li>
+        </ul>
+      </tfoot>
     </nz-table>
     <!-- 摩态框 -->
     <!-- 每日额度 -->
