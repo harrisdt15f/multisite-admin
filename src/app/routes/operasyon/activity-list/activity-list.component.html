@@ -47,9 +47,7 @@
                     <td>{{ data.title}}</td>
              
                     <td>
-                        <div class='ellipsis' style='width:150px;display: inline-block;'>
-                            {{ data.content }}
-                          </div>
+                        <div class='ellipsis' style='width:150px;display: inline-block;' [innerHTML]="data['content']"></div>
                     </td>
                     <td *ngIf="activity.list.type==='1'">
                       <div class='ellipsis' style='width:100px;display: inline-block;'>
