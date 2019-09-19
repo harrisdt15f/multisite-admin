@@ -40,6 +40,9 @@ export class ReportAccountReportComponent implements OnInit {
   public is_down_load_all: boolean;
   public nowOption = {};
 
+  // ------列表弹框
+  public check_data_list = {};
+  public check_data_pop: boolean;
 
   constructor(
     private http: _HttpClient,
@@ -210,6 +213,16 @@ public submit_list_service(option, callback, now_page?) {
     }
   });
 }
+
+/**
+ * 查看详细信息
+ * @param data_list 
+ */
+check_data(data){
+  this.check_data_pop = true;
+  this.check_data_list = data;
+}
+
 
 /**
  *获取数据push给打印数组
