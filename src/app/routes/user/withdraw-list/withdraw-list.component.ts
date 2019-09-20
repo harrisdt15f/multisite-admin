@@ -42,6 +42,11 @@ export class UserWithdrawListComponent implements OnInit {
     { text: '审核通过', value: '1' },
     { text: '审核拒绝', value: '1000' },
   ];
+
+  public detail_data_pop: boolean;
+  public detail_data_row = {};
+  public objectKeys = Object.keys;
+
   constructor(
     private http: _HttpClient,
     private userManageService: UserManageService,
@@ -83,13 +88,18 @@ export class UserWithdrawListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   edit_check_withdraw(data, type) {
+    this.detail_data_row={};
     this.is_edit_check = true;
     this.submit_withdraw_lodding = false;
     this.note_value = '';
     this.edit_check_obj = data;
     this.edit_check_obj['type'] = type;
 
-    //查看详细 功能未处理
+    //查看详细 功能未详细处理
+    if(type === 'detailed'){
+      this.detail_data_pop = true;
+      this.detail_data_row = data;
+    }
   }
 
   /**
@@ -127,8 +137,6 @@ export class UserWithdrawListComponent implements OnInit {
         this.list_total = res.data.total;
         this.is_load_list = false;
         this.list_of_aply_data = res.data.data;
-        console.log('data',res);
-
       } else {
         this.is_load_list = false;
         this.message.error(res.message, {

@@ -122,12 +122,12 @@
             <td>{{ data.status | checkStatus:data.type}}</td>
             <td>{{ data.created_at }}</td>
             <td>{{ data.updated_at }}</td>
-            <td *ngIf='data.status!=0'>
+            <td *ngIf='data.status==0'>
                 <a (click)='edit_check_withdraw(data,"detailed")'>查看详细</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a (click)='edit_check_withdraw(data,"failure")' style='color:#1D90FF'>手动失败</a>
             </td>
-            <td *ngIf='data.status==0'>
+            <td *ngIf='data.status!=0'>
                 <a (click)='edit_check_withdraw(data,"pass")'>通过申请</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a (click)='edit_check_withdraw(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
@@ -155,5 +155,11 @@
       <button [nzLoading]="submit_withdraw_lodding" *ngIf="edit_check_obj['type']=='no_pass'" (click)='submit_pass()'
         nzType="primary" nz-button nzBlock>拒绝通过审核</button>
     </nz-drawer>
+    <nz-drawer nzWidth='500px' [nzVisible]="detail_data_pop" nzPlacement="right"
+      [nzTitle]="'详细信息'" (nzOnClose)="detail_data_pop = false">
+        <nz-descriptions nzBordered [nzColumn]="{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }">
+          <nz-descriptions-item *ngFor="let keys of objectKeys(detail_data_row)" [nzTitle]="keys">{{detail_data_row[keys]}}</nz-descriptions-item>
+        </nz-descriptions>
+      </nz-drawer>
   </nz-content>
 </nz-layout>
