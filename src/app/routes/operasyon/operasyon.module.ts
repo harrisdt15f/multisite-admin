@@ -49,8 +49,8 @@ const COMPONENTS_NOROUNT = [];
     OperasyonRoutingModule,
     UEditorModule.forRoot({
       js: [
-        `../../../assets/ueditor/ueditor.all.js`,
         `../../../assets/ueditor/ueditor.config.js`,
+        `../../../assets/ueditor/ueditor.all.js`,
       ],
       // 默认前端配置项
       options: {

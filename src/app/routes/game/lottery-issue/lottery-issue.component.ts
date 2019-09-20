@@ -440,8 +440,7 @@ export class GameLotteryIssueComponent implements OnInit {
       "lottery_id": this.create_lottery_obj['lottery_id'],
       "start_time": start_time,
       "end_time": end_time,
-      "start_issue": '' ,
-      'create_lottery_obj': '*'
+      "start_issue": ''
     };
     this.modal_lodding = true;
 
@@ -569,6 +568,10 @@ export class GameLotteryIssueComponent implements OnInit {
     this.gameService.get_lotteries_list(data).subscribe((res: any) => {
       if (res && res.success) {
         this.lotteries_list = [];
+        this.lotteries_list.push({
+          title: '全部彩种',
+          id: '*'
+        });
         res.data.forEach((item) => {
           this.lotteries_list.push({
             title: item.cn_name,
