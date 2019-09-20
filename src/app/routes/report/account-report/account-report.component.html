@@ -151,7 +151,9 @@
           <td>{{ data.ip }}</td>
           <td>0</td>
           <td>
-              <a (click)='check_data(data)'>查看详情</a>
+              <button (click)='check_data(data)' nz-button [nzType]="'primary'">
+                查看详情
+              </button>
           </td>
         </tr>
       </tbody>
