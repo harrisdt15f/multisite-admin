@@ -150,7 +150,9 @@
           <td>{{data.created_at}}</td>
           <td>{{ data.ip }}</td>
           <td>0</td>
-          <td (click)="check_data(data)">查看</td>
+          <td>
+              <a (click)='check_data(data)'>查看详情</a>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -158,7 +160,7 @@
   </nz-content>
 </nz-layout>
 
-<nz-drawer nzWidth='300px' [nzVisible]="check_data_pop" nzPlacement="right"
+<nz-drawer nzWidth='500px' [nzVisible]="check_data_pop" nzPlacement="right"
 [nzTitle]="'详细信息'" (nzOnClose)="check_data_pop = false">
   <tbody class="check-data-list">
       <tr>
