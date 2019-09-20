@@ -88,17 +88,16 @@ export class UserWithdrawListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   edit_check_withdraw(data, type) {
-    this.detail_data_row={};
-    this.is_edit_check = true;
-    this.submit_withdraw_lodding = false;
-    this.note_value = '';
-    this.edit_check_obj = data;
-    this.edit_check_obj['type'] = type;
-
     //查看详细 功能未详细处理
     if(type === 'detailed'){
       this.detail_data_pop = true;
       this.detail_data_row = data;
+    }else{
+      this.is_edit_check = true;
+      this.submit_withdraw_lodding = false;
+      this.note_value = '';
+      this.edit_check_obj = data;
+      this.edit_check_obj['type'] = type;
     }
   }
 

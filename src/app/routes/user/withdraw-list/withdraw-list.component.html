@@ -142,22 +142,9 @@
         </ng-template>
       </tbody>
     </nz-table>
-    <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right" nzTitle="提交审核结果"
-      (nzOnClose)="is_edit_check = false">
-      <div *ngIf="edit_check_obj['audit_flow']">被审核人：{{edit_check_obj['audit_flow']['username']||''}}</div>
-      <nz-form-item style="margin-top:30px">
-        <nz-form-control [nzSpan]="24">
-          <input placeholder="审核人已确认" [(ngModel)]="note_value" nz-input name="email" type="email" id="email">
-        </nz-form-control>
-      </nz-form-item>
-      <button [nzLoading]="submit_withdraw_lodding" *ngIf="edit_check_obj['type']=='pass'" (click)='submit_pass()'
-        nzType="primary" nz-button nzBlock>通过审核</button>
-      <button [nzLoading]="submit_withdraw_lodding" *ngIf="edit_check_obj['type']=='no_pass'" (click)='submit_pass()'
-        nzType="primary" nz-button nzBlock>拒绝通过审核</button>
-    </nz-drawer>
-    <nz-drawer nzWidth='500px' [nzVisible]="detail_data_pop" nzPlacement="right"
+    <nz-drawer nzWidth='800px' [nzVisible]="detail_data_pop" nzPlacement="right"
       [nzTitle]="'详细信息'" (nzOnClose)="detail_data_pop = false">
-        <nz-descriptions nzBordered [nzColumn]="{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }">
+        <nz-descriptions nzBordered [nzColumn]="{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 2 }">
           <nz-descriptions-item *ngFor="let keys of objectKeys(detail_data_row)" [nzTitle]="keys">{{detail_data_row[keys]}}</nz-descriptions-item>
         </nz-descriptions>
       </nz-drawer>
