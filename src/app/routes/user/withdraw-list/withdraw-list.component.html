@@ -122,12 +122,12 @@
             <td>{{ data.status | checkStatus:data.type}}</td>
             <td>{{ data.created_at }}</td>
             <td>{{ data.updated_at }}</td>
-            <td *ngIf='data.status==0'>
+            <td *ngIf='data.status!=0'>
                 <a (click)='edit_check_withdraw(data,"detailed")'>查看详细</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a (click)='edit_check_withdraw(data,"failure")' style='color:#1D90FF'>手动失败</a>
             </td>
-            <td *ngIf='data.status!=0'>
+            <td *ngIf='data.status==0'>
                 <a (click)='edit_check_withdraw(data,"pass")'>通过申请</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a (click)='edit_check_withdraw(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
