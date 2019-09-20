@@ -16,6 +16,11 @@ export class UserWithdrawListComponent implements OnInit {
     pageSize: '100',
     status: '',
     username: '',
+    id: '',
+    cardUsername: '',
+    orderId: '',
+    createdAt: '',
+    processTime: '',
   };
   public page_index = 1;
   public list_of_data: object = {};
@@ -37,6 +42,11 @@ export class UserWithdrawListComponent implements OnInit {
     { text: '审核通过', value: '1' },
     { text: '审核拒绝', value: '1000' },
   ];
+
+  public detail_data_pop: boolean;
+  public detail_data_row = {};
+  public objectKeys = Object.keys;
+
   constructor(
     private http: _HttpClient,
     private userManageService: UserManageService,
@@ -63,6 +73,11 @@ export class UserWithdrawListComponent implements OnInit {
       pageSize: '100',
       status: '',
       username: '',
+      id: '',  //编号
+      cardUsername: '', //渠道
+      orderId: '', //订单号
+      createdAt: '', //创建时间
+      processTime: '' //成功时间
     };
   }
 
@@ -73,11 +88,17 @@ export class UserWithdrawListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   edit_check_withdraw(data, type) {
-    this.is_edit_check = true;
-    this.submit_withdraw_lodding = false;
-    this.note_value = '';
-    this.edit_check_obj = data;
-    this.edit_check_obj['type'] = type;
+    //查看详细 功能未详细处理
+    if(type === 'detailed'){
+      this.detail_data_pop = true;
+      this.detail_data_row = data;
+    }else{
+      this.is_edit_check = true;
+      this.submit_withdraw_lodding = false;
+      this.note_value = '';
+      this.edit_check_obj = data;
+      this.edit_check_obj['type'] = type;
+    }
   }
 
   /**
@@ -115,7 +136,6 @@ export class UserWithdrawListComponent implements OnInit {
         this.list_total = res.data.total;
         this.is_load_list = false;
         this.list_of_aply_data = res.data.data;
-
       } else {
         this.is_load_list = false;
         this.message.error(res.message, {

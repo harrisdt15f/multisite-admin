@@ -4,18 +4,34 @@
       <div>
           <div style='padding-top: 20px' nz-row nzGutter="16">
             <div nz-col nzSpan="20">
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                      <nz-form-label [nzSpan]="6" >编号</nz-form-label>
+                      <nz-form-control [nzSpan]="16">
+                          <input nz-input nzSize="small" placeholder="编号" [(ngModel)]="searchData.id"  />
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
               <div nz-col nzSpan="6">
                 <nz-form-item>
                   <nz-form-label [nzSpan]="6" >申请人</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-control [nzSpan]="16">
                       <input nz-input nzSize="small" placeholder="申请人" [(ngModel)]="searchData.username"  />
                   </nz-form-control>
                 </nz-form-item>
               </div>
               <div nz-col nzSpan="6">
                 <nz-form-item>
+                  <nz-form-label [nzSpan]="6" >提现渠道</nz-form-label>
+                  <nz-form-control [nzSpan]="16">
+                      <input nz-input nzSize="small" placeholder="提现渠道" [(ngModel)]="searchData.cardUsername"  />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+              <div nz-col nzSpan="6">
+                <nz-form-item>
                   <nz-form-label [nzSpan]="6" >状态</nz-form-label>
-                  <nz-form-control  [nzSpan]="18">
+                  <nz-form-control  [nzSpan]="16">
                     <nz-select nzSize="small" style="width: 100%;"   [(ngModel)]="searchData.status" nzShowSearch
                       nzPlaceHolder="状态">
                       <nz-option nzValue="" nzLabel="不限"></nz-option>
@@ -26,9 +42,9 @@
                   </nz-form-control>
                 </nz-form-item>
               </div>
-              <div nz-col nzSpan="4">
+              <div nz-col nzSpan="6">
                   <nz-form-item>
-                    <nz-form-label [nzSpan]="8">每页条数</nz-form-label>
+                    <nz-form-label [nzSpan]="6">每页条数</nz-form-label>
                     <nz-form-control [nzSpan]="16">
                       <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.pageSize" nzAllowClear>
                         <nz-option nzValue='20' nzLabel="20"></nz-option>
@@ -37,6 +53,36 @@
                       </nz-select>
                     </nz-form-control>
                   </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                      <nz-form-label [nzSpan]="6" >参考订单号</nz-form-label>
+                      <nz-form-control [nzSpan]="16">
+                          <input nz-input nzSize="small" placeholder="订单号" [(ngModel)]="searchData.orderId"  />
+                      </nz-form-control>
+                    </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">开始时间</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <nz-date-picker [nzStyle]='{width:"200px"}' [(ngModel)]="searchData.createdAt"
+                            id="created_time" nzFormat="yyyy-MM-dd HH:mm:ss"
+                            nzPlaceHolder="选择创建时间">
+                          </nz-date-picker>
+                        </nz-form-control>
+                      </nz-form-item>
+                </div>
+                <div nz-col nzSpan="6">
+                    <nz-form-item>
+                        <nz-form-label [nzSpan]="6">处理时间</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <nz-date-picker [nzStyle]='{width:"200px"}' [(ngModel)]="searchData.processTime"
+                            id="created_time" nzFormat="yyyy-MM-dd HH:mm:ss"
+                            nzPlaceHolder="选择创建时间">
+                          </nz-date-picker>
+                        </nz-form-control>
+                      </nz-form-item>
                 </div>
             </div>
             <div nz-col nzSpan="4">
@@ -63,27 +109,32 @@
         </tr>
       </thead>
       <tbody class="ant-table-tbody">
-        <ng-template ngFor let-data [ngForOf]="nzTable.data">
+        <ng-template ngFor let-data [ngForOf]="list_of_aply_data">
           <tr>
             <td>
                 <div class='ellipsis' style='max-width:300px;display: inline-block;'>
-                    {{ data.audit_flow.username }}
+                    {{ data.username }}
                 </div>
             </td>
-            <td>{{ data.audit_flow.admin_name }}</td>
-            <td>{{ data.audit_flow.auditor_name }}</td>
-            <td>{{ data.audit_flow.apply_note}}</td>
+            <td>{{ data.admin_name }}</td>
+            <td>{{ data.auditor_name }}</td>
+            <td>{{ data.apply_note}}</td>
             <td>{{ data.status | checkStatus:data.type}}</td>
             <td>{{ data.created_at }}</td>
-            <td>{{ data.audit_flow.updated_at }}</td>
-            <td *ngIf='data.status!=0'></td>
+            <td>{{ data.updated_at }}</td>
+            <td *ngIf='data.status!=0'>
+                <a (click)='edit_check_withdraw(data,"detailed")'>查看详细</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)='edit_check_withdraw(data,"failure")' style='color:#1D90FF'>手动失败</a>
+            </td>
             <td *ngIf='data.status==0'>
-         
                 <a (click)='edit_check_withdraw(data,"pass")'>通过申请</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a (click)='edit_check_withdraw(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
-            
-
+                <br/>
+                <a (click)='edit_check_withdraw(data,"waiting")'>等待处理</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)='edit_check_withdraw(data,"take_over")' style='color:#1D90FF'>接手处理</a>
             </td>
           </tr>
           <tr>
@@ -91,18 +142,11 @@
         </ng-template>
       </tbody>
     </nz-table>
-    <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right" nzTitle="提交审核结果"
-      (nzOnClose)="is_edit_check = false">
-      <div *ngIf="edit_check_obj['audit_flow']">被审核人：{{edit_check_obj['audit_flow']['username']||''}}</div>
-      <nz-form-item style="margin-top:30px">
-        <nz-form-control [nzSpan]="24">
-          <input placeholder="审核人已确认" [(ngModel)]="note_value" nz-input name="email" type="email" id="email">
-        </nz-form-control>
-      </nz-form-item>
-      <button [nzLoading]="submit_withdraw_lodding" *ngIf="edit_check_obj['type']=='pass'" (click)='submit_pass()'
-        nzType="primary" nz-button nzBlock>通过审核</button>
-      <button [nzLoading]="submit_withdraw_lodding" *ngIf="edit_check_obj['type']=='no_pass'" (click)='submit_pass()'
-        nzType="primary" nz-button nzBlock>拒绝通过审核</button>
-    </nz-drawer>
+    <nz-drawer nzWidth='800px' [nzVisible]="detail_data_pop" nzPlacement="right"
+      [nzTitle]="'详细信息'" (nzOnClose)="detail_data_pop = false">
+        <nz-descriptions nzBordered [nzColumn]="{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 2 }">
+          <nz-descriptions-item *ngFor="let keys of objectKeys(detail_data_row)" [nzTitle]="keys">{{detail_data_row[keys]}}</nz-descriptions-item>
+        </nz-descriptions>
+      </nz-drawer>
   </nz-content>
 </nz-layout>

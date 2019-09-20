@@ -164,7 +164,6 @@
 
 <nz-drawer nzWidth='500px' [nzVisible]="check_data_pop" nzPlacement="right"
 [nzTitle]="'详细信息'" (nzOnClose)="check_data_pop = false">
-<<<<<<< HEAD
   <tbody class="check-data-list">
       <tr>
           <td>用户名称</td> ：<td>{{ check_data_list['username']}}</td>  
@@ -206,21 +205,4 @@
           <td>备注</td> ：<td>0</td>
       </tr>
   </tbody>
-=======
-  <nz-descriptions nzBordered [nzColumn]="{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }">
-    <nz-descriptions-item nzTitle="用户名称">{{ check_data_list['username'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="出入账类型">{{ check_data_list['in_out']===1?'增加金额':'减少金额' }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="上级ID">{{ check_data_list['parent_id'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="游戏">{{ check_data_list['lottery_id'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="账变类型">{{ check_data_list['type_name'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="是否测试">{{ check_data_list['is_tester']==1?'是':'否' }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="金额(元)">{{ check_data_list['amount'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="余额(元)">{{ check_data_list['balance'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="注单编号">{{ check_data_list['serial_number'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="管理员">{{ check_data_list.admin?check_data_list['admin']['name']:'' }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="创建时间">{{check_data_list['created_at']}}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="IP">{{ check_data_list['ip'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="备注">0</nz-descriptions-item>
-  </nz-descriptions>
->>>>>>> activityTest
 </nz-drawer>
