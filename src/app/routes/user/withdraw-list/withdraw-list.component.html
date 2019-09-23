@@ -24,7 +24,11 @@
                 <nz-form-item>
                   <nz-form-label [nzSpan]="6" >提现渠道</nz-form-label>
                   <nz-form-control [nzSpan]="16">
-                      <input nz-input nzSize="small" placeholder="提现渠道" [(ngModel)]="searchData.cardUsername"  />
+                      <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.payment" nzAllowClear
+                        nzPlaceHolder="充值渠道">
+                        <nz-option nzValue="" nzLabel="全部"></nz-option>
+                        <nz-option *ngFor="let item of payment_list" [(nzValue)]="item.payment_sign" [(nzLabel)]="item.payment_name"></nz-option>
+                      </nz-select>
                   </nz-form-control>
                 </nz-form-item>
               </div>

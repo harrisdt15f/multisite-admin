@@ -54,13 +54,24 @@
           </div>
           <div nz-col nzSpan="4">
             <nz-form-item>
+              <nz-form-label [nzSpan]="8">充值渠道</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.channel" nzAllowClear
+                  nzPlaceHolder="充值渠道">
+                  <nz-option nzValue="" nzLabel="全部"></nz-option>
+                  <nz-option *ngFor="let item of payment_list" [(nzValue)]="item.payment_sign" [(nzLabel)]="item.payment_name"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="4">
+            <nz-form-item>
               <nz-form-label [nzSpan]="8">充值类型</nz-form-label>
               <nz-form-control [nzSpan]="16">
-                <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.deposit_mode" nzAllowClear
+                <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="searchData.payment_type_sign" nzAllowClear
                   nzPlaceHolder="充值类型">
                   <nz-option nzValue="" nzLabel="全部"></nz-option>
-                  <nz-option nzValue="1" nzLabel="人工充值"></nz-option>
-                  <nz-option nzValue="0" nzLabel="自动充值"></nz-option>
+                  <nz-option *ngFor="let item of pay_types" [(nzValue)]="item.type_sign" [(nzLabel)]="item.type_name"></nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>

@@ -18,7 +18,7 @@ export class UserWithdrawListComponent implements OnInit {
     status: '',
     username: '',
     id: '',
-    cardUsername: '',
+    payment: '',
     orderId: '',
     createdAt: '',
     processTime: '',
@@ -48,6 +48,9 @@ export class UserWithdrawListComponent implements OnInit {
   public detail_data_row = {};
   public objectKeys = Object.keys;
 
+  //充值渠道
+  public payment_list: Array<any> = [];
+
   constructor(
     private http: _HttpClient,
     private userManageService: UserManageService,
@@ -57,7 +60,20 @@ export class UserWithdrawListComponent implements OnInit {
 
   ngOnInit() {
     this.get_withdraw_aply_list();
+    this.get_payment_info();
   }
+
+  /**
+   * 获取充值渠道
+   */
+  get_payment_info() {
+    const url = '/api/reportManagement/payment-info';
+    this.newHttp.request('get', url , {}).subscribe( res => {
+       const {payments} = res['data'];
+       this.payment_list = payments;
+    });
+  }
+
   /**
   * 重置搜做参数
   */
@@ -76,7 +92,7 @@ export class UserWithdrawListComponent implements OnInit {
       status: '',
       username: '',
       id: '',  //编号
-      cardUsername: '', //渠道
+      payment: '', //渠道
       orderId: '', //订单号
       createdAt: '', //创建时间
       processTime: '' //成功时间

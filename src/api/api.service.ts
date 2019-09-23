@@ -64,7 +64,7 @@ export class ApiService {
   }
 
   // 自定义请求
-  public request(type: string = 'type', url: string , data: any): any {
+  public request(type: string = 'get', url: string , data: any): any {
     return this.commonService[type](url, data);
   }
 }
