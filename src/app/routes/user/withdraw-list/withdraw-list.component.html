@@ -145,7 +145,7 @@
     <nz-drawer nzWidth='800px' [nzVisible]="detail_data_pop" nzPlacement="right"
       [nzTitle]="'详细信息'" (nzOnClose)="detail_data_pop = false">
         <nz-descriptions nzBordered [nzColumn]="{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 2 }">
-          <nz-descriptions-item *ngFor="let keys of objectKeys(detail_data_row)" [nzTitle]="keys">{{detail_data_row[keys]}}</nz-descriptions-item>
+          <nz-descriptions-item *ngFor="let keys of objectKeys(detail_data_row)" [nzTitle]="keys">{{keys!='状态' ? detail_data_row[keys] : detail_data_row[keys] | checkStatus }}</nz-descriptions-item>
         </nz-descriptions>
       </nz-drawer>
   </nz-content>

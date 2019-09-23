@@ -79,6 +79,7 @@ export class UserWithdrawListComponent implements OnInit {
       createdAt: '', //创建时间
       processTime: '' //成功时间
     };
+    // 带注释的key 未与后台通报
   }
 
   /**
@@ -88,11 +89,12 @@ export class UserWithdrawListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   edit_check_withdraw(data, type) {
-    //查看详细 功能未详细处理
+    // 查看详细 功能未详细处理
     if(type === 'detailed'){
       this.detail_data_pop = true;
-      this.detail_data_row = data;
-    }else{
+      const newData = this.get_data_zh(data);
+      this.detail_data_row = newData;
+    } else{
       this.is_edit_check = true;
       this.submit_withdraw_lodding = false;
       this.note_value = '';
@@ -173,6 +175,27 @@ export class UserWithdrawListComponent implements OnInit {
         });
       }
     });
+  }
+  get_data_zh(data) {
+    const dataZh = {
+      id : '编号',
+      username : '用户名',
+      order_id : '订单号',
+      admin_name : '提交申请人',
+      auditor_name : '审核人',
+      apply_note : '申请人备注',
+      card_username : '银行名称',
+      card_number : '卡号',
+      status : '状态',
+      created_at : '创建时间',
+      updated_at : '最近操作时间'
+    };
+    const objs = Object.keys(data).reduce((newData, key) => {
+      const newKey = dataZh[key] || key;
+      newData[newKey] = data[key];
+      return newData;
+    }, {});
+    return objs;
   }
 }
 
