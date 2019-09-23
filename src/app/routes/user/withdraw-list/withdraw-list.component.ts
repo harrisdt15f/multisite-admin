@@ -3,6 +3,7 @@ import { _HttpClient } from '@delon/theme';
 import { STColumn } from '@delon/abc';
 import { NzMessageService } from 'ng-zorro-antd';
 import { UserManageService } from 'app/service/user-manage.service';
+import { ApiService } from '../../../../api/api.service';
 
 @Component({
   selector: 'app-user-withdraw-list',
@@ -50,7 +51,8 @@ export class UserWithdrawListComponent implements OnInit {
   constructor(
     private http: _HttpClient,
     private userManageService: UserManageService,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private newHttp: ApiService
   ) { }
 
   ngOnInit() {
@@ -89,17 +91,33 @@ export class UserWithdrawListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   edit_check_withdraw(data, type) {
-    // 查看详细 功能未详细处理
-    if(type === 'detailed'){
-      this.detail_data_pop = true;
-      const newData = this.get_data_zh(data);
-      this.detail_data_row = newData;
-    } else{
-      this.is_edit_check = true;
-      this.submit_withdraw_lodding = false;
-      this.note_value = '';
-      this.edit_check_obj = data;
-      this.edit_check_obj['type'] = type;
+    console.log('data', data, type);
+    this.submit_withdraw_lodding = false;
+    this.note_value = '';
+    let url = '';
+    switch (type) {
+      case 'detailed':
+        this.detail_data_pop = true;
+        const newData = this.get_data_zh(data);
+        this.detail_data_row = newData;
+        break;
+      case 'pass':
+        this.edit_check_obj = data;
+        this.edit_check_obj['type'] = type;
+        this.is_edit_check = true;
+        break;
+      case 'no_pass':
+        url = '/api/withdraw-check/audit-failure';
+        break;
+      case 'waiting':
+        break;
+      case 'failure':
+        break;
+    }
+    if (type !== 'pass' && type !== 'detailed') {
+      this.newHttp.request('post', url, {id: data.id}).subscribe( res => {
+        console.log('test', res);
+      });
     }
   }
 
@@ -197,5 +215,6 @@ export class UserWithdrawListComponent implements OnInit {
     }, {});
     return objs;
   }
+  cancel() {}
 }
 

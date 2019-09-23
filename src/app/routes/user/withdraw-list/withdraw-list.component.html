@@ -56,7 +56,7 @@
                 </div>
                 <div nz-col nzSpan="6">
                     <nz-form-item>
-                      <nz-form-label [nzSpan]="6" >参考订单号</nz-form-label>
+                      <nz-form-label [nzSpan]="6" >订单号</nz-form-label>
                       <nz-form-control [nzSpan]="16">
                           <input nz-input nzSize="small" placeholder="订单号" [(ngModel)]="searchData.orderId"  />
                       </nz-form-control>
@@ -98,14 +98,16 @@
       [nzTotal]='list_total'>
       <thead class="ant-table-thead">
         <tr>
-          <th nzWidth="10%">申请人</th>
-          <th nzWidth="10%">提交申请人</th>
-          <th nzWidth="10%">审核人</th>
-          <th nzWidth="15%">申请人备注</th>
+          <th nzWidth="9%">申请人</th>
+          <th nzWidth="8%">提交申请人</th>
+          <th nzWidth="8%">审核人</th>
+          <th nzWidth="10%">申请人备注</th>
           <th nzWidth="10%">状态</th>
-          <th nzWidth="15%">创建时间</th>
-          <th nzWidth="15%">最近操作时间</th>
-          <th nzWidth="15%">操作</th>
+          <th nzWidth="10%">金额(元)</th>
+          <th nzWidth="15%">订单号</th>
+          <th nzWidth="10%">创建时间</th>
+          <th nzWidth="10%">最近操作时间</th>
+          <th nzWidth="10%">操作</th>
         </tr>
       </thead>
       <tbody class="ant-table-tbody">
@@ -120,21 +122,45 @@
             <td>{{ data.auditor_name }}</td>
             <td>{{ data.apply_note}}</td>
             <td>{{ data.status | checkStatus:data.type}}</td>
+            <td>{{ data.real_amount }}</td>
+            <td>{{ data.order_id }}</td>
             <td>{{ data.created_at }}</td>
             <td>{{ data.updated_at }}</td>
             <td *ngIf='data.status!=0'>
                 <a (click)='edit_check_withdraw(data,"detailed")'>查看详细</a>
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)='edit_check_withdraw(data,"failure")' style='color:#1D90FF'>手动失败</a>
+                <a
+                  nz-popconfirm
+                  nzPopconfirmTitle="确定此次操作?"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="edit_check_withdraw(data,'failure')"
+                  (nzOnCancel)="cancel()"
+                  >手动失败</a
+                >
             </td>
             <td *ngIf='data.status==0'>
-                <a (click)='edit_check_withdraw(data,"pass")'>通过申请</a>
+                <a (click)='edit_check_withdraw(data,"detailed")'>查看</a>
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)='edit_check_withdraw(data,"no_pass")' style='color:#1D90FF'>驳回申请</a>
+                <a
+                  nz-popconfirm
+                  nzPopconfirmTitle="确定此次操作?"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="edit_check_withdraw(data,'no_pass')"
+                  (nzOnCancel)="cancel()"
+                  style='color:#1D90FF'
+                  >拒绝</a
+                >
                 <br/>
-                <a (click)='edit_check_withdraw(data,"waiting")'>等待处理</a>
+                <a
+                  nz-popconfirm
+                  nzPopconfirmTitle="确定此次操作?"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="edit_check_withdraw(data,'waiting')"
+                  (nzOnCancel)="cancel()"
+                  >待定</a
+                >
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)='edit_check_withdraw(data,"take_over")' style='color:#1D90FF'>接手处理</a>
+                <a (click)='edit_check_withdraw(data,"pass")' style='color:#1D90FF'>通过</a>
             </td>
           </tr>
           <tr>
@@ -147,6 +173,20 @@
         <nz-descriptions nzBordered [nzColumn]="{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 2 }">
           <nz-descriptions-item *ngFor="let keys of objectKeys(detail_data_row)" [nzTitle]="keys">{{keys!='状态' ? detail_data_row[keys] : detail_data_row[keys] | checkStatus }}</nz-descriptions-item>
         </nz-descriptions>
-      </nz-drawer>
+    </nz-drawer>
+    <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right"
+      [nzTitle]="'填写审核人'" (nzOnClose)="is_edit_check = false">
+        <div>
+          <nz-form-item>
+            <nz-form-label [nzSpan]="6" >审核人</nz-form-label>
+            <nz-form-control [nzSpan]="16">
+                <input nz-input nzSize="small" placeholder="审核人" [(ngModel)]="node_value"  />
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div>
+          <button nz-button nzType="primary" (click)="submit_pass()">提交</button>
+        </div>
+    </nz-drawer>
   </nz-content>
 </nz-layout>

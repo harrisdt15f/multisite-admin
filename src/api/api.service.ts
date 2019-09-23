@@ -62,4 +62,9 @@ export class ApiService {
   public lotterySeriesDelete(data: any): any {
     return this.commonService.post('/api/lottery-series/delete', data);
   }
+
+  // 自定义请求
+  public request(type: string = 'type', url: string , data: any): any {
+    return this.commonService[type](url, data);
+  }
 }
