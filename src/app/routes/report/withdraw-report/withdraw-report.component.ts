@@ -89,14 +89,11 @@ export class ReportWithdrawReportComponent implements OnInit {
     }
     this.nowOption = option;
     const url = '/api/reportManagement/withdraw-record';
-    console.log('AAAAAA');
     this.reportService.get_report(url, this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
-      console.log('BBBBBB',res);
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
         this.list_of_withdraw_data = res.data.data;
-        console.log('CCCCCC');
       } else {
         this.message.error(res.message, {
           nzDuration: 10000,

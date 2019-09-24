@@ -77,7 +77,10 @@ export class UserWithdrawListComponent implements OnInit {
    */
   get_payment_info() {
     const url = '/api/reportManagement/payment-info';
-    this.newHttp.request('get', url , {}).subscribe( res => {
+    this.newHttp.request({
+      type: 'get',
+      url
+    }).subscribe( res => {
        const {payments} = res['data'];
        this.payment_list = payments;
     });
@@ -138,7 +141,11 @@ export class UserWithdrawListComponent implements OnInit {
         this.withdraw_remark = '';
       }
       if ( type === '2' ) Object.assign(option, { channel_id : 1 });
-      this.newHttp.request('post', url, option).subscribe( res => {
+      this.newHttp.request({
+        type: 'post',
+        url,
+        data: option
+      }).subscribe( res => {
         if (res['success'] ) {
           this.message.success('提交结果成功', {nzDuration: 10000,});
           this.get_withdraw_aply_list();
@@ -194,7 +201,7 @@ export class UserWithdrawListComponent implements OnInit {
    * 提现详情列表
    * @param data 
    */
-  get_data_zh(data: any) {
+  get_data_detail(data: any) {
     // const dataZh = {
     //   id : '编号',
     //   username : '用户名',
@@ -227,7 +234,11 @@ export class UserWithdrawListComponent implements OnInit {
     end_time && Object.assign(option, {end_time});
     const url = `/api/withdraw/show?id=2`;
     console.log('detail', option, this.withdraw_data);
-    this.newHttp.request('post', url, option ).subscribe( res => {
+    this.newHttp.request({
+      type: 'post',
+      url,
+      data: option
+    }).subscribe( res => {
       console.log('detail', res, this.withdraw_data);
     });
   }

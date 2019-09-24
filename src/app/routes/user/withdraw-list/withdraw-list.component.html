@@ -127,19 +127,19 @@
             <td>{{ data.created_at }}</td>
             <td>{{ data.updated_at }}</td>
             <td *ngIf='data.status!=0'>
-                <a (click)='get_data_zh(data)'>查看详细</a>
+                <a (click)='get_data_detail(data)'>查看详细</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a
                   nz-popconfirm
                   nzPopconfirmTitle="确定此次操作?"
                   nzPopconfirmPlacement="bottom"
-                  (nzOnConfirm)="edit_check_withdraw(data,'-3')"
+                  (nzOnConfirm)="edit_check_withdraw(data,'3')"
                   (nzOnCancel)="cancel()"
                   >手动失败</a
                 >
             </td>
             <td *ngIf='data.status==0'>
-                <a (click)='get_data_zh(data)'>查看详细</a>
+                <a (click)='get_data_detail(data)'>查看详细</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a
                   nz-popconfirm
@@ -196,7 +196,7 @@
                       <nz-date-picker [(ngModel)]="withdraw_sreach_date.end_time"></nz-date-picker>
                   </div>
                   <div nz-col nzSpan="4">
-                      <button nz-button [nzSize]="small" nzType="primary" (click)="get_data_zh()">搜索</button>
+                      <button nz-button [nzSize]="small" nzType="primary" (click)="get_data_detail()">搜索</button>
                   </div>
                 </div>
             </nz-content>

@@ -64,7 +64,8 @@ export class ApiService {
   }
 
   // 自定义请求
-  public request(type: string = 'get', url: string , data: any = {}): any {
+  // tslint:disable-next-line: variable-name
+  public request({type = 'get', url = '' , data = {}}): any {
     return this.commonService[type](url, data);
   }
 }
