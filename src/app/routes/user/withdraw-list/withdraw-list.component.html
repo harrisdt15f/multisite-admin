@@ -170,9 +170,38 @@
     </nz-table>
     <nz-drawer nzWidth='800px' [nzVisible]="detail_data_pop" nzPlacement="right"
       [nzTitle]="'详细信息'" (nzOnClose)="detail_data_pop = false">
-        <nz-descriptions nzBordered [nzColumn]="{ xxl: 2, xl: 2, lg: 2, md: 2, sm: 2, xs: 2 }">
-          <nz-descriptions-item *ngFor="let keys of objectKeys(detail_data_row)" [nzTitle]="keys">{{keys!='状态' ? detail_data_row[keys] : detail_data_row[keys] | checkStatus }}</nz-descriptions-item>
-        </nz-descriptions>
+      <nz-layout>
+          <nz-header>
+              <div nz-row>
+                <div nz-col nzSpan="8">col-8</div>
+                <div nz-col nzSpan="8">col-8</div>
+                <div nz-col nzSpan="8">col-8</div>
+              </div>
+          </nz-header>
+          <nz-layout>
+            <nz-sider>
+                <div nz-row>
+                  <div nz-col nzSpan="6">col-6</div>
+                  <div nz-col nzSpan="6">col-6</div>
+                  <div nz-col nzSpan="6">col-6</div>
+                  <div nz-col nzSpan="6">col-6</div>
+                </div>
+            </nz-sider>
+            <nz-content>
+                <div nz-row>
+                  <div nz-col nzSpan="10">
+                      <nz-date-picker [(ngModel)]="withdraw_sreach_date.start_time"></nz-date-picker>
+                  </div>
+                  <div nz-col nzSpan="10">
+                      <nz-date-picker [(ngModel)]="withdraw_sreach_date.end_time"></nz-date-picker>
+                  </div>
+                  <div nz-col nzSpan="4">
+                      <button nz-button [nzSize]="small" nzType="primary" (click)="get_data_zh()">搜索</button>
+                  </div>
+                </div>
+            </nz-content>
+          </nz-layout>
+        </nz-layout>
     </nz-drawer>
     <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right"
       [nzTitle]="'填写审核人'" (nzOnClose)="is_edit_check = false">

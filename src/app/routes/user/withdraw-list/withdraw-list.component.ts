@@ -55,6 +55,11 @@ export class UserWithdrawListComponent implements OnInit {
   public withdraw_remark: string;
   public withdraw_data: any = {};
 
+  public withdraw_sreach_date = {
+    start_time : '',
+    end_time : ''
+  }
+
   constructor(
     private http: _HttpClient,
     private userManageService: UserManageService,
@@ -185,6 +190,10 @@ export class UserWithdrawListComponent implements OnInit {
       }
     });
   }
+  /**
+   * 提现详情列表
+   * @param data 
+   */
   get_data_zh(data: any) {
     // const dataZh = {
     //   id : '编号',
@@ -204,11 +213,25 @@ export class UserWithdrawListComponent implements OnInit {
     //   newData[newKey] = data[key];
     //   return newData;
     // }, {});
+    this.detail_data_pop = true;
+    if ( data ) {
+      this.withdraw_data = data;
+    }
+    const option = {
+      id : this.withdraw_data['id']
+    };
+    const {start_time, end_time} = this.withdraw_sreach_date;
+    // tslint:disable-next-line: no-unused-expression
+    start_time && Object.assign(option, {start_time});
+    // tslint:disable-next-line: no-unused-expression
+    end_time && Object.assign(option, {end_time});
     const url = `/api/withdraw/show?id=2`;
-    this.newHttp.request('get', url, { id: data['id'] }).subscribe( res => {
-      console.log('detail', res, data, data['id']);
+    console.log('detail', option, this.withdraw_data);
+    this.newHttp.request('post', url, option ).subscribe( res => {
+      console.log('detail', res, this.withdraw_data);
     });
   }
+
   cancel() {}
 }
 
