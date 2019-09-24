@@ -57,8 +57,41 @@ export class UserWithdrawListComponent implements OnInit {
 
   public withdraw_sreach_date = {
     start_time : '',
-    end_time : ''
-  }
+    end_time : '',
+  };
+  public withdraw_detail_data = {
+    user_id : '',
+    user_status : '',
+    remark : '',
+    order_id : '',
+    user_balance : '',
+    usable_balance : '',
+    can_withdraw_balance : '',
+    is_tester : '',
+    that_day_recharege_amount : '',
+    that_day_withdraw_amount : '',
+    that_day_bet_amount : '',
+    created_at : '',
+    amount : '',
+    bank_name : '',
+    card_number : '',
+    card_username : '',
+    province : '',
+    branch : '',
+    branch_address : '',
+    fail_remark : '',
+    check_remark : '',
+    status : '',
+    claimant : '',
+    claim_time : '',
+    audit_manger : '',
+    audit_time : '',
+    updated_at : '',
+    service_fee : '',
+    remittance_amount : '',
+    channel : '',
+    ip : ''
+  };
 
   constructor(
     private http: _HttpClient,
@@ -215,11 +248,7 @@ export class UserWithdrawListComponent implements OnInit {
     //   created_at : '创建时间',
     //   updated_at : '最近操作时间'
     // };
-    // const objs = Object.keys(data).reduce((newData, key) => {
-    //   const newKey = dataZh[key] || key;
-    //   newData[newKey] = data[key];
-    //   return newData;
-    // }, {});
+
     this.detail_data_pop = true;
     if ( data ) {
       this.withdraw_data = data;
@@ -228,12 +257,9 @@ export class UserWithdrawListComponent implements OnInit {
       id : this.withdraw_data['id']
     };
     const {start_time, end_time} = this.withdraw_sreach_date;
-    // tslint:disable-next-line: no-unused-expression
     start_time && Object.assign(option, {start_time});
-    // tslint:disable-next-line: no-unused-expression
     end_time && Object.assign(option, {end_time});
     const url = `/api/withdraw/show?id=2`;
-    console.log('detail', option, this.withdraw_data);
     this.newHttp.request({
       type: 'post',
       url,

@@ -141,7 +141,7 @@ export class ReportService {
       option = data;
 
     }
-    const href = `${url}?page_size=${page_size}&page=${page_index}`;
+    const href = url;
     return this.commonService.post(href, option, { headers });
   }
 
