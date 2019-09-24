@@ -30,7 +30,7 @@ export class UserWithdrawListComponent implements OnInit {
 
   public is_load_list: boolean;
 
-  public note_value: string;
+  // public note_value: string;
   public sortName: string | null = null;
   public sortValue: string | null = null;
   public is_edit_check = false;
@@ -50,6 +50,10 @@ export class UserWithdrawListComponent implements OnInit {
 
   //充值渠道
   public payment_list: Array<any> = [];
+
+  //操作状态
+  public withdraw_remark: string;
+  public withdraw_data: any = {};
 
   constructor(
     private http: _HttpClient,
@@ -107,32 +111,33 @@ export class UserWithdrawListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   edit_check_withdraw(data, type) {
-    console.log('data', data, type);
     this.submit_withdraw_lodding = false;
-    this.note_value = '';
-    let url = '';
-    switch (type) {
-      case 'detailed':
-        this.detail_data_pop = true;
-        const newData = this.get_data_zh(data);
-        this.detail_data_row = newData;
-        break;
-      case 'pass':
-        this.edit_check_obj = data;
-        this.edit_check_obj['type'] = type;
-        this.is_edit_check = true;
-        break;
-      case 'no_pass':
-        url = '/api/withdraw-check/audit-failure';
-        break;
-      case 'waiting':
-        break;
-      case 'failure':
-        break;
-    }
-    if (type !== 'pass' && type !== 'detailed') {
-      this.newHttp.request('post', url, {id: data.id}).subscribe( res => {
-        console.log('test', res);
+    const url = '/api/withdraw/status';
+    const option = {
+      id: data.id,
+      status : type
+    };
+    // this.note_value = '';
+    // this.edit_check_obj = data;
+    // this.edit_check_obj['type'] = type;
+    if ( type === 'reject' ) {
+      this.is_edit_check = true;
+      this.withdraw_remark = '';
+      this.withdraw_data = data;
+    } else {
+      // tslint:disable-next-line: triple-equals
+      // tslint:disable-next-line: no-unused-expression
+      if ( type === '1' ) {
+        this.is_edit_check = false;
+        Object.assign(option, { remark : this.withdraw_remark });
+        this.withdraw_remark = '';
+      }
+      if ( type === '2' ) Object.assign(option, { channel_id : 1 });
+      this.newHttp.request('post', url, option).subscribe( res => {
+        if (res['success'] ) {
+          this.message.success('提交结果成功', {nzDuration: 10000,});
+          this.get_withdraw_aply_list();
+        }
       });
     }
   }
@@ -180,56 +185,29 @@ export class UserWithdrawListComponent implements OnInit {
       }
     });
   }
-  /**
-  *提交审核
-  *
-  * @memberof UserwithdrawCheckComponent
-  */
-  submit_pass() {
-    let option = {
-      "id": this.edit_check_obj['id'],
-      "type": 1,
-      "status": this.edit_check_obj['type'] === 'pass' ? 1 : 2,
-      "auditor_note": this.note_value ? this.note_value : '审核人已确认'
-    }
-    this.submit_withdraw_lodding = true;
-    this.userManageService.submit_pass_result(option).subscribe((res: any) => {
-      this.submit_withdraw_lodding = false;
-      if (res && res.success) {
-        this.note_value = '';
-        this.is_edit_check = false;
-        this.get_withdraw_aply_list();
-        this.message.success('提交审核结果成功', {
-          nzDuration: 10000,
-        });
-      } else {
-
-        this.message.error(res.message, {
-          nzDuration: 10000,
-        });
-      }
+  get_data_zh(data: any) {
+    // const dataZh = {
+    //   id : '编号',
+    //   username : '用户名',
+    //   order_id : '订单号',
+    //   admin_name : '提交申请人',
+    //   auditor_name : '审核人',
+    //   apply_note : '申请人备注',
+    //   card_username : '银行名称',
+    //   card_number : '卡号',
+    //   status : '状态',
+    //   created_at : '创建时间',
+    //   updated_at : '最近操作时间'
+    // };
+    // const objs = Object.keys(data).reduce((newData, key) => {
+    //   const newKey = dataZh[key] || key;
+    //   newData[newKey] = data[key];
+    //   return newData;
+    // }, {});
+    const url = `/api/withdraw/show?id=2`;
+    this.newHttp.request('get', url, { id: data['id'] }).subscribe( res => {
+      console.log('detail', res, data, data['id']);
     });
-  }
-  get_data_zh(data) {
-    const dataZh = {
-      id : '编号',
-      username : '用户名',
-      order_id : '订单号',
-      admin_name : '提交申请人',
-      auditor_name : '审核人',
-      apply_note : '申请人备注',
-      card_username : '银行名称',
-      card_number : '卡号',
-      status : '状态',
-      created_at : '创建时间',
-      updated_at : '最近操作时间'
-    };
-    const objs = Object.keys(data).reduce((newData, key) => {
-      const newKey = dataZh[key] || key;
-      newData[newKey] = data[key];
-      return newData;
-    }, {});
-    return objs;
   }
   cancel() {}
 }
