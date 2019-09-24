@@ -151,15 +151,8 @@
                   >认领审核</a
                 >
                 <br/>
-                <a
-                  nz-popconfirm
-                  nzPopconfirmTitle="确定此次操作?"
-                  nzPopconfirmPlacement="bottom"
-                  (nzOnConfirm)="edit_check_withdraw(data,'2')"
-                  (nzOnCancel)="cancel()"
-                  >通过审核</a
-                >
                 <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="edit_check_withdraw(data,'pass')" style='color:#1D90FF'>通过审核</a>
                 <a (click)="edit_check_withdraw(data,'reject')" style='color:#1D90FF'>驳回审核</a>
             </td>
           </tr>
@@ -232,7 +225,7 @@
         </nz-layout>
     </nz-drawer>
     <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right"
-      [nzTitle]="'填写审核人'" (nzOnClose)="is_edit_check = false">
+      [nzTitle]="填写相关内容"" (nzOnClose)="is_edit_check = false">
         <div>
             <nz-form-item>
               <nz-form-label [nzSpan]="6" >驳回理由</nz-form-label>
@@ -241,6 +234,18 @@
               </nz-form-control>
             </nz-form-item>
             <button nz-button nzType="primary" (click)="edit_check_withdraw(withdraw_data,'1')">提交</button>
+        </div>
+        <div>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="6" >通过选项</nz-form-label>
+                <nz-form-control [nzSpan]="16">
+                    <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="withdraw_channel_id" nzAllowClear
+                      nzPlaceHolder="通过选项">
+                      <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            <button nz-button nzType="primary" (click)="edit_check_withdraw(withdraw_data,'2')">提交</button>
         </div>
     </nz-drawer>
   </nz-content>

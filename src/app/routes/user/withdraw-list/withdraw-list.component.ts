@@ -54,6 +54,7 @@ export class UserWithdrawListComponent implements OnInit {
   //操作状态
   public withdraw_remark: string;
   public withdraw_data: any = {};
+  public withdraw_channel_id: string;
 
   public withdraw_sreach_date = {
     start_time : '',
@@ -161,7 +162,7 @@ export class UserWithdrawListComponent implements OnInit {
     // this.note_value = '';
     // this.edit_check_obj = data;
     // this.edit_check_obj['type'] = type;
-    if ( type === 'reject' ) {
+    if ( type === 'reject' || type === 'pass' ) {
       this.is_edit_check = true;
       this.withdraw_remark = '';
       this.withdraw_data = data;
@@ -173,7 +174,11 @@ export class UserWithdrawListComponent implements OnInit {
         Object.assign(option, { remark : this.withdraw_remark });
         this.withdraw_remark = '';
       }
-      if ( type === '2' ) Object.assign(option, { channel_id : 1 });
+      if ( type === '2' ) {
+        this.is_edit_check = false;
+        Object.assign(option, { channel_id : this.withdraw_channel_id });
+        this.withdraw_channel_id = '';
+      }
       this.newHttp.request({
         type: 'post',
         url,
