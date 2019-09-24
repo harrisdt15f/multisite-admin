@@ -1,0 +1,87 @@
+<page-header [action]="action">
+  <ng-template #action>
+    <button (click)='download_report_all()' style='width:100px;margin: 4px 10px 0 8px;float:right' nz-button nzBlock
+      [nzType]="'dashed'" class="ant-btn__block mb-sm">
+      <i *ngIf='!is_down_load_all' nz-icon nzType="cloud-download" nzTheme="outline"></i>
+      <i *ngIf='is_down_load_all' nz-icon nzType="loading" nzTheme="outline"></i>
+      <span>导出所有</span>
+    </button>
+    <button (click)='download_report()' style='width:100px;margin: 4px 10px 0 8px;float:right' nz-button nzBlock
+    [nzType]="'dashed'" class="ant-btn__block mb-sm">
+    <i *ngIf='!is_down_load' nz-icon nzType="cloud-download" nzTheme="outline"></i>
+    <i *ngIf='is_down_load' nz-icon nzType="loading" nzTheme="outline"></i>
+    <span>导出当页</span>
+  </button>
+  </ng-template>
+</page-header>
+<nz-layout>
+  <nz-content>
+    <div>
+      <div style='padding-top: 20px' nz-row nzGutter="16">
+        <div nz-col nzSpan="20">
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8">用户名</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                <input nz-input nzSize="small" placeholder="用户名" [(ngModel)]="searchData.username" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8">申请时间</nz-form-label>
+              <nz-form-control [nzSpan]="16">   
+                <nz-date-picker [nzStyle]='{width:"200px"}' [(ngModel)]="searchData.time_condtions"
+                  id="created_time" nzFormat="yyyy-MM-dd HH:mm:ss"
+                  nzPlaceHolder="申请时间">
+                </nz-date-picker>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8">状态</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                <nz-select nzSize="small" style="width: 100%;"   [(ngModel)]="searchData.status" nzShowSearch
+                      nzPlaceHolder="状态">
+                      <nz-option nzValue="" nzLabel="不限"></nz-option>
+                      <nz-option nzValue="0" nzLabel="0"></nz-option>
+                      <nz-option nzValue="1" nzLabel="1"></nz-option>
+                    </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+          <div nz-col nzSpan="6">
+            <nz-form-item>
+              <nz-form-label [nzSpan]="8">编号</nz-form-label>
+              <nz-form-control [nzSpan]="16">
+                <input nz-input nzSize="small" placeholder="编号" [(ngModel)]="searchData.order_id" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+        <div nz-col nzSpan="4">
+          <button nz-button nzType="primary" class="select-search" (click)="search()"><i nz-icon
+              type="search"></i>搜索</button>&nbsp;&nbsp;
+          <button nz-button nzType="primary" class="select-reset" (click)="resetSearch()"><i nz-icon
+              type="sync"></i>重置</button>
+        </div>
+      </div>
+    </div>
+    <nz-table #nzTable [nzScroll]='{ y: "450px" }' [nzLoadingDelay]='500' (nzPageIndexChange)='chang_page_index($event)'
+      [nzLoading]='is_load_list' [(nzPageIndex)]='page_index' [nzFrontPagination]='false' [nzData]="list_of_withdraw_data"
+      [nzPageSize]='searchData.pageSize' [nzTotal]='list_total'>
+      <thead>
+        <tr>
+          <th nzWidth="15%">用户名称</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- <ng-template cdkDrag ngFor let-data [ngForOf]="nzTable.data"> -->
+        <tr *ngFor="let data of list_of_withdraw_data">
+          <td>1</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </nz-content>
+</nz-layout>

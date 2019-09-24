@@ -5,11 +5,13 @@ import { ReportRechargeReportComponent } from './recharge-report/recharge-report
 import { ReportAccountReportComponent } from './account-report/account-report.component';
 import { PipesModule } from 'app/pipes/pipes.module';
 import { ReportUserBetsComponent } from './user-bets/user-bets.component';
+import { ReportWithdrawReportComponent } from './withdraw-report/withdraw-report.component';
 
 const COMPONENTS = [
   ReportRechargeReportComponent,
   ReportAccountReportComponent,
-  ReportUserBetsComponent];
+  ReportUserBetsComponent,
+  ReportWithdrawReportComponent];
 const COMPONENTS_NOROUNT = [];
 
 @NgModule({
