@@ -93,15 +93,14 @@ export class ReportRechargeReportComponent implements OnInit {
    */
   get_recharge_list() {
     this.is_load_list = true;
-    let option: any = {};
-    if (this.searchData.user_name) {
-      option.user_name = this.searchData.user_name;
+    const option: any = {};
+    const { searchData } = this;
+    for (const key in searchData) {
+      if ( searchData[key] !== '' ) {
+        option[key] = searchData[key];
+      }
     }
     option.get_sub = this.searchData.get_sub ? 1 : 0;
-    if (this.searchData.is_tester) option.is_tester = this.searchData.is_tester;
-    if (this.searchData.status) option.status = this.searchData.status;
-    if (this.searchData.deposit_mode) option.deposit_mode = this.searchData.deposit_mode;
-    if (this.searchData.company_order_num) option.company_order_num = this.searchData.company_order_num;
     this.nowOption = option;
     this.reportService.get_recharge_report(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
