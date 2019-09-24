@@ -55,6 +55,7 @@ export class UserWithdrawListComponent implements OnInit {
   public withdraw_remark: string;
   public withdraw_data: any = {};
   public withdraw_channel_id: string;
+  public withdraw_pop_type: string;
 
   public withdraw_sreach_date = {
     start_time : '',
@@ -166,6 +167,7 @@ export class UserWithdrawListComponent implements OnInit {
       this.is_edit_check = true;
       this.withdraw_remark = '';
       this.withdraw_data = data;
+      this.withdraw_pop_type = type;
     } else {
       // tslint:disable-next-line: triple-equals
       // tslint:disable-next-line: no-unused-expression
