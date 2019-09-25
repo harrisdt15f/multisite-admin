@@ -26,16 +26,13 @@ export class ReportWithdrawReportComponent implements OnInit {
 
   html: string;
   public nowOption: any = {};
-  // tslint:disable-next-line: variable-name
   public is_load_list: boolean;
   public list_total: number;
-  // tslint:disable-next-line: variable-name
   public list_of_withdraw_data: any = {};
   public is_down_load_all: boolean;
   public logList: any = [];
 
   public page_index = 1;
-  public show_text: string;
   // -------导出报表参数
   public is_down_load: boolean;
 
@@ -51,16 +48,13 @@ export class ReportWithdrawReportComponent implements OnInit {
     this.search();
   }
 
-  /**
-   * 重置搜索参数 
-   * */
+  //  重置搜索参数
   public resetSearch() {
     this.reset_search_data();
     this.get_withdraw_list();
   }
-  /**
-   * 重置搜索参数对象 
-   * */
+
+  // 重置搜索参数对象
   public reset_search_data() {
     this.searchData = {
       pageIndex: 1,
@@ -73,7 +67,7 @@ export class ReportWithdrawReportComponent implements OnInit {
   }
 
   /**
-   *获取充值列表
+   * 获取充值列表
    *
    * @param {*} page_index
    * @memberof OperasyonrechargeManageComponent
@@ -103,7 +97,7 @@ export class ReportWithdrawReportComponent implements OnInit {
   }
 
   /**
-   *搜索数组
+   * 搜索数组
    *
    * @memberof UserPassportCheckComponent
    */
@@ -111,8 +105,8 @@ export class ReportWithdrawReportComponent implements OnInit {
     this.page_index = 1;
     this.get_withdraw_list();
   }
-  /**
-  *改变页数
+  /*
+  * 改变页数
   *
   * @param {*} item
   * @memberof UserManageUserComponent
@@ -122,7 +116,7 @@ export class ReportWithdrawReportComponent implements OnInit {
     this.get_withdraw_list();
   }
 
-    /**
+/**
  * 导出表格
  */
 download_report() {
@@ -130,29 +124,29 @@ download_report() {
   this.pushLogList(this.list_of_withdraw_data);
   this.excelService.exportAsExcelFile(this.logList, '提现记录');
 }
-/**
-*点击导出所有
+/*
+* 点击导出所有
 *
 * @memberof PlayerListComponent
 */
 public download_report_all() {
-  let page_number = Math.ceil(Number(this.list_total) / Number(this.searchData.pageSize));
+  const pageNumber = Math.ceil(Number(this.list_total) / Number(this.searchData.pageSize));
   this.logList = [];
   this.is_down_load_all = true;
-  this.report_list(1, page_number);
+  this.report_list(1, pageNumber);
 }
-/**
- 循环便利导出所有
+/*
+ * 循环便利导出所有
  *
  * @param {*} now_page
  * @param {*} total_page
  * @memberof PlayerListComponent
  */
-report_list(now_page, total_page) {
+report_list(nowPage: number, totalPage: number) {
   this.submit_list_service(this.nowOption, (page) => {
-    if (page < total_page) {
-      this.message.create('success', `成功导出第 ${page} 页，共${total_page}页！`);
-      this.report_list(page + 1, total_page);
+    if (page < totalPage) {
+      this.message.create('success', `成功导出第 ${page} 页，共${totalPage}页！`);
+      this.report_list(page + 1, totalPage);
     } else {
       setTimeout(() => {
         this.is_down_load_all = false;
@@ -163,7 +157,7 @@ report_list(now_page, total_page) {
       }, 1000);
       this.excelService.exportAsExcelFile(this.logList, '用户提现报表');
     }
-  }, now_page);
+  }, nowPage);
 
 }
 /*

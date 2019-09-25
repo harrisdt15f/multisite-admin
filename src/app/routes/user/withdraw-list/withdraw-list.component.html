@@ -161,72 +161,72 @@
         </ng-template>
       </tbody>
     </nz-table>
-    <nz-drawer nzWidth='1000px' [nzVisible]="detail_data_pop" nzPlacement="right"
+    <nz-drawer nzWidth='1200px' [nzVisible]="detail_data_pop" nzPlacement="right"
       nzTitle="详细信息" (nzOnClose)="detail_data_pop = false">
-      <nz-layout>
-          <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
-            <nz-descriptions-item nzTitle="用户状态">{{ withdraw_detail_data['user_status'] }}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="渠道">{{ withdraw_detail_data['channel'] }}</nz-descriptions-item>
-            <nz-descriptions-item nzTitle="网络地址">{{ withdraw_detail_data['ip'] }}</nz-descriptions-item>
-          </nz-descriptions>
-          <nz-layout >
-            <nz-sider [nzWidth]='300' nzTheme='light'>  
-                <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }' nzBordered>
-                  <nz-descriptions-item nzTitle="编号">{{ withdraw_detail_data['user_id'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="提现编号">{{ withdraw_detail_data['order_id'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="是否测试用户">{{ withdraw_detail_data['is_tester'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="提现申请时间">{{ withdraw_detail_data['created_at'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="提现备注">{{ withdraw_detail_data['remark'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="提现失败备注">{{ withdraw_detail_data['fail_remark'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="金额">{{ withdraw_detail_data['amount'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="银行名称">{{ withdraw_detail_data['bank_name'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="卡号">{{ withdraw_detail_data['card_number'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="户名">{{ withdraw_detail_data['card_username'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="省">{{ withdraw_detail_data['province'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="开户行">{{ withdraw_detail_data['branch'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="开户行地址">{{ withdraw_detail_data['branch_address'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="审核备注">{{ withdraw_detail_data['check_remark'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="状态">{{ withdraw_detail_data['status'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="认领人">{{ withdraw_detail_data['claimant'] }}</nz-descriptions-item>
-                  <nz-descriptions-item nzTitle="认领时间">{{ withdraw_detail_data['claim_time'] }}</nz-descriptions-item>
-                </nz-descriptions>
-            </nz-sider>
-            <nz-content>
-                <div nz-row>
-                    <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
-                      <nz-descriptions-item nzTitle="用户余额">{{ withdraw_detail_data['user_balance'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="可用余额">{{ withdraw_detail_data['usable_balance'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="可提现余额">{{ withdraw_detail_data['can_withdraw_balance'] }}</nz-descriptions-item>
-                    </nz-descriptions>
-                </div>
-                <div nz-row>
-                  <div nz-col nzSpan="6">
-                      <nz-form-label>开始时间</nz-form-label>
-                      <nz-date-picker nzPlaceHolder="开始时间" [(ngModel)]="withdraw_sreach_date.start_time"></nz-date-picker>
-                  </div>
-                  <div nz-col nzSpan="6">
-                      <nz-form-label>戒指时间</nz-form-label>
-                      <nz-date-picker nzPlaceHolder="截止时间" [(ngModel)]="withdraw_sreach_date.end_time"></nz-date-picker>
-                  </div>
-                  <div nz-col nzSpan="4">
-                      <button nz-button [nzSize]="small" nzType="primary" (click)="get_data_detail()">搜索</button>
-                  </div>
-                </div>
-                <div nz-row>
-                    <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
-                      <nz-descriptions-item nzTitle="当天充值金额">{{ withdraw_detail_data['that_day_recharege_amount'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="当天提现金额">{{ withdraw_detail_data['that_day_withdraw_amount'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="当天投注额">{{ withdraw_detail_data['that_day_bet_amount'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="审核管理员">{{ withdraw_detail_data['audit_manger'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="审核时间">{{ withdraw_detail_data['audit_time'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="到账时间">{{ withdraw_detail_data['updated_at'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="手续费">{{ withdraw_detail_data['service_fee'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="实际付款金额">{{ withdraw_detail_data['remittance_amount'] }}</nz-descriptions-item>
-                    </nz-descriptions>
-                </div>
-            </nz-content>
-          </nz-layout>
-        </nz-layout>
+      <div nz-row style="margin-bottom:2rem">
+        <nz-descriptions [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
+          <nz-descriptions-item nzTitle="用户状态">{{ withdraw_detail_data['user_status'] }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="渠道">{{ withdraw_detail_data['channel'] }}</nz-descriptions-item>
+          <nz-descriptions-item nzTitle="网络地址">{{ withdraw_detail_data['ip'] }}</nz-descriptions-item>
+        </nz-descriptions>
+      </div>
+      <div nz-row>
+        <div nz-col nzSpan="7">
+            <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }' nzBordered>
+              <nz-descriptions-item nzTitle="编号">{{ withdraw_detail_data['user_id'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="提现编号">{{ withdraw_detail_data['order_id'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="是否测试用户">{{ withdraw_detail_data['is_tester'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="提现申请时间">{{ withdraw_detail_data['created_at'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="提现备注">{{ withdraw_detail_data['remark'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="提现失败备注">{{ withdraw_detail_data['fail_remark'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="金额">{{ withdraw_detail_data['amount'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="银行名称">{{ withdraw_detail_data['bank_name'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="卡号">{{ withdraw_detail_data['card_number'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="户名">{{ withdraw_detail_data['card_username'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="省">{{ withdraw_detail_data['province'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="开户行">{{ withdraw_detail_data['branch'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="开户行地址">{{ withdraw_detail_data['branch_address'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="审核备注">{{ withdraw_detail_data['check_remark'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="状态">{{ withdraw_detail_data['status'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="认领人">{{ withdraw_detail_data['claimant'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="认领时间">{{ withdraw_detail_data['claim_time'] }}</nz-descriptions-item>
+            </nz-descriptions>
+        </div>
+        <div nz-col nzSpan="17">
+          <div nz-row>
+            <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
+              <nz-descriptions-item nzTitle="用户余额">{{ withdraw_detail_data['user_balance'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="可用余额">{{ withdraw_detail_data['usable_balance'] }}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="可提现余额">{{ withdraw_detail_data['can_withdraw_balance'] }}</nz-descriptions-item>
+            </nz-descriptions>
+          </div>
+          <div nz-row>
+            <div nz-col nzSpan="8" nzOffset='2'>
+                <nz-form-label>开始时间</nz-form-label>
+                <nz-date-picker nzPlaceHolder="选择开始时间" [(ngModel)]="withdraw_sreach_date.start_time" nzFormat="yyyy-MM-dd HH:mm:ss"></nz-date-picker>
+            </div>
+            <div nz-col nzSpan="8">
+                <nz-form-label>截止时间</nz-form-label>
+                <nz-date-picker nzPlaceHolder="选择截止时间" [(ngModel)]="withdraw_sreach_date.end_time" nzFormat="yyyy-MM-dd HH:mm:ss"></nz-date-picker>
+            </div>
+            <div nz-col nzSpan="4">
+                <button nz-button [nzSize]="small" nzType="primary" (click)="get_data_detail()">搜索</button>
+            </div>
+          </div>
+          <div nz-row>
+              <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
+                <nz-descriptions-item nzTitle="当天充值金额">{{ withdraw_detail_data['that_day_recharge_amount'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="当天提现金额">{{ withdraw_detail_data['that_day_withdraw_amount'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="当天投注额">{{ withdraw_detail_data['that_day_bet_amount'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="审核管理员">{{ withdraw_detail_data['audit_manager'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="审核时间">{{ withdraw_detail_data['audit_time'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="到账时间">{{ withdraw_detail_data['updated_at'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="手续费">{{ withdraw_detail_data['service_fee'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="实际付款金额">{{ withdraw_detail_data['remittance_amount'] }}</nz-descriptions-item>
+              </nz-descriptions>
+          </div>
+        </div>
+      </div>
     </nz-drawer>
     <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right"
       nzTitle="填写相关内容" (nzOnClose)="is_edit_check = false">

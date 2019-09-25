@@ -86,7 +86,7 @@ export class UserWithdrawListComponent implements OnInit {
     status : '',
     claimant : '',
     claim_time : '',
-    audit_manger : '',
+    audit_manager : '',
     audit_time : '',
     updated_at : '',
     service_fee : '',
@@ -222,8 +222,12 @@ export class UserWithdrawListComponent implements OnInit {
   get_withdraw_aply_list() {
     this.is_load_list = true;
     let option: any = {};
-    if (this.searchData.username) option.username = this.searchData.username;
-    if (this.searchData.status) option.status = this.searchData.status;
+    const { searchData } = this;
+    for (const key in searchData) {
+      if ( searchData[key] !== '' ) {
+        option[key] = searchData[key];
+      }
+    }
     this.userManageService.get_withdraw_check_list(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
         this.list_total = res.data.total;
@@ -246,22 +250,30 @@ export class UserWithdrawListComponent implements OnInit {
     if ( data ) {
       this.withdraw_data = data;
     }
-    const option = {
-      id : this.withdraw_data['id']
-    };
+    const id = this.withdraw_data['id'];
     const {start_time, end_time} = this.withdraw_sreach_date;
-    start_time && Object.assign(option, {start_time});
-    end_time && Object.assign(option, {end_time});
-    const url = `/api/withdraw/show`;
+    const url = `/api/withdraw/show?id=${id}
+    ${start_time !== '' ? '&start_time=' + new Date(start_time).getTime() : ''}${end_time !== '' ? '&end_time=' + new Date(end_time).getTime() : ''}`;
     this.newHttp.request({
-      type: 'post',
-      url,
-      data: option
+      type: 'get',
+      url
     }).subscribe( res => {
-      console.log('detail', res, this.withdraw_data);
+      const {data , success} = res;
+      if (success) this.withdraw_detail_data = data;
     });
   }
-
+  change_date_string(dates: any) {
+    const date = new Date(dates);
+    const time = {
+      year: date.getFullYear(),
+      month: date.getMonth(),
+      day: date.getDate(),
+      h: date.getHours(),
+      m: date.getMinutes(),
+      s: date.getSeconds()
+    };
+    return `${time.year}-${time.month}-${time.day} ${time.h}:${time.m}:${time.s}`;
+  }
   cancel() {}
 }
 
