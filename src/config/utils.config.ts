@@ -245,6 +245,24 @@ export class Utils {
     return Str;
   }
 
+  static change_date_string(dates: any) {
+    const date = new Date(dates);
+    const time = {
+      year: date.getFullYear(),
+      month: date.getMonth(),
+      day: date.getDate(),
+      h: date.getHours(),
+      m: date.getMinutes(),
+      s: date.getSeconds()
+    };
+    return `${time.year}-${
+      10 > time.month ? '0' + time.month : time.month}-${
+        10 > time.day ? '0' + time.day : time.day} ${
+          10 > time.h ? '0' + time.h : time.h}:${
+            10 > time.m ? '0' + time.m : time.m}:${
+              10 > time.s ? '0' + time.s : time.s}`;
+  }
+
   // 时间转换
   static formatTime(obj: any, format = 'YYYY-MM-DD HH:MM:SS') {
     if (!obj) {

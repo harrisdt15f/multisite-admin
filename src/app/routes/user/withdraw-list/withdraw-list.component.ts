@@ -5,6 +5,8 @@ import { NzMessageService } from 'ng-zorro-antd';
 import { UserManageService } from 'app/service/user-manage.service';
 import { ApiService } from '../../../../api/api.service';
 
+import { Utils } from 'config/utils.config';
+
 @Component({
   selector: 'app-user-withdraw-list',
   templateUrl: './withdraw-list.component.html',
@@ -67,7 +69,7 @@ export class UserWithdrawListComponent implements OnInit {
     private http: _HttpClient,
     private userManageService: UserManageService,
     private message: NzMessageService,
-    private newHttp: ApiService
+    private newHttp: ApiService,
   ) { }
 
   ngOnInit() {
@@ -221,8 +223,8 @@ export class UserWithdrawListComponent implements OnInit {
     const id = this.withdraw_data['id'];
     const {start_time, end_time} = this.withdraw_sreach_date;
     const url = `/api/withdraw/show?id=${id}${
-      start_time !== '' ? '&start_time=' + this.change_date_string(start_time) : ''}${
-        end_time !== '' ? '&end_time=' + this.change_date_string(end_time) : ''}`;
+      start_time !== '' ? '&start_time=' + Utils.change_date_string(start_time) : ''}${
+        end_time !== '' ? '&end_time=' + Utils.change_date_string(end_time) : ''}`;
     this.newHttp.request({
       type: 'get',
       url
@@ -230,23 +232,6 @@ export class UserWithdrawListComponent implements OnInit {
       const {data , success} = res;
       if (success) this.withdraw_detail_data = data;
     });
-  }
-  change_date_string(dates: any) {
-    const date = new Date(dates);
-    const time = {
-      year: date.getFullYear(),
-      month: date.getMonth(),
-      day: date.getDate(),
-      h: date.getHours(),
-      m: date.getMinutes(),
-      s: date.getSeconds()
-    };
-    return `${time.year}-${
-      10 > time.month ? '0' + time.month : time.month}-${
-        10 > time.day ? '0' + time.day : time.day} ${
-          10 > time.h ? '0' + time.h : time.h}:${
-            10 > time.m ? '0' + time.m : time.m}:${
-              10 > time.s ? '0' + time.s : time.s}`;
   }
   cancel() {}
 }

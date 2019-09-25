@@ -561,7 +561,7 @@ export class GameGameTypeComponent implements OnInit {
         this.submit_edit_lotteries(option);
         break;
     }
-
+    this.is_show_modal = false;
   }
   /** 
    * 提交添加
