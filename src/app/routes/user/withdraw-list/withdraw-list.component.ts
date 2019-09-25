@@ -242,20 +242,6 @@ export class UserWithdrawListComponent implements OnInit {
    * @param data 
    */
   get_data_detail(data: any) {
-    // const dataZh = {
-    //   id : '编号',
-    //   username : '用户名',
-    //   order_id : '订单号',
-    //   admin_name : '提交申请人',
-    //   auditor_name : '审核人',
-    //   apply_note : '申请人备注',
-    //   card_username : '银行名称',
-    //   card_number : '卡号',
-    //   status : '状态',
-    //   created_at : '创建时间',
-    //   updated_at : '最近操作时间'
-    // };
-
     this.detail_data_pop = true;
     if ( data ) {
       this.withdraw_data = data;
@@ -266,7 +252,7 @@ export class UserWithdrawListComponent implements OnInit {
     const {start_time, end_time} = this.withdraw_sreach_date;
     start_time && Object.assign(option, {start_time});
     end_time && Object.assign(option, {end_time});
-    const url = `/api/withdraw/show?id=2`;
+    const url = `/api/withdraw/show`;
     this.newHttp.request({
       type: 'post',
       url,

@@ -193,6 +193,13 @@
             </nz-sider>
             <nz-content>
                 <div nz-row>
+                    <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
+                      <nz-descriptions-item nzTitle="用户余额">{{ withdraw_detail_data['user_balance'] }}</nz-descriptions-item>
+                      <nz-descriptions-item nzTitle="可用余额">{{ withdraw_detail_data['usable_balance'] }}</nz-descriptions-item>
+                      <nz-descriptions-item nzTitle="可提现余额">{{ withdraw_detail_data['can_withdraw_balance'] }}</nz-descriptions-item>
+                    </nz-descriptions>
+                </div>
+                <div nz-row>
                   <div nz-col nzSpan="6">
                       <nz-form-label>开始时间</nz-form-label>
                       <nz-date-picker nzPlaceHolder="开始时间" [(ngModel)]="withdraw_sreach_date.start_time"></nz-date-picker>
@@ -207,9 +214,6 @@
                 </div>
                 <div nz-row>
                     <nz-descriptions nzSize="small" [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
-                      <nz-descriptions-item nzTitle="用户余额">{{ withdraw_detail_data['user_balance'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="可用余额">{{ withdraw_detail_data['usable_balance'] }}</nz-descriptions-item>
-                      <nz-descriptions-item nzTitle="可提现余额">{{ withdraw_detail_data['can_withdraw_balance'] }}</nz-descriptions-item>
                       <nz-descriptions-item nzTitle="当天充值金额">{{ withdraw_detail_data['that_day_recharege_amount'] }}</nz-descriptions-item>
                       <nz-descriptions-item nzTitle="当天提现金额">{{ withdraw_detail_data['that_day_withdraw_amount'] }}</nz-descriptions-item>
                       <nz-descriptions-item nzTitle="当天投注额">{{ withdraw_detail_data['that_day_bet_amount'] }}</nz-descriptions-item>
