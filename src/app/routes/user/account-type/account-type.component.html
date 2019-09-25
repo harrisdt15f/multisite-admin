@@ -102,7 +102,7 @@
                       <nz-form-control [nzSm]="15" [nzXs]="23">
                         <nz-radio-group id="in_out" formControlName="in_out" [(ngModel)]="edit_account_obj['in_out']">
                           <label nz-radio nzValue="1">增加金额</label>
-                          <label nz-radio nzValue="0">减少金额</label>
+                          <label nz-radio nzValue="2">减少金额</label>
                         </nz-radio-group>
                         <nz-form-explain *ngIf="create_form.get('in_out')?.dirty && create_form.get('in_out')?.errors">
                           请选择!</nz-form-explain>
@@ -112,7 +112,6 @@
                       <nz-form-label nzFor="param" [nzSm]="6" [nzXs]="24">需要的字段</nz-form-label>
                       <nz-form-control  [nzSm]="15" [nzXs]="23">
                         <nz-checkbox-group id="param" formControlName="param" [(ngModel)]="param_list" (ngModelChange)="change_param(param_list)"></nz-checkbox-group>
-  
                       </nz-form-control>
                     </nz-form-item>
                 <nz-form-item nz-row style="margin-bottom:8px;">
