@@ -61,39 +61,7 @@ export class UserWithdrawListComponent implements OnInit {
     start_time : '',
     end_time : '',
   };
-  public withdraw_detail_data = {
-    user_id : '',
-    user_status : '',
-    remark : '',
-    order_id : '',
-    user_balance : '',
-    usable_balance : '',
-    can_withdraw_balance : '',
-    is_tester : '',
-    that_day_recharege_amount : '',
-    that_day_withdraw_amount : '',
-    that_day_bet_amount : '',
-    created_at : '',
-    amount : '',
-    bank_name : '',
-    card_number : '',
-    card_username : '',
-    province : '',
-    branch : '',
-    branch_address : '',
-    fail_remark : '',
-    check_remark : '',
-    status : '',
-    claimant : '',
-    claim_time : '',
-    audit_manager : '',
-    audit_time : '',
-    updated_at : '',
-    service_fee : '',
-    remittance_amount : '',
-    channel : '',
-    ip : ''
-  };
+  public withdraw_detail_data: object = {};
 
   constructor(
     private http: _HttpClient,

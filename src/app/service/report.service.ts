@@ -94,7 +94,7 @@ export class ReportService {
       }
       option = data;
     }
-    const href = '/api/reportManagement/user-recharge-history?page_size=' + page_size + '&page=' + page_index;;
+    const href = '/api/reportManagement/user-recharge-history?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
 

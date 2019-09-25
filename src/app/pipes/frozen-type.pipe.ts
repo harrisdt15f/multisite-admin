@@ -18,6 +18,7 @@ export class FrozenTypePipe implements PipeTransform {
       case 1: status = '禁止登录'; break;
       case 2: status = '禁止投注'; break;
       case 3: status = '禁止提现'; break;
+      case 4: status = '禁止资金操作'; break;
       default: break;
     }
     return status;

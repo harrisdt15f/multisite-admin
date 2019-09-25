@@ -424,6 +424,7 @@ export class UserManageUserComponent implements OnInit {
     this.freeze_obj = {};
     this.freeze_obj['username'] = data['username'];
     this.freeze_obj['user_id'] = data['id'];
+    this.freeze_obj['frozen_type'] = `${data['frozen_type']}`;
   }
   /**
    *提交修改密码
