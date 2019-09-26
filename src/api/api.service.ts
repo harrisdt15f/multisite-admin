@@ -63,25 +63,27 @@ export class ApiService {
     return this.commonService.post('/api/lottery-series/delete', data);
   }
 
-  // 自定义请求
-  // tslint:disable-next-line: variable-name
-  public request({type = 'get', url = '' , data = {}}): any {
-    return this.commonService[type](url, data);
-  }
+  // 获取充值渠道 和 充值类型
   public payment_info({data = {}}): any {
     const url = '/api/reportManagement/payment-info';
     return this.commonService.get(url, data);
   }
+
+  // 玩家提现记录报表
   public withdraw_record({data = {}}): any {
     const url = '/api/reportManagement/withdraw-record';
     return this.commonService.post(url, data);
   }
+
+  // 提现详细
   public show({data = {}}): any {
     const url = `/api/withdraw/show?id=${data['id']}${
       data['start_time'] !== '' ? '&start_time=' + Utils.change_date_string(data['start_time']) : ''}${
         data['end_time'] !== '' ? '&end_time=' + Utils.change_date_string(data['end_time']) : ''}`;
     return this.commonService.get(url);
   }
+
+  // 提现状态切换
   public status({data = {}}): any {
     const url = '/api/withdraw/status';
     return this.commonService.post(url, data);
