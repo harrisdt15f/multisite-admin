@@ -126,6 +126,15 @@
             <td>{{ data.up_order_at }}</td>
             <td *ngIf='data.status === 2'>
                 <a (click)='get_data_detail(data)'>查看详细</a>
+                <br>
+                <a
+                nz-popconfirm
+                nzPopconfirmTitle="确定此次操作?"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="edit_check_withdraw(data,'5')"
+                (nzOnCancel)="cancel()"
+                >手动成功</a
+                >
                 <nz-divider nzType="vertical"></nz-divider>
                 <a
                   nz-popconfirm
@@ -138,26 +147,28 @@
             </td>
             <td *ngIf='data.status !== 2'>
               <a (click)='get_data_detail(data)'>查看详细</a>
-              <nz-divider nzType="vertical"></nz-divider>
-              <a
-                *ngIf="data.status !== 4 && data.status !== 1"
-                nz-popconfirm
-                nzPopconfirmTitle="确定此次操作?"
-                nzPopconfirmPlacement="bottom"
-                (nzOnConfirm)="edit_check_withdraw(data,'4')"
-                (nzOnCancel)="cancel()"
-                style='color:#1D90FF'
-                >认领审核</a
-              >
-              <a *ngIf="data.status === 4 && data.status !== 1" disabled>已认领</a>
-              <a *ngIf="data.status === 1" disabled>已驳回</a>
-              <p *ngIf="data.status === 4">
-                <a 
-                (click)="edit_check_withdraw(data,'reject')" 
-                style='color:#1D90FF'>驳回审核</a>
-                <a (click)="edit_check_withdraw(data,'pass')" style='color:#1D90FF'>通过审核</a>
+              <span *ngIf='data.status !== 5 && data.status !== -3'>
                 <nz-divider nzType="vertical"></nz-divider>
-              </p>
+                <a
+                  *ngIf="data.status !== 4 && data.status !== 1"
+                  nz-popconfirm
+                  nzPopconfirmTitle="确定此次操作?"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="edit_check_withdraw(data,'4')"
+                  (nzOnCancel)="cancel()"
+                  style='color:#1D90FF'
+                  >认领审核</a
+                >
+                <a *ngIf="data.status === 4 && data.status !== 1" disabled>已认领</a>
+                <a *ngIf="data.status === 1" disabled>已驳回</a>
+                <p *ngIf="data.status === 4">
+                  <a 
+                  (click)="edit_check_withdraw(data,'reject')" 
+                  style='color:#1D90FF'>驳回审核</a>
+                  <nz-divider nzType="vertical"></nz-divider>
+                  <a (click)="edit_check_withdraw(data,'pass')" style='color:#1D90FF'>通过审核</a>
+                </p>
+              </span>
             </td>
           </tr>
           <tr>
