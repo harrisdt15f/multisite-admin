@@ -68,4 +68,12 @@ export class ApiService {
   public request({type = 'get', url = '' , data = {}}): any {
     return this.commonService[type](url, data);
   }
+  public payment_info({data = {}}): any {
+    const url = '/api/reportManagement/payment-info';
+    return this.commonService.get(url, data);
+  }
+  public withdraw_record({data = {}}): any {
+    const url = '/api/reportManagement/withdraw-record';
+    return this.commonService.post(url, data);
+  }
 }

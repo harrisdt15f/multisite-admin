@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
-import { NzMessageService, NzModalService } from 'ng-zorro-antd';
-
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { ReportService } from 'app/service/report.service';
-import { ExcelService } from 'app/service/excel.service';
-
+import { STColumn } from '@delon/abc';
+import { NzMessageService } from 'ng-zorro-antd';
+import { UserManageService } from 'app/service/user-manage.service';
 import { ApiService } from '../../../../api/api.service';
+
+import { Utils } from 'config/utils.config';
 
 @Component({
   selector: 'app-report-withdraw-report',
@@ -14,190 +13,186 @@ import { ApiService } from '../../../../api/api.service';
   styleUrls: ['./withdraw-report.component.less']
 })
 export class ReportWithdrawReportComponent implements OnInit {
+
+  // 搜索对象
   public searchData = {
     pageIndex: 1,
     pageSize: '100',
-    username: '',
-    time_condtions: '',
     status: '',
-    order_id: ''
+    username: '',
+    order_id: '',
+    time_condtions: []
   };
-  // -----------条件筛选参数
-
-  html: string;
-  public nowOption: any = {};
-  public is_load_list: boolean;
-  public list_total: number;
-  public list_of_withdraw_data: any = {};
-  public is_down_load_all: boolean;
-  public logList: any = [];
-
+  public createdAt = {
+    start: '',
+    end: ''
+  }
   public page_index = 1;
-  // -------导出报表参数
-  public is_down_load: boolean;
+  public list_of_data: object = {};
+  public list_of_aply_data: Array<any> = [];
+  public list_total: number;
+
+  public is_load_list: boolean;
+
+  // public note_value: string;
+  public sortName: string | null = null;
+  public sortValue: string | null = null;
+  public is_edit_check = false;
+  public submit_withdraw_lodding = false;//按钮加载状态
+  public edit_check_obj: object = {
+    type: 'pass'
+  };
+  public status_type = [
+    { text: '待审核', value: '0' },
+    { text: '审核通过', value: '1' },
+    { text: '审核拒绝', value: '1000' },
+  ];
+
+  public detail_data_pop: boolean;
+  public objectKeys = Object.keys;
+
+  //充值渠道
+  public payment_list: Array<any> = [];
+
+  //操作状态
+  public withdraw_remark: string;
+  public withdraw_data: any = {};
+  public withdraw_channel_id: string;
+  public withdraw_pop_type: string;
+
+  public withdraw_sreach_date = {
+    start_time : '',
+    end_time : '',
+  };
+  public withdraw_detail_data: object = {};
 
   constructor(
-    private reportService: ReportService,
-    private excelService: ExcelService,
-    private modalService: NzModalService,
+    private http: _HttpClient,
+    private userManageService: UserManageService,
     private message: NzMessageService,
-    private newHttp: ApiService
+    private newHttp: ApiService,
   ) { }
 
   ngOnInit() {
-    this.search();
+    this.get_withdraw_aply_list();
   }
 
-  //  重置搜索参数
-  public resetSearch() {
+  /**
+  * 重置搜做参数
+  */
+  resetSearch() {
     this.reset_search_data();
-    this.get_withdraw_list();
+    this.page_index = 1;
+    this.get_withdraw_aply_list();
   }
-
-  // 重置搜索参数对象
+  /**
+  * 重置搜索表单
+  */
   public reset_search_data() {
     this.searchData = {
       pageIndex: 1,
       pageSize: '100',
-      username: '',
-      time_condtions: '',
       status: '',
-      order_id: ''
+      username: '',
+      order_id: '',
+      time_condtions: []
+    };
+    this.createdAt = {
+      start : '',
+      end : ''
     };
   }
 
   /**
-   * 获取充值列表
-   *
-   * @param {*} page_index
-   * @memberof OperasyonrechargeManageComponent
-   */
-  get_withdraw_list() {
-    this.is_load_list = true;
-    const option: any = {};
-    const { searchData } = this;
-    for (const key in searchData) {
-      if ( searchData[key] !== '' ) {
-        option[key] = searchData[key];
-      }
-    }
-    this.nowOption = option;
-    const url = '/api/reportManagement/withdraw-record';
-    this.reportService.get_report(url, option).subscribe((res: any) => {
-      if (res && res.success) {
-        this.list_total = res.data.total;
-        this.is_load_list = false;
-        this.list_of_withdraw_data = res.data.data;
-      } else {
-        this.message.error(res.message, {
-          nzDuration: 10000,
-        });
-      }
-    });
-  }
-
-  /**
-   * 搜索数组
-   *
-   * @memberof UserPassportCheckComponent
-   */
-  search(): void {
+  *搜索数组
+  *
+  * @memberof UserwithdrawCheckComponent
+  */
+  search() {
     this.page_index = 1;
-    this.get_withdraw_list();
+    this.get_withdraw_aply_list();
   }
-  /*
-  * 改变页数
+  /**
+  *改变页数
   *
   * @param {*} item
   * @memberof UserManageUserComponent
   */
   chang_page_index(item) {
     this.page_index = item;
-    this.get_withdraw_list();
+    this.get_withdraw_aply_list();
   }
-
-/**
- * 导出表格
- */
-download_report() {
-  this.logList = [];
-  this.pushLogList(this.list_of_withdraw_data);
-  this.excelService.exportAsExcelFile(this.logList, '提现记录');
-}
-/*
-* 点击导出所有
-*
-* @memberof PlayerListComponent
-*/
-public download_report_all() {
-  const pageNumber = Math.ceil(Number(this.list_total) / Number(this.searchData.pageSize));
-  this.logList = [];
-  this.is_down_load_all = true;
-  this.report_list(1, pageNumber);
-}
-/*
- * 循环便利导出所有
- *
- * @param {*} now_page
- * @param {*} total_page
- * @memberof PlayerListComponent
- */
-report_list(nowPage: number, totalPage: number) {
-  this.submit_list_service(this.nowOption, (page) => {
-    if (page < totalPage) {
-      this.message.create('success', `成功导出第 ${page} 页，共${totalPage}页！`);
-      this.report_list(page + 1, totalPage);
-    } else {
-      setTimeout(() => {
-        this.is_down_load_all = false;
-        const modal = this.modalService.success({
-          nzTitle: '温馨提示',
-          nzContent: '导出成功 !'
+  /*
+  *
+  *获取用户管理列表
+  *
+  * @memberof UserManageUserComponent
+  */
+  get_withdraw_aply_list() {
+    this.is_load_list = true;
+    let option: any = {};
+    let { searchData } = this;
+    for (const key in searchData) {
+      if (searchData[key] && key !== 'time_condtions') {
+        option[key] = searchData[key];
+      }
+    }
+    if (this.createdAt['start'] || this.createdAt['end']) {
+      const start = Utils.change_date_string(this.createdAt['start']);
+      const end = Utils.change_date_string(this.createdAt['end']);
+      option['time_condtions'] = `[["created_at", ">=", "${start}"], ["created_at", "<=", "${end}"]]`;
+    }
+    this.newHttp.withdraw_record({
+      data: option
+    }).subscribe((res: any) => {
+      if (res && res.success) {
+        this.list_total = res.data.total;
+        this.is_load_list = false;
+        this.list_of_aply_data = res.data.data;
+      } else {
+        this.is_load_list = false;
+        this.message.error(res.message, {
+          nzDuration: 10000,
         });
-      }, 1000);
-      this.excelService.exportAsExcelFile(this.logList, '用户提现报表');
-    }
-  }, nowPage);
-
-}
-/*
-*调用查询并回调
-*
-* @param {*} option
-* @param {*} callback
-* @param {*} [now_page]
-* @memberof PlayerListComponent
-*/
-public submit_list_service(option, callback, now_page?) {
-  this.reportService.get_recharge_report(this.searchData.pageSize, now_page, option).subscribe((res: any) => {
-    if (res && res.success) {
-      this.pushLogList(res.data['data']);
-      callback(now_page);
-    } else {
-      this.message.error(res.message, {
-        nzDuration: 10000,
-      });
-    }
-  });
-}
-
-/**
- *获取数据push给打印数组
- *
- * @param {*} data_list
- * @memberof ReportRechargeReportComponent
- */
-pushLogList(data_list) {
-  data_list.forEach((item) => {
-    this.logList.push({
-      '用户名称': item.username,
-      '提现申请时间': item.time_condtions,
-      '状态': item.status,
-      '编号': item.order_id
+      }
     });
-  });
+  }
+  /**
+   * 提现详情列表
+   * @param data 
+   */
+  public get_data_detail(data: any) {
+    this.withdraw_detail_data = {};
+    this.detail_data_pop = true;
+    if ( data ) {
+      this.withdraw_data = data;
+    }
+    const id = this.withdraw_data['id'];
+    const {start_time, end_time} = this.withdraw_sreach_date;
+    const url = `/api/withdraw/show?id=${id}${
+      start_time !== '' ? '&start_time=' + Utils.change_date_string(start_time) : ''}${
+        end_time !== '' ? '&end_time=' + Utils.change_date_string(end_time) : ''}`;
+    this.newHttp.request({
+      type: 'get',
+      url
+    }).subscribe( res => {
+      const {data , success} = res;
+      if (success) this.withdraw_detail_data = data;
+      this.withdraw_sreach_date['start_time'] = '';
+      this.withdraw_sreach_date['end_time'] = '';
+    });
+  }
+  public get_success_data(data: any){
+    let newObj = {};
+    for (const key in data) {
+      if (typeof data[key] === 'number') {
+        newObj[key] = data[key];
+      }
+    }
+    return newObj;
+  }
+  cancel() {}
 }
 
-}
 
 

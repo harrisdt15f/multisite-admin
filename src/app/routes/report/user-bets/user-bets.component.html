@@ -237,7 +237,7 @@
               <nz-descriptions-item nzTitle="追号编号" >{{checkBetData['trace_number']}}</nz-descriptions-item>
               <nz-descriptions-item nzTitle="彩种">{{checkBetData['lottery_sign']}}</nz-descriptions-item>
               <nz-descriptions-item nzTitle="玩法">{{checkBetData['method_name']}}</nz-descriptions-item>
-              <nz-descriptions-item nzTitle="是否测试">{{checkBetData['is_tester']==1?'是':'否'}}</nz-descriptions-item>
+              <nz-descriptions-item nzTitle="是否测试">{{checkBetData['is_tester'] === 1 ? '是' : '否'}}</nz-descriptions-item>
               <nz-descriptions-item nzTitle="奖期号">{{checkBetData['issue']}}</nz-descriptions-item>
               <nz-descriptions-item nzTitle="投注号码">{{checkBetData['bet_number']}}</nz-descriptions-item>
               <nz-descriptions-item nzTitle="开奖号码" [nzSpan]="2">{{checkBetData['open_number']}}</nz-descriptions-item>

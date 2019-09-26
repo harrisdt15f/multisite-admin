@@ -249,7 +249,7 @@ export class Utils {
     const date = new Date(dates);
     const time = {
       year: date.getFullYear(),
-      month: date.getMonth(),
+      month: date.getMonth() + 1,
       day: date.getDate(),
       h: date.getHours(),
       m: date.getMinutes(),

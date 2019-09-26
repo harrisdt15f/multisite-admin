@@ -130,11 +130,7 @@ export class ReportRechargeReportComponent implements OnInit {
    * @param item 
    */
   get_payment_info() {
-    const url = '/api/reportManagement/payment-info';
-    this.newHttp.request({
-      type: 'get',
-      url
-    }).subscribe( res => {
+    this.newHttp.payment_info({}).subscribe( res => {
        const {payments, types} = res['data'];
        this.payment_list = payments;
        this.pay_types = types;
