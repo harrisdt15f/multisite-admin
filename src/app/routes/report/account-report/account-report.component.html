@@ -174,7 +174,7 @@
     <nz-descriptions-item nzTitle="金额(元)">{{ check_data_list['amount'] }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="余额(元)">{{ check_data_list['balance'] }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="注单编号">{{ check_data_list['serial_number'] }}</nz-descriptions-item>
-    <nz-descriptions-item nzTitle="管理员">{{ check_data_list.admin?check_data_list['admin']['name']:'' }}</nz-descriptions-item>
+    <nz-descriptions-item nzTitle="管理员">{{ check_data_list['admin']?check_data_list['admin']['name']:'' }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="创建时间">{{check_data_list['created_at']}}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="IP">{{ check_data_list['ip'] }}</nz-descriptions-item>
     <nz-descriptions-item nzTitle="备注">0</nz-descriptions-item>
