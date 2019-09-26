@@ -19,12 +19,13 @@ export class UserWithdrawListComponent implements OnInit {
     pageSize: '100',
     status: '',
     username: '',
-    id: '',
-    payment: '',
-    orderId: '',
-    createdAt: '',
-    processTime: '',
+    order_id: '',
+    time_condtions: []
   };
+  public createdAt = {
+    start: '',
+    end: ''
+  }
   public page_index = 1;
   public list_of_data: object = {};
   public list_of_aply_data: Array<any> = [];
@@ -47,7 +48,6 @@ export class UserWithdrawListComponent implements OnInit {
   ];
 
   public detail_data_pop: boolean;
-  public detail_data_row = {};
   public objectKeys = Object.keys;
 
   //充值渠道
@@ -108,13 +108,13 @@ export class UserWithdrawListComponent implements OnInit {
       pageSize: '100',
       status: '',
       username: '',
-      id: '',  //编号
-      payment: '', //渠道
-      orderId: '', //订单号
-      createdAt: '', //创建时间
-      processTime: '' //成功时间
+      order_id: '',
+      time_condtions: []
     };
-    // 带注释的key 未与后台通报
+    this.createdAt = {
+      start : '',
+      end : ''
+    };
   }
 
   /**
@@ -124,43 +124,47 @@ export class UserWithdrawListComponent implements OnInit {
   * @memberof UserManageUserComponent
   */
   edit_check_withdraw(data, type) {
-    this.submit_withdraw_lodding = false;
-    const url = '/api/withdraw/status';
-    const option = {
-      id: data.id,
-      status : type
-    };
-    // this.note_value = '';
-    // this.edit_check_obj = data;
-    // this.edit_check_obj['type'] = type;
-    if ( type === 'reject' || type === 'pass' ) {
-      this.is_edit_check = true;
-      this.withdraw_remark = '';
-      this.withdraw_data = data;
-      this.withdraw_pop_type = type;
-    } else {
-      // tslint:disable-next-line: triple-equals
-      // tslint:disable-next-line: no-unused-expression
-      if ( type === '1' ) {
-        this.is_edit_check = false;
-        Object.assign(option, { remark : this.withdraw_remark });
+    const reject = data.status === 1 && type === 'reject';
+    const four = data.status === 4 && type === '4';
+    if ( !reject && !four) {
+      this.submit_withdraw_lodding = false;
+      const url = '/api/withdraw/status';
+      const option = {
+        id: data.id,
+        status : type
+      };
+      if ( type === 'reject' || type === 'pass' ) {
+        this.is_edit_check = true;
         this.withdraw_remark = '';
-      }
-      if ( type === '2' ) {
-        this.is_edit_check = false;
-        Object.assign(option, { channel_id : this.withdraw_channel_id });
-        this.withdraw_channel_id = '';
-      }
-      this.newHttp.request({
-        type: 'post',
-        url,
-        data: option
-      }).subscribe( res => {
-        if (res['success'] ) {
-          this.message.success('提交结果成功', {nzDuration: 10000,});
-          this.get_withdraw_aply_list();
+        this.withdraw_data = data;
+        this.withdraw_pop_type = type;
+      } else {
+        if ( type === '1' ) {
+          this.is_edit_check = false;
+          Object.assign(option, { remark : this.withdraw_remark });
+          this.withdraw_remark = '';
         }
-      });
+        if ( type === '2' ) {
+          this.is_edit_check = false;
+          Object.assign(option, { channel_id : this.withdraw_channel_id });
+          this.withdraw_channel_id = null;
+        }
+        this.newHttp.request({
+          type: 'post',
+          url,
+          data: option
+        }).subscribe( res => {
+          if (res['success'] ) {
+            this.message.success('提交结果成功', {nzDuration: 10000,});
+            this.resetSearch();
+            this.get_withdraw_aply_list();
+          }
+        });
+      }
+    } else if (four) {
+      this.message.error('该选项已认领', {nzDuration: 10000,});
+    } else if (reject) {
+      this.message.error('该选项已驳回', {nzDuration: 10000,});
     }
   }
 
@@ -192,13 +196,23 @@ export class UserWithdrawListComponent implements OnInit {
   get_withdraw_aply_list() {
     this.is_load_list = true;
     let option: any = {};
-    const { searchData } = this;
+    let { searchData } = this;
     for (const key in searchData) {
-      if ( searchData[key] !== '' ) {
+      if (searchData[key] && key !== 'time_condtions') {
         option[key] = searchData[key];
       }
     }
-    this.userManageService.get_withdraw_check_list(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
+    if (this.createdAt['start'] || this.createdAt['end']) {
+      const start = Utils.change_date_string(this.createdAt['start']);
+      const end = Utils.change_date_string(this.createdAt['end']);
+      option['time_condtions'] = `[["created_at", ">=", "${start}"], ["created_at", "<=", "${end}"]]`;
+    }
+    const url = '/api/reportManagement/withdraw-record';
+    this.newHttp.request({
+      type: 'post',
+      url,
+      data: option
+    }).subscribe((res: any) => {
       if (res && res.success) {
         this.list_total = res.data.total;
         this.is_load_list = false;
@@ -215,7 +229,8 @@ export class UserWithdrawListComponent implements OnInit {
    * 提现详情列表
    * @param data 
    */
-  get_data_detail(data: any) {
+  public get_data_detail(data: any) {
+    this.withdraw_detail_data = {};
     this.detail_data_pop = true;
     if ( data ) {
       this.withdraw_data = data;
@@ -231,7 +246,18 @@ export class UserWithdrawListComponent implements OnInit {
     }).subscribe( res => {
       const {data , success} = res;
       if (success) this.withdraw_detail_data = data;
+      this.withdraw_sreach_date['start_time'] = '';
+      this.withdraw_sreach_date['end_time'] = '';
     });
+  }
+  public get_success_data(data: any){
+    let newObj = {};
+    for (const key in data) {
+      if (typeof data[key] === 'number') {
+        newObj[key] = data[key];
+      }
+    }
+    return newObj;
   }
   cancel() {}
 }

@@ -4,14 +4,6 @@
       <div>
           <div style='padding-top: 20px' nz-row nzGutter="16">
             <div nz-col nzSpan="20">
-                <div nz-col nzSpan="6">
-                    <nz-form-item>
-                      <nz-form-label [nzSpan]="6" >编号</nz-form-label>
-                      <nz-form-control [nzSpan]="16">
-                          <input nz-input nzSize="small" placeholder="编号" [(ngModel)]="searchData.id"  />
-                      </nz-form-control>
-                    </nz-form-item>
-                  </div>
               <div nz-col nzSpan="6">
                 <nz-form-item>
                   <nz-form-label [nzSpan]="6" >申请人</nz-form-label>
@@ -20,7 +12,7 @@
                   </nz-form-control>
                 </nz-form-item>
               </div>
-              <div nz-col nzSpan="6">
+              <!-- <div nz-col nzSpan="6">
                 <nz-form-item>
                   <nz-form-label [nzSpan]="6" >提现渠道</nz-form-label>
                   <nz-form-control [nzSpan]="16">
@@ -31,7 +23,7 @@
                       </nz-select>
                   </nz-form-control>
                 </nz-form-item>
-              </div>
+              </div> -->
               <div nz-col nzSpan="6">
                 <nz-form-item>
                   <nz-form-label [nzSpan]="6" >状态</nz-form-label>
@@ -39,9 +31,12 @@
                     <nz-select nzSize="small" style="width: 100%;"   [(ngModel)]="searchData.status" nzShowSearch
                       nzPlaceHolder="状态">
                       <nz-option nzValue="" nzLabel="不限"></nz-option>
-                      <nz-option nzValue="0" nzLabel="待审核"></nz-option>
-                      <nz-option nzValue="1" nzLabel="审核通过"></nz-option>
-                      <nz-option nzValue="2" nzLabel="审核拒绝"></nz-option>
+                      <nz-option nzValue="0" nzLabel="未认领"></nz-option>
+                      <nz-option nzValue="1" nzLabel="驳回"></nz-option>
+                      <nz-option nzValue="2" nzLabel="审核通过"></nz-option>
+                      <nz-option nzValue="-3" nzLabel="失败"></nz-option>
+                      <nz-option nzValue="4" nzLabel="已认领"></nz-option>
+                      <nz-option nzValue="5" nzLabel="成功"></nz-option>
                     </nz-select>
                   </nz-form-control>
                 </nz-form-item>
@@ -62,7 +57,7 @@
                     <nz-form-item>
                       <nz-form-label [nzSpan]="6" >订单号</nz-form-label>
                       <nz-form-control [nzSpan]="16">
-                          <input nz-input nzSize="small" placeholder="订单号" [(ngModel)]="searchData.orderId"  />
+                          <input nz-input nzSize="small" placeholder="订单号" [(ngModel)]="searchData.order_id"  />
                       </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -70,7 +65,7 @@
                     <nz-form-item>
                         <nz-form-label [nzSpan]="6">开始时间</nz-form-label>
                         <nz-form-control [nzSpan]="16">
-                          <nz-date-picker [nzStyle]='{width:"200px"}' [(ngModel)]="searchData.createdAt"
+                          <nz-date-picker [nzStyle]='{width:"200px"}' [(ngModel)]="createdAt['start']"
                             id="created_time" nzFormat="yyyy-MM-dd HH:mm:ss"
                             nzPlaceHolder="选择创建时间">
                           </nz-date-picker>
@@ -79,9 +74,9 @@
                 </div>
                 <div nz-col nzSpan="6">
                     <nz-form-item>
-                        <nz-form-label [nzSpan]="6">处理时间</nz-form-label>
+                        <nz-form-label [nzSpan]="6">结束时间</nz-form-label>
                         <nz-form-control [nzSpan]="16">
-                          <nz-date-picker [nzStyle]='{width:"200px"}' [(ngModel)]="searchData.processTime"
+                          <nz-date-picker [nzStyle]='{width:"200px"}' [(ngModel)]="createdAt['end']"
                             id="created_time" nzFormat="yyyy-MM-dd HH:mm:ss"
                             nzPlaceHolder="选择创建时间">
                           </nz-date-picker>
@@ -102,13 +97,12 @@
       [nzTotal]='list_total'>
       <thead class="ant-table-thead">
         <tr>
-          <th nzWidth="9%">申请人</th>
-          <th nzWidth="8%">审核人</th>
-          <th nzWidth="10%">申请人备注</th>
+          <th nzWidth="16%">申请人</th>
           <th nzWidth="10%">状态</th>
           <th nzWidth="10%">金额(元)</th>
-          <th nzWidth="10%">创建时间</th>
-          <th nzWidth="10%">最近操作时间</th>
+          <th nzWidth="18%">订单号</th>
+          <th nzWidth="18%">创建时间</th>
+          <th nzWidth="18%">更新时间</th>
           <th nzWidth="10%">操作</th>
         </tr>
       </thead>
@@ -120,28 +114,37 @@
                     {{ data.username }}
                 </div>
             </td>
-            <td>{{ data.admin_name }}</td>
-            <td>{{ data.apply_note}}</td>
-            <td>{{ data.status | checkStatus:data.type}}</td>
-            <td>{{ data.real_amount }}</td>
+            <td>{{ data.status === 0 ? '未认领' : 
+              data.status === 1 ? '驳回' : 
+              data.status === 2 ? '审核通过' :
+              data.status === -3 ? '失败' :
+              data.status === 4 ? '已认领' :
+              data.status === 5 ? '成功' : '状态错误'}}</td>
+            <td>{{ data.amount }}</td>
+            <td>{{ data['order_id'] }}</td>
             <td>{{ data.created_at }}</td>
-            <td>{{ data.updated_at }}</td>
-            <td *ngIf='data.status!=0'>
+            <td>{{ data.up_order_at }}</td>
+            <td *ngIf='data.status === 2'>
                 <a (click)='get_data_detail(data)'>查看详细</a>
                 <nz-divider nzType="vertical"></nz-divider>
                 <a
                   nz-popconfirm
                   nzPopconfirmTitle="确定此次操作?"
                   nzPopconfirmPlacement="bottom"
-                  (nzOnConfirm)="edit_check_withdraw(data,'3')"
+                  (nzOnConfirm)="edit_check_withdraw(data,'-3')"
                   (nzOnCancel)="cancel()"
                   >手动失败</a
                 >
             </td>
-            <td *ngIf='data.status==0'>
-                <a (click)='get_data_detail(data)'>查看详细</a>
-                <nz-divider nzType="vertical"></nz-divider>
+            <td *ngIf='data.status !== 2'>
+              <a (click)='get_data_detail(data)'>查看详细</a>
+              <nz-divider nzType="vertical"></nz-divider>
+              <a 
+              (click)="edit_check_withdraw(data,'reject')" 
+              style='color:#1D90FF'>{{ data.status === 1 ? '已驳回' : '驳回审核'}}</a>
+              <p *ngIf="data.status !== 1">
                 <a
+                  *ngIf="data.status !== 4"
                   nz-popconfirm
                   nzPopconfirmTitle="确定此次操作?"
                   nzPopconfirmPlacement="bottom"
@@ -150,10 +153,10 @@
                   style='color:#1D90FF'
                   >认领审核</a
                 >
-                <br/>
-                <a (click)="edit_check_withdraw(data,'pass')" style='color:#1D90FF'>通过审核</a>
+                <a *ngIf="data.status === 4" disabled>已认领</a>
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)="edit_check_withdraw(data,'reject')" style='color:#1D90FF'>驳回审核</a>
+                <a (click)="edit_check_withdraw(data,'pass')" style='color:#1D90FF'>通过审核</a>
+              </p>
             </td>
           </tr>
           <tr>
@@ -244,6 +247,7 @@
                 <nz-form-label [nzSpan]="6" >通过选项</nz-form-label>
                 <nz-form-control [nzSpan]="16">
                     <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="withdraw_channel_id" nzAllowClear nzPlaceHolder="通过选项">
+                      <nz-option nzValue=" " nzLabel=" "></nz-option>
                       <nz-option nzValue="1" nzLabel="1"></nz-option>
                     </nz-select>
                 </nz-form-control>
