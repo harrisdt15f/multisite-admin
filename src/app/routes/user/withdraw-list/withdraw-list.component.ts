@@ -150,7 +150,7 @@ export class UserWithdrawListComponent implements OnInit {
         }).subscribe( res => {
           if (res['success'] ) {
             this.message.success('提交结果成功', {nzDuration: 10000,});
-            this.resetSearch();
+            this.reset_search_data();
             this.get_withdraw_aply_list();
           }
         });
