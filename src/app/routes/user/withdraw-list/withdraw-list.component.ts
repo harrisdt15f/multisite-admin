@@ -81,11 +81,8 @@ export class UserWithdrawListComponent implements OnInit {
    * 获取充值渠道
    */
   get_payment_info() {
-    const url = '/api/reportManagement/payment-info';
-    this.newHttp.request({
-      type: 'get',
-      url
-    }).subscribe( res => {
+ 
+    this.newHttp.payment_info({}).subscribe( res => {
        const {payments} = res['data'];
        this.payment_list = payments;
     });
@@ -128,7 +125,6 @@ export class UserWithdrawListComponent implements OnInit {
     const four = data.status === 4 && type === '4';
     if ( !reject && !four) {
       this.submit_withdraw_lodding = false;
-      const url = '/api/withdraw/status';
       const option = {
         id: data.id,
         status : type
@@ -149,9 +145,7 @@ export class UserWithdrawListComponent implements OnInit {
           Object.assign(option, { channel_id : this.withdraw_channel_id });
           this.withdraw_channel_id = null;
         }
-        this.newHttp.request({
-          type: 'post',
-          url,
+        this.newHttp.status({
           data: option
         }).subscribe( res => {
           if (res['success'] ) {
@@ -203,10 +197,7 @@ export class UserWithdrawListComponent implements OnInit {
       const end = Utils.change_date_string(this.createdAt['end']);
       option['time_condtions'] = `[["created_at", ">=", "${start}"], ["created_at", "<=", "${end}"]]`;
     }
-    const url = '/api/reportManagement/withdraw-record';
-    this.newHttp.request({
-      type: 'post',
-      url,
+    this.newHttp.withdraw_record({
       data: option
     }).subscribe((res: any) => {
       if (res && res.success) {
@@ -225,7 +216,7 @@ export class UserWithdrawListComponent implements OnInit {
    * 提现详情列表
    * @param data 
    */
-  public get_data_detail(data: any) {
+  public get_data_detail(data: any = '') {
     this.withdraw_detail_data = {};
     this.detail_data_pop = true;
     if ( data ) {
@@ -233,12 +224,13 @@ export class UserWithdrawListComponent implements OnInit {
     }
     const id = this.withdraw_data['id'];
     const {start_time, end_time} = this.withdraw_sreach_date;
-    const url = `/api/withdraw/show?id=${id}${
-      start_time !== '' ? '&start_time=' + Utils.change_date_string(start_time) : ''}${
-        end_time !== '' ? '&end_time=' + Utils.change_date_string(end_time) : ''}`;
-    this.newHttp.request({
-      type: 'get',
-      url
+    const option = {
+      id,
+      start_time,
+      end_time
+    }
+    this.newHttp.show({
+      data: option
     }).subscribe( res => {
       const {data , success} = res;
       if (success) this.withdraw_detail_data = data;

@@ -173,15 +173,15 @@
             </nz-descriptions>
           </div>
           <div nz-row>
-            <div nz-col nzSpan="8" nzOffset='2'>
+            <div nz-col nzSpan="6" nzOffset='2'>
                 <nz-form-label>开始时间</nz-form-label>
                 <nz-date-picker nzPlaceHolder="选择开始时间" [(ngModel)]="withdraw_sreach_date.start_time" nzFormat="yyyy-MM-dd HH:mm:ss"></nz-date-picker>
             </div>
-            <div nz-col nzSpan="8">
+            <div nz-col nzSpan="6">
                 <nz-form-label>截止时间</nz-form-label>
                 <nz-date-picker nzPlaceHolder="选择截止时间" [(ngModel)]="withdraw_sreach_date.end_time" nzFormat="yyyy-MM-dd HH:mm:ss"></nz-date-picker>
             </div>
-            <div nz-col nzSpan="4">
+            <div nz-col nzSpan="2">
                 <button nz-button nzSize="small" nzType="primary" (click)="get_data_detail()">搜索</button>
             </div>
           </div>

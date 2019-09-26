@@ -76,4 +76,14 @@ export class ApiService {
     const url = '/api/reportManagement/withdraw-record';
     return this.commonService.post(url, data);
   }
+  public show({data = {}}): any {
+    const url = `/api/withdraw/show?id=${data['id']}${
+      data['start_time'] !== '' ? '&start_time=' + Utils.change_date_string(data['start_time']) : ''}${
+        data['end_time'] !== '' ? '&end_time=' + Utils.change_date_string(data['end_time']) : ''}`;
+    return this.commonService.get(url);
+  }
+  public status({data = {}}): any {
+    const url = '/api/withdraw/status';
+    return this.commonService.post(url, data);
+  }
 }

@@ -161,7 +161,7 @@ export class ReportWithdrawReportComponent implements OnInit {
    * 提现详情列表
    * @param data 
    */
-  public get_data_detail(data: any) {
+  public get_data_detail(data: any = '') {
     this.withdraw_detail_data = {};
     this.detail_data_pop = true;
     if ( data ) {
@@ -169,12 +169,13 @@ export class ReportWithdrawReportComponent implements OnInit {
     }
     const id = this.withdraw_data['id'];
     const {start_time, end_time} = this.withdraw_sreach_date;
-    const url = `/api/withdraw/show?id=${id}${
-      start_time !== '' ? '&start_time=' + Utils.change_date_string(start_time) : ''}${
-        end_time !== '' ? '&end_time=' + Utils.change_date_string(end_time) : ''}`;
-    this.newHttp.request({
-      type: 'get',
-      url
+    const option: object = {
+      id,
+      start_time,
+      end_time
+    };
+    this.newHttp.show({
+      data: option
     }).subscribe( res => {
       const {data , success} = res;
       if (success) this.withdraw_detail_data = data;
