@@ -86,6 +86,8 @@ export class GameGameTypeComponent implements OnInit {
     hideSeconds: false
   };
 
+  // 接口调用限制loding
+  public loding_control: boolean = false;
 
 
   constructor(
@@ -561,7 +563,7 @@ export class GameGameTypeComponent implements OnInit {
         this.submit_edit_lotteries(option);
         break;
     }
-    this.is_show_modal = false;
+    this.loding_control = true;
   }
   /** 
    * 提交添加
@@ -661,6 +663,7 @@ export class GameGameTypeComponent implements OnInit {
   }
   hide_modal() {
     this.is_show_modal = false;
+    this.loding_control = false;
     this.update_form()
   }
   /**
