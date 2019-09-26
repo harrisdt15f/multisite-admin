@@ -133,7 +133,7 @@
         </ng-template>
       </tbody>
     </nz-table>
-    <nz-drawer nzWidth='1200px' [nzVisible]="detail_data_pop" nzPlacement="right"
+    <nz-drawer nzWidth='80%' [nzVisible]="detail_data_pop" nzPlacement="right"
       nzTitle="详细信息" (nzOnClose)="detail_data_pop = false">
       <div nz-row style="margin-bottom:2rem">
         <nz-descriptions [nzColumn]='{ xxl: 3, x3: 3, lg: 3, md: 3, sm: 3, xs: 3 }' nzBordered>
@@ -182,7 +182,7 @@
                 <nz-date-picker nzPlaceHolder="选择截止时间" [(ngModel)]="withdraw_sreach_date.end_time" nzFormat="yyyy-MM-dd HH:mm:ss"></nz-date-picker>
             </div>
             <div nz-col nzSpan="2">
-                <button nz-button nzSize="small" nzType="primary" (click)="get_data_detail()">搜索</button>
+                <button nz-button nzSize="small" nzType="primary" (click)="get_data_detail('', 'detail')">搜索</button>
             </div>
           </div>
           <div nz-row>
@@ -195,6 +195,21 @@
                 <nz-descriptions-item nzTitle="到账时间">{{ withdraw_detail_data['updated_at'] }}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="手续费">{{ withdraw_detail_data['service_fee'] }}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="实际付款金额">{{ withdraw_detail_data['remittance_amount'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="活动礼金总额">{{ withdraw_detail_data['activity_gift_money_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="代理商佣金总额">{{ withdraw_detail_data['agent_commission_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="下注总额">{{ withdraw_detail_data['bet_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="奖金总额">{{ withdraw_detail_data['bonus_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="索要充值总额">{{ withdraw_detail_data['claim_recharge_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="佣金总额">{{ withdraw_detail_data['commission_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="日薪总额">{{ withdraw_detail_data['day_salary_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="红利总额">{{ withdraw_detail_data['dividend_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="在线充值总额">{{ withdraw_detail_data['online_recharge_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="个人充值总额">{{ withdraw_detail_data['person_recharge_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="利率总额">{{ withdraw_detail_data['r_w_ratio_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="充值总额">{{ withdraw_detail_data['recharge_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="转换充值总额">{{ withdraw_detail_data['transfer_recharge_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="赢利总额">{{ withdraw_detail_data['win_total'] }}</nz-descriptions-item>
+                <nz-descriptions-item nzTitle="提现总额">{{ withdraw_detail_data['withdraw_total'] }}</nz-descriptions-item>
               </nz-descriptions>
           </div>
         </div>

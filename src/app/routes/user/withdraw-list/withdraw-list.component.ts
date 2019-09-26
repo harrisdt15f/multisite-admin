@@ -216,11 +216,11 @@ export class UserWithdrawListComponent implements OnInit {
    * 提现详情列表
    * @param data 
    */
-  public get_data_detail(data: any = '') {
-    this.withdraw_detail_data = {};
+  public get_data_detail(datas: any = '', type = '') {
+    type !== 'detail' && (this.withdraw_detail_data = {});
     this.detail_data_pop = true;
-    if ( data ) {
-      this.withdraw_data = data;
+    if ( datas ) {
+      this.withdraw_data = datas;
     }
     const id = this.withdraw_data['id'];
     const {start_time, end_time} = this.withdraw_sreach_date;
@@ -233,7 +233,15 @@ export class UserWithdrawListComponent implements OnInit {
       data: option
     }).subscribe( res => {
       const {data , success} = res;
-      if (success) this.withdraw_detail_data = data;
+      if (success) {
+        if (type === 'detail') {
+          console.log('data', this.withdraw_detail_data);
+          this.withdraw_detail_data = Object.assign(this.withdraw_detail_data, this.get_success_data(data));
+          console.log('data2', this.get_success_data(data));
+        } else {
+          this.withdraw_detail_data = data;
+        }
+      }
       this.withdraw_sreach_date['start_time'] = '';
       this.withdraw_sreach_date['end_time'] = '';
     });
@@ -241,7 +249,7 @@ export class UserWithdrawListComponent implements OnInit {
   public get_success_data(data: any){
     let newObj = {};
     for (const key in data) {
-      if (typeof data[key] === 'number') {
+      if (key.indexOf('total') !== -1 ) {
         newObj[key] = data[key];
       }
     }
