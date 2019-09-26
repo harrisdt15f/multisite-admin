@@ -161,10 +161,6 @@ export class UserWithdrawListComponent implements OnInit {
           }
         });
       }
-    } else if (four) {
-      this.message.error('该选项已认领', {nzDuration: 10000,});
-    } else if (reject) {
-      this.message.error('该选项已驳回', {nzDuration: 10000,});
     }
   }
 
