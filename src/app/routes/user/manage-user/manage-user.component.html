@@ -249,7 +249,7 @@
 
         <form nz-form [formGroup]="freeze_form" (ngSubmit)="keep_freeze()">
           <nz-form-item>
-            <nz-form-label nzFor="username" nzRequired [nzSm]="6" [nzXs]="24">玩家：</nz-form-label>
+            <nz-form-label nzFor="username" nzRequired [nzSm]="6" [nzXs]="24">玩家</nz-form-label>
             <nz-form-control [nzSm]="15" [nzXs]="23">
               <input id="username" formControlName="username" nz-input placeholder="用户名"
                 [(ngModel)]="freeze_obj['username']" disabled="true" />

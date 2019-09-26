@@ -109,66 +109,23 @@
       <tbody class="ant-table-tbody">
         <ng-template ngFor let-data [ngForOf]="list_of_aply_data">
           <tr>
+              <td>
+                  <div class='ellipsis' style='max-width:300px;display: inline-block;'>
+                      {{ data.username }}
+                  </div>
+              </td>
+              <td>{{ data.status === 0 ? '未认领' : 
+                data.status === 1 ? '驳回' : 
+                data.status === 2 ? '审核通过' :
+                data.status === -3 ? '失败' :
+                data.status === 4 ? '已认领' :
+                data.status === 5 ? '成功' : '状态错误'}}</td>
+              <td>{{ data.amount }}</td>
+              <td>{{ data['order_id'] }}</td>
+              <td>{{ data.created_at }}</td>
+              <td>{{ data.up_order_at }}</td>
             <td>
-                <div class='ellipsis' style='max-width:300px;display: inline-block;'>
-                    {{ data.username }}
-                </div>
-            </td>
-            <td>{{ data.status === 0 ? '未认领' : 
-              data.status === 1 ? '驳回' : 
-              data.status === 2 ? '审核通过' :
-              data.status === -3 ? '失败' :
-              data.status === 4 ? '已认领' :
-              data.status === 5 ? '成功' : '状态错误'}}</td>
-            <td>{{ data.amount }}</td>
-            <td>{{ data['order_id'] }}</td>
-            <td>{{ data.created_at }}</td>
-            <td>{{ data.up_order_at }}</td>
-            <td *ngIf='data.status === 2'>
-                <a (click)='get_data_detail(data)'>查看详细</a>
-                <br>
-                <a
-                nz-popconfirm
-                nzPopconfirmTitle="确定此次操作?"
-                nzPopconfirmPlacement="bottom"
-                (nzOnConfirm)="edit_check_withdraw(data,'5')"
-                (nzOnCancel)="cancel()"
-                >手动成功</a
-                >
-                <nz-divider nzType="vertical"></nz-divider>
-                <a
-                  nz-popconfirm
-                  nzPopconfirmTitle="确定此次操作?"
-                  nzPopconfirmPlacement="bottom"
-                  (nzOnConfirm)="edit_check_withdraw(data,'-3')"
-                  (nzOnCancel)="cancel()"
-                  >手动失败</a
-                >
-            </td>
-            <td *ngIf='data.status !== 2'>
               <a (click)='get_data_detail(data)'>查看详细</a>
-              <span *ngIf='data.status !== 5 && data.status !== -3'>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a
-                  *ngIf="data.status !== 4 && data.status !== 1"
-                  nz-popconfirm
-                  nzPopconfirmTitle="确定此次操作?"
-                  nzPopconfirmPlacement="bottom"
-                  (nzOnConfirm)="edit_check_withdraw(data,'4')"
-                  (nzOnCancel)="cancel()"
-                  style='color:#1D90FF'
-                  >认领审核</a
-                >
-                <a *ngIf="data.status === 4 && data.status !== 1" disabled>已认领</a>
-                <a *ngIf="data.status === 1" disabled>已驳回</a>
-                <p *ngIf="data.status === 4">
-                  <a 
-                  (click)="edit_check_withdraw(data,'reject')" 
-                  style='color:#1D90FF'>驳回审核</a>
-                  <nz-divider nzType="vertical"></nz-divider>
-                  <a (click)="edit_check_withdraw(data,'pass')" style='color:#1D90FF'>通过审核</a>
-                </p>
-              </span>
             </td>
           </tr>
           <tr>
@@ -253,35 +210,10 @@
                 <nz-descriptions-item nzTitle="转换充值总额">{{ withdraw_detail_data['transfer_recharge_total'] }}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="赢利总额">{{ withdraw_detail_data['win_total'] }}</nz-descriptions-item>
                 <nz-descriptions-item nzTitle="提现总额">{{ withdraw_detail_data['withdraw_total'] }}</nz-descriptions-item>
-                
               </nz-descriptions>
           </div>
         </div>
       </div>
-    </nz-drawer>
-    <nz-drawer nzWidth='400px' [nzVisible]="is_edit_check" nzPlacement="right"
-      nzTitle="填写相关内容" (nzOnClose)="is_edit_check = false">
-        <div *ngIf="withdraw_pop_type == 'reject'"> 
-            <nz-form-item>
-              <nz-form-label [nzSpan]="6" >驳回理由</nz-form-label>
-              <nz-form-control [nzSpan]="16">
-                  <input nz-input nzSize="small" placeholder="驳回理由" [(ngModel)]="withdraw_remark"/>
-              </nz-form-control>
-            </nz-form-item>
-            <button nz-button nzType="primary" (click)="edit_check_withdraw(withdraw_data,'1')">提交</button>
-        </div>
-        <div *ngIf="withdraw_pop_type == 'pass'">
-            <nz-form-item>
-                <nz-form-label [nzSpan]="6" >通过选项</nz-form-label>
-                <nz-form-control [nzSpan]="16">
-                    <nz-select nzSize="small" style="width: 100%;" [(ngModel)]="withdraw_channel_id" nzAllowClear nzPlaceHolder="通过选项">
-                      <nz-option nzValue=" " nzLabel=" "></nz-option>
-                      <nz-option nzValue="1" nzLabel="1"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-              </nz-form-item>
-            <button nz-button nzType="primary" (click)="edit_check_withdraw(withdraw_data,'2')">提交</button>
-        </div>
     </nz-drawer>
   </nz-content>
 </nz-layout>

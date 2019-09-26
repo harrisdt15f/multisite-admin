@@ -6,6 +6,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { ReportService } from 'app/service/report.service';
 import { ExcelService } from 'app/service/excel.service';
 
+import { ApiService } from '../../../../api/api.service';
+
 @Component({
   selector: 'app-report-recharge-report',
   templateUrl: './recharge-report.component.html',
@@ -22,6 +24,8 @@ export class ReportRechargeReportComponent implements OnInit {
     company_order_num: '',
     is_tester: '',
     status: '',
+    channel: '',
+    payment_type_sign: ''
   };
   // -----------条件筛选参数
 
@@ -37,6 +41,9 @@ export class ReportRechargeReportComponent implements OnInit {
   public is_down_load_all: boolean;
   public nowOption = {};
 
+  // 充值渠道 充值类型
+  public payment_list: Array<any> = [];
+  public pay_types: Array<any> = [];
 
   constructor(
     private http: _HttpClient,
@@ -44,11 +51,12 @@ export class ReportRechargeReportComponent implements OnInit {
     private excelService: ExcelService,
     private modalService: NzModalService,
     private fb: FormBuilder,
-    private message: NzMessageService
+    private message: NzMessageService,
+    private newHttp: ApiService
   ) { }
 
   ngOnInit() {
-
+    this.get_payment_info();
     this.search();
   }
 
@@ -72,6 +80,8 @@ export class ReportRechargeReportComponent implements OnInit {
       company_order_num: '',
       is_tester: '',
       status: '',
+      channel: '',
+      payment_type_sign: ''
     };
   }
 
@@ -83,15 +93,14 @@ export class ReportRechargeReportComponent implements OnInit {
    */
   get_recharge_list() {
     this.is_load_list = true;
-    let option: any = {};
-    if (this.searchData.user_name) {
-      option.user_name = this.searchData.user_name;
+    const option: any = {};
+    const { searchData } = this;
+    for (const key in searchData) {
+      if ( searchData[key] !== '' ) {
+        option[key] = searchData[key];
+      }
     }
     option.get_sub = this.searchData.get_sub ? 1 : 0;
-    if (this.searchData.is_tester) option.is_tester = this.searchData.is_tester;
-    if (this.searchData.status) option.status = this.searchData.status;
-    if (this.searchData.deposit_mode) option.deposit_mode = this.searchData.deposit_mode;
-    if (this.searchData.company_order_num) option.company_order_num = this.searchData.company_order_num;
     this.nowOption = option;
     this.reportService.get_recharge_report(this.searchData.pageSize, this.page_index, option).subscribe((res: any) => {
       if (res && res.success) {
@@ -114,8 +123,20 @@ export class ReportRechargeReportComponent implements OnInit {
   search(): void {
     this.page_index = 1;
     this.get_recharge_list();
-
   }
+
+  /**
+   * 提现渠道和提现类型
+   * @param item 
+   */
+  get_payment_info() {
+    this.newHttp.payment_info({}).subscribe( res => {
+       const {payments, types} = res['data'];
+       this.payment_list = payments;
+       this.pay_types = types;
+    });
+  }
+
   /**
   *改变页数
   *

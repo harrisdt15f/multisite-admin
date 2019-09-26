@@ -8,10 +8,11 @@ import { ApiService } from '../../../../api/api.service';
 import { Utils } from 'config/utils.config';
 
 @Component({
-  selector: 'app-user-withdraw-list',
-  templateUrl: './withdraw-list.component.html',
+  selector: 'app-report-withdraw-report',
+  templateUrl: './withdraw-report.component.html',
+  styleUrls: ['./withdraw-report.component.less']
 })
-export class UserWithdrawListComponent implements OnInit {
+export class ReportWithdrawReportComponent implements OnInit {
 
   // 搜索对象
   public searchData = {
@@ -74,18 +75,6 @@ export class UserWithdrawListComponent implements OnInit {
 
   ngOnInit() {
     this.get_withdraw_aply_list();
-    this.get_payment_info();
-  }
-
-  /**
-   * 获取充值渠道
-   */
-  get_payment_info() {
- 
-    this.newHttp.payment_info({}).subscribe( res => {
-       const {payments} = res['data'];
-       this.payment_list = payments;
-    });
   }
 
   /**
@@ -112,50 +101,6 @@ export class UserWithdrawListComponent implements OnInit {
       start : '',
       end : ''
     };
-  }
-
-  /**
-  *点击提交，驳回申请
-  *
-  * @param {*} type
-  * @memberof UserManageUserComponent
-  */
-  edit_check_withdraw(data, type) {
-    const reject = data.status === 1 && type === 'reject';
-    const four = data.status === 4 && type === '4';
-    if ( !reject && !four) {
-      this.submit_withdraw_lodding = false;
-      const option = {
-        id: data.id,
-        status : type
-      };
-      if ( type === 'reject' || type === 'pass' ) {
-        this.is_edit_check = true;
-        this.withdraw_remark = '';
-        this.withdraw_data = data;
-        this.withdraw_pop_type = type;
-      } else {
-        if ( type === '1' ) {
-          this.is_edit_check = false;
-          Object.assign(option, { remark : this.withdraw_remark });
-          this.withdraw_remark = '';
-        }
-        if ( type === '2' ) {
-          this.is_edit_check = false;
-          Object.assign(option, { channel_id : this.withdraw_channel_id });
-          this.withdraw_channel_id = null;
-        }
-        this.newHttp.status({
-          data: option
-        }).subscribe( res => {
-          if (res['success'] ) {
-            this.message.success('提交结果成功', {nzDuration: 10000,});
-            this.reset_search_data();
-            this.get_withdraw_aply_list();
-          }
-        });
-      }
-    }
   }
 
   /**
@@ -257,4 +202,6 @@ export class UserWithdrawListComponent implements OnInit {
   }
   cancel() {}
 }
+
+
 

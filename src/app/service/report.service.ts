@@ -73,7 +73,7 @@ export class ReportService {
       option = data;
 
     }
-    const href = '/api/reportManagement/user-account-change?page_size=' + page_size + '&page=' + page_index;;
+    const href = '/api/reportManagement/user-account-change?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
   /**
@@ -94,7 +94,7 @@ export class ReportService {
       }
       option = data;
     }
-    const href = '/api/reportManagement/user-recharge-history?page_size=' + page_size + '&page=' + page_index;;
+    const href = '/api/reportManagement/user-recharge-history?page_size=' + page_size + '&page=' + page_index;
     return this.commonService.post(href, option, { headers: headers });
   }
 
@@ -122,7 +122,28 @@ export class ReportService {
     const href = '/api/reportManagement/user-bets?page_size=' + page_size + '&page=' + page_index;;
     return this.commonService.post(href, option, { headers: headers });
   }
+/**
+ * 报表请求
+ */
+  get_report(url, data?) {
+    let token = this.tokenService.get().token;
+    let headers = new HttpHeaders({
+      Accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    });
+    let option = {};
 
+    if (data) {
+
+      if (data.user_name) {
+        data.query_conditions = JSON.stringify({ "user_name": "LIKE" });
+      }
+      option = data;
+
+    }
+    const href = url;
+    return this.commonService.post(href, option, { headers });
+  }
 
 
 }
